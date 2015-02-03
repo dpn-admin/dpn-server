@@ -1,0 +1,9 @@
+class CreateFixityAlgorithms < ActiveRecord::Migration
+  def change
+    create_table :fixity_algorithms do |t|
+      t.string :name
+
+      t.timestamps null: false
+    end
+  end
+end
