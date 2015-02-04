@@ -8,4 +8,6 @@ class Bag < ActiveRecord::Base
 
   has_many :replication_transfers
   has_many :restore_transfers
+
+  has_and_belongs_to_many :replicating_nodes, :join_table => "replicating_nodes", :uniq => true
 end
