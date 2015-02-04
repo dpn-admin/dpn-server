@@ -7,4 +7,10 @@ class Node < ActiveRecord::Base
 
   has_and_belongs_to_many :fixity_algs, :join_table => "supported_fixity_algs", :uniq => true
   has_and_belongs_to_many :protocols, :join_table => "supported_protocols", :uniq => true
+
+  has_many :replicator_agreements, :foreign_key => "from_node_id", :class_name => "ReplicationAgreement"
+  has_many :to_nodes, :through => :replicator_agreements
+
+  has_many :replicatee_agreements, :foreign_key => "to_node_id", :class_name => "ReplicationAgreement"
+  has_many :from_nodes, :through => :replicatee_agreements
 end
