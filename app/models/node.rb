@@ -4,6 +4,7 @@ class Node < ActiveRecord::Base
 
   belongs_to :storage_region
   belongs_to :storage_type
-  belongs_to :fixity_alg
-  belongs_to :protocol
+
+  has_and_belongs_to_many :fixity_algs, :join_table => "supported_fixity_algs", :uniq => true
+  has_and_belongs_to_many :protocols, :join_table => "supported_protocols", :uniq => true
 end
