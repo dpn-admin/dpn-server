@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150204215024) do
+ActiveRecord::Schema.define(version: 20150204220237) do
 
   create_table "bags", force: :cascade do |t|
     t.string   "uuid"
@@ -74,6 +74,20 @@ ActiveRecord::Schema.define(version: 20150204215024) do
   end
 
   add_index "nodes", ["namespace"], name: "index_nodes_on_namespace", unique: true
+
+  create_table "nodes_fixity_algs", force: :cascade do |t|
+    t.integer "node_id",       null: false
+    t.integer "fixity_alg_id", null: false
+  end
+
+  add_index "nodes_fixity_algs", ["node_id", "fixity_alg_id"], name: "index_nodes_fixity_algs_on_node_id_and_fixity_alg_id", unique: true
+
+  create_table "nodes_protocols", force: :cascade do |t|
+    t.integer "node_id",     null: false
+    t.integer "protocol_id", null: false
+  end
+
+  add_index "nodes_protocols", ["node_id", "protocol_id"], name: "index_nodes_protocols_on_node_id_and_protocol_id", unique: true
 
   create_table "protocols", force: :cascade do |t|
     t.string   "name",       null: false
@@ -157,19 +171,5 @@ ActiveRecord::Schema.define(version: 20150204215024) do
   end
 
   add_index "storage_types", ["name"], name: "index_storage_types_on_name", unique: true
-
-  create_table "supported_fixity_algs", force: :cascade do |t|
-    t.integer "node_id",       null: false
-    t.integer "fixity_alg_id", null: false
-  end
-
-  add_index "supported_fixity_algs", ["node_id", "fixity_alg_id"], name: "index_supported_fixity_algs_on_node_id_and_fixity_alg_id", unique: true
-
-  create_table "supported_protocols", force: :cascade do |t|
-    t.integer "node_id",     null: false
-    t.integer "protocol_id", null: false
-  end
-
-  add_index "supported_protocols", ["node_id", "protocol_id"], name: "index_supported_protocols_on_node_id_and_protocol_id", unique: true
 
 end
