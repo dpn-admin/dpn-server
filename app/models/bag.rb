@@ -6,5 +6,5 @@ class Bag < ActiveRecord::Base
   has_many :versions, :class_name => "Bag", :foreign_key => "first_version_bag_id"
   belongs_to :first_version, :class_name => "Bag"
 
-
+  has_many :replication_transfers
 end
