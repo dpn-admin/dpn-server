@@ -7,4 +7,5 @@ class Bag < ActiveRecord::Base
   belongs_to :first_version, :class_name => "Bag"
 
   has_many :replication_transfers
+  has_many :restore_transfers
 end

@@ -18,4 +18,6 @@ class Node < ActiveRecord::Base
   has_many :replication_transfers_from, :class_name => "ReplicationTransfer", :foreign_key => "from_node_id"
   has_many :replication_transfers_to, :class_name => "ReplicationTransfer", :foreign_key => "to_node_id"
 
+  has_many :restore_transfers_from, :class_name => "RestoreTransfer", :foreign_key => "from_node_id"
+  has_many :restore_transfers_to, :class_name => "RestoreTransfer", :foreign_key => "to_node_id"
 end
