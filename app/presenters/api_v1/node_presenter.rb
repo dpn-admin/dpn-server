@@ -3,15 +3,10 @@ module ApiV1
   class NodePresenter
     def initialize(node)
       @node = node
-      @hash = nil
     end
 
     def to_hash
-      if @hash != nil
-        return @hash
-      end
-
-      @hash = {
+      hash = {
         :namespace  => @node.namespace,
         :name       => @node.name,
         :ssh_pubkey => @node.ssh_pubkey,
@@ -29,7 +24,7 @@ module ApiV1
 
 
 
-      return @hash
+      return hash
     end
 
     def to_json(options = {})
@@ -37,7 +32,7 @@ module ApiV1
     end
 
     private
-    attr_reader :node, :hash
+    attr_reader :node
 
   end
 end
