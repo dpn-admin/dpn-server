@@ -1,6 +1,6 @@
-class StorageRegionPresenter
-  def initialize(storage_region)
-    @storage_region = storage_region
+class ApiV1::StorageTypePresenter
+  def initialize(storage_type)
+    @storage_region = storage_type
     @hash = nil
   end
 
@@ -10,7 +10,7 @@ class StorageRegionPresenter
     end
 
     @hash = {
-      :name => @storage_region.name
+      :name => @storage_type.name
     }
 
 
@@ -21,5 +21,5 @@ class StorageRegionPresenter
   end
 
   private
-  attr_reader :storage_region, :hash
+  attr_reader :storage_type, :hash
 end

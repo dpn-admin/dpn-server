@@ -1,4 +1,4 @@
-class NodePresenter
+class ApiV1::NodePresenter
   def initialize(node)
     @node = node
     @hash = nil
