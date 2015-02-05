@@ -54,7 +54,13 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
   namespace :api_v1 do
-    resources :nodes, only: [:index, :show, :create, :update]
+    resources :nodes, only: [:index, :show, :create, :update] do
+      @scope[:scope_level_resource].tap do |n|
+        def n.member_scope      # Some black magic to find by
+          "#{path}/:namespace"  # namespace instead of id
+        end
+      end
+    end
     resources :bags, only: [:index, :show, :create, :update]
     resources :replication_transfers, only: [:index, :show, :create, :update]
     resources :restore_transfers, only: [:index, :show, :create, :update]
