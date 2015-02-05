@@ -53,4 +53,10 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+  namespace :api_v1 do
+    resources :nodes, only: [:index, :show, :create, :update]
+    resources :bags, only: [:index, :show, :create, :update]
+    resources :replication_transfers, only: [:index, :show, :create, :update]
+    resources :restore_transfers, only: [:index, :show, :create, :update]
+  end
 end
