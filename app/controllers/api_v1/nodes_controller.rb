@@ -13,7 +13,6 @@ class ApiV1::NodesController < ApplicationController
     }
 
     render json: output
-
   end
 
   def show
