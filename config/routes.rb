@@ -71,7 +71,7 @@ Rails.application.routes.draw do
       end
     end
     
-    resources :replication_transfers, only: [:index, :show, :create, :update]
-    resources :restore_transfers, only: [:index, :show, :create, :update]
+    resources :replication_transfers, only: [:index, :show, :create, :update], path: :repl
+    resources :restore_transfers, only: [:index, :show, :create, :update], path: :restore
   end
 end
