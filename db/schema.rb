@@ -11,19 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150204215024) do
+ActiveRecord::Schema.define(version: 20150206225221) do
 
   create_table "bags", force: :cascade do |t|
     t.string   "uuid"
     t.string   "local_id"
-    t.integer  "size"
-    t.integer  "version",              null: false
-    t.integer  "first_version_bag_id", null: false
-    t.integer  "original_node_id",     null: false
-    t.integer  "admin_node_id",        null: false
+    t.integer  "size",              limit: 8
+    t.integer  "version",                     null: false
+    t.integer  "version_family_id",           null: false
+    t.integer  "original_node_id",            null: false
+    t.integer  "admin_node_id",               null: false
     t.string   "type"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   add_index "bags", ["uuid"], name: "index_bags_on_uuid", unique: true
@@ -171,5 +171,11 @@ ActiveRecord::Schema.define(version: 20150204215024) do
   end
 
   add_index "supported_protocols", ["node_id", "protocol_id"], name: "index_supported_protocols_on_node_id_and_protocol_id", unique: true
+
+  create_table "version_families", force: :cascade do |t|
+    t.string "uuid", null: false
+  end
+
+  add_index "version_families", ["uuid"], name: "index_version_families_on_uuid", unique: true
 
 end

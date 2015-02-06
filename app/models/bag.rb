@@ -3,8 +3,7 @@ class Bag < ActiveRecord::Base
   belongs_to :admin_node, :foreign_key => "admin_node_id", :class_name => "Node"
   has_many :fixity_checks
 
-  has_many :versions, :class_name => "Bag", :foreign_key => "first_version_bag_id"
-  belongs_to :first_version, :class_name => "Bag"
+  belongs_to :version_family, :inverse_of => :bags
 
   has_many :replication_transfers
   has_many :restore_transfers
