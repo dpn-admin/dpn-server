@@ -10,7 +10,7 @@ module ApiV1
         :uuid => @bag.uuid,
         :local_id => @bag.local_id,
         :size => @bag.size,
-        :first_version_uuid => @bag.first_version.uuid,
+        :first_version_uuid => @bag.version_family.uuid,
         :version => @bag.version,
         :original_node => @bag.original_node.namespace,
         :admin_node => @bag.admin_node.namespace,

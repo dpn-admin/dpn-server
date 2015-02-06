@@ -37,7 +37,7 @@ class ApiV1::BagsController < ApplicationController
     bag.uuid = params[:bag][:uuid]
     bag.local_id = params[:bag][:local_id]
     bag.size = params[:bag][:size]
-    bag.first_version = Bag.find_by_uuid(params[:bag][:first_version_uuid])
+    bag.version_family = VersionFamily.find_by_uuid(params[:bag][:first_version_uuid])
     bag.version = params[:bag][:version]
     bag.original_node = Node.find_by_namespace(params[:bag][:original_node])
     bag.admin_node = Node.find_by_namespace(params[:bag][:admin_node])
