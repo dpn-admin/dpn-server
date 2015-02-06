@@ -17,7 +17,7 @@ module ApiV1
         :repl_nodes => @bag.replicating_nodes.pluck(:namespace),
         :fixities => @bag.fixity_checks.collect do |check|
           {
-            :fixity_alg => check.fixity_alg.name,
+            :alg => check.fixity_alg.name,
             :value => check.value
           }
         end,
