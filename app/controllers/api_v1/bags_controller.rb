@@ -2,7 +2,7 @@ require_relative '../../../app/presenters/api_v1/bag_presenter'
 
 class ApiV1::BagsController < ApplicationController
   def index
-    bags = Bag.collect do |bag|
+    bags = Bag.all.collect do |bag|
       ApiV1::BagPresenter.new(bag)
     end
 
