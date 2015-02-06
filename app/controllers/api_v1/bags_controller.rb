@@ -47,8 +47,8 @@ class ApiV1::BagsController < ApplicationController
       fc = FixityCheck.new
       fc.node = Node.find_by_namespace(:params[:author])
       fc.bag = Bag.find_by_uuid(params[:bag][:uuid])
-      fc.fixity_alg = FixityAlg.find_by_name(check[:alg])
-      fc.value = check[:value]
+      fc.fixity_alg = FixityAlg.find_by_name(check[:fixity_alg])
+      fc.value = check[:fixity_value]
       fc.save
       bag.fixity_checks << fc
     end
@@ -79,8 +79,8 @@ class ApiV1::BagsController < ApplicationController
       bag.fixity_checks << FixityCheck.find_or_create_by(
         :node_id => Node.find_by_namespace(params[:author]).id,
         :bag_id => bag.id,
-        :fixity_alg_id => FixityAlg.find_by_name(check[:alg]).id,
-        :value => check[:value]
+        :fixity_alg_id => FixityAlg.find_by_name(check[:fixity_alg]).id,
+        :value => check[:fixity_value]
       )
     end
 
