@@ -1,7 +1,10 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
+rsync:
+  name: rsync
 
-two:
-  name: MyString
+gridftp:
+  name: gridftp
+
+https:
+  name: https
