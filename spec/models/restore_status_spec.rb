@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Protocol do
+describe RestoreStatus do
   it "has a valid factory" do
     expect(create(:restore_status)).to be_valid
   end
