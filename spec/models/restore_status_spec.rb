@@ -30,4 +30,13 @@ describe RestoreStatus do
     expect(instance.name).to eql(name.downcase)
   end
 
+  it "can be found when we search with uppercase" do
+    name = "somename"
+    create(:restore_status, name: name)
+
+    instance = RestoreStatus.find_by_name(name.upcase)
+
+    expect(instance).to be_valid
+  end
+
 end

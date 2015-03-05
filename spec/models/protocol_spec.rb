@@ -30,12 +30,12 @@ describe Protocol do
     expect(instance.name).to eql(name.downcase)
   end
 
-  # it "should ignore case when searching" do
-  #   name = "herp"
-  #   create(:protocol, name: name.downcase)
-  #
-  #   instance = Protocol.where(name: name.upcase).first
-  #
-  #   expect(instance).to be_valid
-  # end
+  it "can be found when we search with uppercase" do
+    name = "somename"
+    create(:protocol, name: name)
+
+    instance = Protocol.find_by_name(name.upcase)
+
+    expect(instance).to be_valid
+  end
 end

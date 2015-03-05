@@ -29,4 +29,13 @@ describe FixityAlg do
     expect(instance).to be_valid
     expect(instance.name).to eql(name.downcase)
   end
+
+  it "can be found when we search with uppercase" do
+    name = "somename"
+    create(:fixity_alg, name: name)
+
+    instance = FixityAlg.find_by_name(name.upcase)
+
+    expect(instance).to be_valid
+  end
 end
