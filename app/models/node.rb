@@ -22,4 +22,8 @@ class Node < ActiveRecord::Base
   has_many :restore_transfers_to, :class_name => "RestoreTransfer", :foreign_key => "to_node_id"
 
   has_and_belongs_to_many :replicated_bags, :join_table => "replicating_nodes", :uniq => true
+
+  include Lowercased
+  make_lowercased :namespace
+
 end
