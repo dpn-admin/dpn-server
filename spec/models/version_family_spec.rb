@@ -2,12 +2,12 @@ require 'rails_helper'
 
 describe VersionFamily do
   it "has a valid factory" do
-    expect(create(:version_family)).to be_valid
+    expect(Fabricate(:version_family)).to be_valid
   end
 
   it "is invalid without a uuid" do
     expect {
-      create(:version_family, uuid: nil)
+      Fabricate(:version_family, uuid: nil)
     }.to raise_error
   end
 
@@ -18,7 +18,7 @@ describe VersionFamily do
 
   it "removes dashes when saving" do
     uuid = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    create(:version_family, uuid: uuid)
+    Fabricate(:version_family, uuid: uuid)
 
     instance = VersionFamily.find_by_sql(["SELECT * FROM version_families WHERE uuid = ?", uuid.delete('-')]).first
 
@@ -27,7 +27,7 @@ describe VersionFamily do
 
   it "can be found when we include dashes" do
     uuid = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    create(:version_family, uuid: uuid.delete('-'))
+    Fabricate(:version_family, uuid: uuid.delete('-'))
 
     instance = VersionFamily.find_by_uuid(uuid)
 
@@ -36,7 +36,7 @@ describe VersionFamily do
 
   it "can be found when we don't include dashes" do
     dashless_uuid = "f47ac10b-58cc-4372-a567-0e02b2c3d479".delete('-')
-    create(:version_family, uuid: dashless_uuid)
+    Fabricate(:version_family, uuid: dashless_uuid)
 
     instance = VersionFamily.find_by_uuid(dashless_uuid)
 

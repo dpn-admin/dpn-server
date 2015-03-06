@@ -2,18 +2,18 @@ require 'rails_helper'
 
 describe Protocol do
   it "has a valid factory" do
-    expect(create(:protocol)).to be_valid
+    expect(Fabricate(:protocol)).to be_valid
   end
 
   it "is invalid without a name" do
     expect {
-      create(:protocol, name: nil)
+      Fabricate(:protocol, name: nil)
     }.to raise_error
   end
 
   it "can find records" do
     name = "herp"
-    create(:protocol, name: name)
+    Fabricate(:protocol, name: name)
 
     instance = Protocol.where(name: name).first
 
@@ -22,7 +22,7 @@ describe Protocol do
 
   it "should store name as lowercase" do
     name  = "aSDFdsfadsSDFsd"
-    create(:protocol, name: name)
+    Fabricate(:protocol, name: name)
 
     instance = Protocol.where(name: name.downcase).first
 
@@ -32,7 +32,7 @@ describe Protocol do
 
   it "can be found when we search with uppercase" do
     name = "somename"
-    create(:protocol, name: name)
+    Fabricate(:protocol, name: name)
 
     instance = Protocol.find_by_name(name.upcase)
 

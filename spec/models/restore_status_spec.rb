@@ -2,18 +2,18 @@ require 'rails_helper'
 
 describe RestoreStatus do
   it "has a valid factory" do
-    expect(create(:restore_status)).to be_valid
+    expect(Fabricate(:restore_status)).to be_valid
   end
 
   it "is invalid without a name" do
     expect {
-      create(:restore_status, name: nil)
+      Fabricate(:restore_status, name: nil)
     }.to raise_error
   end
 
   it "can find records" do
     name = "herp"
-    create(:restore_status, name: name)
+    Fabricate(:restore_status, name: name)
 
     instance = RestoreStatus.where(name: name).first
 
@@ -22,7 +22,7 @@ describe RestoreStatus do
 
   it "should store name as lowercase" do
     name  = "aSDFdsfadsSDFsd"
-    create(:restore_status, name: name)
+    Fabricate(:restore_status, name: name)
 
     instance = RestoreStatus.where(name: name.downcase).first
 
@@ -32,7 +32,7 @@ describe RestoreStatus do
 
   it "can be found when we search with uppercase" do
     name = "somename"
-    create(:restore_status, name: name)
+    Fabricate(:restore_status, name: name)
 
     instance = RestoreStatus.find_by_name(name.upcase)
 
