@@ -12,7 +12,7 @@ describe VersionFamily do
   end
 
   it "adds dashes when reading" do
-    instance = build(:version_family, uuid: "f47ac10b58cc4372a5670e02b2c3d479")
+    instance = Fabricate.build(:version_family, uuid: "f47ac10b58cc4372a5670e02b2c3d479")
     expect(instance.uuid).to match(/\A[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}\Z/)
   end
 
