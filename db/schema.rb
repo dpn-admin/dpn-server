@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150206225221) do
+ActiveRecord::Schema.define(version: 20150318172127) do
 
   create_table "bags", force: :cascade do |t|
     t.string   "uuid"
@@ -28,14 +28,14 @@ ActiveRecord::Schema.define(version: 20150206225221) do
 
   add_index "bags", ["uuid"], name: "index_bags_on_uuid", unique: true
 
-  create_table "data_brightenings", force: :cascade do |t|
-    t.integer  "data_bag_id",        null: false
-    t.integer  "brightening_bag_id", null: false
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+  create_table "data_interpretive", force: :cascade do |t|
+    t.integer  "data_bag_id",         null: false
+    t.integer  "interpretive_bag_id", null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
   end
 
-  add_index "data_brightenings", ["data_bag_id", "brightening_bag_id"], name: "index_data_brightenings_on_data_bag_id_and_brightening_bag_id", unique: true
+  add_index "data_interpretive", ["data_bag_id", "interpretive_bag_id"], name: "index_data_interpretive_on_data_bag_id_and_interpretive_bag_id", unique: true
 
   create_table "data_rights", force: :cascade do |t|
     t.integer  "data_bag_id",   null: false
