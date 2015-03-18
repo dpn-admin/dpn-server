@@ -12,36 +12,31 @@ module ApiV1
         :size => @bag.size,
         :first_version_uuid => @bag.version_family.uuid,
         :version => @bag.version,
-        :original_node => @bag.original_node.namespace,
+        :ingest_node => @bag.ingest_node.namespace,
         :admin_node => @bag.admin_node.namespace,
-        #:repl_nodes => @bag.replicating_nodes.select(:namespace).map do |node|
-        #  node.namespace
-        #end,
-        :repl_nodes => @bag.replicating_nodes.pluck(:namespace),
-        :fixities => @bag.fixity_checks.collect do |check|
-          {
-            :fixity_alg => check.fixity_alg.name,
-            :fixity_value => check.value
-          }
-        end,
+        :replicating_nodes => @bag.replicating_nodes.pluck(:namespace),
+        :fixities => {},
         :created_at => @bag.created_at,
         :updated_at => @bag.updated_at
-
       }
+
+      @bag.fixity_checks.each do |check|
+        hash[:fixities][check.fixity_alg.name.to_sym] = check.value
+      end
 
       case @bag.type
       when "DataBag"
-        hash[:type] = "data"
+        hash[:type] = "D"
         hash[:rights] = @bag.rights_bags.pluck(:uuid)
-        hash[:brightening] = bag.brightening_bags.pluck(:uuid)
+        hash[:interpretive] = bag.interpretive_bags.pluck(:uuid)
       when "RightsBag"
-        hash[:type] = "rights"
+        hash[:type] = "R"
         hash[:rights] = nil
-        hash[:brightening] = nil
-      when "BrighteningBag"
-        hash[:type] = "brightening"
+        hash[:interpretive] = nil
+      when "InterpretiveBag"
+        hash[:type] = "I"
         hash[:rights] = nil
-        hash[:brightening] = nil
+        hash[:interpretive] = nil
       else
         throw TypeError, "illegal bag type #{@bag.type}"
       end
