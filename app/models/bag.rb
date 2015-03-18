@@ -9,4 +9,8 @@ class Bag < ActiveRecord::Base
   has_many :restore_transfers
 
   has_and_belongs_to_many :replicating_nodes, :join_table => "replicating_nodes", :class_name => "Node", :uniq => true
+
+  include UUIDFormat
+  make_uuid :uuid
+
 end
