@@ -17,13 +17,13 @@ module ApiV1
         },
         :fixity_algorithms => @node.fixity_algs.pluck(:name),
         :protocols => @node.protocols.pluck(:name),
-        :replicate_to => @node.to_nodes.pluck(:namespace),
-        :replicate_from => @node.from_nodes.pluck(:namespace),
+        :replicate_to => @node.replicate_to_nodes.pluck(:namespace),
+        :replicate_from => @node.replicate_from_nodes.pluck(:namespace),
+        :restore_to => @node.restore_to_nodes.pluck(:namespace),
+        :restore_from => @node.restore_from_nodes.pluck(:namespace),
         :created_at => @node.created_at,
         :updated_at => @node.updated_at
       }
-
-
 
       return hash
     end
