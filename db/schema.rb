@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150318172127) do
+ActiveRecord::Schema.define(version: 20150318173348) do
 
   create_table "bags", force: :cascade do |t|
     t.string   "uuid"
@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20150318172127) do
     t.integer  "size",              limit: 8
     t.integer  "version",                     null: false
     t.integer  "version_family_id",           null: false
-    t.integer  "original_node_id",            null: false
+    t.integer  "ingest_node_id",              null: false
     t.integer  "admin_node_id",               null: false
     t.string   "type"
     t.datetime "created_at",                  null: false

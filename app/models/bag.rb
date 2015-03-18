@@ -1,5 +1,5 @@
 class Bag < ActiveRecord::Base
-  belongs_to :original_node, :foreign_key => "original_node_id", :class_name => "Node"
+  belongs_to :ingest_node, :foreign_key => "ingest_node_id", :class_name => "Node"
   belongs_to :admin_node, :foreign_key => "admin_node_id", :class_name => "Node"
   has_many :fixity_checks
 
