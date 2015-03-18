@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150318173348) do
+ActiveRecord::Schema.define(version: 20150318184923) do
 
   create_table "bags", force: :cascade do |t|
     t.string   "uuid"
@@ -55,7 +55,6 @@ ActiveRecord::Schema.define(version: 20150318173348) do
   add_index "fixity_algs", ["name"], name: "index_fixity_algs_on_name", unique: true
 
   create_table "fixity_checks", force: :cascade do |t|
-    t.integer "node_id",       null: false
     t.integer "bag_id",        null: false
     t.integer "fixity_alg_id", null: false
     t.text    "value",         null: false
