@@ -9,12 +9,13 @@ module ApiV1
       hash = {
         :namespace  => @node.namespace,
         :name       => @node.name,
+        :api_root => @node.api_root,
         :ssh_pubkey => @node.ssh_pubkey,
         :storage => {
           :region => @node.storage_region.name,
           :type => @node.storage_type.name
         },
-        :fixity_algs => @node.fixity_algs.pluck(:name),
+        :fixity_algorithms => @node.fixity_algs.pluck(:name),
         :protocols => @node.protocols.pluck(:name),
         :replicate_to => @node.to_nodes.pluck(:namespace),
         :replicate_from => @node.from_nodes.pluck(:namespace),
