@@ -1,4 +1,7 @@
 Fabricator(:storage_type) do
-  name "sometype"
-  initialize_with { StorageType.find_or_create_by(name: name)}
+  name do
+    sequence(:name) do |i|
+      "storage_type_#{i}"
+    end
+  end
 end

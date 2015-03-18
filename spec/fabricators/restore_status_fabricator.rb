@@ -1,4 +1,7 @@
 Fabricator(:restore_status) do
-  name "somerestorestatus"
-  initialize_with { RestoreStatus.find_or_create_by(name: name)}
+  name do
+    sequence(:name) do |i|
+      "restore_status_#{i}"
+    end
+  end
 end

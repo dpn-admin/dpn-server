@@ -1,4 +1,7 @@
 Fabricator(:storage_region) do
-  name "someregion"
-  initialize_with { StorageRegion.find_or_create_by(name: name)}
+  name do
+    sequence(:name) do |i|
+      "region_#{i}"
+    end
+  end
 end

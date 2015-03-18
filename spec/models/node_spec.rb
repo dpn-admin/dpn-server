@@ -22,7 +22,7 @@ describe Node do
   it "is invalid without a namespace" do
     expect {
       Fabricate(:node, namespace: nil)
-    }.to raise_error(ActiveRecord::StatementInvalid)
+    }.to raise_error(ActiveRecord::ActiveRecordError)
   end
 
   it "stores namespace as lowercase" do

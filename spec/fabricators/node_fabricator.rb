@@ -1,18 +1,14 @@
 Fabricator(:node) do
-  namespace "sdgsdfgsgsdg"
-  name "Some Readable Name"
-  ssh_pubkey "somepublickey"
+  namespace do
+    sequence(:namespace) do |i|
+      "namespace_#{i}"
+    end
+  end
+
+  name { Faker::Company.name }
+  ssh_pubkey { Faker::Internet.password(20) }
   storage_region
   storage_type
 
-  initialize_with {
-    Node.find_or_create_by(
-      namespace: namespace,
-      name: name,
-      ssh_pubkey: ssh_pubkey,
-      storage_region: storage_region,
-      storage_type: storage_type
-    )
-  }
 
 end

@@ -1,4 +1,7 @@
 Fabricator(:fixity_alg) do
-  name "somefixityalg"
-  initialize_with { FixityAlg.find_or_create_by(name: name)}
+  name do
+    sequence(:name) do |i|
+      "fixity_alg_#{i}"
+    end
+  end
 end
