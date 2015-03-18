@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150318184923) do
+ActiveRecord::Schema.define(version: 20150318192554) do
 
   create_table "bags", force: :cascade do |t|
     t.string   "uuid"
@@ -70,8 +70,10 @@ ActiveRecord::Schema.define(version: 20150318184923) do
     t.integer  "storage_type_id",   null: false
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+    t.string   "api_root"
   end
 
+  add_index "nodes", ["api_root"], name: "index_nodes_on_api_root"
   add_index "nodes", ["namespace"], name: "index_nodes_on_namespace", unique: true
 
   create_table "protocols", force: :cascade do |t|
@@ -120,6 +122,13 @@ ActiveRecord::Schema.define(version: 20150318184923) do
     t.boolean  "fixity_accept"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+  end
+
+  create_table "restore_agreements", force: :cascade do |t|
+    t.integer  "from_node_id", null: false
+    t.integer  "to_node_id",   null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "restore_statuses", force: :cascade do |t|
