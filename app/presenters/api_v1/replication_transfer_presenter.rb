@@ -7,11 +7,11 @@ module ApiV1
 
     def to_hash
       hash = {
-        :repl_id => @repl.id,
+        :replication_id => @repl.id,
         :from_node => @repl.from_node.namesapce,
         :to_node => @repl.to_node.namespace,
         :uuid => @repl.bag.uuid,
-        :fixity_alg => @repl.fixity_alg.name,
+        :fixity_algorithm => @repl.fixity_alg.name,
         :fixity_nonce => @repl.fixity_nonce,
         :fixity_value => @repl.fixity_value,
         :fixity_accept => @repl.fixity_accept,
