@@ -7,15 +7,15 @@ module ApiV1
 
     def to_hash
       hash = {
-          :restore_id => @restore.id,
+          :restore_id => @restore.name,
           :from_node => @restore.from_node.namespace,
           :to_node => @restore.to_node.namespace,
           :uuid => @restore.bag.uuid,
           :protocol => @restore.protocol.name,
           :status => @restore.restore_status.name,
           :link => @restore.link,
-          :created_at => @restore.created_at,
-          :updated_at => @restore.updated_at
+          :created_at => @restore.created_at.to_formatted_s(:dpn),
+          :updated_at => @restore.updated_at.to_formatted_s(:dpn)
       }
       return hash
     end

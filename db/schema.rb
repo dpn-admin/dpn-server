@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150319191818) do
+ActiveRecord::Schema.define(version: 20150319193344) do
 
   create_table "bags", force: :cascade do |t|
     t.string   "uuid"
@@ -151,7 +151,10 @@ ActiveRecord::Schema.define(version: 20150319191818) do
     t.string   "link",              null: false
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+    t.string   "name"
   end
+
+  add_index "restore_transfers", ["name"], name: "index_restore_transfers_on_name"
 
   create_table "storage_regions", force: :cascade do |t|
     t.string   "name",       null: false
