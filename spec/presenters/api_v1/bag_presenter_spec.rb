@@ -17,7 +17,7 @@ describe ApiV1::BagPresenter do
 
   describe "#to_hash" do
     before(:each) do
-      bag = Fabricate(:data_bag, updated_at: Time.current.utc.iso8601)
+      bag = Fabricate(:data_bag)
       @presenter = ApiV1::BagPresenter.new(bag)
     end
 
