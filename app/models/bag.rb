@@ -13,4 +13,9 @@ class Bag < ActiveRecord::Base
   include UUIDFormat
   make_uuid :uuid
 
+  validates :local_id, presence: true, uniqueness: true
+  validates :size, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
+  validates :version, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
+  validates_uniqueness_of :version, :scope => :version_family
+
 end

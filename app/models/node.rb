@@ -31,4 +31,7 @@ class Node < ActiveRecord::Base
   include Lowercased
   make_lowercased :namespace
 
+  validates :namespace, presence: true
+  validates :name, presence: true, length: { minimum: 1 }
+
 end

@@ -4,4 +4,9 @@ class RestoreTransfer < ActiveRecord::Base
   belongs_to :bag
   belongs_to :restore_status
   belongs_to :protocol
+
+  include Lowercased
+  make_lowercased :name
+
+  validates :name, presence: true
 end

@@ -5,4 +5,10 @@ class ReplicationTransfer < ActiveRecord::Base
   belongs_to :fixity_alg
   belongs_to :replication_status
   belongs_to :protocol
+
+  include Lowercased
+  make_lowercased :name
+
+  validates :link, presence: true
+  validates :name, presence: true
 end
