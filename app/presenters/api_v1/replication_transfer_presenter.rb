@@ -7,8 +7,8 @@ module ApiV1
 
     def to_hash
       hash = {
-        :replication_id => @repl.id,
-        :from_node => @repl.from_node.namesapce,
+        :replication_id => @repl.name,
+        :from_node => @repl.from_node.namespace,
         :to_node => @repl.to_node.namespace,
         :uuid => @repl.bag.uuid,
         :fixity_algorithm => @repl.fixity_alg.name,
@@ -19,8 +19,8 @@ module ApiV1
         :status => @repl.replication_status.name,
         :protocol => @repl.protocol.name,
         :link => @repl.link,
-        :created_at => @repl.created_at,
-        :updated_at => @repl.updated_at
+        :created_at => @repl.created_at.to_formatted_s(:dpn),
+        :updated_at => @repl.updated_at.to_formatted_s(:dpn)
       }
       return hash
     end
