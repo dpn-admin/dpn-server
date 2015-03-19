@@ -16,8 +16,8 @@ module ApiV1
         :admin_node => @bag.admin_node.namespace,
         :replicating_nodes => @bag.replicating_nodes.pluck(:namespace),
         :fixities => {},
-        :created_at => @bag.created_at,
-        :updated_at => @bag.updated_at
+        :created_at => @bag.created_at.to_formatted_s(:dpn),
+        :updated_at => @bag.updated_at.to_formatted_s(:dpn)
       }
 
       @bag.fixity_checks.each do |check|
@@ -26,15 +26,15 @@ module ApiV1
 
       case @bag.type
       when "DataBag"
-        hash[:type] = "D"
+        hash[:bag_type] = "D"
         hash[:rights] = @bag.rights_bags.pluck(:uuid)
         hash[:interpretive] = bag.interpretive_bags.pluck(:uuid)
       when "RightsBag"
-        hash[:type] = "R"
+        hash[:bag_type] = "R"
         hash[:rights] = nil
         hash[:interpretive] = nil
       when "InterpretiveBag"
-        hash[:type] = "I"
+        hash[:bag_type] = "I"
         hash[:rights] = nil
         hash[:interpretive] = nil
       else
