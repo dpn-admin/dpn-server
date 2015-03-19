@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150318192554) do
+ActiveRecord::Schema.define(version: 20150319191818) do
 
   create_table "bags", force: :cascade do |t|
     t.string   "uuid"
@@ -122,7 +122,10 @@ ActiveRecord::Schema.define(version: 20150318192554) do
     t.boolean  "fixity_accept"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+    t.string   "name"
   end
+
+  add_index "replication_transfers", ["name"], name: "index_replication_transfers_on_name"
 
   create_table "restore_agreements", force: :cascade do |t|
     t.integer  "from_node_id", null: false
