@@ -21,8 +21,8 @@ module ApiV1
         :replicate_from => @node.replicate_from_nodes.pluck(:namespace),
         :restore_to => @node.restore_to_nodes.pluck(:namespace),
         :restore_from => @node.restore_from_nodes.pluck(:namespace),
-        :created_at => @node.created_at,
-        :updated_at => @node.updated_at
+        :created_at => @node.created_at.to_formatted_s(:dpn),
+        :updated_at => @node.updated_at.to_formatted_s(:dpn)
       }
 
       return hash
