@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150319193344) do
+ActiveRecord::Schema.define(version: 20150319202015) do
 
   create_table "bags", force: :cascade do |t|
     t.string   "uuid"
@@ -73,7 +73,7 @@ ActiveRecord::Schema.define(version: 20150319193344) do
     t.string   "api_root"
   end
 
-  add_index "nodes", ["api_root"], name: "index_nodes_on_api_root"
+  add_index "nodes", ["api_root"], name: "index_nodes_on_api_root", unique: true
   add_index "nodes", ["namespace"], name: "index_nodes_on_namespace", unique: true
 
   create_table "protocols", force: :cascade do |t|
@@ -125,7 +125,7 @@ ActiveRecord::Schema.define(version: 20150319193344) do
     t.string   "name"
   end
 
-  add_index "replication_transfers", ["name"], name: "index_replication_transfers_on_name"
+  add_index "replication_transfers", ["name"], name: "index_replication_transfers_on_name", unique: true
 
   create_table "restore_agreements", force: :cascade do |t|
     t.integer  "from_node_id", null: false
@@ -154,7 +154,7 @@ ActiveRecord::Schema.define(version: 20150319193344) do
     t.string   "name"
   end
 
-  add_index "restore_transfers", ["name"], name: "index_restore_transfers_on_name"
+  add_index "restore_transfers", ["name"], name: "index_restore_transfers_on_name", unique: true
 
   create_table "storage_regions", force: :cascade do |t|
     t.string   "name",       null: false
