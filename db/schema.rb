@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150320191540) do
+ActiveRecord::Schema.define(version: 20150320175957) do
 
   create_table "bags", force: :cascade do |t|
     t.string   "uuid"
@@ -72,7 +72,6 @@ ActiveRecord::Schema.define(version: 20150320191540) do
     t.datetime "updated_at",         null: false
     t.string   "api_root"
     t.string   "private_auth_token"
-    t.string   "salt"
   end
 
   add_index "nodes", ["api_root"], name: "index_nodes_on_api_root", unique: true
