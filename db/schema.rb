@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150320135758) do
+ActiveRecord::Schema.define(version: 20150320175957) do
 
   create_table "bags", force: :cascade do |t|
     t.string   "uuid"
@@ -63,18 +63,20 @@ ActiveRecord::Schema.define(version: 20150320135758) do
   add_index "fixity_checks", ["bag_id", "fixity_alg_id"], name: "index_fixity_checks_on_bag_id_and_fixity_alg_id", unique: true
 
   create_table "nodes", force: :cascade do |t|
-    t.string   "namespace",         null: false
+    t.string   "namespace",          null: false
     t.string   "name"
     t.string   "ssh_pubkey"
-    t.integer  "storage_region_id", null: false
-    t.integer  "storage_type_id",   null: false
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.integer  "storage_region_id",  null: false
+    t.integer  "storage_type_id",    null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.string   "api_root"
+    t.string   "private_auth_token"
   end
 
   add_index "nodes", ["api_root"], name: "index_nodes_on_api_root", unique: true
   add_index "nodes", ["namespace"], name: "index_nodes_on_namespace", unique: true
+  add_index "nodes", ["private_auth_token"], name: "index_nodes_on_private_auth_token", unique: true
 
   create_table "protocols", force: :cascade do |t|
     t.string   "name",       null: false
