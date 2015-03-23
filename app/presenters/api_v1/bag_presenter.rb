@@ -28,7 +28,7 @@ module ApiV1
       when "DataBag"
         hash[:bag_type] = "D"
         hash[:rights] = @bag.rights_bags.pluck(:uuid)
-        hash[:interpretive] = bag.interpretive_bags.pluck(:uuid)
+        hash[:interpretive] = @bag.interpretive_bags.pluck(:uuid)
       when "RightsBag"
         hash[:bag_type] = "R"
         hash[:rights] = nil
