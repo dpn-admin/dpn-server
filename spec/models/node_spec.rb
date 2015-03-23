@@ -22,7 +22,7 @@ describe Node do
   it "is invalid without a namespace" do
     expect {
       Fabricate(:node, namespace: nil)
-    }.to raise_error(ActiveRecord::ActiveRecordError)
+    }.to raise_error
   end
 
   it "stores namespace as lowercase" do
@@ -51,7 +51,9 @@ describe Node do
     expect(b).to be_valid
   end
 
-  it "allows a null name" do
-    expect(Fabricate(:node, name: nil)).to be_valid
+  it "is invalid without a name" do
+    expect {
+      Fabricate(:node, name: nil)
+    }.to raise_error
   end
 end
