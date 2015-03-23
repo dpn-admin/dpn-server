@@ -2,7 +2,7 @@ require 'securerandom'
 
 Fabricator(:node) do
   namespace do
-    sequence(:namespace) do |i|
+    sequence(:namespace, 50) do |i|
       "namespace_#{i}"
     end
   end
