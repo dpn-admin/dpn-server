@@ -1,3 +1,5 @@
+require 'bcrypt'
+
 class Node < ActiveRecord::Base
   has_many :ingest_bags, :class_name => "Bag", :foreign_key => "ingest_node_id"
   has_many :admin_bags, :class_name => "Bag", :foreign_key => "admin_node_id"
@@ -33,5 +35,20 @@ class Node < ActiveRecord::Base
 
   validates :namespace, presence: true
   validates :name, presence: true, length: { minimum: 1 }
+  validates :private_auth_token, presence: true, uniqueness: true
+
+  def private_auth_token=(value)
+    write_attribute(:private_auth_token, generate_hash(value))
+  end
+
+  def find_by_private_auth_token(value)
+    @hashed = true
+    super(generate_hash(value))
+  end
+
+  protected
+  def generate_hash(raw_value)
+    return BCrypt::Password.create("#{Rails.application.config.salt}#{raw_value}")
+  end
 
 end

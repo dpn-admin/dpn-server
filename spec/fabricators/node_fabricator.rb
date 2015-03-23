@@ -1,3 +1,5 @@
+require 'securerandom'
+
 Fabricator(:node) do
   namespace do
     sequence(:namespace) do |i|
@@ -9,6 +11,7 @@ Fabricator(:node) do
   ssh_pubkey { Faker::Internet.password(20) }
   storage_region
   storage_type
+  private_auth_token { Faker::Code.isbn }
 
 
 end
