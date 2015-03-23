@@ -35,6 +35,15 @@ module UUIDFormat
         end
       end
 
+      # Override the find_by_field(value)! class method.
+      define_singleton_method("find_by_#{field}!") do |uuid|
+        if uuid.nil?
+          super(uuid)
+        else
+          super(uuid.delete('-').downcase)
+        end
+      end
+
       # Create validations
       validates field.to_sym, format: {
           with: /\A[a-f0-9]{8}[a-f0-9]{4}[a-f0-9]{4}[a-f0-9]{4}[a-f0-9]{12}\Z/,
