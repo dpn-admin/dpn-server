@@ -6,42 +6,39 @@ module UUIDFormat
 
       # Override the field=(value) method.
       define_method("#{field}=") do |uuid|
-        if uuid.nil?
-          write_attribute(field.to_sym, uuid)
-        else
-          write_attribute(field.to_sym, uuid.delete('-').downcase)
+        if uuid
+          uuid = uuid.delete('-').downcase
         end
+        write_attribute(field.to_sym, uuid)
       end
 
       # Override the field's getter method.
       define_method("#{field}") do
-        uuid = read_attribute(field.to_sym)
+        _uuid = read_attribute(field.to_sym)
         # 9th, 14th, 19th and 24th
-        if uuid.include?("-") == false
-          uuid.insert(8, "-")
-          uuid.insert(13, "-")
-          uuid.insert(18, "-")
-          uuid.insert(23, "-")
+        if _uuid.include?("-") == false
+          _uuid.insert(8, "-")
+          _uuid.insert(13, "-")
+          _uuid.insert(18, "-")
+          _uuid.insert(23, "-")
         end
-        uuid
+        _uuid
       end
 
       # Override the find_by_field(value) class method.
-      define_singleton_method("find_by_#{field}") do |uuid|
-        if uuid.nil?
-          super(uuid)
-        else
-          super(uuid.delete('-').downcase)
+      define_singleton_method("find_by_#{field}") do |value|
+        if value
+          value = value.delete('-').downcase
         end
+        find_by(field.to_sym => value)
       end
 
       # Override the find_by_field(value)! class method.
-      define_singleton_method("find_by_#{field}!") do |uuid|
-        if uuid.nil?
-          super(uuid)
-        else
-          super(uuid.delete('-').downcase)
+      define_singleton_method("find_by_#{field}!") do |value|
+        if value
+          value = value.delete('-').downcase
         end
+        find_by!(field.to_sym => value)
       end
 
       # Create validations

@@ -38,7 +38,7 @@ module ApiV1
         hash[:rights] = nil
         hash[:interpretive] = nil
       else
-        throw TypeError, "illegal bag type #{@bag.type}"
+        raise TypeError, "illegal bag type #{@bag.type}"
       end
 
       return hash

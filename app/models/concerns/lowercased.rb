@@ -6,20 +6,26 @@ module Lowercased
 
       # Override the field=(value) method.
       define_method("#{field}=") do |value|
-        if value.nil?
-          write_attribute(field.to_sym, value)
-        else
-          write_attribute(field.to_sym, value.downcase)
+        if value
+          value = value.downcase
         end
+        write_attribute(field.to_sym, value)
       end
 
       # Override the find_by_field(value) class method.
       define_singleton_method("find_by_#{field}") do |value|
-        if value.nil?
-          super(value)
-        else
-          super(value.downcase)
+        if value
+          value = value.downcase
         end
+        find_by(field.to_sym => value)
+      end
+
+      # Override the find_by_field!(value) class method.
+      define_singleton_method("find_by_#{field}!") do |value|
+        if value
+          value = value.downcase
+        end
+        find_by!(field.to_sym => value)
       end
 
       # Create a validation
