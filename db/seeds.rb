@@ -6,7 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-[:requested, :rejected, :received, :confirmed, :cancelled].each do |status|
+[:requested, :rejected, :received, :confirmed, :stored, :cancelled].each do |status|
   ReplicationStatus.create(:name => status)
 end
 
@@ -23,7 +23,7 @@ default_storage_region = StorageRegion.create(:name => :default)
 default_storage_type = StorageType.create(:name => :default)
 
 node_objects = []
-nodes = [:test, :sdr, :tdr, :hathi, :aptrust, :chron]
+nodes = [:sdr, :tdr, :hathi, :aptrust, :chron]
 nodes.each do |namespace|
   node_objects << Node.create(:namespace => namespace, :name => namespace) do |node|
     node.storage_region = default_storage_region
@@ -37,7 +37,8 @@ end
 node_objects.each do |from_node|
   node_objects.each do |to_node|
     if from_node != to_node
-      from_node.to_nodes << to_node
+      from_node.replicate_to_nodes << to_node
+      from_node.restore_to_nodes << to_node
     end
   end
 end
