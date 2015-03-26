@@ -56,4 +56,18 @@ describe Node do
       Fabricate(:node, name: nil)
     }.to raise_error
   end
+
+  it "can be saved" do
+    node = Fabricate.build(:node)
+    expect {
+      expect(node.save).to be true
+    }.to_not raise_error
+  end
+
+  it "receives replicate_to assignments" do
+    node = Fabricate(:node)
+    other_node = Fabricate(:node)
+    node.replicate_to_nodes << other_node
+    expect(node.save).to be true
+  end
 end
