@@ -122,6 +122,7 @@ describe ApiV1::BagsController do
     context "without authorization" do
       it "responds with 401" do
         post :create, @post_body
+        expect(response).to have_http_status(401)
       end
       it "does not create the record" do
         post :create, @post_body
