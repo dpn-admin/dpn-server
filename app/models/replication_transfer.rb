@@ -7,8 +7,8 @@ class ReplicationTransfer < ActiveRecord::Base
   belongs_to :protocol
 
   include Lowercased
-  make_lowercased :name
+  make_lowercased :replication_id
 
+  validates :replication_id, presence: true, uniqueness: true
   validates :link, presence: true
-  validates :name, presence: true
 end

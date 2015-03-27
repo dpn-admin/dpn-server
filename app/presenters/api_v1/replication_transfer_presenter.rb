@@ -7,7 +7,7 @@ module ApiV1
 
     def to_hash
       hash = {
-        :replication_id => @repl.name,
+        :replication_id => @repl.replication_id,
         :from_node => @repl.from_node.namespace,
         :to_node => @repl.to_node.namespace,
         :uuid => @repl.bag.uuid,

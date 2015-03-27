@@ -6,7 +6,7 @@ class RestoreTransfer < ActiveRecord::Base
   belongs_to :protocol
 
   include Lowercased
-  make_lowercased :name
+  make_lowercased :restore_id
 
-  validates :name, presence: true
+  validates :restore_id, presence: true, uniqueness: true
 end

@@ -7,7 +7,7 @@ module ApiV1
 
     def to_hash
       hash = {
-          :restore_id => @restore.name,
+          :restore_id => @restore.restore_id,
           :from_node => @restore.from_node.namespace,
           :to_node => @restore.to_node.namespace,
           :uuid => @restore.bag.uuid,
