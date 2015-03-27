@@ -11,4 +11,12 @@ class ReplicationTransfer < ActiveRecord::Base
 
   validates :replication_id, presence: true, uniqueness: true
   validates :link, presence: true
+  validates :fixity_value, presence: true, if: "replication_status.name == \"received\""
+  validates :fixity_value, presence: true, if: "replication_status.name == \"confirmed\""
+  validates :fixity_value, presence: true, if: "replication_status.name == \"stored\""
+  validates :bag_valid, :inclusion => {:in => [true, false]}, if: "replication_status.name == \"received\""
+  validates :bag_valid, :inclusion => {:in => [true, false]}, if: "replication_status.name == \"confirmed\""
+  validates :bag_valid, :inclusion => {:in => [true, false]}, if: "replication_status.name == \"stored\""
+  validates :fixity_accept, :inclusion => {:in => [true, false]}, if: "replication_status.name == \"confirmed\""
+  validates :fixity_accept, :inclusion => {:in => [true, false]}, if: "replication_status.name == \"stored\""
 end

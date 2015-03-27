@@ -20,8 +20,8 @@ module ApiV1
       return hash
     end
 
-    def to_json
-      return self.to_hash.to_json
+    def to_json(options = {})
+      return self.to_hash.to_json(options)
     end
 
     private
