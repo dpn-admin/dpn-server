@@ -26,10 +26,10 @@ ActiveRecord::Schema.define(version: 20150327155207) do
     t.datetime "updated_at",                    null: false
   end
 
-  add_index "bags", ["admin_node_id"], name: "fk_rails_7179128865", using: :btree
-  add_index "bags", ["ingest_node_id"], name: "fk_rails_64c9acf17a", using: :btree
+  add_index "bags", ["admin_node_id"], name: "fk_rails_9c76db86f8", using: :btree
+  add_index "bags", ["ingest_node_id"], name: "fk_rails_c211f62b1f", using: :btree
   add_index "bags", ["uuid"], name: "index_bags_on_uuid", unique: true, using: :btree
-  add_index "bags", ["version_family_id"], name: "fk_rails_aa40652df0", using: :btree
+  add_index "bags", ["version_family_id"], name: "fk_rails_2a089df9ba", using: :btree
 
   create_table "data_interpretive", force: :cascade do |t|
     t.integer  "data_bag_id",         limit: 4, null: false
@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 20150327155207) do
   end
 
   add_index "data_interpretive", ["data_bag_id", "interpretive_bag_id"], name: "index_data_interpretive_on_data_bag_id_and_interpretive_bag_id", unique: true, using: :btree
-  add_index "data_interpretive", ["interpretive_bag_id"], name: "fk_rails_a7cf8eff35", using: :btree
+  add_index "data_interpretive", ["interpretive_bag_id"], name: "fk_rails_59c9a20566", using: :btree
 
   create_table "data_rights", force: :cascade do |t|
     t.integer  "data_bag_id",   limit: 4, null: false
@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 20150327155207) do
   end
 
   add_index "data_rights", ["data_bag_id", "rights_bag_id"], name: "index_data_rights_on_data_bag_id_and_rights_bag_id", unique: true, using: :btree
-  add_index "data_rights", ["rights_bag_id"], name: "fk_rails_cb080c7f5e", using: :btree
+  add_index "data_rights", ["rights_bag_id"], name: "fk_rails_9503672524", using: :btree
 
   create_table "fixity_algs", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 20150327155207) do
   end
 
   add_index "fixity_checks", ["bag_id", "fixity_alg_id"], name: "index_fixity_checks_on_bag_id_and_fixity_alg_id", unique: true, using: :btree
-  add_index "fixity_checks", ["fixity_alg_id"], name: "fk_rails_f056dbc9d8", using: :btree
+  add_index "fixity_checks", ["fixity_alg_id"], name: "fk_rails_b310351848", using: :btree
 
   create_table "nodes", force: :cascade do |t|
     t.string   "namespace",          limit: 255, null: false
@@ -83,8 +83,8 @@ ActiveRecord::Schema.define(version: 20150327155207) do
   add_index "nodes", ["api_root"], name: "index_nodes_on_api_root", unique: true, using: :btree
   add_index "nodes", ["namespace"], name: "index_nodes_on_namespace", unique: true, using: :btree
   add_index "nodes", ["private_auth_token"], name: "index_nodes_on_private_auth_token", unique: true, using: :btree
-  add_index "nodes", ["storage_region_id"], name: "fk_rails_b56236bb81", using: :btree
-  add_index "nodes", ["storage_type_id"], name: "fk_rails_9a883e466e", using: :btree
+  add_index "nodes", ["storage_region_id"], name: "fk_rails_5b49140462", using: :btree
+  add_index "nodes", ["storage_type_id"], name: "fk_rails_1e6e3fedbc", using: :btree
 
   create_table "protocols", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -101,7 +101,7 @@ ActiveRecord::Schema.define(version: 20150327155207) do
     t.datetime "updated_at",           null: false
   end
 
-  add_index "replicating_nodes", ["bag_id"], name: "fk_rails_3f0b261344", using: :btree
+  add_index "replicating_nodes", ["bag_id"], name: "fk_rails_a2ae7c7de8", using: :btree
   add_index "replicating_nodes", ["node_id", "bag_id"], name: "index_replicating_nodes_on_node_id_and_bag_id", unique: true, using: :btree
 
   create_table "replication_agreements", force: :cascade do |t|
@@ -111,8 +111,8 @@ ActiveRecord::Schema.define(version: 20150327155207) do
     t.datetime "updated_at",             null: false
   end
 
-  add_index "replication_agreements", ["from_node_id"], name: "fk_rails_0af29abbf7", using: :btree
-  add_index "replication_agreements", ["to_node_id"], name: "fk_rails_0bb46fb702", using: :btree
+  add_index "replication_agreements", ["from_node_id"], name: "fk_rails_ba962e3a0a", using: :btree
+  add_index "replication_agreements", ["to_node_id"], name: "fk_rails_519186b091", using: :btree
 
   create_table "replication_statuses", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -139,13 +139,13 @@ ActiveRecord::Schema.define(version: 20150327155207) do
     t.string   "replication_id",        limit: 255
   end
 
-  add_index "replication_transfers", ["bag_id"], name: "fk_rails_2bc045c303", using: :btree
-  add_index "replication_transfers", ["fixity_alg_id"], name: "fk_rails_3f99493f03", using: :btree
-  add_index "replication_transfers", ["from_node_id"], name: "fk_rails_235ca00ae3", using: :btree
-  add_index "replication_transfers", ["protocol_id"], name: "fk_rails_87983c3d6c", using: :btree
+  add_index "replication_transfers", ["bag_id"], name: "fk_rails_bf1ca5e92d", using: :btree
+  add_index "replication_transfers", ["fixity_alg_id"], name: "fk_rails_231ece98cc", using: :btree
+  add_index "replication_transfers", ["from_node_id"], name: "fk_rails_0ea5f9e3de", using: :btree
+  add_index "replication_transfers", ["protocol_id"], name: "fk_rails_5912e5cb77", using: :btree
   add_index "replication_transfers", ["replication_id"], name: "index_replication_transfers_on_replication_id", unique: true, using: :btree
-  add_index "replication_transfers", ["replication_status_id"], name: "fk_rails_1cd29f9eee", using: :btree
-  add_index "replication_transfers", ["to_node_id"], name: "fk_rails_e0944bdfbd", using: :btree
+  add_index "replication_transfers", ["replication_status_id"], name: "fk_rails_589106301f", using: :btree
+  add_index "replication_transfers", ["to_node_id"], name: "fk_rails_a34fa8b8fc", using: :btree
 
   create_table "restore_agreements", force: :cascade do |t|
     t.integer  "from_node_id", limit: 4, null: false
@@ -154,8 +154,8 @@ ActiveRecord::Schema.define(version: 20150327155207) do
     t.datetime "updated_at",             null: false
   end
 
-  add_index "restore_agreements", ["from_node_id"], name: "fk_rails_0c14c6a32e", using: :btree
-  add_index "restore_agreements", ["to_node_id"], name: "fk_rails_6eae78af09", using: :btree
+  add_index "restore_agreements", ["from_node_id"], name: "fk_rails_9fc4281b84", using: :btree
+  add_index "restore_agreements", ["to_node_id"], name: "fk_rails_af74630cc8", using: :btree
 
   create_table "restore_statuses", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -177,12 +177,12 @@ ActiveRecord::Schema.define(version: 20150327155207) do
     t.string   "restore_id",        limit: 255
   end
 
-  add_index "restore_transfers", ["bag_id"], name: "fk_rails_bf5ff4508e", using: :btree
-  add_index "restore_transfers", ["from_node_id"], name: "fk_rails_25d9f72fc4", using: :btree
-  add_index "restore_transfers", ["protocol_id"], name: "fk_rails_f77781df6e", using: :btree
+  add_index "restore_transfers", ["bag_id"], name: "fk_rails_90ccb2ad00", using: :btree
+  add_index "restore_transfers", ["from_node_id"], name: "fk_rails_85f9781ddc", using: :btree
+  add_index "restore_transfers", ["protocol_id"], name: "fk_rails_660d210432", using: :btree
   add_index "restore_transfers", ["restore_id"], name: "index_restore_transfers_on_restore_id", unique: true, using: :btree
-  add_index "restore_transfers", ["restore_status_id"], name: "fk_rails_93c485b021", using: :btree
-  add_index "restore_transfers", ["to_node_id"], name: "fk_rails_4121d8ca3b", using: :btree
+  add_index "restore_transfers", ["restore_status_id"], name: "fk_rails_020a5af3dd", using: :btree
+  add_index "restore_transfers", ["to_node_id"], name: "fk_rails_4dad2c4b1d", using: :btree
 
   create_table "storage_regions", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -205,7 +205,7 @@ ActiveRecord::Schema.define(version: 20150327155207) do
     t.integer "fixity_alg_id", limit: 4, null: false
   end
 
-  add_index "supported_fixity_algs", ["fixity_alg_id"], name: "fk_rails_3566a4ca25", using: :btree
+  add_index "supported_fixity_algs", ["fixity_alg_id"], name: "fk_rails_5647be47e2", using: :btree
   add_index "supported_fixity_algs", ["node_id", "fixity_alg_id"], name: "index_supported_fixity_algs_on_node_id_and_fixity_alg_id", unique: true, using: :btree
 
   create_table "supported_protocols", force: :cascade do |t|
@@ -214,7 +214,7 @@ ActiveRecord::Schema.define(version: 20150327155207) do
   end
 
   add_index "supported_protocols", ["node_id", "protocol_id"], name: "index_supported_protocols_on_node_id_and_protocol_id", unique: true, using: :btree
-  add_index "supported_protocols", ["protocol_id"], name: "fk_rails_ca0de226da", using: :btree
+  add_index "supported_protocols", ["protocol_id"], name: "fk_rails_da6a85dd20", using: :btree
 
   create_table "version_families", force: :cascade do |t|
     t.string "uuid", limit: 255, null: false
