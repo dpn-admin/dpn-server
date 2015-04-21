@@ -39,6 +39,10 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  config.salt = "development_salt"
-  config.local_namespace = "hathi"
+
+  # Load a salt in what is probably not a good place for it.
+  config.salt = ENV['DPN_SALT'] || "development_salt"
+
+  # Configure the local node's namespace
+  config.local_namespace = ENV['DPN_NAMESPACE'] || "hathi"
 end
