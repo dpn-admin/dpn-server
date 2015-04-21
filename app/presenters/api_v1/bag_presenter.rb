@@ -45,7 +45,7 @@ module ApiV1
     end
 
     def to_json(options = {})
-      return self.to_hash.to_json
+      return self.to_hash.to_json(options)
     end
 
     private
