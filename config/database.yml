@@ -14,10 +14,10 @@ default: &default
 
 development:
   <<: *default
-  database: dpn_dev
-  username: dpn_dev_user
+  database: dpn
+  username: dpn_user
   host: 127.0.0.1
-  password: dpn_dev
+  password: as0898hghnDRdsfj
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
