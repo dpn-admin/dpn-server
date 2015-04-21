@@ -36,6 +36,7 @@ class Node < ActiveRecord::Base
   validates :namespace, presence: true, uniqueness: true
   validates :name, presence: true, length: { minimum: 1 }
   validates :private_auth_token, presence: true, uniqueness: true
+  validates :api_root, presence: true, uniqueness: true
 
   def private_auth_token=(value)
     write_attribute(:private_auth_token, generate_hash(value))
@@ -47,7 +48,8 @@ class Node < ActiveRecord::Base
 
   protected
   def generate_hash(raw_value)
-    return BCrypt::Password.create("#{Rails.application.config.salt}#{raw_value}")
+    return raw_value
+    #return BCrypt::Password.create("#{Rails.application.config.salt}#{raw_value}")
   end
 
 end
