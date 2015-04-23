@@ -29,6 +29,16 @@
     "default"
   ],
   "node": {
+    "hathi": {
+      "namespace": "hathi",
+      "name": "HathiTrust",
+      "storage_region": "default",
+      "storage_type": "default",
+      "fixity_algs": ["md5","sha256"],
+      "protocols": ["rsync"],
+      "api_root": "http://127.0.0.1",
+      "private_auth_token": "hathi_token"
+    },
     "sdr": {
       "namespace": "sdr",
       "name": "Stanford University",
@@ -36,7 +46,7 @@
       "storage_type": "default",
       "fixity_algs": ["md5","sha256"],
       "protocols": ["rsync"],
-      "api_root": "stanford.edu/dpn",
+      "api_root": "http://192.168.33.11",
       "private_auth_token": "sdr_token"
     },
     "tdr": {
@@ -46,28 +56,8 @@
       "storage_type": "default",
       "fixity_algs": ["md5","sha256"],
       "protocols": ["rsync"],
-      "api_root": "dpn.texas.edu",
+      "api_root": "http://192.168.33.12",
       "private_auth_token": "tdr_token"
-    },
-    "hathi": {
-      "namespace": "hathi",
-      "name": "HathiTrust",
-      "storage_region": "default",
-      "storage_type": "default",
-      "fixity_algs": ["md5","sha256"],
-      "protocols": ["rsync"],
-      "api_root": "dpn.hathitrust.org",
-      "private_auth_token": "hathi_token"
-    },
-    "aptrust": {
-      "namespace": "aptrust",
-      "name": "APTrust",
-      "storage_region": "default",
-      "storage_type": "default",
-      "fixity_algs": ["md5","sha256"],
-      "protocols": ["rsync"],
-      "api_root": "aptrust.org/dpn",
-      "private_auth_token": "aptrust_token"
     },
     "chron": {
       "namespace": "chron",
@@ -76,7 +66,7 @@
       "storage_type": "default",
       "fixity_algs": ["md5","sha256"],
       "protocols": ["rsync"],
-      "api_root": "dpn.chronopolis.edu",
+      "api_root": "http://192.168.33.13",
       "private_auth_token": "chron_token"
     }
   }
