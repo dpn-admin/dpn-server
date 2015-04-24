@@ -2,14 +2,20 @@ require_relative '../../../app/presenters/api_v1/replication_transfer_presenter'
 
 class ApiV1::ReplicationTransfersController < ApplicationController
   include Authenticate
+  include Pagination
+
+  uses_pagination :index
 
   def index
-    @replication_transfers = ReplicationTransfer.all.collect do |transfer|
+    raw_transfers = ReplicationTransfer.page(@page).per(@page_size)
+    @replication_transfers = raw_transfers.collect do |transfer|
       ApiV1::ReplicationTransferPresenter.new(transfer)
     end
 
     output = {
       :count => @replication_transfers.size,
+      :next => link_to_next_page(raw_transfers.total_count),
+      :previous => link_to_previous_page,
       :results => @replication_transfers
     }
 

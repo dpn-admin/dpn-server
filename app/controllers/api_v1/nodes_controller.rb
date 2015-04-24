@@ -2,14 +2,20 @@ require_relative '../../../app/presenters/api_v1/node_presenter'
 
 class ApiV1::NodesController < ApplicationController
   include Authenticate
+  include Pagination
+
+  uses_pagination :index
 
   def index
-    @nodes = Node.all.collect do |node|
+    raw_nodes = Node.page(@page).per(@page_size)
+    @nodes = raw_nodes.collect do |node|
       ApiV1::NodePresenter.new(node)
     end
 
     output = {
-      :count => @nodes.size,
+      :count => raw_nodes.total_count,
+      :next => link_to_next_page(raw_nodes.total_count),
+      :previous => link_to_previous_page,
       :results => @nodes
     }
 

@@ -10,6 +10,7 @@ gem 'json'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bcrypt', '~> 3.1.7'
 gem 'therubyracer', platforms: :ruby
+gem 'kaminari'
 
 group :development, :test do
   gem 'byebug'

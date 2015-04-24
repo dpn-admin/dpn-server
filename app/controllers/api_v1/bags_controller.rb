@@ -2,15 +2,20 @@ require_relative '../../../app/presenters/api_v1/bag_presenter'
 
 class ApiV1::BagsController < ApplicationController
   include Authenticate
-  #respond_to :json
+  include Pagination
+
+  uses_pagination :index
 
   def index
-    @bags = Bag.all.collect do |bag|
+    raw_bags = Bag.page(@page).per(@page_size)
+    @bags = raw_bags.collect do |bag|
       ApiV1::BagPresenter.new(bag)
     end
 
     output = {
       :count => @bags.size,
+      :next => link_to_next_page(raw_bags.total_count),
+      :previous => link_to_previous_page,
       :results => @bags
     }
 
