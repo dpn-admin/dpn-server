@@ -2,36 +2,20 @@ require_relative '../../../app/presenters/api_v1/node_presenter'
 
 class ApiV1::NodesController < ApplicationController
   include Authenticate
+  include Pagination
+
+  uses_pagination :index
 
   def index
-    begin
-      page = params[:page].to_i
-      page_size = params[:page_size].to_i
-    rescue ArgumentError
-      render nothing: true, status: 400
-    end
-
-    raw_nodes = Node.page(page).per(page_size)
+    raw_nodes = Node.page(@page).per(@page_size)
     @nodes = raw_nodes.collect do |node|
       ApiV1::NodePresenter.new(node)
     end
 
-    if page > 1
-      previous_page = "#{request.original_url.split('?').first}?page=#{page-1}&page_size=#{page_size}"
-    else
-      previous_page = nil
-    end
-
-    if page * page_size < raw_nodes.total_count
-      next_page = "#{request.original_url.split('?').first}?page=#{page+1}&page_size=#{page_size}"
-    else
-      next_page = nil
-    end
-
     output = {
       :count => raw_nodes.total_count,
-      :next => next_page,
-      :previous => previous_page,
+      :next => link_to_next_page(raw_nodes.total_count),
+      :previous => link_to_previous_page,
       :results => @nodes
     }
 
