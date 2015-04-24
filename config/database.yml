@@ -27,7 +27,7 @@ production:
   <<: *default
   database: <%= ENV['DPN_DB'] %>
   username: <%= ENV['DPN_DB_USER'] %>
-  host: mysql-dpn
+  hostname: mysql-dpn
   password: <%= ENV['DPN_DB_PASSWORD'] %>
   port: 3306
   timeout: 2000
