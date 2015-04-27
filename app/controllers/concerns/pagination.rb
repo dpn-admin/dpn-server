@@ -35,18 +35,37 @@ module Pagination
 
   protected
   def check_pagination_params
-    begin
-      @page = Integer(params[:page])
-      @page_size = Integer(params[:page_size])
+
+    if params[:page]
+      begin
+        @page = Integer(params[:page])
+      rescue TypeError
+        @page = 1
+      end
+    else
+      @page = 1
+    end
+
+    if params[:page_size]
+      begin
+        @page_size = Integer(params[:page_size])
+      rescue TypeError
+        @page_size = Rails.configuration.default_per_page
+      end
+    else
+      @page_size = Rails.configuration.default_per_page
+    end
+
+    if params[:page] && params[:page_size]
       return true
-    rescue ArgumentError
-      render nothing: true, status: 400
+    else
+      redirect_to build_url(@page, @page_size) and return
     end
   end
 
 
   def build_url(page, page_size)
-    "#{request.original_url.split('?').first}?page=#{@page}&page_size=#{@page_size}"
+    url_for params.merge({page: page, page_size: page_size})
   end
 
 
