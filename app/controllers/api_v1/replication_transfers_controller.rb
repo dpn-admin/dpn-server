@@ -7,7 +7,79 @@ class ApiV1::ReplicationTransfersController < ApplicationController
   uses_pagination :index
 
   def index
-    raw_transfers = ReplicationTransfer.page(@page).per(@page_size)
+    conditions = {}
+    join_tables = []
+
+    if params[:uuid]
+      bag = Bag.find_by_uuid(params[:uuid])
+      if bag.blank?
+        conditions[:bag_id] = nil
+      else
+        conditions[:bag_id] = bag.id
+      end
+    end
+
+    if params[:status]
+      join_tables.push :replication_status
+      conditions[:replication_statuses] = {name: params[:status].downcase}
+    end
+
+    if params[:fixity_accept]
+      case params[:fixity_accept].downcase
+        when "true"
+          conditions[:fixity_accept] = true
+        when "false"
+          conditions[:fixity_accept] = false
+        when "null"
+          conditions[:fixity_accept] = nil
+        else
+          render nothing: true, status: 400 and return
+      end
+    end
+
+    if params[:bag_valid]
+      case params[:bag_valid].downcase
+        when "true"
+          conditions[:bag_valid] = true
+        when "false"
+          conditions[:bag_valid] = false
+        when "null"
+          conditions[:bag_valid] = nil
+        else
+          render nothing: true, status: 400 and return
+      end
+    end
+
+    ordering = {updated_at: :desc}
+    if params[:order_by]
+      new_ordering = {}
+      params[:order_by].split(',').each do |order_column|
+        if [:created_at, :updated_at].include?(order_column.to_sym)
+          new_ordering[order_column.to_sym] = :desc
+        end
+      end
+      ordering = new_ordering unless new_ordering.empty?
+    end
+
+    if params[:to_node]
+      to_node = Node.find_by_namespace(params[:to_node])
+      if to_node.blank?
+        conditions[:to_node] = nil
+      else
+        conditions[:to_node] = to_node.id
+      end
+    end
+
+    if params[:from_node]
+      from_node = Node.find_by_namespace(params[:from_node])
+      if from_node.blank?
+        conditions[:from_node] = nil
+      else
+        conditions[:from_node] = from_node.id
+      end
+    end
+
+    raw_transfers = ReplicationTransfer.joins(join_tables).where(conditions).order(ordering).page(@page).per(@page_size)
     @replication_transfers = raw_transfers.collect do |transfer|
       ApiV1::ReplicationTransferPresenter.new(transfer)
     end

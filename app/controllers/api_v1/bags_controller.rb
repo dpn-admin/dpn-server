@@ -7,7 +7,55 @@ class ApiV1::BagsController < ApplicationController
   uses_pagination :index
 
   def index
-    raw_bags = Bag.page(@page).per(@page_size)
+    conditions = {}
+    join_tables = []
+    if params[:admin_node]
+      conditions[:nodes] = { namespace: params[:admin_node] }
+      join_tables.push :admin_node
+    end
+
+    if params[:bag_type]
+      case params[:bag_type]
+        when "D", "d"
+          conditions[:type] = "DataBag"
+        when "R", "r"
+          conditions[:type] = "RightsBag"
+        when "I", "i"
+          conditions[:type] = "InterpretiveBag"
+        else
+          render json: "Invalid bag_type, must be one of D|R|I", status: 400 and return
+      end
+    end
+
+    before_time = nil
+    after_time = nil
+    begin
+      if params[:before]
+        before_time = DateTime.strptime(params[:before], Time::DATE_FORMATS[:dpn])
+      end
+      if params[:after]
+        after_time = DateTime.strptime(params[:after], Time::DATE_FORMATS[:dpn])
+      end
+    rescue ArgumentError
+      render json: "Bad parameters", status: 400 and return
+    end
+
+    range_clause = nil
+    if before_time && after_time
+      range_clause = {updated_at: after_time..before_time}
+    elsif before_time
+      range_clause = ["updated_at <= ?", before_time]
+    elsif after_time
+      range_clause = ["updated_at >= ?", after_time]
+    end
+
+    ordering = {updated_at: :desc}
+
+    if range_clause
+      raw_bags = Bag.joins(join_tables).where(conditions).where(range_clause).order(ordering).page(@page).per(@page_size)
+    else
+      raw_bags = Bag.joins(join_tables).where(conditions).order(ordering).page(@page).per(@page_size)
+    end
     @bags = raw_bags.collect do |bag|
       ApiV1::BagPresenter.new(bag)
     end
@@ -52,11 +100,11 @@ class ApiV1::BagsController < ApplicationController
     end
 
     case params[:bag_type]
-      when "D"
+      when "D", "d"
         bag = DataBag.new
-      when "R"
+      when "R", "r"
         bag = RightsBag.new
-      when "I"
+      when "I", "i"
         bag = InterpretiveBag.new
       else
         render json: "Invalid bag_type, must be one of D|R|I", status: 400
@@ -104,11 +152,11 @@ class ApiV1::BagsController < ApplicationController
     end
 
     case params[:bag_type]
-      when "D"
+      when "D", "d"
         bag = DataBag.new
-      when "R"
+      when "R", "r"
         bag = RightsBag.new
-      when "I"
+      when "I", "i"
         bag = InterpretiveBag.new
       else
         render json: "Invalid bag_type, must be one of D|R|I", status: 400
@@ -150,13 +198,13 @@ class ApiV1::BagsController < ApplicationController
       render json: "Only allowed by local node.", status: 403
     else
       case params[:bag][:bag_type]
-      when "D"
+      when "D", "d"
         bag = DataBag.find_by_uuid!(params[:bag][:uuid])
         bag.rights_bags = RightsBag.where(:uuid => params[:bag][:rights])
         bag.brightening_bags = InterpretiveBag.where(:uuid => params[:bag][:interpretive])
-      when "R"
+      when "R", "r"
         bag = RightsBag.new
-      when "I"
+      when "I", "i"
         bag = InterpretiveBag.new
       else
         throw TypeError, "illegal bag type #{params[:bag][:bag_type]}"
