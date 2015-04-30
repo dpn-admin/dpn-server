@@ -42,4 +42,6 @@ Rails.application.configure do
 
   config.salt = "development_salt"
   config.local_namespace = "hathi"
+  config.staging_dir = File.join("/tmp","dpnrepo", "staging")
+  config.repo_dir = File.join("/tmp","dpnrepo", "preservation")
 end

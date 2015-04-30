@@ -45,4 +45,11 @@ Rails.application.configure do
 
   # Configure the local node's namespace
   config.local_namespace = ENV['DPN_NAMESPACE'] || "hathi"
+
+  # Set the staging directory root.
+  config.staging_dir = ENV['DPN_STAGING_DIR'] || Rails.root.join("dpnrepo", "staging")
+
+  # Set the preservation root
+  # The directory "pairtree_root" will be created in this folder
+  config.repo_dir = ENV['DPN_REPO_DIR'] || Rails.root.join("dpnrepo", "preservation")
 end

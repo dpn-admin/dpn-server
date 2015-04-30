@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150327155207) do
+ActiveRecord::Schema.define(version: 20150430191434) do
+
+  create_table "bag_manager_requests", force: :cascade do |t|
+    t.string   "source_location",       limit: 255,             null: false
+    t.string   "preservation_location", limit: 255
+    t.integer  "status",                limit: 4,   default: 0
+    t.string   "fixity",                limit: 255
+    t.boolean  "bag_valid",             limit: 1
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+  end
 
   create_table "bags", force: :cascade do |t|
     t.string   "uuid",              limit: 255
@@ -50,6 +60,22 @@ ActiveRecord::Schema.define(version: 20150327155207) do
 
   add_index "data_rights", ["data_bag_id", "rights_bag_id"], name: "index_data_rights_on_data_bag_id_and_rights_bag_id", unique: true, using: :btree
   add_index "data_rights", ["rights_bag_id"], name: "fk_rails_9503672524", using: :btree
+
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer  "priority",   limit: 4,     default: 0, null: false
+    t.integer  "attempts",   limit: 4,     default: 0, null: false
+    t.text     "handler",    limit: 65535,             null: false
+    t.text     "last_error", limit: 65535
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by",  limit: 255
+    t.string   "queue",      limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "fixity_algs", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
