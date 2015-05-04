@@ -20,12 +20,6 @@ module Balustrade
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    # Load a salt in what is probably not a good place for it.
-    config.salt = ENV['DPN_SALT']
-
-    # Configure the local node's namespace
-    config.local_namespace = ENV['DPN_NAMESPACE']
-
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
 

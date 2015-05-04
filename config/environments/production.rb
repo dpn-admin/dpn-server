@@ -76,4 +76,10 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Load a salt in what is probably not a good place for it.
+  config.salt = ENV['DPN_SALT']
+
+  # Configure the local node's namespace
+  config.local_namespace = ENV['DPN_NAMESPACE']
 end
