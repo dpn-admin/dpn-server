@@ -12,6 +12,7 @@ Fabricator(:node) do
   storage_region
   storage_type
   private_auth_token { Faker::Code.isbn }
+  api_root { Faker::Internet.url }
 
 
 end
