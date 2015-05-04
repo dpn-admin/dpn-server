@@ -115,12 +115,12 @@ describe ApiV1::ReplicationTransfersController do
     end
     context "without authorization" do
       it "responds with 401" do
-        get :index
+        get :index, {page: 1, page_size: 25}
         expect(response).to have_http_status(401)
       end
 
       it "does not display data" do
-        get :index
+        get :index, {page: 1, page_size: 25}
         expect(response).to render_template(nil)
       end
     end
@@ -131,17 +131,17 @@ describe ApiV1::ReplicationTransfersController do
       end
 
       it "responds with 200" do
-        get :index
+        get :index, {page: 1, page_size: 25}
         expect(response).to have_http_status(200)
       end
 
       it "assigns the replication transfers to @replication_transfers" do
-        get :index
+        get :index, {page: 1, page_size: 25}
         expect(assigns(:replication_transfers)).to_not be_nil
       end
 
       it "renders json" do
-        get :index
+        get :index, {page: 1, page_size: 25}
         expect(response.content_type).to eql("application/json")
       end
     end
