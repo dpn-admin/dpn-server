@@ -9,11 +9,11 @@ describe ApiV1::BagsController do
     end
     context "without authorization" do
       it "responds with 401" do
-        get :index, {page: 1, page_size: 25}
+        get :index
         expect(response).to have_http_status(401)
       end
       it "does not display data" do
-        get :index, {page: 1, page_size: 25}
+        get :index
         expect(response).to render_template(nil)
       end
     end
@@ -22,23 +22,73 @@ describe ApiV1::BagsController do
       before(:each) do
         @request.headers["Authorization"] = "Token token=#{@node.private_auth_token}"
       end
-      it "also accepts django auth with 200" do
-        @request.headers["Authorization"] = "Token #{@node.private_auth_token}"
-        get :index, {page: 1, page_size: 25}
-        expect(response).to have_http_status(200)
+
+      context "with paging parameters" do
+        before(:each) do
+          @params = {page: 1, page_size: 25}
+        end
+        it "also accepts django auth with 200" do
+          @request.headers["Authorization"] = "Token #{@node.private_auth_token}"
+          get :index, @params
+          expect(response).to have_http_status(200)
+        end
+        it "responds with 200" do
+          get :index, @params
+          expect(response).to have_http_status(200)
+        end
+        it "assigns the bags to @bags" do
+          get :index, @params
+          expect(assigns(:bags)).to_not be_nil
+        end
+        it "renders json" do
+          get :index, @params
+          expect(response.content_type).to eql("application/json")
+        end
       end
-      it "responds with 200" do
-        get :index, {page: 1, page_size: 25}
-        expect(response).to have_http_status(200)
+
+      context "without paging parameters" do
+        it "responds with 302" do
+          get :index
+          expect(response).to have_http_status(302)
+        end
+        it "redirects with page and page_size" do
+          get :index
+          expect(response).to redirect_to action: :index,
+                                          page: assigns(:page),
+                                          page_size: assigns(:page_size)
+        end
       end
-      it "assigns the bags to @bags" do
-        get :index, {page: 1, page_size: 25}
-        expect(assigns(:bags)).to_not be_nil
+
+      context "with bad paging parameters" do
+
+        context "(page = -1)" do
+          it "responds with 400" do
+            get :index, {page: -1, page_size: 25}
+            expect(response).to have_http_status(400)
+          end
+        end
+
+        context "(page_size = -1)" do
+          it "responds with 400" do
+            get :index, {page: 1, page_size: -1}
+            expect(response).to have_http_status(400)
+          end
+        end
+
+        context "page_size = 9999" do
+          it "responds with 302" do
+            get :index, {page: 1, page_size: 9999}
+            expect(response).to have_http_status(302)
+          end
+          it "redirects with page_size set to max" do
+            get :index, {page: 1, page_size: 9999}
+            expect(response).to redirect_to action: :index,
+                                            page: assigns(:page),
+                                            page_size: Rails.configuration.max_per_page
+          end
+        end
       end
-      it "renders json" do
-        get :index, {page: 1, page_size: 25}
-        expect(response.content_type).to eql("application/json")
-      end
+
     end
   end
 
