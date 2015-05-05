@@ -2,7 +2,7 @@ class BagUnpackJob < ActiveJob::Base
   queue_as :default
 
   def perform(request, bag_location)
-    if File.directory? bag_location == false
+    if File.directory?(bag_location) == false
       case File.extname bag_location
         when ".tar"
           bag_location = unpack_tar(bag_location)
