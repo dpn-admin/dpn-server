@@ -2,8 +2,8 @@ class BagRetrievalJob < ActiveJob::Base
   queue_as :default
 
   def perform(request, staging_dir)
-    destination = File.join staging_dir, request.id
-    FileUtils.mkdir(destination) unless File.exists? destination
+    destination = File.join staging_dir, request.id.to_s
+    FileUtils.mkdir_p(destination) unless File.exists? destination
     perform_rsync(request.source_location, destination)
     request.status = :downloaded
     request.save!

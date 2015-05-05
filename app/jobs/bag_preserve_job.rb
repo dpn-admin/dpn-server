@@ -7,6 +7,7 @@ class BagPreserveJob < ActiveJob::Base
     ppath = pairtree.mk(bag.uuid)
     perform_rsync(File.join(bag_location, "*"), ppath.path)
     request.status = :preserved
+    request.preservation_location = ppath.path
     request.save!
   end
 
