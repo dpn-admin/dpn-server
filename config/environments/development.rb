@@ -52,4 +52,7 @@ Rails.application.configure do
   # Set the preservation root
   # The directory "pairtree_root" will be created in this folder
   config.repo_dir = ENV['DPN_REPO_DIR'] || Rails.root.join("dpnrepo", "preservation")
+
+  # The location of the private key used to pull files from other nodes
+  config.transfer_private_key = ENV['DPN_TRANSFER_PRIVATE_KEY'] || "/l/home/dpnadm/.ssh/hathi.key"
 end

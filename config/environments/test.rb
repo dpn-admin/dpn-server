@@ -40,8 +40,11 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
+  config.active_job.queue_adapter = :test
+
   config.salt = "development_salt"
   config.local_namespace = "hathi"
   config.staging_dir = File.join("/tmp","dpnrepo", "staging")
   config.repo_dir = File.join("/tmp","dpnrepo", "preservation")
+  config.transfer_private_key = "/tmp/dpnxfr_private_key_test"
 end
