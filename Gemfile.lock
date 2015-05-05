@@ -138,6 +138,9 @@ GEM
     rake (10.4.2)
     rdoc (4.2.0)
     ref (1.0.5)
+    rspec-activejob (0.4.0)
+      activejob (>= 4.2)
+      rspec-mocks
     rspec-core (3.2.2)
       rspec-support (~> 3.2.0)
     rspec-expectations (3.2.0)
@@ -218,6 +221,7 @@ DEPENDENCIES
   mysql2
   pairtree
   rails (= 4.2.0)
+  rspec-activejob
   rspec-rails
   rsync
   sass-rails (~> 5.0)
