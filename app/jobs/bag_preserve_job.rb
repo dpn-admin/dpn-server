@@ -2,13 +2,15 @@ class BagPreserveJob < ActiveJob::Base
   queue_as :default
 
   def perform(request, bag_location, storage_dir)
-    bag = Bag.new(bag_location)
-    pairtree = Pairtree.at(storage_dir, create: false)
-    ppath = pairtree.mk(bag.uuid)
-    perform_rsync(File.join(bag_location, "*"), ppath.path)
-    request.status = :preserved
-    request.preservation_location = ppath.path
-    request.save!
+    unless request.cancelled
+      bag = Bag.new(bag_location)
+      pairtree = Pairtree.at(storage_dir, create: false)
+      ppath = pairtree.mk(bag.uuid)
+      perform_rsync(File.join(bag_location, "*"), ppath.path)
+      request.status = :preserved
+      request.preservation_location = ppath.path
+      request.save!
+    end
   end
 
   protected

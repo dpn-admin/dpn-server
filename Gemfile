@@ -14,7 +14,7 @@ gem 'kaminari'
 gem 'delayed_job_active_record'
 gem 'rsync'
 gem 'dpn-bagit'
-gem 'pairtree'
+gem 'rpairtree'
 
 group :development, :test do
   gem 'byebug'

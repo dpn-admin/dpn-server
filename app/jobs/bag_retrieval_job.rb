@@ -2,13 +2,15 @@ class BagRetrievalJob < ActiveJob::Base
   queue_as :default
 
   def perform(request, staging_dir)
-    destination = File.join staging_dir, request.id.to_s
-    FileUtils.mkdir_p(destination) unless File.exists? destination
-    perform_rsync(request.source_location, destination)
-    request.status = :downloaded
-    request.save!
-    file_destination = File.join(destination, File.basename(request.source_location))
-    BagUnpackJob.perform_later(request, file_destination)
+    unless request.cancelled
+      destination = File.join staging_dir, request.id.to_s
+      FileUtils.mkdir_p(destination) unless File.exists? destination
+      perform_rsync(request.source_location, destination)
+      request.status = :downloaded
+      request.save!
+      file_destination = File.join(destination, File.basename(request.source_location))
+      BagUnpackJob.perform_later(request, file_destination)
+    end
   end
 
   protected

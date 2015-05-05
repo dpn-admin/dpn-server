@@ -3,5 +3,6 @@ Fabricator(:bag_manager_request) do
   preservation_location nil
   status :requested
   fixity nil
-  bag_valid nil
+  validity nil
+  cancelled false
 end

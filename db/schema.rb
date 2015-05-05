@@ -11,16 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150430191434) do
+ActiveRecord::Schema.define(version: 20150506185123) do
 
   create_table "bag_manager_requests", force: :cascade do |t|
-    t.string   "source_location",       limit: 255,             null: false
+    t.string   "source_location",       limit: 255,                 null: false
     t.string   "preservation_location", limit: 255
     t.integer  "status",                limit: 4,   default: 0
     t.string   "fixity",                limit: 255
-    t.boolean  "bag_valid",             limit: 1
-    t.datetime "created_at",                                    null: false
-    t.datetime "updated_at",                                    null: false
+    t.boolean  "validity",              limit: 1
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
+    t.boolean  "cancelled",             limit: 1,   default: false
   end
 
   create_table "bags", force: :cascade do |t|
