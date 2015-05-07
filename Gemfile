@@ -15,6 +15,7 @@ gem 'delayed_job_active_record'
 gem 'rsync'
 gem 'dpn-bagit'
 gem 'rpairtree'
+gem 'easy_cipher', '~>0.9.1'
 
 group :development, :test do
   gem 'byebug'

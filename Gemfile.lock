@@ -75,6 +75,7 @@ GEM
     dpn-bagit (0.2.0)
       bagit (~> 0.3.2)
       configliere
+    easy_cipher (0.9.1)
     erubis (2.7.0)
     execjs (2.4.0)
     fabrication (2.12.2)
@@ -212,6 +213,7 @@ DEPENDENCIES
   capistrano-rbenv (~> 2.0)
   delayed_job_active_record
   dpn-bagit
+  easy_cipher (~> 0.9.1)
   fabrication
   faker
   jbuilder (~> 2.0)

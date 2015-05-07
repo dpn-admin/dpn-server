@@ -21,7 +21,7 @@ describe ApiV1::NodesController do
 
     context "with authorization" do
       before(:each) do
-        @request.headers["Authorization"] = "Token token=#{@auth_node.private_auth_token}"
+        @request.headers["Authorization"] = "Token token=#{@auth_node.auth_credential}"
       end
 
       context "with paging parameters" do
@@ -29,7 +29,7 @@ describe ApiV1::NodesController do
           @params = {page: 1, page_size: 25}
         end
         it "also accepts django auth with 200" do
-          @request.headers["Authorization"] = "Token #{@auth_node.private_auth_token}"
+          @request.headers["Authorization"] = "Token #{@auth_node.auth_credential}"
           get :index, @params
           expect(response).to have_http_status(200)
         end
@@ -114,7 +114,7 @@ describe ApiV1::NodesController do
 
     context "with authorization" do
       before(:each) do
-        @request.headers["Authorization"] = "Token token=#{@auth_node.private_auth_token}"
+        @request.headers["Authorization"] = "Token token=#{@auth_node.auth_credential}"
       end
 
       context "without pre-existing record" do
@@ -195,7 +195,7 @@ describe ApiV1::NodesController do
       context "as non-local node" do
         before(:each) do
           @auth_node = Fabricate(:node)
-          @request.headers["Authorization"] = "Token token=#{@auth_node.private_auth_token}"
+          @request.headers["Authorization"] = "Token token=#{@auth_node.auth_credential}"
         end
 
         it "responds with 403" do
@@ -212,8 +212,8 @@ describe ApiV1::NodesController do
 
       context "as local node" do
         before(:each) do
-          @auth_node = Fabricate(:node, namespace: Rails.configuration.local_namespace)
-          @request.headers["Authorization"] = "Token token=#{@auth_node.private_auth_token}"
+          @auth_node = Fabricate(:local_node, namespace: Rails.configuration.local_namespace)
+          @request.headers["Authorization"] = "Token token=#{@auth_node.auth_credential}"
         end
 
         context "with valid attributes" do
@@ -300,7 +300,7 @@ describe ApiV1::NodesController do
       context "as non-local node" do
         before(:each) do
           @auth_node = Fabricate(:node)
-          @request.headers["Authorization"] = "Token token=#{@auth_node.private_auth_token}"
+          @request.headers["Authorization"] = "Token token=#{@auth_node.auth_credential}"
         end
 
         it "responds with 403" do
@@ -315,8 +315,8 @@ describe ApiV1::NodesController do
 
       context "as local node" do
         before(:each) do
-          @auth_node = Fabricate(:node, namespace: Rails.configuration.local_namespace)
-          @request.headers["Authorization"] = "Token token=#{@auth_node.private_auth_token}"
+          @auth_node = Fabricate(:local_node, namespace: Rails.configuration.local_namespace)
+          @request.headers["Authorization"] = "Token token=#{@auth_node.auth_credential}"
         end
 
         context "record does not exist" do

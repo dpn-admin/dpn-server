@@ -4,6 +4,7 @@ class ApiV1::ReplicationTransfersController < ApplicationController
   include Authenticate
   include Pagination
 
+  local_node_only :create
   uses_pagination :index
 
   def index

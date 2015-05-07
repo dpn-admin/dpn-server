@@ -80,6 +80,11 @@ Rails.application.configure do
   # Load a salt in what is probably not a good place for it.
   config.salt = ENV['DPN_SALT']
 
+  # Set the cipher key used to *crypt the auth_tokens other nodes
+  # identify us by.
+  config.cipher_key = ENV['DPN_CIPHER_KEY']
+  config.cipher_iv = ENV['DPN_CIPHER_IV']
+
   # Configure the local node's namespace
   config.local_namespace = ENV['DPN_NAMESPACE']
 

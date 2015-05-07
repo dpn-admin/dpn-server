@@ -43,6 +43,11 @@ Rails.application.configure do
   # Load a salt in what is probably not a good place for it.
   config.salt = ENV['DPN_SALT'] || "development_salt"
 
+  # Set the cipher key, iv used to *crypt the auth_tokens other nodes
+  # identify us by.
+  config.cipher_key = ENV['DPN_CIPHER_KEY'] || "foMXggnM3xLHatbSP0ZXW6ThZXOXqp8ImyaJQ/0Jlqo=\n"
+  config.cipher_iv = ENV['DPN_CIPHER_IV'] || "L213BeYaK4QDG8krUaCYnA==\n"
+
   # Configure the local node's namespace
   config.local_namespace = ENV['DPN_NAMESPACE'] || "hathi"
 

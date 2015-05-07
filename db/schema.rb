@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150506185123) do
+ActiveRecord::Schema.define(version: 20150507190818) do
 
   create_table "bag_manager_requests", force: :cascade do |t|
     t.string   "source_location",       limit: 255,                 null: false
@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(version: 20150506185123) do
     t.datetime "updated_at",                     null: false
     t.string   "api_root",           limit: 255
     t.string   "private_auth_token", limit: 255
+    t.string   "auth_credential",    limit: 255
   end
 
   add_index "nodes", ["api_root"], name: "index_nodes_on_api_root", unique: true, using: :btree

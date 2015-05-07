@@ -1,6 +1,6 @@
 class ApiV1::BagMgr::RequestsController < ApplicationController
   include Authenticate
-  append_before_action :require_is_self
+  local_node_only :index, :show, :create, :downloaded, :unpacked, :fixity, :validity, :preserved, :cancel
 
   def index
     @requests = BagManagerRequest.all
@@ -71,12 +71,4 @@ class ApiV1::BagMgr::RequestsController < ApplicationController
     render json: @request, status: 200
   end
 
-
-  protected
-  def require_is_self
-    if @requester.namespace != Rails.configuration.local_namespace
-      render json: "Only allowed by local node.", status: 403
-      return
-    end
-  end
 end

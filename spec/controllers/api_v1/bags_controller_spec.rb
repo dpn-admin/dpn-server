@@ -20,7 +20,7 @@ describe ApiV1::BagsController do
 
     context "with authorization" do
       before(:each) do
-        @request.headers["Authorization"] = "Token token=#{@node.private_auth_token}"
+        @request.headers["Authorization"] = "Token token=#{@node.auth_credential}"
       end
 
       context "with paging parameters" do
@@ -28,7 +28,7 @@ describe ApiV1::BagsController do
           @params = {page: 1, page_size: 25}
         end
         it "also accepts django auth with 200" do
-          @request.headers["Authorization"] = "Token #{@node.private_auth_token}"
+          @request.headers["Authorization"] = "Token #{@node.auth_credential}"
           get :index, @params
           expect(response).to have_http_status(200)
         end
@@ -109,7 +109,7 @@ describe ApiV1::BagsController do
     end
     context "with authorization" do
       before(:each) do
-        @request.headers["Authorization"] = "Token token=#{@node.private_auth_token}"
+        @request.headers["Authorization"] = "Token token=#{@node.auth_credential}"
       end
       context "without pre-existing record" do
         it "responds with 404" do
@@ -183,7 +183,7 @@ describe ApiV1::BagsController do
       context "as non-local node" do
         before(:each) do
           @node = Fabricate(:node)
-          @request.headers["Authorization"] = "Token token=#{@node.private_auth_token}"
+          @request.headers["Authorization"] = "Token token=#{@node.auth_credential}"
         end
         it "responds with 403" do
           post :create, @post_body
@@ -197,8 +197,8 @@ describe ApiV1::BagsController do
 
       context "as local node" do
         before(:each) do
-          @node = Fabricate(:node, namespace: Rails.configuration.local_namespace)
-          @request.headers["Authorization"] = "Token token=#{@node.private_auth_token}"
+          @node = Fabricate(:local_node, namespace: Rails.configuration.local_namespace)
+          @request.headers["Authorization"] = "Token token=#{@node.auth_credential}"
         end
         context "with valid attributes" do
           it "responds with 201" do
@@ -277,7 +277,7 @@ describe ApiV1::BagsController do
       context "as non-local node" do
         before(:each) do
           @node = Fabricate(:node)
-          @request.headers["Authorization"] = "Token token=#{@node.private_auth_token}"
+          @request.headers["Authorization"] = "Token token=#{@node.auth_credential}"
         end
         it "responds with 403" do
           put :update, @post_body
@@ -290,8 +290,8 @@ describe ApiV1::BagsController do
       end
       context "as local node" do
         before(:each) do
-          @node = Fabricate(:node, namespace: Rails.configuration.local_namespace)
-          @request.headers["Authorization"] = "Token token=#{@node.private_auth_token}"
+          @node = Fabricate(:local_node, namespace: Rails.configuration.local_namespace)
+          @request.headers["Authorization"] = "Token token=#{@node.auth_credential}"
         end
         context "record does not exist" do
           before(:each) do

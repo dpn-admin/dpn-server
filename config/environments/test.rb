@@ -43,6 +43,8 @@ Rails.application.configure do
   config.active_job.queue_adapter = :test
 
   config.salt = "development_salt"
+  config.cipher_key = "foMXggnM3xLHatbSP0ZXW6ThZXOXqp8ImyaJQ/0Jlqo=\n"
+  config.cipher_iv = "L213BeYaK4QDG8krUaCYnA==\n"
   config.local_namespace = "hathi"
   config.staging_dir = File.join("/tmp","dpnrepo", "staging")
   config.repo_dir = File.join("/tmp","dpnrepo", "preservation")

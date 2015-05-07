@@ -46,10 +46,34 @@ class Node < ActiveRecord::Base
     super(generate_hash(value))
   end
 
+  def auth_credential=(value)
+    if value
+      value = encrypt(value)
+    end
+    write_attribute(:auth_credential, value)
+  end
+
+  def auth_credential
+    value = read_attribute(:auth_credential)
+    if value
+      decrypt(read_attribute(:auth_credential))
+    else
+      value
+    end
+  end
+
   protected
   def generate_hash(raw_value)
     return raw_value
     #return BCrypt::Password.create("#{Rails.application.config.salt}#{raw_value}")
+  end
+
+  def encrypt(value)
+    Rails.configuration.cipher.encrypt(value)
+  end
+
+  def decrypt(value)
+    Rails.configuration.cipher.decrypt(value)
   end
 
 end

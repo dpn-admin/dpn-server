@@ -4,6 +4,7 @@ class ApiV1::BagsController < ApplicationController
   include Authenticate
   include Pagination
 
+  local_node_only :create, :update
   uses_pagination :index
 
   def index
@@ -83,12 +84,6 @@ class ApiV1::BagsController < ApplicationController
 
   # This method is internal
   def create
-    # Ensure that the request comes from the local node.
-    if @requester.namespace != Rails.configuration.local_namespace
-      render json: "Only allowed by local node.", status: 403
-      return
-    end
-
     expected_params = [:bag_type, :rights, :interpretive, :uuid,
       :local_id, :size, :version, :ingest_node, :admin_node,
       :replicating_nodes, :first_version_uuid, :fixities
@@ -145,12 +140,6 @@ class ApiV1::BagsController < ApplicationController
 
   # This method is internal
   def update
-    # Ensure that the request comes from the local node.
-    if @requester.namespace != Rails.configuration.local_namespace
-      render json: "Only allowed by local node.", status: 403
-      return
-    end
-
     case params[:bag_type]
       when "D", "d"
         bag = DataBag.new
@@ -194,44 +183,41 @@ class ApiV1::BagsController < ApplicationController
 
   # This method is internal
   def _update
-    if @requester.namespace != Rails.configuration.config.local_namespace
-      render json: "Only allowed by local node.", status: 403
+    case params[:bag][:bag_type]
+    when "D", "d"
+      bag = DataBag.find_by_uuid!(params[:bag][:uuid])
+      bag.rights_bags = RightsBag.where(:uuid => params[:bag][:rights])
+      bag.brightening_bags = InterpretiveBag.where(:uuid => params[:bag][:interpretive])
+    when "R", "r"
+      bag = RightsBag.new
+    when "I", "i"
+      bag = InterpretiveBag.new
     else
-      case params[:bag][:bag_type]
-      when "D", "d"
-        bag = DataBag.find_by_uuid!(params[:bag][:uuid])
-        bag.rights_bags = RightsBag.where(:uuid => params[:bag][:rights])
-        bag.brightening_bags = InterpretiveBag.where(:uuid => params[:bag][:interpretive])
-      when "R", "r"
-        bag = RightsBag.new
-      when "I", "i"
-        bag = InterpretiveBag.new
-      else
-        throw TypeError, "illegal bag type #{params[:bag][:bag_type]}"
-      end
-
-      bag = Bag.find_by_uuid!(params[:bag][:uuid])
-      bag.local_id = params[:bag][:local_id]
-      bag.admin_node = Node.find_by_namespace(params[:bag][:admin_node])
-      bag.replicating_nodes = Node.where(:namespace => params[:bag][:replicating_nodes_nodes])
-
-      params[:bag][:fixities].each do |check|
-        bag.fixity_checks << FixityCheck.find_or_create_by(
-          :bag_id => bag.id,
-          :fixity_alg_id => FixityAlg.find_by_name(check[:fixity_alg]).id,
-          :value => check[:fixity_value]
-        )
-      end
-
-      bag.save
-      render json: ApiV1::BagPresenter.new(bag)
+      throw TypeError, "illegal bag type #{params[:bag][:bag_type]}"
     end
+
+    bag = Bag.find_by_uuid!(params[:bag][:uuid])
+    bag.local_id = params[:bag][:local_id]
+    bag.admin_node = Node.find_by_namespace(params[:bag][:admin_node])
+    bag.replicating_nodes = Node.where(:namespace => params[:bag][:replicating_nodes_nodes])
+
+    params[:bag][:fixities].each do |check|
+      bag.fixity_checks << FixityCheck.find_or_create_by(
+        :bag_id => bag.id,
+        :fixity_alg_id => FixityAlg.find_by_name(check[:fixity_alg]).id,
+        :value => check[:fixity_value]
+      )
+    end
+
+    bag.save
+    render json: ApiV1::BagPresenter.new(bag)
   end
+
 
   private
   def sanitize_params
-    params[:bag][:size] = params[:bag][:size].to_i
-    params[:bag][:version] = params[:bag][:version].to_i
+    params[:bag][:size] = Integer(params[:bag][:size])
+    params[:bag][:version] = Integer(params[:bag][:version])
   end
 
 

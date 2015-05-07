@@ -127,7 +127,7 @@ describe ApiV1::ReplicationTransfersController do
 
     context "with authorization" do
       before(:each) do
-        @request.headers["Authorization"] = "Token token=#{@auth_node.private_auth_token}"
+        @request.headers["Authorization"] = "Token token=#{@auth_node.auth_credential}"
       end
 
       context "with paging parameters" do
@@ -135,7 +135,7 @@ describe ApiV1::ReplicationTransfersController do
           @params = {page: 1, page_size: 25}
         end
         it "also accepts django auth with 200" do
-          @request.headers["Authorization"] = "Token #{@auth_node.private_auth_token}"
+          @request.headers["Authorization"] = "Token #{@auth_node.auth_credential}"
           get :index, @params
           expect(response).to have_http_status(200)
         end
@@ -221,7 +221,7 @@ describe ApiV1::ReplicationTransfersController do
 
     context "with authorization" do
       before(:each) do
-        @request.headers["Authorization"] = "Token token=#{@auth_node.private_auth_token}"
+        @request.headers["Authorization"] = "Token token=#{@auth_node.auth_credential}"
       end
 
       context "without pre-existing record" do
@@ -297,9 +297,9 @@ describe ApiV1::ReplicationTransfersController do
 
       context "put comes from local_node" do
         before(:each) do
-          @local_node = Fabricate(:node, namespace: Rails.configuration.local_namespace)
+          @local_node = Fabricate(:local_node, namespace: Rails.configuration.local_namespace)
           @auth_node = @local_node
-          @request.headers["Authorization"] = "Token token=#{@auth_node.private_auth_token}"
+          @request.headers["Authorization"] = "Token token=#{@auth_node.auth_credential}"
         end
         context "where local_node==from_node" do  # We requested it and we're updating
           test_context = Proc.new {
@@ -344,10 +344,11 @@ describe ApiV1::ReplicationTransfersController do
 
       context "put comes from to_node" do
         before(:each) do
-          @to_node = Fabricate(:node)
+          token = Faker::Code.isbn
+          @to_node = Fabricate(:node, private_auth_token: token)
           @auth_node = @to_node
-          @local_node = Fabricate(:node, namespace: Rails.configuration.local_namespace)
-          @request.headers["Authorization"] = "Token token=#{@to_node.private_auth_token}"
+          @local_node = Fabricate(:local_node, namespace: Rails.configuration.local_namespace)
+          @request.headers["Authorization"] = "Token token=#{token}"
         end
         context "where local_node==from_node" do
           test_context = Proc.new {
@@ -407,8 +408,9 @@ describe ApiV1::ReplicationTransfersController do
 
       context "with authorization" do
         before(:each) do
-          @auth_node = Fabricate(:node)
-          @request.headers["Authorization"] = "Token token=#{@auth_node.private_auth_token}"
+          token = Faker::Code.isbn
+          @auth_node = Fabricate(:node, private_auth_token: token)
+          @request.headers["Authorization"] = "Token token=#{token}"
         end
         context "record does not exist" do
           before(:each) do

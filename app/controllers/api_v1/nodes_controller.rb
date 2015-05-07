@@ -4,6 +4,7 @@ class ApiV1::NodesController < ApplicationController
   include Authenticate
   include Pagination
 
+  local_node_only :create, :update, :update_auth_credential
   uses_pagination :index
 
   def index
@@ -34,12 +35,6 @@ class ApiV1::NodesController < ApplicationController
 
   # This method is internal
   def create
-    # Ensure that the request comes from the local node.
-    if @requester.namespace != Rails.configuration.local_namespace
-      render json: "Only allowed by local node.", status: 403
-      return
-    end
-
     expected_params = [:name, :namespace, :api_root, :ssh_pubkey,
       :replicate_from, :replicate_to, :restore_from, :restore_to,
       :protocols, :fixity_algorithms, :storage,
@@ -93,12 +88,6 @@ class ApiV1::NodesController < ApplicationController
 
   # This method is internal
   def update
-    # Ensure that the request comes from the local node.
-    if @requester.namespace != Rails.configuration.local_namespace
-      render json: "Only allowed by local node.", status: 403
-      return
-    end
-
     expected_params = [:name, :namespace, :api_root, :ssh_pubkey,
       :replicate_from, :replicate_to, :restore_from, :restore_to,
       :protocols, :fixity_algorithms, :storage,
@@ -138,6 +127,15 @@ class ApiV1::NodesController < ApplicationController
     else
       render nothing: true, status: 400
     end
+  end
+
+
+  # This method is internal
+  # Update the auth_credential issued to use by the target node
+  def update_auth_credential
+    node = Node.find_by_namespace!(params.require(:namespace))
+    node.auth_credential = params.require(:auth_credential)
+    render nothing: true, status: 200
   end
 
 

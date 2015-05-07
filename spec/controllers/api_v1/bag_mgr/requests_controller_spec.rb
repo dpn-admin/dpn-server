@@ -32,8 +32,8 @@ describe ApiV1::BagMgr::RequestsController, type: :controller do
   context "with authorization" do
     context "as local node" do
       before(:each) do
-        @node = Fabricate(:node, namespace: Rails.configuration.local_namespace)
-        @request.headers["Authorization"] = "Token token=#{@node.private_auth_token}"
+        @node = Fabricate(:local_node, namespace: Rails.configuration.local_namespace)
+        @request.headers["Authorization"] = "Token token=#{@node.auth_credential}"
       end
 
       describe "GET #index" do
@@ -145,8 +145,9 @@ describe ApiV1::BagMgr::RequestsController, type: :controller do
 
     context "as another node" do
       before(:each) do
-        @node = Fabricate(:node)
-        @request.headers["Authorization"] = "Token token=#{@node.private_auth_token}"
+        token = Faker::Code.isbn
+        @node = Fabricate(:node, private_auth_token: token)
+        @request.headers["Authorization"] = "Token token=#{token}"
       end
 
       describe "GET #index" do
