@@ -13,7 +13,7 @@ gem 'therubyracer', platforms: :ruby
 gem 'kaminari'
 gem 'delayed_job_active_record'
 gem 'rsync'
-gem 'dpn-bagit'
+gem 'dpn-bagit', '~>0.3.0'
 gem 'rpairtree'
 gem 'easy_cipher', '~>0.9.1'
 
