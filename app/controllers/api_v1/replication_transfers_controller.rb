@@ -4,7 +4,7 @@ class ApiV1::ReplicationTransfersController < ApplicationController
   include Authenticate
   include Pagination
 
-  local_node_only :create
+  local_node_only :create, :set_bag_mgr_request, :destroy
   uses_pagination :index
 
   def index
@@ -95,6 +95,7 @@ class ApiV1::ReplicationTransfersController < ApplicationController
     render json: output, status: 200
   end
 
+
   def show
     repl = ReplicationTransfer.find_by_replication_id(params[:replication_id])
     if repl.nil?
@@ -104,6 +105,7 @@ class ApiV1::ReplicationTransfersController < ApplicationController
       render json: @replication_transfer, status: 200
     end
   end
+
 
   # This method is internal
   def create
@@ -245,6 +247,38 @@ class ApiV1::ReplicationTransfersController < ApplicationController
       render nothing: true, status: 400
     end
 
+  end
+
+
+  # This method is internal
+  def set_bag_mgr_request
+    params.require(:id)
+    params.require(:bag_mgr_request_id)
+    replication_transfer = ReplicationTransfer.find(params[:id])
+    if replication_transfer.bag_mgr_request_id
+      render json: "Already have a bag_mgr_request_id", status: 409
+    else
+      replication_transfer.bag_mgr_request_id = params[:bag_mgr_request_id]
+      if replication_transfer.save
+        @replication_transfer = ApiV1::ReplicationTransferPresenter.new(replication_transfer)
+        render json: @replication_transfer, status: 200
+      else
+        render json: "Value #{params[:bag_mgr_request_id]} not allowed.", status: 400
+      end
+    end
+  end
+
+
+  # This method is internal
+  # This method is for testing purposes only.
+  def destroy
+    if Rails.env.production?
+      render nothing: true, status: 403 and return
+    end
+
+    repl = ReplicationTransfer.find_by_replication_id!(params[:replication_id])
+    repl.destroy!
+    render nothing: true, status: 204
   end
 
 end

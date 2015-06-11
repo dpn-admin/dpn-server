@@ -49,7 +49,8 @@ hash[:node].each_value do |node_entry|
       fixity_algs: FixityAlg.where(name: node_entry[:fixity_algs]),
       protocols: Protocol.where(name: node_entry[:protocols]),
       api_root: node_entry[:api_root],
-      private_auth_token: node_entry[:private_auth_token])
+      private_auth_token: node_entry[:private_auth_token],
+      auth_credential: node_entry[:auth_credential])
   nodes << new_node
 end
 
@@ -63,3 +64,7 @@ nodes.each do |from_node|
   end
 end
 
+# Require any other seeds we might have.
+Dir["db/seeds/**/seeds.rb"].each do |f|
+  load f
+end

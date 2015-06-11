@@ -1,0 +1,55 @@
+hathi:
+  namespace: "hathi"
+  name: "HathiTrust"
+  storage_region: default
+  storage_type: default
+  fixity_algs:
+    - md5
+    - sha256
+  protocols:
+    - rsync
+  api_root: "http://127.0.0.1"
+  private_auth_token: "hathi_token"
+  auth_credential: "lewwPcS4gXmPzmBFFv0/tQ=="
+
+sdr:
+  namespace: "sdr"
+  name: "Stanford University"
+  storage_region: default
+  storage_type: default
+  fixity_algs:
+    - md5
+    - sha256
+  protocols:
+    - rsync
+  api_root: "http://192.168.33.11"
+  private_auth_token: "sdr_token"
+  auth_credential: "aR2ChPRO3cm3WOpzBQCXfA=="
+
+tdr:
+  namespace: "tdr"
+  name: "Texas Digital Repository"
+  storage_region: default
+  storage_type: default
+  fixity_algs:
+    - md5
+    - sha256
+  protocols:
+    - rsync
+  api_root: "http://192.168.33.12"
+  private_auth_token: "tdr_token"
+  auth_credential: "e4cJftkeoRm7YWW0y55DTg=="
+
+chron:
+  namespace: "chron"
+  name: "Chronopolis"
+  storage_region: default
+  storage_type: default
+  fixity_algs:
+    - md5
+    - sha256
+  protocols:
+    - rsync
+  api_root: "http://192.168.33.13"
+  private_auth_token: "chron_token"
+  auth_credential: "ncKrlkxr0g0dFAuzWHMEfA=="

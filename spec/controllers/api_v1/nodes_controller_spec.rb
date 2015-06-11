@@ -365,5 +365,67 @@ describe ApiV1::NodesController do
       end
     end
   end
+
+  describe "DELETE #destroy" do
+    before(:each) do
+      @node = Fabricate(:node)
+    end
+    context "without authorization" do
+      subject { delete :destroy, namespace: @node.namespace }
+      it "responds with 401" do
+        subject()
+        expect(response).to have_http_status(401)
+      end
+      it "does not delete the record" do
+        subject()
+        expect(Node.find_by_namespace(@node.namespace)).to be_valid
+      end
+    end
+    context "with authorization" do
+      subject { delete :destroy, namespace: @node.namespace }
+      context "as non-local node" do
+        before(:each) do
+          @auth_node = Fabricate(:node)
+          @request.headers["Authorization"] = "Token token=#{@auth_node.auth_credential}"
+        end
+        it "responds with 403" do
+          subject()
+          expect(response).to have_http_status(403)
+        end
+        it "does not delete the record" do
+          subject()
+          expect(Node.find_by_namespace(@node.namespace)).to be_valid
+        end
+      end
+      context "as local node" do
+        before(:each) do
+          @auth_node = Fabricate(:local_node, namespace: Rails.configuration.local_namespace)
+          @request.headers["Authorization"] = "Token token=#{@auth_node.auth_credential}"
+        end
+        context "without pre-existing record" do
+          subject { delete :destroy, namespace: "does_not_exist" }
+          it "responds with 404" do
+            subject()
+            expect(response).to have_http_status(404)
+          end
+          it "renders nothing" do
+            subject()
+            expect(response).to render_template(nil)
+          end
+        end
+        context "with pre-existing record" do
+          subject { delete :destroy, namespace: @node.namespace }
+          it "responds with 204" do
+            subject()
+            expect(response).to have_http_status(204)
+          end
+          it "deletes the bag" do
+            subject()
+            expect(Node.find_by_namespace(@node.namespace)).to be_nil
+          end
+        end
+      end
+    end
+  end
 end
 

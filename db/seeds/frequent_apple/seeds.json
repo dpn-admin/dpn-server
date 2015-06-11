@@ -1,0 +1,9 @@
+{
+  "run_time": [
+    "SyncNodesJob",
+    "SyncBagsJob",
+    "SyncReplicationTransfersJob",
+    "SyncRestorationTransfersJob",
+    "AcceptTransfersJob"
+  ]
+}

@@ -1,0 +1,17 @@
+requested:
+  name: "requested"
+
+accepted:
+  name: "accepted"
+
+rejected:
+  name: "rejected"
+
+prepared:
+  name: "prepared"
+
+finished:
+  name: "finished"
+
+cancelled:
+  name: "cancelled"

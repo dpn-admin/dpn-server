@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150507190818) do
+ActiveRecord::Schema.define(version: 20150521214914) do
 
   create_table "bag_manager_requests", force: :cascade do |t|
     t.string   "source_location",       limit: 255,                 null: false
@@ -43,20 +43,16 @@ ActiveRecord::Schema.define(version: 20150507190818) do
   add_index "bags", ["version_family_id"], name: "fk_rails_2a089df9ba", using: :btree
 
   create_table "data_interpretive", force: :cascade do |t|
-    t.integer  "data_bag_id",         limit: 4, null: false
-    t.integer  "interpretive_bag_id", limit: 4, null: false
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.integer "data_bag_id",         limit: 4, null: false
+    t.integer "interpretive_bag_id", limit: 4, null: false
   end
 
   add_index "data_interpretive", ["data_bag_id", "interpretive_bag_id"], name: "index_data_interpretive_on_data_bag_id_and_interpretive_bag_id", unique: true, using: :btree
   add_index "data_interpretive", ["interpretive_bag_id"], name: "fk_rails_59c9a20566", using: :btree
 
   create_table "data_rights", force: :cascade do |t|
-    t.integer  "data_bag_id",   limit: 4, null: false
-    t.integer  "rights_bag_id", limit: 4, null: false
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.integer "data_bag_id",   limit: 4, null: false
+    t.integer "rights_bag_id", limit: 4, null: false
   end
 
   add_index "data_rights", ["data_bag_id", "rights_bag_id"], name: "index_data_rights_on_data_bag_id_and_rights_bag_id", unique: true, using: :btree
@@ -95,6 +91,13 @@ ActiveRecord::Schema.define(version: 20150507190818) do
   add_index "fixity_checks", ["bag_id", "fixity_alg_id"], name: "index_fixity_checks_on_bag_id_and_fixity_alg_id", unique: true, using: :btree
   add_index "fixity_checks", ["fixity_alg_id"], name: "fk_rails_b310351848", using: :btree
 
+  create_table "frequent_apple_run_times", force: :cascade do |t|
+    t.string   "name",          limit: 255,                                 null: false
+    t.datetime "last_run_time",             default: '1970-01-01 00:00:00', null: false
+  end
+
+  add_index "frequent_apple_run_times", ["name"], name: "index_frequent_apple_run_times_on_name", unique: true, using: :btree
+
   create_table "nodes", force: :cascade do |t|
     t.string   "namespace",          limit: 255, null: false
     t.string   "name",               limit: 255
@@ -123,10 +126,8 @@ ActiveRecord::Schema.define(version: 20150507190818) do
   add_index "protocols", ["name"], name: "index_protocols_on_name", unique: true, using: :btree
 
   create_table "replicating_nodes", force: :cascade do |t|
-    t.integer  "node_id",    limit: 4, null: false
-    t.integer  "bag_id",     limit: 4, null: false
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.integer "node_id", limit: 4, null: false
+    t.integer "bag_id",  limit: 4, null: false
   end
 
   add_index "replicating_nodes", ["bag_id"], name: "fk_rails_a2ae7c7de8", using: :btree
@@ -165,9 +166,11 @@ ActiveRecord::Schema.define(version: 20150507190818) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "replication_id",        limit: 255
+    t.integer  "bag_mgr_request_id",    limit: 4
   end
 
   add_index "replication_transfers", ["bag_id"], name: "fk_rails_bf1ca5e92d", using: :btree
+  add_index "replication_transfers", ["bag_mgr_request_id"], name: "index_replication_transfers_on_bag_mgr_request_id", unique: true, using: :btree
   add_index "replication_transfers", ["fixity_alg_id"], name: "fk_rails_231ece98cc", using: :btree
   add_index "replication_transfers", ["from_node_id"], name: "fk_rails_0ea5f9e3de", using: :btree
   add_index "replication_transfers", ["protocol_id"], name: "fk_rails_5912e5cb77", using: :btree

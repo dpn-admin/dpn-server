@@ -37,7 +37,8 @@
       "fixity_algs": ["md5","sha256"],
       "protocols": ["rsync"],
       "api_root": "http://127.0.0.1",
-      "private_auth_token": "hathi_token"
+      "private_auth_token": "hathi_token",
+      "auth_credential": "hathi_token"
     },
     "sdr": {
       "namespace": "sdr",
@@ -47,7 +48,8 @@
       "fixity_algs": ["md5","sha256"],
       "protocols": ["rsync"],
       "api_root": "http://192.168.33.11",
-      "private_auth_token": "sdr_token"
+      "private_auth_token": "sdr_token",
+      "auth_credential": "sdr_token"
     },
     "tdr": {
       "namespace": "tdr",
@@ -57,7 +59,8 @@
       "fixity_algs": ["md5","sha256"],
       "protocols": ["rsync"],
       "api_root": "http://192.168.33.12",
-      "private_auth_token": "tdr_token"
+      "private_auth_token": "tdr_token",
+      "auth_credential": "tdr_token"
     },
     "chron": {
       "namespace": "chron",
@@ -67,7 +70,8 @@
       "fixity_algs": ["md5","sha256"],
       "protocols": ["rsync"],
       "api_root": "http://192.168.33.13",
-      "private_auth_token": "chron_token"
+      "private_auth_token": "chron_token",
+      "auth_credential": "chron_token"
     }
   }
 }

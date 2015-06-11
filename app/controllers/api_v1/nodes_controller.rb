@@ -4,7 +4,7 @@ class ApiV1::NodesController < ApplicationController
   include Authenticate
   include Pagination
 
-  local_node_only :create, :update, :update_auth_credential
+  local_node_only :create, :update, :update_auth_credential, :destroy
   uses_pagination :index
 
   def index
@@ -136,6 +136,19 @@ class ApiV1::NodesController < ApplicationController
     node = Node.find_by_namespace!(params.require(:namespace))
     node.auth_credential = params.require(:auth_credential)
     render nothing: true, status: 200
+  end
+
+
+  # This method is internal
+  # This method is for testing purposes only.
+  def destroy
+    if Rails.env.production?
+      render nothing: true, status: 403 and return
+    end
+
+    node = Node.find_by_namespace!(params[:namespace])
+    node.destroy!
+    render nothing: true, status: 204
   end
 
 

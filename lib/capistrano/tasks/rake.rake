@@ -1,4 +1,42 @@
 namespace :rrake do
+
+  desc "Clear everything then load fixtures"
+  task :all do
+    on roles(:all) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, "jobs:clear"
+          execute :rake, "db:clear"
+          execute :rake, "db:fixtures:load"
+        end
+      end
+    end
+  end
+
+  desc "Run an arbitrary rake task"
+  task :invoke, :command do
+    on roles(:all) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, args[:command]
+        end
+      end
+    end
+  end
+
+  namespace :jobs do
+    desc "Run rake jobs:clear"
+    task :clear do
+      on roles(:all) do
+        within release_path do
+          with rails_env: fetch(:rails_env) do
+            execute :rake, "jobs:clear"
+          end
+        end
+      end
+    end
+  end
+
   namespace :db do
     desc "Reset the database on all servers!"
     task :reset do
@@ -8,10 +46,33 @@ namespace :rrake do
             execute :rake, "db:reset"
           end
         end
-
-        #execute "#{fetch(:rbenv_prefix)} cd #{fetch(:deploy_to)}/current && bundle exec rake #{ENV['task']} RAILS_ENV=#{fetch(:rails_env)}"
       end
     end
+
+    desc "Run rake db:clear"
+    task :clear do
+      on roles(:all) do
+        within release_path do
+          with rails_env: fetch(:rails_env) do
+            execute :rake, "db:clear"
+          end
+        end
+      end
+    end
+
+    namespace :fixtures do
+      desc "Run rake db:fixtures:load"
+      task :load, :fixture do
+        on roles(:all) do
+          within release_path do
+            with rails_env: fetch(:rails_env) do
+              execute :rake, "db:fixtures:load #{args[:fixture]}"
+            end
+          end
+        end
+      end
+    end
+
   end
 end
 

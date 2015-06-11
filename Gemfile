@@ -16,6 +16,8 @@ gem 'rsync'
 gem 'dpn-bagit', '~>0.3.0'
 gem 'rpairtree'
 gem 'easy_cipher', '~>0.9.1'
+gem 'httpclient'
+
 
 group :development, :test do
   gem 'byebug'
@@ -24,10 +26,8 @@ group :development, :test do
   gem 'fabrication'
   gem 'faker'
   gem 'rspec-activejob'
-end
-
-group :development do
   gem 'capistrano-rails', '~> 1.1'
   gem 'capistrano', '~> 3.4.0'
   gem 'capistrano-rbenv', '~> 2.0'
 end
+

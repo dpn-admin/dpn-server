@@ -1,0 +1,17 @@
+requested:
+  name: "requested"
+
+rejected:
+  name: "rejected"
+
+received:
+  name: "received"
+
+confirmed:
+  name: "confirmed"
+
+stored:
+  name: "stored"
+
+cancelled:
+  name: "cancelled"

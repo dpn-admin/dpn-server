@@ -85,6 +85,7 @@ GEM
       activesupport (>= 4.1.0)
     highline (1.7.2)
     hike (1.2.3)
+    httpclient (2.6.0.1)
     i18n (0.7.0)
     jbuilder (2.2.12)
       activesupport (>= 3.0.0, < 5)
@@ -216,6 +217,7 @@ DEPENDENCIES
   easy_cipher (~> 0.9.1)
   fabrication
   faker
+  httpclient
   jbuilder (~> 2.0)
   json
   kaminari
@@ -231,3 +233,6 @@ DEPENDENCIES
   therubyracer
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
+
+BUNDLED WITH
+   1.10.3

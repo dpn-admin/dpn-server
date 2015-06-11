@@ -1,0 +1,14 @@
+fixture_testing_bag_1_data:
+  value: "somevaluedata"
+  fixity_alg: sha256
+  bag: c6f2c6d6-dd4a-4afe-995f-c8d6c5970944
+
+fixture_testing_bag_1_rights:
+  value: "somevaluerights"
+  fixity_alg: sha256
+  bag: c6f2c6d6-dd4a-4afe-995f-c8d6c5970945
+
+fixture_testing_bag_1_interpretive:
+  value: "somevalueinterpretive"
+  fixity_alg: sha256
+  bag: c6f2c6d6-dd4a-4afe-995f-c8d6c5970946
