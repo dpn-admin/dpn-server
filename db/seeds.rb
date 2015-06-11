@@ -39,28 +39,30 @@ hash[:storage_type].each do |type|
   StorageType.create!(name: type)
 end
 
-nodes = []
-hash[:node].each_value do |node_entry|
-  new_node = Node.create!(
-      namespace: node_entry[:namespace],
-      name: node_entry[:namespace],
-      storage_region: StorageRegion.find_by_name(node_entry[:storage_region]),
-      storage_type: StorageType.find_by_name(node_entry[:storage_type]),
-      fixity_algs: FixityAlg.where(name: node_entry[:fixity_algs]),
-      protocols: Protocol.where(name: node_entry[:protocols]),
-      api_root: node_entry[:api_root],
-      private_auth_token: node_entry[:private_auth_token],
-      auth_credential: node_entry[:auth_credential])
-  nodes << new_node
-end
+if hash.has_key?(:node)
+  nodes = []
+  hash[:node].each_value do |node_entry|
+    new_node = Node.create!(
+        namespace: node_entry[:namespace],
+        name: node_entry[:namespace],
+        storage_region: StorageRegion.find_by_name(node_entry[:storage_region]),
+        storage_type: StorageType.find_by_name(node_entry[:storage_type]),
+        fixity_algs: FixityAlg.where(name: node_entry[:fixity_algs]),
+        protocols: Protocol.where(name: node_entry[:protocols]),
+        api_root: node_entry[:api_root],
+        private_auth_token: node_entry[:private_auth_token],
+        auth_credential: node_entry[:auth_credential])
+    nodes << new_node
+  end
 
-nodes.each do |from_node|
-  nodes.each do |to_node|
-    if from_node != to_node
-      from_node.replicate_to_nodes << to_node
-      from_node.restore_to_nodes << to_node
+  nodes.each do |from_node|
+    nodes.each do |to_node|
+      if from_node != to_node
+        from_node.replicate_to_nodes << to_node
+        from_node.restore_to_nodes << to_node
+      end
+      from_node.save!
     end
-    from_node.save!
   end
 end
 
