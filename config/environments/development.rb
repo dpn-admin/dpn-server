@@ -51,6 +51,9 @@ Rails.application.configure do
   # Configure the local node's namespace
   config.local_namespace = ENV['DPN_NAMESPACE'] || "hathi"
 
+  # Set the local node's api_root
+  config.local_api_root = ENV['DPN_API_ROOT'] || "http://127.0.0.1"
+
   # Set the staging directory root.
   config.staging_dir = ENV['DPN_STAGING_DIR'] || Rails.root.join("dpnrepo", "staging")
 

@@ -62,6 +62,10 @@ class Node < ActiveRecord::Base
     end
   end
 
+  def self.local_node!
+    self.find_by_namespace!(Rails.configuration.local_namespace)
+  end
+
   protected
   def generate_hash(raw_value)
     return raw_value

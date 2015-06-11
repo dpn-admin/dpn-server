@@ -104,4 +104,11 @@ describe Node do
     node.save!
     expect(node.reload.auth_credential).to eql(cred)
   end
+
+  describe "::local_node" do
+    it "finds the local node" do
+      Fabricate(:node, namespace: Rails.configuration.local_namespace)
+      expect(Node.local_node!.namespace).to eql(Rails.configuration.local_namespace)
+    end
+  end
 end

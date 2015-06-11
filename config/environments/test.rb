@@ -46,6 +46,7 @@ Rails.application.configure do
   config.cipher_key = "foMXggnM3xLHatbSP0ZXW6ThZXOXqp8ImyaJQ/0Jlqo=\n"
   config.cipher_iv = "L213BeYaK4QDG8krUaCYnA==\n"
   config.local_namespace = "hathi"
+  config.local_api_root = "http://127.0.0.1"
   config.staging_dir = File.join("/tmp","dpnrepo", "staging")
   config.repo_dir = File.join("/tmp","dpnrepo", "preservation")
   config.transfer_private_key = "/tmp/dpnxfr_private_key_test"
