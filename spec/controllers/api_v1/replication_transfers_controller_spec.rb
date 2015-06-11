@@ -261,31 +261,87 @@ describe ApiV1::ReplicationTransfersController do
 
   describe "POST #create" do
     before(:each) do
-
+      @post_body = {replication_id:  Faker::Code.isbn,
+                    from_node: Fabricate(:node).namespace,
+                    to_node: Fabricate(:node).namespace,
+                    uuid:  Fabricate(:bag).uuid,
+                    fixity_algorithm: Fabricate(:fixity_alg).name,
+                    fixity_nonce: nil,
+                    fixity_value: nil,
+                    fixity_accept: nil,
+                    bag_valid: nil,
+                    status: Fabricate(:replication_status).name,
+                    protocol: Fabricate(:protocol).name,
+                    link: "#{Faker::Internet.user_name}@#{Faker::Internet.url}",
+                    created_at: "2015-05-28T23:59:39Z",
+                    updated_at: "2015-05-28T23:59:39Z"}
     end
     context "without authorization" do
-      it "responds with 401"
-      it "does not create the record"
+      it "responds with 401" do
+        post :create, @post_body
+        expect(response).to have_http_status(401)
+      end
+      it "does not create the record" do
+        post :create, @post_body
+        expect(ReplicationTransfer.find_by_replication_id(@post_body[:replication_id])).to be_nil
+      end
     end
 
     context "with authorization" do
       context "as non-local node" do
-        it "responds with 403"
-        it "does not create the record"
+        before(:each) do
+          @auth_node = Fabricate(:node)
+          @request.headers["Authorization"] = "Token token=#{@auth_node.auth_credential}"
+        end
+        it "responds with 403" do
+          post :create, @post_body
+          expect(response).to have_http_status(403)
+        end
+        it "does not create the record" do
+          post :create, @post_body
+          expect(ReplicationTransfer.find_by_replication_id(@post_body[:replication_id])).to be_nil
+        end
       end
       context "as local node" do
+        before(:each) do
+          @auth_node = Fabricate(:local_node, namespace: Rails.configuration.local_namespace)
+          @request.headers["Authorization"] = "Token token=#{@auth_node.auth_credential}"
+        end
         context "with valid attributes" do
-          it "responds with 201"
-          it "saves the new object to the database"
+          it "responds with 201" do
+            post :create, @post_body
+            expect(response).to have_http_status(201)
+          end
+          it "saves the new object to the database" do
+            post :create, @post_body
+            expect(ReplicationTransfer.find_by_replication_id(@post_body[:replication_id])).to be_valid
+          end
+          it "spawns a CreateBagMgrRequestJob" do
+            expect {
+              post :create, @post_body
+            }.to enqueue_a(CreateBagMgrRequestJob)
+          end
           context "duplicate" do
-            it "responds with 409"
+            before(:each) { Fabricate(:replication_transfer, replication_id: @post_body[:replication_id]) }
+            it "responds with 409" do
+              post :create, @post_body
+              expect(response).to have_http_status(409)
+            end
           end
         end
         context "without valid attributes" do
-          it "does not create the record"
-          it "responds with 400"
+          before(:each) do
+            @post_body[:status] = "invalidstatus"
+          end
+          it "does not create the record" do
+            post :create, @post_body
+            expect(ReplicationTransfer.find_by_replication_id(@post_body[:replication_id])).to be_nil
+          end
+          it "responds with 400" do
+            post :create, @post_body
+            expect(response).to have_http_status(400)
+          end
         end
-
       end
     end
   end
@@ -327,6 +383,21 @@ describe ApiV1::ReplicationTransfersController do
           it_behaves_like "a statemachine", :confirmed, [:cancelled, :stored] { test_context.call }
           it_behaves_like "a statemachine", :stored, [] { test_context.call }
           it_behaves_like "a statemachine", :cancelled, [] { test_context.call }
+          it "spawns a BagPreserveJob" do
+            bag_mgr_request = Fabricate(:bag_manager_request)
+            transfer = Fabricate(:replication_transfer,
+                                 replication_status: ReplicationStatus.find_or_create_by(name: :received),
+                                 fixity_value: "dfafasdfasggdgadg",
+                                 to_node: @local_node,
+                                 bag_valid: true,
+                                 bag_mgr_request_id: bag_mgr_request.id)
+            body = ApiV1::ReplicationTransferPresenter.new(transfer).to_hash
+            body[:status] = :confirmed
+            body[:fixity_accept] = true
+            expect {
+              put :update, body
+            }.to enqueue_a(BagPreserveJob).with(bag_mgr_request, bag_mgr_request.staging_location, Rails.configuration.repo_dir)
+          end
         end
 
         context "where local_node is unimplicated" do  # We're uninvolved and we're syncing

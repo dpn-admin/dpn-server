@@ -8,8 +8,10 @@ class FrequentApple::RunTime < ActiveRecord::Base
 
   after_initialize :defaults!
 
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true
+  validates :namespace, presence: true
   validates :last_run_time, presence: true
+  validates_uniqueness_of :name, scope: :namespace
 
   def defaults!
     self.last_run_time ||= Time.at(0)

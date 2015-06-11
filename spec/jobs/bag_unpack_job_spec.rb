@@ -1,23 +1,18 @@
 require 'rails_helper'
 
-shared_examples "a BagUnpackJob" do
-  it "enqueues a BagFixityJob"
-  it "passes the request to BagFixityJob"
-  it "passes the bag_location to BagFixityJob"
-  it "enqueues a BagValidateJob"
-  it "passes the request to BagValidateJob"
-  it "passes the bag_location to BagValidateJob"
-
-  it "sets request.status to :unpacked" do
-    BagUnpackJob.perform_now(@request, @file_to_unpack)
-    expect(@request.reload.status.to_sym).to eql(:unpacked)
-  end
-end
-
 describe BagUnpackJob, type: :job do
   before(:each) do
-    @request = Fabricate(:bag_manager_request, status: :downloaded)
-    @bag_location = "/tmp/some/staging/area/#{@request.id}/#{File.basename @request.source_location}"
+    @request = Fabricate(:bag_manager_request, status: :downloaded, fixity: "dafdsafsfa")
+    @bag_location = "/tmp/some/fake/location"
+
+    @unpacked_location = "/tmp/some/fake/location/unpacked"
+    bag = double(:bag)
+    allow(bag).to receive(:location).and_return(@unpacked_location)
+
+    serialized_bag = double(:serialized_bag)
+    allow(serialized_bag).to receive(:"unserialize!").and_return(bag)
+
+    allow(DPN::Bagit::SerializedBag).to receive(:new).and_return(serialized_bag)
   end
 
   after(:each) do
@@ -25,45 +20,38 @@ describe BagUnpackJob, type: :job do
     ActiveJob::Base.queue_adapter.performed_jobs = []
   end
 
-  context "mocked SerializedBag" do
-    before(:each) do
-      bag = double("bag")
-      allow(bag).to receive(:location) { @bag_location }
-      allow_any_instance_of(DPN::Bagit::SerializedBag).to receive(:unserialize!).and_return(bag)
-    end
+  subject { BagUnpackJob.perform_now(@request, @bag_location) }
 
-    context "is a directory" do
-      before(:each) do
-        allow(File).to receive(:directory?).and_return(true)
-        @file_to_unpack = @bag_location
-      end
+  [".tar"].each do |file_type|
+    context "extension=#{file_type}" do
+      before(:each) { allow(File).to receive(:extname).and_return(file_type) }
 
-      # it "does not unpack a directory" do
-      #   expect_any_instance_of(DPN::Bagit::SerializedBag).to_not receive(:unserialize!)
-      #   BagUnpackJob.perform_now(@request, @file_to_unpack)
-      # end
+      [true,false].each do |is_a_directory|
+        context "File.directory? == #{is_a_directory}" do
+          before(:each) { allow(File).to receive(:directory?).and_return(is_a_directory) }
 
+          it "enqueues a BagValidateJob" do
+            expect {subject}.to enqueue_a(BagValidateJob)
+          end
 
+          it "passes the request to the BagValidateJob" do
+            expect(BagValidateJob).to receive(:perform_later).with(@request, anything)
+            subject
+          end
 
-
-    end
-
-    context "is not a directory" do
-      before(:each) do
-        allow(File).to receive(:directory?).and_return(FalseClass)
-        @file_to_unpack = @bag_location + ".tar"
-      end
-
-      context "Extension is .tar" do
-        before(:each) do
-          allow(File).to receive(:extname).and_return(".tar")
+          it "passes the bag_location to the BagValidateJob" do
+            expect(BagValidateJob).to receive(:perform_later).with(anything(), is_a_directory ? @bag_location : @unpacked_location)
+            subject
+          end
+          it "sets request.status to unpacked" do
+            subject
+            expect(@request.reload.status).to eql("unpacked")
+          end
         end
-
-        # it "unpacks the serialized bag"
-
-
       end
-
     end
   end
+
+
+
 end

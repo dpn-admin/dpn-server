@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150522225204) do
+ActiveRecord::Schema.define(version: 20150601204621) do
 
   create_table "bag_manager_requests", force: :cascade do |t|
     t.string   "source_location",       limit: 255,                 null: false
@@ -94,9 +94,10 @@ ActiveRecord::Schema.define(version: 20150522225204) do
   create_table "frequent_apple_run_times", force: :cascade do |t|
     t.string   "name",          limit: 255,                                 null: false
     t.datetime "last_run_time",             default: '1970-01-01 00:00:00', null: false
+    t.string   "namespace",     limit: 255,                                 null: false
   end
 
-  add_index "frequent_apple_run_times", ["name"], name: "index_frequent_apple_run_times_on_name", unique: true, using: :btree
+  add_index "frequent_apple_run_times", ["name", "namespace"], name: "index_frequent_apple_run_times_on_name_and_namespace", unique: true, using: :btree
 
   create_table "nodes", force: :cascade do |t|
     t.string   "namespace",          limit: 255, null: false

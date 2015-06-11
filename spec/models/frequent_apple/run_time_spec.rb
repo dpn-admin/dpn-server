@@ -16,4 +16,8 @@ describe FrequentApple::RunTime, type: :model do
     expect(FrequentApple::RunTime.find(m.id).last_run_time.utc.iso8601).to eql(now.utc.iso8601)
   end
 
+  it "is invalid without a namespace" do
+    expect(Fabricate.build(:frequent_apple_run_time, namespace: nil)).to_not be_valid
+  end
+
 end

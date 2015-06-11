@@ -2,11 +2,13 @@ require 'rails_helper'
 
 describe BagRetrievalJob, type: :job do
   before(:each) do
-    @request = Fabricate(:bag_manager_request)
+    @request = Fabricate(:bag_manager_request, status: :requested, cancelled: false)
     @staging_dir = "/tmp/some/staging/area"
     @expected_dest_dir = File.join @staging_dir, @request.id.to_s
     @expected_dest_file = File.join @expected_dest_dir, File.basename(@request.source_location)
   end
+
+  subject { BagRetrievalJob.perform_now(@request, @staging_dir) }
 
   after(:each) do
     ActiveJob::Base.queue_adapter.enqueued_jobs = []
@@ -19,34 +21,33 @@ describe BagRetrievalJob, type: :job do
     end
 
     it "runs rsync to copy from source to dest" do
-      expect(Rsync).to receive(:run).once.with(@request.source_location, @expected_dest_dir, anything)
-      BagRetrievalJob.perform_now(@request, @staging_dir)
+      subject()
+      expect(Rsync).to have_received(:run).once.with(@request.source_location, @expected_dest_dir, anything)
     end
 
-    it "enqueues a BagUnpack job" do
-      expect {
-        BagRetrievalJob.perform_now(@request, @staging_dir)
-      }.to enqueue_a(BagUnpackJob)
+    it "does not enqueue a BagUnpackJob" do
+      expect {subject}.to_not enqueue_a(BagUnpackJob)
     end
 
-    it "passes the request to a BagUnpack job" do
-      expect(BagUnpackJob).to receive(:perform_later).with(@request, anything)
-      BagRetrievalJob.perform_now(@request, @staging_dir)
+    it "enqueues a BagFixityJob" do
+      expect {subject}.to enqueue_a(BagFixityJob)
     end
 
-    it "passes the destination to a BagUnpack job" do
-      expect(BagUnpackJob).to receive(:perform_later).with(anything(), @expected_dest_file)
-      BagRetrievalJob.perform_now(@request, @staging_dir)
+    it "passes the request to a BagFixityjob" do
+      expect(BagFixityJob).to receive(:perform_later).with(@request, anything)
+      subject()
+    end
+
+    it "passes the destination to a BagFixityJob" do
+      expect(BagFixityJob).to receive(:perform_later).with(anything(), @expected_dest_file)
+      subject
     end
 
     it "sets request.status to :downloaded" do
-      BagRetrievalJob.perform_now(@request, @staging_dir)
+      subject()
       expect(@request.reload.status).to eql(:downloaded.to_s)
     end
-
   end
-
-
 
 
 end

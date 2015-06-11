@@ -25,6 +25,7 @@ module Balustrade
 
     # ActiveJob should use delayed_job
     config.active_job.queue_adapter = :delayed_job
+    config.autoload_paths << "#{Rails.root}/app/jobs/frequent_apple/concerns/"
 
     config.generators do |g|
       g.test_framework :rspec,

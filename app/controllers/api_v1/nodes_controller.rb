@@ -7,6 +7,9 @@ class ApiV1::NodesController < ApplicationController
   local_node_only :create, :update, :update_auth_credential, :destroy
   uses_pagination :index
 
+  before_action :accept_newer_only, only: :update
+
+
   def index
     raw_nodes = Node.page(@page).per(@page_size)
     @nodes = raw_nodes.collect do |node|
@@ -24,13 +27,9 @@ class ApiV1::NodesController < ApplicationController
   end
 
   def show
-    node = Node.find_by_namespace(params[:namespace])
-    if node.nil?
-      render nothing: true, status: 404
-    else
-      @node = ApiV1::NodePresenter.new(node)
-      render json: @node
-    end
+    node = Node.find_by_namespace!(params[:namespace])
+    @node = ApiV1::NodePresenter.new(node)
+    render json: @node
   end
 
   # This method is internal
@@ -53,13 +52,6 @@ class ApiV1::NodesController < ApplicationController
 
     node = Node.new
 
-    begin
-      node.created_at = params[:created_at].to_time(:utc)
-    rescue ArgumentError
-      render nothing: true, status: 400
-      return
-    end
-
     node.name = params[:name]
     node.namespace = params[:namespace]
     node.api_root = params[:api_root]
@@ -73,6 +65,7 @@ class ApiV1::NodesController < ApplicationController
     node.storage_region = StorageRegion.find_by_name(params[:storage][:region])
     node.storage_type = StorageType.find_by_name(params[:storage][:type])
     node.private_auth_token = params[:private_auth_token]
+    node.created_at = params[:created_at]
 
     if node.save
       render nothing: true, content_type: "application/json", status: 201, location: api_v1_node_url(node)
@@ -102,17 +95,7 @@ class ApiV1::NodesController < ApplicationController
       render nothing: true, status: 400 and return
     end
 
-    begin
-      body_updated_at = DateTime.strptime(params[:updated_at], Time::DATE_FORMATS[:dpn])
-    rescue ArgumentError
-      render json: "Bad updated_at", status: 400 and return
-    end
-
     node = Node.find_by_namespace!(params[:namespace])
-
-    if body_updated_at < node.updated_at
-      render json: "Body describes an old node.", status: 400 and return
-    end
 
     node.name = params[:name]
     node.api_root = params[:api_root]
@@ -153,6 +136,15 @@ class ApiV1::NodesController < ApplicationController
     node = Node.find_by_namespace!(params[:namespace])
     node.destroy!
     render nothing: true, status: 204
+  end
+
+  protected
+  def accept_newer_only
+    node = Node.find_by_namespace!(params[:namespace])
+
+    if params[:updated_at] < node.updated_at
+      render json: "Body describes an old record.", status: 400 and return
+    end
   end
 
 

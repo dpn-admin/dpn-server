@@ -4,7 +4,8 @@ class BagValidateJob < ActiveJob::Base
   def perform(request, bag_location)
     unless request.cancelled
       bag = Bag.new(bag_location)
-      request.fixity = bag.fixity(:sha256)
+      request.validity = bag.valid?
+      request.save!
     end
   end
 end

@@ -44,7 +44,7 @@ module FrequentApple
 
 
   def self.api_version
-    return "api_v1"
+    return "api-v1"
   end
 
 

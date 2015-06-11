@@ -13,7 +13,6 @@ class BagUnpackJob < ActiveJob::Base
       end
       request.status = :unpacked
       request.save!
-      BagFixityJob.perform_later(request, bag_location)
       BagValidateJob.perform_later(request, bag_location)
     end
   end
@@ -21,7 +20,7 @@ class BagUnpackJob < ActiveJob::Base
 
   protected
   def unpack_tar(file)
-    serialized_bag = SerializedBag.new(file)
+    serialized_bag = DPN::Bagit::SerializedBag.new(file)
     bag = serialized_bag.unserialize!
     return bag.location
   end

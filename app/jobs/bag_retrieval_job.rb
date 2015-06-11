@@ -8,8 +8,7 @@ class BagRetrievalJob < ActiveJob::Base
       perform_rsync(request.source_location, destination)
       request.status = :downloaded
       request.save!
-      file_destination = File.join(destination, File.basename(request.source_location))
-      BagUnpackJob.perform_later(request, file_destination)
+      BagFixityJob.perform_later(request, request.staging_location(staging_dir))
     end
   end
 

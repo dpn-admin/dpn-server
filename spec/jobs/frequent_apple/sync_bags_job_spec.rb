@@ -23,11 +23,17 @@ shared_examples "change" do
 end
 
 describe FrequentApple::SyncBagsJob, type: :integration do
+  before(:all) do
+    @all_namespaces = Node.all.collect { |n| n.namespace }
+  end
   before(:each) do
     `bundle exec cap development rrake:all`
     `rake db:clear`
     `rake db:fixtures:load`
-    Fabricate(:frequent_apple_run_time, name: "FrequentApple::SyncBagsJob")
+    Fabricate(:frequent_apple_run_time, name: "FrequentApple::SyncBagsJob", namespace: "tdr")
+    Fabricate(:frequent_apple_run_time, name: "FrequentApple::SyncBagsJob", namespace: "sdr")
+    Fabricate(:frequent_apple_run_time, name: "FrequentApple::SyncBagsJob", namespace: "chron")
+    Fabricate(:frequent_apple_run_time, name: "FrequentApple::SyncBagsJob", namespace: "hathi")
   end
 
   context "when running_node=sdr" do
@@ -37,7 +43,11 @@ describe FrequentApple::SyncBagsJob, type: :integration do
       @bag = Bag.find_by_uuid!("c6f2c6d6-dd4a-4afe-995f-c8d6c5970944") #see fixtures/bags.yml
     end
 
-    subject { FrequentApple::SyncBagsJob.perform_now(@running_node.namespace) }
+    subject {
+      @all_namespaces.each do |_namespace|
+        FrequentApple::SyncBagsJob.perform_now(_namespace, @running_node.namespace)
+      end
+    }
 
     context "when bag exists on running node" do
       context "when bag on tdr is missing" do

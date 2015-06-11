@@ -11,6 +11,13 @@ describe BagManagerRequest, type: :model do
     }.to raise_error(ActiveRecord::ActiveRecordError)
   end
 
+  it "returns the source location" do
+    request = Fabricate(:bag_manager_request)
+    staging_dir = "/herpderp"
+    expected = File.join staging_dir, request.id.to_s, File.basename(request.source_location)
+    expect(request.staging_location(staging_dir)).to eql(expected)
+  end
+
   # Todo: put a lot more validations on the states that can
   # be held here.
 end

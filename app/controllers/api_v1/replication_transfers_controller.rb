@@ -7,6 +7,8 @@ class ApiV1::ReplicationTransfersController < ApplicationController
   local_node_only :create, :set_bag_mgr_request, :destroy
   uses_pagination :index
 
+  before_action :accept_newer_only, only: :update
+
   def index
     conditions = {}
     join_tables = []
@@ -51,6 +53,28 @@ class ApiV1::ReplicationTransfersController < ApplicationController
       end
     end
 
+    before_time = nil
+    after_time = nil
+    begin
+      if params[:before]
+        before_time = DateTime.strptime(params[:before], Time::DATE_FORMATS[:dpn])
+      end
+      if params[:after]
+        after_time = DateTime.strptime(params[:after], Time::DATE_FORMATS[:dpn])
+      end
+    rescue ArgumentError
+      render json: "Bad parameters", status: 400 and return
+    end
+
+    range_clause = nil
+    if before_time && after_time
+      range_clause = ["#{ReplicationTransfer.table_name}.updated_at", after_time..before_time]
+    elsif before_time
+      range_clause = ["#{ReplicationTransfer.table_name}.updated_at <= ?", before_time]
+    elsif after_time
+      range_clause = ["#{ReplicationTransfer.table_name}.updated_at >= ?", after_time]
+    end
+
     ordering = {updated_at: :desc}
     if params[:order_by]
       new_ordering = {}
@@ -80,7 +104,13 @@ class ApiV1::ReplicationTransfersController < ApplicationController
       end
     end
 
-    raw_transfers = ReplicationTransfer.joins(join_tables).where(conditions).order(ordering).page(@page).per(@page_size)
+    if range_clause
+      raw_transfers = ReplicationTransfer.joins(join_tables).where(conditions).where(range_clause).order(ordering).page(@page).per(@page_size)
+    else
+      raw_transfers = ReplicationTransfer.joins(join_tables).where(conditions).order(ordering).page(@page).per(@page_size)
+
+    end
+
     @replication_transfers = raw_transfers.collect do |transfer|
       ApiV1::ReplicationTransferPresenter.new(transfer)
     end
@@ -97,33 +127,38 @@ class ApiV1::ReplicationTransfersController < ApplicationController
 
 
   def show
-    repl = ReplicationTransfer.find_by_replication_id(params[:replication_id])
-    if repl.nil?
-      render nothing: true, status: 404
-    else
-      @replication_transfer = ApiV1::ReplicationTransferPresenter.new(repl)
-      render json: @replication_transfer, status: 200
-    end
+    repl = ReplicationTransfer.find_by_replication_id!(params[:replication_id])
+    @replication_transfer = ApiV1::ReplicationTransferPresenter.new(repl)
+    render json: @replication_transfer, status: 200
   end
 
 
   # This method is internal
   def create
     transfer = ReplicationTransfer.new
-    transfer.id = params[:replication_transfer][:repl_id]
-    transfer.from_node = Node.find_by_namespace(params[:replication_transfer][:from_node])
-    transfer.to_node = Node.find_by_namespace(params[:replication_transfer][:to_node])
-    transfer.bag = Bag.find_by_uuid(params[:replication_transfer][:uuid])
-    transfer.fixity_alg = FixityAlg.find_by_name(params[:replication_transfer][:fixity_alg])
-    transfer.fixity_nonce = params[:replication_transfer][:fixity_nonce]
-    transfer.fixity_value = params[:replication_transfer][:fixity_value]
-    transfer.fixity_accept = params[:replication_transfer][:fixity_accept]
-    transfer.bag_valid = params[:replication_transfer][:bag_valid]
-    transfer.replication_status = ReplicationStatus.find_by_name(params[:replication_transfer][:status])
-    transfer.protocol = Protocol.find_by_name(params[:replication_transfer][:protocol])
-    transfer.link = params[:replication_transfer][:link]
-    transfer.save
-    render json: ApiV1::ReplicationTransferPresenter.new(transfer)
+    transfer.replication_id = params[:replication_id]
+    transfer.from_node = Node.find_by_namespace(params[:from_node])
+    transfer.to_node = Node.find_by_namespace(params[:to_node])
+    transfer.bag = Bag.find_by_uuid(params[:uuid])
+    transfer.fixity_alg = FixityAlg.find_by_name(params[:fixity_algorithm])
+    transfer.fixity_nonce = params[:fixity_nonce]
+    transfer.fixity_value = params[:fixity_value]
+    transfer.fixity_accept = params[:fixity_accept]
+    transfer.bag_valid = params[:bag_valid]
+    transfer.replication_status = ReplicationStatus.find_by_name(params[:status])
+    transfer.protocol = Protocol.find_by_name(params[:protocol])
+    transfer.link = params[:link]
+    if transfer.save
+      CreateBagMgrRequestJob.perform_later(transfer)
+      render nothing: true, content_type: "application/json", status: 201,
+             location: api_v1_replication_transfers_url(transfer)
+    else
+      if transfer.errors[:replication_id].include?("has already been taken")
+        render nothing: true, status: 409
+      else
+        render nothing: true, status: 400
+      end
+    end
   end
 
 
@@ -137,19 +172,6 @@ class ApiV1::ReplicationTransfersController < ApplicationController
 
     unless expected_params.all? { |param| params.has_key?(param)}
       render nothing: true, status: 400 and return
-    end
-
-    begin
-      body_updated_at = DateTime.strptime(params[:updated_at], Time::DATE_FORMATS[:dpn])
-    rescue ArgumentError
-      render json: "Bad updated_at", status: 400 and return
-    end
-
-    transfer = ReplicationTransfer.find_by_replication_id!(params[:replication_id])
-
-
-    if body_updated_at < transfer.updated_at
-      render json: "Body describes an old bag.", status: 400 and return
     end
 
     transfer = ReplicationTransfer.find_by_replication_id!(params[:replication_id])
@@ -183,6 +205,8 @@ class ApiV1::ReplicationTransfersController < ApplicationController
       render nothing: true, status: 400 and return
     end
 
+    spawn_bag_preserve_job = false
+    # requester | local_node's role | old status | new status
     case [from, role, old_status, new_status]
       when [:us, :from_node, :requested, :cancelled]
         transfer.bag_valid = params[:bag_valid]
@@ -203,6 +227,7 @@ class ApiV1::ReplicationTransfersController < ApplicationController
         transfer.bag_valid = params[:bag_valid]
       when [:us, :to_node, :received, :confirmed]
         transfer.fixity_accept = params[:fixity_accept]
+        spawn_bag_preserve_job = true
       when [:us, :to_node, :received, :cancelled]
         transfer.fixity_accept = params[:fixity_accept]
       when [:us, :to_node, :confirmed, :cancelled]
@@ -246,6 +271,10 @@ class ApiV1::ReplicationTransfersController < ApplicationController
 
     transfer.replication_status = ReplicationStatus.find_by_name(new_status)
     if transfer.save
+      if spawn_bag_preserve_job
+        bag_mgr_request = BagManagerRequest.find(transfer.bag_mgr_request_id)
+        BagPreserveJob.perform_later(bag_mgr_request, bag_mgr_request.staging_location, Rails.configuration.repo_dir)
+      end
       render json: ApiV1::ReplicationTransferPresenter.new(transfer)
     else
       render nothing: true, status: 400
@@ -283,6 +312,16 @@ class ApiV1::ReplicationTransfersController < ApplicationController
     repl = ReplicationTransfer.find_by_replication_id!(params[:replication_id])
     repl.destroy!
     render nothing: true, status: 204
+  end
+
+
+  protected
+  def accept_newer_only
+    repl = ReplicationTransfer.find_by_replication_id!(params[:replication_id])
+
+    if params[:updated_at] < repl.updated_at
+      render json: "Body describes an old record.", status: 400 and return
+    end
   end
 
 end

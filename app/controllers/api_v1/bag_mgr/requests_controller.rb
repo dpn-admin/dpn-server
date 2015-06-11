@@ -16,9 +16,14 @@ class ApiV1::BagMgr::RequestsController < ApplicationController
 
   def create
     params.require(:source_location)
-    @request = BagManagerRequest.create(source_location: params[:source_location],
-                             status: :requested)
-    render json: @request, status: 201
+    request = BagManagerRequest.create!(
+        source_location: params[:source_location],
+        status: :requested)
+
+    BagRetrievalJob.perform_later(request, Rails.configuration.staging_dir)
+
+    render nothing: true, content_type: "application/json", status: 201,
+        location: api_v1_bag_mgr_requests_url(request)
   end
 
 
@@ -69,6 +74,13 @@ class ApiV1::BagMgr::RequestsController < ApplicationController
     @request = BagManagerRequest.find(params[:id])
     @request.update!(cancelled: true)
     render json: @request, status: 200
+  end
+
+
+  def destroy
+    params.require(:id)
+    BagManagerRequest.destroy(params[:id])
+    render nothing: true, status: 204
   end
 
 end

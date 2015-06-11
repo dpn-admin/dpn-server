@@ -90,6 +90,12 @@ describe ApiV1::BagMgr::RequestsController, type: :controller do
           post :create, @post_body
           expect(@bag_mgr_request.reload).to be_valid
         end
+
+        it "spawns a BagRetrievalJob" do
+          expect {
+            post :create, @post_body
+          }.to enqueue_a(BagRetrievalJob)
+        end
       end
 
       describe "PUT #downloaded" do
@@ -139,6 +145,24 @@ describe ApiV1::BagMgr::RequestsController, type: :controller do
         end
         subject { put :cancel, id: @existing.id}
         it_behaves_like "an update", :cancelled, true
+      end
+
+      describe "DELETE #destroy" do
+        before(:each) do
+          @existing = Fabricate(:bag_manager_request)
+        end
+        it "destroys the record" do
+          delete :destroy, id: @existing.id
+          expect(BagManagerRequest.exists?(@existing.id)).to be false
+        end
+        it "has status code 204" do
+          delete :destroy, id: @existing.id
+          expect(response).to have_http_status(204)
+        end
+        it "returns 404 if the record doesn't exist" do
+          delete :destroy, id: 37272
+          expect(response).to have_http_status(404)
+        end
       end
 
     end

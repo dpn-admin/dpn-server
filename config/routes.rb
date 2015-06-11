@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  namespace :api_v1 do
+  namespace :api_v1, path: :"api-v1" do
     resources :nodes, only: [:index, :show, :create, :update, :destroy], path: :node, param: :namespace
     put "/node/:namespace/auth_credential", controller: :nodes, action: :update_auth_credential
     resources :bags, only: [:index, :show, :create, :update, :destroy], path: :bag, param: :uuid
@@ -14,7 +14,7 @@ Rails.application.routes.draw do
       put "/requests/:id/validity", controller: :requests, action: :validity
       put "/requests/:id/preserved", controller: :requests, action: :preserved
       put "/requests/:id/cancel", controller: :requests, action: :cancel
-      resources :requests, only: [:index, :show, :create], path: :requests
+      resources :requests, only: [:index, :show, :create, :destroy], path: :requests
     end
   end
 end
