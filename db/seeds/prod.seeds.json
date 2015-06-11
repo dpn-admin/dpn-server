@@ -27,57 +27,5 @@
   ],
   "storage_type": [
     "default"
-  ],
-  "node": {
-    "sdr": {
-      "namespace": "sdr",
-      "name": "Stanford University",
-      "storage_region": "default",
-      "storage_type": "default",
-      "fixity_algs": ["md5","sha256"],
-      "protocols": ["rsync"],
-      "api_root": "stanford.edu/dpn",
-      "private_auth_token": "sdr_token"
-    },
-    "tdr": {
-      "namespace": "tdr",
-      "name": "Texas Digital Repository",
-      "storage_region": "default",
-      "storage_type": "default",
-      "fixity_algs": ["md5","sha256"],
-      "protocols": ["rsync"],
-      "api_root": "dpn.texas.edu",
-      "private_auth_token": "tdr_token"
-    },
-    "hathi": {
-      "namespace": "hathi",
-      "name": "HathiTrust",
-      "storage_region": "default",
-      "storage_type": "default",
-      "fixity_algs": ["md5","sha256"],
-      "protocols": ["rsync"],
-      "api_root": "dpn.hathitrust.org",
-      "private_auth_token": "hathi_token"
-    },
-    "aptrust": {
-      "namespace": "aptrust",
-      "name": "APTrust",
-      "storage_region": "default",
-      "storage_type": "default",
-      "fixity_algs": ["md5","sha256"],
-      "protocols": ["rsync"],
-      "api_root": "aptrust.org/dpn",
-      "private_auth_token": "aptrust_token"
-    },
-    "chron": {
-      "namespace": "chron",
-      "name": "Chronopolis",
-      "storage_region": "default",
-      "storage_type": "default",
-      "fixity_algs": ["md5","sha256"],
-      "protocols": ["rsync"],
-      "api_root": "dpn.chronopolis.edu",
-      "private_auth_token": "chron_token"
-    }
-  }
+  ]
 }
