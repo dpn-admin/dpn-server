@@ -1,5 +1,5 @@
 class RemoveOrphanBagMgrRequestsJob < ActiveJob::Base
-  queue_as :default
+  queue_as :internal
 
   def perform(local_namespace = Rails.configuration.local_namespace)
     local_node = Node.find_by_namespace!(local_namespace)

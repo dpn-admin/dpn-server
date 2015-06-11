@@ -1,5 +1,5 @@
 class BagFixityJob < ActiveJob::Base
-  queue_as :default
+  queue_as :internal
 
   def perform(request, bag_location)
     unless request.cancelled

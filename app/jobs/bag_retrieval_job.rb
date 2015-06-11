@@ -1,5 +1,5 @@
 class BagRetrievalJob < ActiveJob::Base
-  queue_as :default
+  queue_as :internal
 
   def perform(request, staging_dir)
     unless request.cancelled

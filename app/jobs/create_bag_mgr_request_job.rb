@@ -2,7 +2,7 @@ require "json"
 require "frequent_apple"
 
 class CreateBagMgrRequestJob < ActiveJob::Base
-  queue_as :default
+  queue_as :internal
 
   def perform(replication_transfer, local_namespace =  Rails.configuration.local_namespace)
     local_node = Node.find_by_namespace!(local_namespace)

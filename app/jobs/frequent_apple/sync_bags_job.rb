@@ -5,7 +5,7 @@ require "json"
 # from the admin node, and copy the update to the
 # local node.
 class FrequentApple::SyncBagsJob < ActiveJob::Base
-  queue_as :default
+  queue_as :external
   include RunTimeManagement
   include Remote
 

@@ -3,7 +3,7 @@ require "frequent_apple"
 # from the implicated node, and copy the update to the
 # local node.
 class FrequentApple::SyncNodeJob < ActiveJob::Base
-  queue_as :default
+  queue_as :external
   include Remote
 
   # @param target_namespace [String] Namespace of the node to operate on.

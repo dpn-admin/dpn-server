@@ -5,7 +5,7 @@ require "json"
 # transfer from the from_node, and copy the update to the
 # local node.
 class FrequentApple::SyncReplicationTransfersJob < ActiveJob::Base
-  queue_as :default
+  queue_as :external
   include RunTimeManagement
   include Remote
 

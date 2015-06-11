@@ -5,7 +5,7 @@ require "json"
 # info to the corresponding replication
 # transfer.
 class FrequentApple::UpdateReplicationStatusJob < ActiveJob::Base
-  queue_as :default
+  queue_as :external
   include Remote
 
   def perform(target_namespace, local_node_namespace = Rails.configuration.local_namespace)
