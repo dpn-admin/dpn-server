@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150521214914) do
+ActiveRecord::Schema.define(version: 20150522225204) do
 
   create_table "bag_manager_requests", force: :cascade do |t|
     t.string   "source_location",       limit: 255,                 null: false
@@ -260,7 +260,7 @@ ActiveRecord::Schema.define(version: 20150521214914) do
   add_foreign_key "data_interpretive", "bags", column: "interpretive_bag_id", on_update: :cascade
   add_foreign_key "data_rights", "bags", column: "data_bag_id", on_update: :cascade, on_delete: :cascade
   add_foreign_key "data_rights", "bags", column: "rights_bag_id", on_update: :cascade
-  add_foreign_key "fixity_checks", "bags", on_update: :cascade
+  add_foreign_key "fixity_checks", "bags", on_update: :cascade, on_delete: :cascade
   add_foreign_key "fixity_checks", "fixity_algs", on_update: :cascade, on_delete: :cascade
   add_foreign_key "nodes", "storage_regions", on_update: :cascade
   add_foreign_key "nodes", "storage_types", on_update: :cascade

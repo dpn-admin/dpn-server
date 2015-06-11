@@ -5,7 +5,7 @@ namespace :db do
     ReplicationTransfer.delete_all
     BagManagerRequest.delete_all
     FixityCheck.delete_all
-    Bag.delete_all
+    Bag.destroy_all
     Node.delete_all
   end
 

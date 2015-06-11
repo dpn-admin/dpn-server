@@ -64,6 +64,7 @@ GEM
     configliere (0.4.18)
       highline (>= 1.5.2)
       multi_json (>= 1.1)
+    daemons (1.2.2)
     debug_inspector (0.0.2)
     delayed_job (4.0.6)
       activesupport (>= 3.0, < 5.0)
@@ -212,6 +213,7 @@ DEPENDENCIES
   capistrano (~> 3.4.0)
   capistrano-rails (~> 1.1)
   capistrano-rbenv (~> 2.0)
+  daemons
   delayed_job_active_record
   dpn-bagit (~> 0.3.0)
   easy_cipher (~> 0.9.1)

@@ -136,15 +136,23 @@ class ApiV1::ReplicationTransfersController < ApplicationController
     ]
 
     unless expected_params.all? { |param| params.has_key?(param)}
-      render nothing: true, status: 400
-      return
+      render nothing: true, status: 400 and return
     end
 
-    transfer = ReplicationTransfer.find_by_replication_id(params[:replication_id])
-    if transfer.nil?
-      render nothing: true, status: 404
-      return
+    begin
+      body_updated_at = DateTime.strptime(params[:updated_at], Time::DATE_FORMATS[:dpn])
+    rescue ArgumentError
+      render json: "Bad updated_at", status: 400 and return
     end
+
+    transfer = ReplicationTransfer.find_by_replication_id!(params[:replication_id])
+
+
+    if body_updated_at < transfer.updated_at
+      render json: "Body describes an old bag.", status: 400 and return
+    end
+
+    transfer = ReplicationTransfer.find_by_replication_id!(params[:replication_id])
 
     old_status = transfer.replication_status.name.downcase.to_sym
     new_status = params[:status].downcase.to_sym
@@ -155,8 +163,7 @@ class ApiV1::ReplicationTransfersController < ApplicationController
     elsif @requester.namespace == params[:to_node]
       from = :to_node
     else
-      render nothing: true, status: 403
-      return
+      render nothing: true, status: 403 and return
     end
 
     case local_namespace
@@ -169,13 +176,11 @@ class ApiV1::ReplicationTransfersController < ApplicationController
     end
 
     if from == :to_node && role == :none
-      render nothing: true, status: 403
-      return
+      render nothing: true, status: 403 and return
     end
 
     if old_status == new_status # do nothing
-      render nothing: true, status: 400
-      return
+      render nothing: true, status: 400 and return
     end
 
     case [from, role, old_status, new_status]
@@ -236,8 +241,7 @@ class ApiV1::ReplicationTransfersController < ApplicationController
       when [:to_node, :from_node, :confirmed, :stored]
       when [:to_node, :from_node, :confirmed, :cancelled]
       else
-        render nothing: true, status: 400
-        return
+        render nothing: true, status: 400 and return
     end
 
     transfer.replication_status = ReplicationStatus.find_by_name(new_status)

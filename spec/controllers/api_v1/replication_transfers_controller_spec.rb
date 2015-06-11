@@ -15,7 +15,7 @@ def build_post_body(repl, status)
       :protocol => repl.protocol.name,
       :link => repl.link,
       :created_at => repl.created_at.to_formatted_s(:dpn),
-      :updated_at => repl.updated_at.to_formatted_s(:dpn)
+      :updated_at => DateTime.now.utc.strftime(Time::DATE_FORMATS[:dpn])
   }
 
   if [:received, :confirmed, :stored, :cancelled].include?(status)
@@ -411,6 +411,21 @@ describe ApiV1::ReplicationTransfersController do
           token = Faker::Code.isbn
           @auth_node = Fabricate(:node, private_auth_token: token)
           @request.headers["Authorization"] = "Token token=#{token}"
+        end
+        context "body has old timestamps" do
+          before(:each) do
+            @post_body[:created_at] = "2010-02-25T16:24:02Z"
+            @post_body[:updated_at] = "2010-02-25T16:24:02Z"
+          end
+          it "responds with 400" do
+            put :update, @post_body
+            expect(response).to have_http_status(400)
+          end
+          it "does not update the record" do
+            put :update, @post_body
+            instance = ReplicationTransfer.find_by_replication_id(@existing_repl[:replication_id])
+            expect(instance).to eql(@existing_repl)
+          end
         end
         context "record does not exist" do
           before(:each) do

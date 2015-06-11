@@ -14,6 +14,10 @@ class TestResponse
   def body
     return @body.to_json
   end
+
+  def ok?
+    true
+  end
 end
 
 describe FrequentApple do

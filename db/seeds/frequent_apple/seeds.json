@@ -1,9 +1,9 @@
 {
   "run_time": [
-    "SyncNodesJob",
-    "SyncBagsJob",
-    "SyncReplicationTransfersJob",
-    "SyncRestorationTransfersJob",
-    "AcceptTransfersJob"
+    "FrequentApple::SyncNodesJob",
+    "FrequentApple::SyncBagsJob",
+    "FrequentApple::SyncReplicationTransfersJob",
+    "FrequentApple::SyncRestorationTransfersJob",
+    "FrequentApple::AcceptTransfersJob"
   ]
 }

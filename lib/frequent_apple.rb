@@ -91,7 +91,9 @@ module FrequentApple
   # @yield [results] A block to process the results on a page.
   # @yieldparam [Array<Hash>] records The records found on the page.
   def self.get_and_depaginate_helper(client, page_url, &block)
-    page = JSON.parse(client.get(page_url, follow_redirect: true).body, symbolize_names: true)
+    response = client.get(page_url, follow_redirect: true)
+    raise RuntimeError, "#{response.headers}\n#{response.body}" unless response.ok?
+    page = JSON.parse(response.body, symbolize_names: true)
     yield page[:results] || []
     if page[:next] && page[:results].empty? == false
       next_page_url = page[:next]

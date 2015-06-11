@@ -277,7 +277,7 @@ describe ApiV1::NodesController do
           :protocols => Fabricate.times(2, :protocol).collect { |p| p.name },
           :fixity_algorithms => Fabricate.times(3, :fixity_alg).collect { |f| f.name },
           :created_at => @existing_node.created_at.to_formatted_s(:dpn),
-          :updated_at => @existing_node.updated_at.to_formatted_s(:dpn),
+          :updated_at => DateTime.now.utc.strftime(Time::DATE_FORMATS[:dpn]),
           :storage => {
               :region => @existing_node.storage_region.name,
               :type => @existing_node.storage_type.name
@@ -349,6 +349,21 @@ describe ApiV1::NodesController do
         end
 
         context "with valid attributes" do
+          before(:each) { @post_body[:name] = "adfasfdasdfsagsdgagadgd" }
+          context "with old timestamp" do
+            before(:each) do
+              @post_body[:created_at] = "2010-02-25T16:24:02Z"
+              @post_body[:updated_at] = "2010-02-25T16:24:02Z"
+            end
+            it "responds with 400" do
+              put :update, @post_body
+              expect(response).to have_http_status(400)
+            end
+            it "does not update the record" do
+              put :update, @post_body
+              expect(Node.find_by_namespace(@existing_node[:namespace])).to eql(@existing_node)
+            end
+          end
           it "responds wtih 200" do
             put :update, @post_body
             expect(response).to have_http_status(200)

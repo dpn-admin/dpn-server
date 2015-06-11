@@ -1,17 +1,3 @@
-hathi:
-  namespace: "hathi"
-  name: "HathiTrust"
-  storage_region: default
-  storage_type: default
-  fixity_algs:
-    - md5
-    - sha256
-  protocols:
-    - rsync
-  api_root: "http://127.0.0.1"
-  private_auth_token: "hathi_token"
-  auth_credential: "lewwPcS4gXmPzmBFFv0/tQ=="
-
 sdr:
   namespace: "sdr"
   name: "Stanford University"

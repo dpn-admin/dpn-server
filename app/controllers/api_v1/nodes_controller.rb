@@ -95,19 +95,23 @@ class ApiV1::NodesController < ApplicationController
     ]
 
     unless expected_params.all? {|param| params.has_key?(param)}
-      render nothing: true, status: 400
-      return
+      render nothing: true, status: 400 and return
     end
 
     unless params[:storage].respond_to?(:has_key?) && params[:storage].has_key?(:region) && params[:storage].has_key?(:type)
-      render nothing: true, status: 400
-      return
+      render nothing: true, status: 400 and return
     end
 
-    node = Node.find_by_namespace(params[:namespace])
-    if node.nil?
-      render nothing: true, status: 404
-      return
+    begin
+      body_updated_at = DateTime.strptime(params[:updated_at], Time::DATE_FORMATS[:dpn])
+    rescue ArgumentError
+      render json: "Bad updated_at", status: 400 and return
+    end
+
+    node = Node.find_by_namespace!(params[:namespace])
+
+    if body_updated_at < node.updated_at
+      render json: "Body describes an old node.", status: 400 and return
     end
 
     node.name = params[:name]

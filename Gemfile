@@ -17,7 +17,7 @@ gem 'dpn-bagit', '~>0.3.0'
 gem 'rpairtree'
 gem 'easy_cipher', '~>0.9.1'
 gem 'httpclient'
-
+gem 'daemons'
 
 group :development, :test do
   gem 'byebug'

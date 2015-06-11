@@ -232,6 +232,7 @@ describe ApiV1::BagsController do
             expect(response).to have_http_status(400)
           end
         end
+
       end
     end
   end
@@ -254,7 +255,7 @@ describe ApiV1::BagsController do
           :version => @existing_bag.version,
           :bag_type => "D",
           :created_at => @existing_bag.created_at.to_formatted_s(:dpn),
-          :updated_at => "2011-02-25T16:24:02Z"
+          :updated_at => DateTime.now.utc.strftime(Time::DATE_FORMATS[:dpn])
       }
 
       @existing_bag.fixity_checks.each do |check|
@@ -307,19 +308,55 @@ describe ApiV1::BagsController do
           end
         end
         context "with invalid attributes" do
+          before(:each) { @post_body[:bag_type] = "X" }
           it "responds with 400" do
-            @post_body[:bag_type] = "X"
             put :update, @post_body
             expect(response).to have_http_status(400)
           end
           it "does not update the record" do
-            @post_body[:bag_type] = "X"
             put :update, @post_body
             expect(Bag.find_by_uuid(@post_body[:uuid])).to eql(@existing_bag)
           end
         end
         context "with valid attributes" do
-          it "responds wtih 200" do
+          context "with a new bag_type" do
+            before(:each) { @post_body[:bag_type] = "R" }
+            it "does not update the record" do
+              put :update, @post_body
+              expect(Bag.find_by_uuid(@post_body[:uuid])).to eql(@existing_bag)
+            end
+          end
+          context "with no changes other than timestamps" do
+            before(:each) do
+              # @post_body[:local_id] = @existing_bag.local_id
+              @post_body = ApiV1::BagPresenter.new(@existing_bag).to_hash
+              @post_body[:updated_at] = 1.day.from_now.utc.to_formatted_s(:dpn)
+            end
+            it "responds with 400" do
+              put :update, @post_body
+              expect(response).to have_http_status(400)
+            end
+            it "does not update the record" do
+              put :update, @post_body
+              expect(Bag.find_by_uuid(@post_body[:uuid])).to eql(@existing_bag)
+            end
+          end
+          context "with old timestamps" do
+            before(:each) do
+              @post_body[:created_at] = "2010-02-25T16:24:02Z"
+              @post_body[:updated_at] = "2010-02-25T16:24:02Z"
+            end
+            it "responds with 400" do
+              put :update, @post_body
+              expect(response).to have_http_status(400)
+            end
+            it "does not update the record" do
+              put :update, @post_body
+              expect(Bag.find_by_uuid(@post_body[:uuid])).to eql(@existing_bag)
+            end
+          end
+
+          it "responds with 200" do
             put :update, @post_body
             expect(response).to have_http_status(200)
           end

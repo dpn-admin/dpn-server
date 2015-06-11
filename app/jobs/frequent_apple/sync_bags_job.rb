@@ -37,7 +37,8 @@ class FrequentApple::SyncBagsJob < ActiveJob::Base
   def update_bags(client, bags)
     bags.each do |bag|
       begin
-        unless client.post("/bag", bag.to_json).ok?
+        resp =  client.post("/bag", bag.to_json)
+        unless resp.ok?
           client.put("/bag/#{bag[:uuid]}", bag.to_json)
         end
       rescue HTTPClient::TimeoutError, SocketError, Errno::ECONNREFUSED
