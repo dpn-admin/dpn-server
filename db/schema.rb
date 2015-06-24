@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150601204621) do
+ActiveRecord::Schema.define(version: 20150624202339) do
 
   create_table "bag_manager_requests", force: :cascade do |t|
     t.string   "source_location",       limit: 255,                 null: false
@@ -247,6 +247,22 @@ ActiveRecord::Schema.define(version: 20150601204621) do
 
   add_index "supported_protocols", ["node_id", "protocol_id"], name: "index_supported_protocols_on_node_id_and_protocol_id", unique: true, using: :btree
   add_index "supported_protocols", ["protocol_id"], name: "fk_rails_da6a85dd20", using: :btree
+
+  create_table "users", force: :cascade do |t|
+    t.string   "email",               limit: 255, default: "",    null: false
+    t.boolean  "admin",               limit: 1,   default: false, null: false
+    t.string   "encrypted_password",  limit: 255, default: "",    null: false
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",       limit: 4,   default: 0,     null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip",  limit: 255
+    t.string   "last_sign_in_ip",     limit: 255
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+  end
+
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
 
   create_table "version_families", force: :cascade do |t|
     t.string "uuid", limit: 255, null: false

@@ -18,6 +18,9 @@ gem 'rpairtree'
 gem 'easy_cipher', '~>0.9.1'
 gem 'httpclient'
 gem 'daemons'
+gem 'rails_admin'
+gem 'devise'
+gem 'cancan'
 
 group :development, :test do
   gem 'byebug'
