@@ -81,7 +81,7 @@ class Node < ActiveRecord::Base
            inverse_of: :to_node
 
   has_and_belongs_to_many :replicated_bags, join_table: "replicating_nodes", uniq: true,
-                          inverse_of: :replicating_nodes
+                          inverse_of: :replicating_nodes, class_name: "Bag"
 
   ### ActiveModel::Dirty Validations
   validates_with ChangeValidator # Only perform a save if the record actually changed.
