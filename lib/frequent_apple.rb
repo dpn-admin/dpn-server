@@ -12,15 +12,7 @@ module FrequentApple
   # api_root.
   # @return [HTTPClient]
   def self.client(api_root, auth_cred)
-    base_header = {
-        "Content-Type" => "application/json",
-        "Authorization" => "Token #{auth_cred}"
-    }
-    client = HTTPClient.new( agent_name: self.name,  # the module's name
-                             base_url: File.join(api_root, self.api_version),
-                             default_header: base_header,
-                             force_basic_auth: true)
-    return client
+    return Client.new(api_root, auth_cred)
   end
 
 
@@ -91,7 +83,7 @@ module FrequentApple
   # @yield [results] A block to process the results on a page.
   # @yieldparam [Array<Hash>] records The records found on the page.
   def self.get_and_depaginate_helper(client, page_url, &block)
-    response = client.get(page_url, follow_redirect: true)
+    response = client.get(page_url)
     raise RuntimeError, "#{response.headers}\n#{response.body}" unless response.ok?
     page = JSON.parse(response.body, symbolize_names: true)
     yield page[:results] || []
