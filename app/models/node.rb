@@ -12,10 +12,10 @@ class Node < ActiveRecord::Base
 
   # Auth Token
   def private_auth_token=(value)
-    write_attribute(:private_auth_token, generate_hash(value))
+    write_attribute(:private_auth_token, Node.generate_hash(value))
   end
 
-  def find_by_private_auth_token(value)
+  def self.find_by_private_auth_token(value)
     super(generate_hash(value))
   end
 
@@ -98,7 +98,7 @@ class Node < ActiveRecord::Base
 
 
   protected
-  def generate_hash(raw_value)
+  def self.generate_hash(raw_value)
     if Rails.env.production?
       return Digest::SHA256.base64digest("#{Rails.application.config.salt}#{raw_value}")
     else
