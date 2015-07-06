@@ -16,7 +16,7 @@ class Node < ActiveRecord::Base
   end
 
   def self.find_by_private_auth_token(value)
-    super(generate_hash(value))
+    Node.find_by(private_auth_token: Node.generate_hash(value))
   end
 
 
