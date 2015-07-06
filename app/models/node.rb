@@ -100,7 +100,7 @@ class Node < ActiveRecord::Base
   protected
   def generate_hash(raw_value)
     if Rails.env.production?
-      return BCrypt::Password.create("#{Rails.application.config.salt}#{raw_value}")
+      return Digest::SHA256.base64digest("#{Rails.application.config.salt}#{raw_value}")
     else
       return raw_value
     end
