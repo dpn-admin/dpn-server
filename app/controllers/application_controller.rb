@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
     [:updated_at, :created_at].each do |key|
       if params.has_key?(key)
         begin
-          timestamp = params[key].split(".")[0]
+          timestamp = params[key].gsub(/\.[0-9]*Z\Z/, "Z")
           params[key] = DateTime.strptime(timestamp, Time::DATE_FORMATS[:dpn])
         rescue ArgumentError
           render json: "Bad #{key}", status: 400 and return
