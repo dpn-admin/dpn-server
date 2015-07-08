@@ -100,7 +100,7 @@ class Node < ActiveRecord::Base
   protected
   def self.generate_hash(raw_value)
     if Rails.env.production?
-      return Digest::SHA256.base64digest("#{Rails.application.config.salt}#{raw_value}")
+      return Digest::SHA256.hexdigest("#{Rails.application.config.salt}#{raw_value.strip}")
     else
       return raw_value
     end
