@@ -43,7 +43,7 @@ class FrequentApple::UpdateReplicationStatusJob < ActiveJob::Base
 
       if new_transfer[:status] != transfer.replication_status.name
         [remote_client, local_client].each do |client|
-          response = client.put("/repl/#{new_transfer[:replication_id]}", new_transfer.to_json)
+          response = client.put("/replicate/#{new_transfer[:replication_id]}", new_transfer.to_json)
           raise RuntimeError, response.body unless response.ok?
         end
       end

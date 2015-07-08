@@ -85,7 +85,7 @@ describe FrequentApple::UpdateReplicationStatusJob, type: :job do
                       subject()
                       [@local_client, @remote_client].each do |client|
                         expect(client).to have_received(:put) do |url, json_body|
-                          expect(url).to eql("/repl/#{@repl.replication_id}")
+                          expect(url).to eql("/replicate/#{@repl.replication_id}")
                           body = JSON.parse(json_body, symbolize_names: true)
                           expect(body[:status]).to eql(mapping)
                         end

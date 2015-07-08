@@ -11,7 +11,7 @@ class FrequentApple::SyncReplicationTransfersJob < ActiveJob::Base
 
   def perform(target_namespace, local_node_namespace = Rails.configuration.local_node)
     if target_namespace != local_node_namespace
-      repl_url = "/repl?from_node=#{target_namespace}&after=#{last_run_time}"
+      repl_url = "/replicate/?from_node=#{target_namespace}&after=#{last_run_time}"
       FrequentApple.get_and_depaginate(remote_client, repl_url) do |transfers|
         update_transfers(local_client, transfers)
       end
@@ -21,9 +21,9 @@ class FrequentApple::SyncReplicationTransfersJob < ActiveJob::Base
   protected
   def update_transfers(client, transfers)
     transfers.each do |transfer|
-      resp = client.post("/repl", transfer.to_json)
+      resp = client.post("/replicate/", transfer.to_json)
       unless resp.ok?
-        client.put("/repl/#{transfer[:replication_id]}", transfer.to_json)
+        client.put("/replicate/#{transfer[:replication_id]}", transfer.to_json)
       end
     end
   end
