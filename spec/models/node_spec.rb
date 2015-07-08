@@ -8,7 +8,7 @@ describe Node do
 
     it "has the same auth_credential and private_auth_token" do
       node = Fabricate(:local_node)
-      expect(node.send(:generate_hash, node.auth_credential)).to eql(node.private_auth_token)
+      expect(Node.send(:generate_hash, node.auth_credential)).to eql(node.private_auth_token)
     end
   end
 
