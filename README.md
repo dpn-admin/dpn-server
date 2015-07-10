@@ -1,5 +1,6 @@
 # DPN-REST-RAILS
-A Rails implementation of the DPN RESTful communication layer.
+A Rails implementation of the DPN RESTful communication layer. The current
+maintainer is [Bryan Hockey](https://github.com/malakai97).
 
 
 # Installation and Deployment
