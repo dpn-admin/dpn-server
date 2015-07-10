@@ -23,7 +23,8 @@ class FrequentApple::SyncReplicationTransfersJob < ActiveJob::Base
     transfers.each do |transfer|
       resp = client.post("/replicate/", transfer.to_json)
       unless resp.ok?
-        client.put("/replicate/#{transfer[:replication_id]}", transfer.to_json)
+        resp = client.put("/replicate/#{transfer[:replication_id]}", transfer.to_json)
+        raise RuntimeError, resp.body unless resp.ok?
       end
     end
   end

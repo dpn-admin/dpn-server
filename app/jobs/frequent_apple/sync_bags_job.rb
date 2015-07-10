@@ -25,7 +25,8 @@ class FrequentApple::SyncBagsJob < ActiveJob::Base
     bags.each do |bag|
       resp =  client.post("/bag", bag.to_json)
       unless resp.ok?
-        client.put("/bag/#{bag[:uuid]}", bag.to_json)
+        resp = client.put("/bag/#{bag[:uuid]}", bag.to_json)
+        raise RuntimeError, resp.body unless resp.ok?
       end
     end
   end
