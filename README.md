@@ -99,6 +99,26 @@ Node.create!(
   auth_credential: "unencrypted_credential")
 ```
 
+## Jobs
+
+Various jobs power some of the facilities of the application.  They use
+[ActiveJob](http://edgeguides.rubyonrails.org/active_job_basics.html), which allows
+you to substitute the job runner of your choice.  The default job runner is
+[Delayed Job](https://github.com/collectiveidea/delayed_job), which makes use of
+the "delayed_jobs" database table that was generated for you.
+
+Most jobs are queued automatically on certain events, and need no further configuration.
+Other jobs require periodic invocation.  Currently this is done via cron.  The following
+command will generate the crontab entries required:
+
+```bash
+DPN_NAMESPACE=<local_namespace> bundle exec whenever
+```
+
+This will include a cron job to start the delayed_job queues on every reboot.  It is
+likely that you will need to modify this to better fit your environment, as well as
+start the queues for the initial deployment.
+
 ### Identification
 
 At minimum, you will need to know each node's namespace string and api root.  The
