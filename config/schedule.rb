@@ -1,7 +1,7 @@
 require "pathname"
 set :path, Pathname.new(File.expand_path(__FILE__)).dirname.parent
 
-nodes =
+job_type :runner,  "cd :path && bundle exec bin/rails runner -e :environment ':task' :output"
 
 (%w(aptrust chron hathi tdr)-[ENV['DPN_NAMESPACE']]).each do |node|
   node = "\"#{node}\""
