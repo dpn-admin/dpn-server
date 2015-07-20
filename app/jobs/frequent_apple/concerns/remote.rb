@@ -6,6 +6,9 @@ module Remote
     before_perform do |job|
       remote_namespace = job.arguments[0]
       local_namespace = job.arguments[1]
+      if local_namespace.blank?
+        local_namespace = Rails.configuration.local_namespace
+      end
       logger.debug("local=#{local_namespace}, remote=#{remote_namespace}")
 
       local_node = Node.find_by_namespace!(local_namespace)
