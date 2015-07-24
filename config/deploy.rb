@@ -30,3 +30,6 @@ namespace :apache do
 end
 
 after :deploy, "apache:restart"
+
+before :deploy, "job:queue:stop"
+after :deploy, "job:queue:start"
