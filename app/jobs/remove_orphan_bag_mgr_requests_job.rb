@@ -5,7 +5,7 @@ class RemoveOrphanBagMgrRequestsJob < ActiveJob::Base
     local_node = Node.find_by_namespace!(local_namespace)
     client = FrequentApple.client(local_node.api_root, local_node.auth_credential)
 
-    wayne_transfers = ReplicationTransfer
+    wayne_transfers = ReplicationTransfer # the transfers' parents are dead
         .joins(:replication_status)
         .where(to_node: local_node)
         .where(replication_statuses: {name: [:cancelled, :stored, :rejected]})

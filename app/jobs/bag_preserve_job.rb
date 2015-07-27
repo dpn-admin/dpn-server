@@ -3,7 +3,7 @@ class BagPreserveJob < ActiveJob::Base
 
   def perform(request, bag_location, storage_dir)
     unless request.cancelled
-      bag = Bag.new(bag_location)
+      bag = DPN::Bagit::Bag.new(bag_location)
       pairtree = Pairtree.at(storage_dir, create: false)
       ppath = pairtree.mk(bag.uuid)
       perform_rsync(File.join(bag_location, "*"), ppath.path)
