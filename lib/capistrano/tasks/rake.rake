@@ -24,19 +24,6 @@ namespace :rrake do
     end
   end
 
-  namespace :jobs do
-    desc "Run rake jobs:clear"
-    task :clear do
-      on roles(:all) do
-        within release_path do
-          with rails_env: fetch(:rails_env) do
-            execute :rake, "jobs:clear"
-          end
-        end
-      end
-    end
-  end
-
   namespace :db do
     desc "Reset the database on all servers!"
     task :reset do
