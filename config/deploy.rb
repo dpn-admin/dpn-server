@@ -31,5 +31,5 @@ end
 
 after :deploy, "apache:restart"
 
-before :deploy, "job:queue:stop"
-after :deploy, "job:queue:start"
+before :deploy, "jobs:queue:stop"
+after :deploy, "jobs:queue:start"
