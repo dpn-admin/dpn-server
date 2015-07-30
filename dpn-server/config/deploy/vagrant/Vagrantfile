@@ -1,0 +1,41 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "vapor"
+  config.vm.provider :virtualbox do |vb|
+    vb.gui = false
+    vb.customize ["modifyvm", :id, "--memory", "512"]
+  end
+
+  config.vm.define "sdr" do |sdr|
+    sdr.vm.hostname = "sdr.umdl.umich.edu"
+    sdr.vm.network :private_network, ip: "192.168.33.11"
+    sdr.vm.network :forwarded_port, guest: 80, host: 8081
+    sdr.vm.network :forwarded_port, guest: 443, host: 8444
+    sdr.vm.network :forwarded_port, guest: 8080, host: 9081
+    sdr.vm.provision "shell", path: "create_virt_host.sh", args: ["sdr", "sdr_salt"]
+  end
+
+  config.vm.define "tdr" do |tdr|
+    tdr.vm.hostname = "tdr.umdl.umich.edu"
+    tdr.vm.network :private_network, ip: "192.168.33.12"
+    tdr.vm.network :forwarded_port, guest: 80, host: 8082
+    tdr.vm.network :forwarded_port, guest: 443, host: 8445
+    tdr.vm.network :forwarded_port, guest: 8080, host: 9082
+    tdr.vm.provision "shell", path: "create_virt_host.sh", args: ["tdr", "tdr_salt"]
+
+  end
+
+  config.vm.define "chron" do |chron|
+    chron.vm.hostname = "chron.umdl.umich.edu"
+    chron.vm.network :private_network, ip: "192.168.33.13"
+    chron.vm.network :forwarded_port, guest: 80, host: 8083
+    chron.vm.network :forwarded_port, guest: 443, host: 8446
+    chron.vm.network :forwarded_port, guest: 8080, host: 9083
+    chron.vm.provision "shell", path: "create_virt_host.sh", args: ["chron", "chron_salt"]
+  end
+
+end
