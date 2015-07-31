@@ -1,12 +1,12 @@
 require 'rails_helper'
 require "frequent_apple"
 
-describe RemoveOrphanBagMgrRequestsJob, type: :job do
+describe RemoveOrphanBagmanRequestsJob, type: :job do
   before(:each) do
     @local_node = Fabricate(:local_node, namespace: Rails.configuration.local_namespace)
   end
 
-  subject { RemoveOrphanBagMgrRequestsJob.perform_now() }
+  subject { RemoveOrphanBagmanRequestsJob.perform_now() }
 
   [:cancelled, :stored, :rejected].each do |repl_status|
     context "when repl status is #{repl_status}" do
@@ -16,10 +16,10 @@ describe RemoveOrphanBagMgrRequestsJob, type: :job do
         allow(FrequentApple).to receive(:client).and_return(@client)
       end
 
-      context "when BagMgrRequest exists" do
+      context "when BagmanRequest exists" do
         before(:each) do
-          @bag_mgr_request = Fabricate(:bag_manager_request)
-          @replication_transfer.bag_mgr_request_id = @bag_mgr_request.id
+          @bag_man_request = Fabricate(:bag_man_request)
+          @replication_transfer.bag_man_request_id = @bag_man_request.id
           @replication_transfer.save!
           response = double(:response)
           allow(response).to receive(:ok?).and_return(true)
@@ -30,17 +30,17 @@ describe RemoveOrphanBagMgrRequestsJob, type: :job do
         end
         it "requests a deletion" do
           subject()
-          expect(@client).to have_received(:delete).with("/bag_mgr/requests/#{@bag_mgr_request.id}")
+          expect(@client).to have_received(:delete).with("/bag_man/requests/#{@bag_man_request.id}")
         end
-        it "sets bag_mgr_request_id to nil" do
+        it "sets bag_man_request_id to nil" do
           subject()
-          expect(@replication_transfer.reload.bag_mgr_request_id).to be_nil
+          expect(@replication_transfer.reload.bag_man_request_id).to be_nil
         end
       end
 
-      context "when BagMgrRequest doesn't exist" do
+      context "when BagmanRequest doesn't exist" do
         before(:each) do
-          @replication_transfer.bag_mgr_request_id = rand(9999)
+          @replication_transfer.bag_man_request_id = rand(9999)
           @replication_transfer.save!
           response = double(:response)
           allow(response).to receive(:ok?).and_return(false)
@@ -50,9 +50,9 @@ describe RemoveOrphanBagMgrRequestsJob, type: :job do
         it "raises no exceptions" do
           expect {subject}.to_not raise_error
         end
-        it "sets bag_mgr_request_id to nil" do
+        it "sets bag_man_request_id to nil" do
           subject()
-          expect(@replication_transfer.reload.bag_mgr_request_id).to be_nil
+          expect(@replication_transfer.reload.bag_man_request_id).to be_nil
         end
       end
 

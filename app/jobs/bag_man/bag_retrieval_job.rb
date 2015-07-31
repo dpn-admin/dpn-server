@@ -1,4 +1,4 @@
-class BagRetrievalJob < ActiveJob::Base
+class BagMan::BagRetrievalJob < ActiveJob::Base
   queue_as :internal
 
   def perform(request, staging_dir)

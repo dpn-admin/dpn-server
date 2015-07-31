@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe BagFixityJob, type: :job do
+describe BagMan::BagFixityJob, type: :job do
   before(:each) do
-    @request = Fabricate(:bag_manager_request, status: :downloaded)
+    @request = Fabricate(:bag_man_request, status: :downloaded)
     @bag_location = "/tmp/some/fake/location"
     @fixity = "fafasdfsdfasdgdsasdfasdfasdf"
     serialized_bag = double(:serialized_bag)

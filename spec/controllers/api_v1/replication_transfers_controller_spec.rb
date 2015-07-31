@@ -316,10 +316,10 @@ describe ApiV1::ReplicationTransfersController do
             post :create, @post_body
             expect(ReplicationTransfer.find_by_replication_id(@post_body[:replication_id])).to be_valid
           end
-          it "spawns a CreateBagMgrRequestJob" do
+          it "spawns a CreateBagmanRequestJob" do
             expect {
               post :create, @post_body
-            }.to enqueue_a(CreateBagMgrRequestJob)
+            }.to enqueue_a(CreateBagmanRequestJob)
           end
           context "duplicate" do
             before(:each) { Fabricate(:replication_transfer, replication_id: @post_body[:replication_id]) }
@@ -384,19 +384,19 @@ describe ApiV1::ReplicationTransfersController do
           it_behaves_like "a statemachine", :stored, [] { test_context.call }
           it_behaves_like "a statemachine", :cancelled, [] { test_context.call }
           it "spawns a BagPreserveJob" do
-            bag_mgr_request = Fabricate(:bag_manager_request)
+            bag_man_request = Fabricate(:bag_man_request)
             transfer = Fabricate(:replication_transfer,
                                  replication_status: ReplicationStatus.find_or_create_by(name: :received),
                                  fixity_value: "dfafasdfasggdgadg",
                                  to_node: @local_node,
                                  bag_valid: true,
-                                 bag_mgr_request_id: bag_mgr_request.id)
+                                 bag_man_request_id: bag_man_request.id)
             body = ApiV1::ReplicationTransferPresenter.new(transfer).to_hash
             body[:status] = :confirmed
             body[:fixity_accept] = true
             expect {
               put :update, body
-            }.to enqueue_a(BagPreserveJob).with(bag_mgr_request, bag_mgr_request.staging_location, Rails.configuration.repo_dir)
+            }.to enqueue_a(BagPreserveJob).with(bag_man_request, bag_man_request.staging_location, Rails.configuration.repo_dir)
           end
         end
 
@@ -530,14 +530,14 @@ describe ApiV1::ReplicationTransfersController do
     end
   end
 
-  describe "PUT #set_bag_mgr_request" do
+  describe "PUT #set_bag_man_request" do
     before(:each) do
       @repl = Fabricate(:replication_transfer)
       @id = rand(10000)
     end
 
     context "without authorization" do
-      subject { put :set_bag_mgr_request, id: @repl.id, bag_mgr_request_id: @id }
+      subject { put :set_bag_man_request, id: @repl.id, bag_man_request_id: @id }
       it "responds with 401" do
         subject()
         expect(response).to have_http_status(401)
@@ -548,7 +548,7 @@ describe ApiV1::ReplicationTransfersController do
       end
       it "does not create the record" do
         subject()
-        expect(ReplicationTransfer.where(bag_mgr_request_id: @id)).to be_empty
+        expect(ReplicationTransfer.where(bag_man_request_id: @id)).to be_empty
       end
     end
 
@@ -558,7 +558,7 @@ describe ApiV1::ReplicationTransfersController do
           @auth_node = Fabricate(:node)
           @request.headers["Authorization"] = "Token token=#{@auth_node.auth_credential}"
         end
-        subject { put :set_bag_mgr_request, id: @repl.id, bag_mgr_request_id: @id }
+        subject { put :set_bag_man_request, id: @repl.id, bag_man_request_id: @id }
 
         it "responds with 403" do
           subject()
@@ -566,7 +566,7 @@ describe ApiV1::ReplicationTransfersController do
         end
         it "does not create the record" do
           subject()
-          expect(ReplicationTransfer.where(bag_mgr_request_id: @id)).to be_empty
+          expect(ReplicationTransfer.where(bag_man_request_id: @id)).to be_empty
         end
       end
 
@@ -577,7 +577,7 @@ describe ApiV1::ReplicationTransfersController do
         end
 
         context "without pre-existing record" do
-          subject { put :set_bag_mgr_request, id: rand(10000), bag_mgr_request_id: @id }
+          subject { put :set_bag_man_request, id: rand(10000), bag_man_request_id: @id }
           it "responds with 404" do
             subject()
             expect(response).to have_http_status(404)
@@ -588,12 +588,12 @@ describe ApiV1::ReplicationTransfersController do
           end
           it "does not create the record" do
             subject()
-            expect(ReplicationTransfer.where(bag_mgr_request_id: @id)).to be_empty
+            expect(ReplicationTransfer.where(bag_man_request_id: @id)).to be_empty
           end
         end
 
         context "with pre-existing record" do
-          subject { put :set_bag_mgr_request, id: @repl.id, bag_mgr_request_id: @id }
+          subject { put :set_bag_man_request, id: @repl.id, bag_man_request_id: @id }
           context "with id not already assigned" do
             it "responds with 200" do
               subject()
@@ -601,12 +601,12 @@ describe ApiV1::ReplicationTransfersController do
             end
             it "assigns the id to the record" do
               subject()
-              expect(@repl.reload.bag_mgr_request_id).to eql(@id)
+              expect(@repl.reload.bag_man_request_id).to eql(@id)
             end
           end
           context "with id already assigned" do
             before(:each) do
-              @repl.bag_mgr_request_id = rand(10000)
+              @repl.bag_man_request_id = rand(10000)
               @repl.save!
             end
             it "responds with 409" do
@@ -615,7 +615,7 @@ describe ApiV1::ReplicationTransfersController do
             end
             it "does not change the id" do
               subject()
-              expect(@repl.reload.bag_mgr_request_id).to_not eql(@id)
+              expect(@repl.reload.bag_man_request_id).to_not eql(@id)
             end
           end
         end

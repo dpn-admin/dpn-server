@@ -1,4 +1,4 @@
-class BagPreserveJob < ActiveJob::Base
+class BagMan::BagPreserveJob < ActiveJob::Base
   queue_as :internal
 
   def perform(request, bag_location, storage_dir)

@@ -11,9 +11,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150624202339) do
+ActiveRecord::Schema.define(version: 20150731213614) do
 
-  create_table "bag_manager_requests", force: :cascade do |t|
+  create_table "bag_man_requests", force: :cascade do |t|
     t.string   "source_location",       limit: 255,                 null: false
     t.string   "preservation_location", limit: 255
     t.integer  "status",                limit: 4,   default: 0
@@ -167,11 +167,11 @@ ActiveRecord::Schema.define(version: 20150624202339) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "replication_id",        limit: 255
-    t.integer  "bag_mgr_request_id",    limit: 4
+    t.integer  "bag_man_request_id",    limit: 4
   end
 
   add_index "replication_transfers", ["bag_id"], name: "fk_rails_bf1ca5e92d", using: :btree
-  add_index "replication_transfers", ["bag_mgr_request_id"], name: "index_replication_transfers_on_bag_mgr_request_id", unique: true, using: :btree
+  add_index "replication_transfers", ["bag_man_request_id"], name: "index_replication_transfers_on_bag_man_request_id", unique: true, using: :btree
   add_index "replication_transfers", ["fixity_alg_id"], name: "fk_rails_231ece98cc", using: :btree
   add_index "replication_transfers", ["from_node_id"], name: "fk_rails_0ea5f9e3de", using: :btree
   add_index "replication_transfers", ["protocol_id"], name: "fk_rails_5912e5cb77", using: :btree

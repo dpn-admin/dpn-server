@@ -11,7 +11,7 @@ Fabricator(:replication_transfer) do
   fixity_nonce { Faker::Internet.password(6) }
   fixity_value nil
   fixity_accept nil
-  bag_mgr_request_id nil
+  bag_man_request_id nil
 end
 
 Fabricator(:replication_transfer_requested, from: :replication_transfer) do
@@ -20,14 +20,14 @@ end
 
 Fabricator(:replication_transfer_rejected, from: :replication_transfer) do
   replication_status { ReplicationStatus.find_or_create_by(name: "rejected")}
-  bag_mgr_request_id { Fabricate(:bag_manager_request, status: :rejected).id }
+  bag_man_request_id { Fabricate(:bag_man_request, status: :rejected).id }
 end
 
 Fabricator(:replication_transfer_received, from: :replication_transfer) do
   replication_status { ReplicationStatus.find_or_create_by(name: "received")}
   fixity_value { Faker::Internet.password(20) }
   bag_valid true
-  bag_mgr_request_id { Fabricate(:bag_manager_request,
+  bag_man_request_id { Fabricate(:bag_man_request,
                                  fixity: Faker::Internet.password(20),
                                  validity: true,
                                  status: :unpacked).id }
@@ -38,7 +38,7 @@ Fabricator(:replication_transfer_confirmed, from: :replication_transfer) do
   fixity_value { Faker::Internet.password(20) }
   bag_valid true
   fixity_accept true
-  bag_mgr_request_id { Fabricate(:bag_manager_request,
+  bag_man_request_id { Fabricate(:bag_man_request,
                                  fixity: Faker::Internet.password(20),
                                  validity: true,
                                  status: :unpacked).id }
@@ -49,7 +49,7 @@ Fabricator(:replication_transfer_stored, from: :replication_transfer) do
   fixity_value { Faker::Internet.password(20) }
   bag_valid true
   fixity_accept true
-  bag_mgr_request_id { Fabricate(:bag_manager_request,
+  bag_man_request_id { Fabricate(:bag_man_request,
                                  fixity: Faker::Internet.password(20),
                                  validity: true,
                                  status: :preserved).id }

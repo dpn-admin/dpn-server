@@ -4,7 +4,7 @@ class ApiV1::ReplicationTransfersController < ApplicationController
   include Authenticate
   include Pagination
 
-  local_node_only :create, :set_bag_mgr_request, :destroy
+  local_node_only :create, :set_bag_man_request, :destroy
   uses_pagination :index
 
   before_action :accept_newer_only, only: :update
@@ -149,7 +149,7 @@ class ApiV1::ReplicationTransfersController < ApplicationController
     transfer.protocol = Protocol.find_by_name(params[:protocol])
     transfer.link = params[:link]
     if transfer.save
-      CreateBagMgrRequestJob.perform_later(transfer)
+      CreateBagManRequestJob.perform_later(transfer)
       render nothing: true, content_type: "application/json", status: 201,
              location: api_v1_replication_transfers_url(transfer)
     else
@@ -272,8 +272,8 @@ class ApiV1::ReplicationTransfersController < ApplicationController
     transfer.replication_status = ReplicationStatus.find_by_name(new_status)
     if transfer.save
       if spawn_bag_preserve_job
-        bag_mgr_request = BagManagerRequest.find(transfer.bag_mgr_request_id)
-        BagPreserveJob.perform_later(bag_mgr_request, bag_mgr_request.staging_location, Rails.configuration.repo_dir)
+        bag_man_request = BagMan::Request.find(transfer.bag_man_request_id)
+        BagMan::BagPreserveJob.perform_later(bag_man_request, bag_man_request.staging_location, Rails.configuration.repo_dir)
       end
       render json: ApiV1::ReplicationTransferPresenter.new(transfer)
     else
@@ -284,19 +284,19 @@ class ApiV1::ReplicationTransfersController < ApplicationController
 
 
   # This method is internal
-  def set_bag_mgr_request
+  def set_bag_man_request
     params.require(:id)
-    params.require(:bag_mgr_request_id)
+    params.require(:bag_man_request_id)
     replication_transfer = ReplicationTransfer.find(params[:id])
-    if replication_transfer.bag_mgr_request_id
-      render json: "Already have a bag_mgr_request_id", status: 409
+    if replication_transfer.bag_man_request_id
+      render json: "Already have a bag_man_request_id", status: 409
     else
-      replication_transfer.bag_mgr_request_id = params[:bag_mgr_request_id]
+      replication_transfer.bag_man_request_id = params[:bag_man_request_id]
       if replication_transfer.save
         @replication_transfer = ApiV1::ReplicationTransferPresenter.new(replication_transfer)
         render json: @replication_transfer, status: 200
       else
-        render json: "Value #{params[:bag_mgr_request_id]} not allowed.", status: 400
+        render json: "Value #{params[:bag_man_request_id]} not allowed.", status: 400
       end
     end
   end

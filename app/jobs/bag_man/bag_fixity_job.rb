@@ -1,4 +1,4 @@
-class BagFixityJob < ActiveJob::Base
+class BagMan::BagFixityJob < ActiveJob::Base
   queue_as :internal
 
   def perform(request, bag_location)

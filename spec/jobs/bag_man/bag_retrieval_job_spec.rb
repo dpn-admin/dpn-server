@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe BagRetrievalJob, type: :job do
+describe BagMan::BagRetrievalJob, type: :job do
   before(:each) do
-    @request = Fabricate(:bag_manager_request, status: :requested, cancelled: false)
+    @request = Fabricate(:bag_man_request, status: :requested, cancelled: false)
     @staging_dir = "/tmp/some/staging/area"
     @expected_dest_dir = File.join @staging_dir, @request.id.to_s
     @expected_dest_file = File.join @expected_dest_dir, File.basename(@request.source_location)

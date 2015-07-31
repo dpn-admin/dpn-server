@@ -1,7 +1,7 @@
 require 'rails_helper'
 require "frequent_apple"
 
-describe CreateBagMgrRequestJob, type: :job do
+describe CreateBagManRequestJob, type: :job do
   before(:each) do
     Fabricate(:local_node, namespace: Rails.configuration.local_namespace)
 
@@ -16,11 +16,11 @@ describe CreateBagMgrRequestJob, type: :job do
     allow(FrequentApple).to receive(:client).and_return(@client)
     @replication_transfer = Fabricate(:replication_transfer)
 
-    CreateBagMgrRequestJob.perform_now(@replication_transfer, Rails.configuration.local_namespace)
+    CreateBagManRequestJob.perform_now(@replication_transfer, Rails.configuration.local_namespace)
   end
 
   it "creates a BagManagerRequest" do
-    expect(@client).to have_received(:post).with("/bag_mgr/requests", anything)
+    expect(@client).to have_received(:post).with("/bag_man/requests", anything)
   end
 
   it "passes a json argument" do
@@ -67,7 +67,7 @@ describe CreateBagMgrRequestJob, type: :job do
     end
   end
 
-  it "sets repl.bag_mgr_request_id to the id" do
-    expect(@replication_transfer.reload.bag_mgr_request_id).to_not be_nil
+  it "sets repl.bag_man_request_id to the id" do
+    expect(@replication_transfer.reload.bag_man_request_id).to_not be_nil
   end
 end

@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe BagUnpackJob, type: :job do
+describe BagMan::BagUnpackJob, type: :job do
   before(:each) do
-    @request = Fabricate(:bag_manager_request, status: :downloaded, fixity: "dafdsafsfa")
+    @request = Fabricate(:bag_man_request, status: :downloaded, fixity: "dafdsafsfa")
     @bag_location = "/tmp/some/fake/location"
 
     @unpacked_location = "/tmp/some/fake/location/unpacked"

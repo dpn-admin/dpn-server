@@ -12,10 +12,10 @@ shared_examples "an update" do |expected_field, expected_value|
   end
 end
 
-describe ApiV1::BagMgr::RequestsController, type: :controller do
+describe BagMan::RequestsController, type: :controller do
   before(:each) do
     @request.headers["Content-Type"] = "application/json"
-    @bag_mgr_request = Fabricate(:bag_manager_request)
+    @bag_man_request = Fabricate(:bag_man_request)
   end
 
   context "without authorization" do
@@ -61,16 +61,16 @@ describe ApiV1::BagMgr::RequestsController, type: :controller do
         end
         context "with pre-existing record" do
           it "responds with 200" do
-            get :show, id: @bag_mgr_request.id
+            get :show, id: @bag_man_request.id
             expect(response).to have_http_status(200)
           end
           it "assigns the correct request to @request" do
-            get :show, id: @bag_mgr_request.id
+            get :show, id: @bag_man_request.id
             expect(assigns(:request)).to_not be_nil
-            expect(assigns(:request).source_location).to eql(@bag_mgr_request.source_location)
+            expect(assigns(:request).source_location).to eql(@bag_man_request.source_location)
           end
           it "renders json" do
-            get :show, id: @bag_mgr_request.id
+            get :show, id: @bag_man_request.id
             expect(response.content_type).to eql("application/json")
           end
         end
@@ -88,7 +88,7 @@ describe ApiV1::BagMgr::RequestsController, type: :controller do
 
         it "saves the new object to the database" do
           post :create, @post_body
-          expect(@bag_mgr_request.reload).to be_valid
+          expect(@bag_man_request.reload).to be_valid
         end
 
         it "spawns a BagRetrievalJob" do
@@ -100,7 +100,7 @@ describe ApiV1::BagMgr::RequestsController, type: :controller do
 
       describe "PUT #downloaded" do
         before(:each) do
-          @existing = Fabricate(:bag_manager_request, status: :requested)
+          @existing = Fabricate(:bag_man_request, status: :requested)
         end
         subject { put :downloaded, id: @existing.id }
         it_behaves_like "an update", :status, :downloaded.to_s
@@ -108,7 +108,7 @@ describe ApiV1::BagMgr::RequestsController, type: :controller do
 
       describe "PUT #unpacked" do
         before(:each) do
-          @existing = Fabricate(:bag_manager_request, status: :downloaded)
+          @existing = Fabricate(:bag_man_request, status: :downloaded)
         end
         subject { put :unpacked, id: @existing.id}
         it_behaves_like "an update", :status, :unpacked.to_s
@@ -116,7 +116,7 @@ describe ApiV1::BagMgr::RequestsController, type: :controller do
 
       describe "PUT #fixity" do
         before(:each) do
-          @existing = Fabricate(:bag_manager_request, status: :unpacked)
+          @existing = Fabricate(:bag_man_request, status: :unpacked)
         end
         subject { put :fixity, id: @existing.id, fixity: "somefixity" }
         it_behaves_like "an update", :fixity, "somefixity"
@@ -124,7 +124,7 @@ describe ApiV1::BagMgr::RequestsController, type: :controller do
 
       describe "PUT #validity" do
         before(:each) do
-          @existing = Fabricate(:bag_manager_request, status: :unpacked)
+          @existing = Fabricate(:bag_man_request, status: :unpacked)
         end
         subject { put :validity, id: @existing.id, validity: true}
         it_behaves_like "an update", :validity, true
@@ -132,7 +132,7 @@ describe ApiV1::BagMgr::RequestsController, type: :controller do
 
       describe "PUT #preserved" do
         before(:each) do
-          @existing = Fabricate(:bag_manager_request, status: :unpacked,
+          @existing = Fabricate(:bag_man_request, status: :unpacked,
                                 validity: true, fixity: "somefixity")
         end
         subject { put :preserved, id: @existing.id}
@@ -141,7 +141,7 @@ describe ApiV1::BagMgr::RequestsController, type: :controller do
 
       describe "PUT #cancel" do
         before(:each) do
-          @existing = Fabricate(:bag_manager_request)
+          @existing = Fabricate(:bag_man_request)
         end
         subject { put :cancel, id: @existing.id}
         it_behaves_like "an update", :cancelled, true
@@ -149,11 +149,11 @@ describe ApiV1::BagMgr::RequestsController, type: :controller do
 
       describe "DELETE #destroy" do
         before(:each) do
-          @existing = Fabricate(:bag_manager_request)
+          @existing = Fabricate(:bag_man_request)
         end
         it "destroys the record" do
           delete :destroy, id: @existing.id
-          expect(BagManagerRequest.exists?(@existing.id)).to be false
+          expect(BagMan::Request.exists?(@existing.id)).to be false
         end
         it "has status code 204" do
           delete :destroy, id: @existing.id
@@ -182,49 +182,49 @@ describe ApiV1::BagMgr::RequestsController, type: :controller do
       end
       describe "GET #show" do
         it "responds with 403" do
-          get :show, id: @bag_mgr_request.id
+          get :show, id: @bag_man_request.id
           expect(response).to have_http_status(403)
         end
       end
       describe "POST #create" do
         it "responds with 403" do
-          post :create, source_location: @bag_mgr_request.source_location
+          post :create, source_location: @bag_man_request.source_location
           expect(response).to have_http_status(403)
         end
       end
       describe "PUT #downloaded" do
         it "responds with 403" do
-          put :downloaded, id: @bag_mgr_request.id
+          put :downloaded, id: @bag_man_request.id
           expect(response).to have_http_status(403)
         end
       end
       describe "PUT #unpacked" do
         it "responds with 403" do
-          put :unpacked, id: @bag_mgr_request.id
+          put :unpacked, id: @bag_man_request.id
           expect(response).to have_http_status(403)
         end
       end
       describe "PUT #fixity" do
         it "responds with 403" do
-          put :fixity, id: @bag_mgr_request.id, fixity: "somefixity"
+          put :fixity, id: @bag_man_request.id, fixity: "somefixity"
           expect(response).to have_http_status(403)
         end
       end
       describe "PUT #validity" do
         it "responds with 403" do
-          put :validity, id: @bag_mgr_request.id, validity: true
+          put :validity, id: @bag_man_request.id, validity: true
           expect(response).to have_http_status(403)
         end
       end
       describe "PUT #preserved" do
         it "responds with 403" do
-          put :preserved, id: @bag_mgr_request.id
+          put :preserved, id: @bag_man_request.id
           expect(response).to have_http_status(403)
         end
       end
       describe "PUT #cancel" do
         it "responds with 403" do
-          put :cancel, id: @bag_mgr_request.id
+          put :cancel, id: @bag_man_request.id
           expect(response).to have_http_status(403)
         end
       end

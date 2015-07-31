@@ -1,4 +1,4 @@
-class RemoveOrphanBagMgrRequestsJob < ActiveJob::Base
+class RemoveOrphanBagmanRequestsJob < ActiveJob::Base
   queue_as :internal
 
   def perform(local_namespace = Rails.configuration.local_namespace)
@@ -9,12 +9,12 @@ class RemoveOrphanBagMgrRequestsJob < ActiveJob::Base
         .joins(:replication_status)
         .where(to_node: local_node)
         .where(replication_statuses: {name: [:cancelled, :stored, :rejected]})
-        .where.not(bag_mgr_request_id: nil)
+        .where.not(bag_man_request_id: nil)
 
     wayne_transfers.each do |parent|
-      response = client.delete("/bag_mgr/requests/#{parent.bag_mgr_request_id}")
+      response = client.delete("/bag_man/requests/#{parent.bag_man_request_id}")
       if response.ok? || response.status == 404 # 404 could indicate it's already been deleted
-        parent.bag_mgr_request_id = nil
+        parent.bag_man_request_id = nil
         parent.save!
       end
     end

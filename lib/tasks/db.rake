@@ -3,7 +3,7 @@ namespace :db do
   task clear: :environment do
     RestoreTransfer.delete_all
     ReplicationTransfer.delete_all
-    BagManagerRequest.delete_all
+    BagMan::Request.delete_all
     FixityCheck.delete_all
     Bag.destroy_all
     Node.delete_all
