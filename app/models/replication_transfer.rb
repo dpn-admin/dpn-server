@@ -16,7 +16,16 @@ class ReplicationTransfer < ActiveRecord::Base
   belongs_to :fixity_alg
   belongs_to :replication_status
   belongs_to :protocol
+  belongs_to :bag_man_request, foreign_key: "bag_man_request_id", inverse_of: :replication_transfer
 
+  ### Callbacks
+  after_update do |record|
+    if record.replication_status.changed? && bag_man_request != nil
+      if [:stored, :rejected, :cancelled].include?(record.replication_status)
+        record.bag_man_request.destroy
+      end
+    end
+  end
 
   ### Static Validations
   validates :replication_id, presence: true, uniqueness: true
