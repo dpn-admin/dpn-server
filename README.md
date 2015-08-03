@@ -1,4 +1,4 @@
-# DPN-REST-RAILS
+# DPN::Server
 A Rails implementation of the DPN RESTful communication layer. The current
 maintainer is [Bryan Hockey](https://github.com/malakai97).
 
@@ -148,3 +148,12 @@ same (before encryption).
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+
+# License
+
+Copyright (c) 2015 The Regents of the University of Michigan.
+All Rights Reserved.
+Licensed according to the terms of the Revised BSD License.
+See LICENSE.md for details.
+
+
