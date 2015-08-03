@@ -1,73 +1,73 @@
 module BagMan
-  class RequestsController < ApplicationController
+  class BagManRequestsController < ApplicationController
     include Authenticate
     local_node_only :index, :show, :create, :downloaded, :unpacked, :fixity, :validity, :preserved, :cancel
 
     def index
-      @requests = Request.all
-      render json: @requests
+      @BagManRequests = BagManRequest.all
+      render json: @BagManRequests
     end
 
 
     def show
-      @request = Request.find(params[:id])
-      render json: @request
+      @BagManRequest = BagManRequest.find(params[:id])
+      render json: @BagManRequest
     end
 
 
     def downloaded
       params.require(:id)
-      @request = Request.find(params[:id])
-      @request.update!(status: :downloaded)
-      render json: @request, status: 200
+      @BagManRequest = BagManRequest.find(params[:id])
+      @BagManRequest.update!(status: :downloaded)
+      render json: @BagManRequest, status: 200
     end
 
 
     def unpacked
       params.require(:id)
-      @request = Request.find(params[:id])
-      @request.update!(status: :unpacked)
-      render json: @request, status: 200
+      @BagManRequest = BagManRequest.find(params[:id])
+      @BagManRequest.update!(status: :unpacked)
+      render json: @BagManRequest, status: 200
     end
 
 
     def fixity
       params.require(:id)
       params.require(:fixity)
-      @request = Request.find(params[:id])
-      @request.update!(fixity: params[:fixity])
-      render json: @request, status: 200
+      @BagManRequest = BagManRequest.find(params[:id])
+      @BagManRequest.update!(fixity: params[:fixity])
+      render json: @BagManRequest, status: 200
     end
 
 
     def validity
       params.require(:id)
       params.require(:validity)
-      @request = Request.find(params[:id])
-      @request.update!(validity: params[:validity])
-      render json: @request, status: 200
+      @BagManRequest = BagManRequest.find(params[:id])
+      @BagManRequest.update!(validity: params[:validity])
+      render json: @BagManRequest, status: 200
     end
 
 
     def preserved
       params.require(:id)
-      @request = Request.find(params[:id])
-      @request.update!(status: :preserved)
-      render json: @request, status: 200
+      @BagManRequest = BagManRequest.find(params[:id])
+      @BagManRequest.update!(status: :preserved)
+      render json: @BagManRequest, status: 200
     end
 
 
     def cancel
       params.require(:id)
-      @request = Request.find(params[:id])
-      @request.update!(cancelled: true)
-      render json: @request, status: 200
+      @BagManRequest = BagManRequest.find(params[:id])
+      @BagManRequest.update!(cancelled: true)
+      render json: @BagManRequest, status: 200
     end
 
 
     def destroy
       params.require(:id)
-      Request.destroy(params[:id])
+      BagManRequest.destroy(params[:id])
       render nothing: true, status: 204
     end
 
