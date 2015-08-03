@@ -1,4 +1,9 @@
-# config valid only for current version of Capistrano
+# Copyright (c) 2015 The Regents of the University of Michigan.
+# All Rights Reserved.
+# Licensed according to the terms of the Revised BSD License
+# See LICENSE.md for details.
+
+
 lock '3.4.0'
 
 set :application, 'DPN-REST-RAILS'

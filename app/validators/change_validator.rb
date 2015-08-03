@@ -1,3 +1,8 @@
+# Copyright (c) 2015 The Regents of the University of Michigan.
+# All Rights Reserved.
+# Licensed according to the terms of the Revised BSD License
+# See LICENSE.md for details.
+
 
 # Validates that if a model has changed, at least one
 # field other than its timestamps have changed.

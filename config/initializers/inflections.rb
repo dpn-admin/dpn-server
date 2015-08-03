@@ -1,4 +1,8 @@
-# Be sure to restart your server when you modify this file.
+# Copyright (c) 2015 The Regents of the University of Michigan.
+# All Rights Reserved.
+# Licensed according to the terms of the Revised BSD License
+# See LICENSE.md for details.
+
 
 # Add new inflection rules using the following format. Inflections
 # are locale specific, and you may define rules for as many different

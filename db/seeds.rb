@@ -1,10 +1,8 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+# Copyright (c) 2015 The Regents of the University of Michigan.
+# All Rights Reserved.
+# Licensed according to the terms of the Revised BSD License
+# See LICENSE.md for details.
+
 
 require "securerandom"
 require "json"

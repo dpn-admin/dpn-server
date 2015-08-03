@@ -1,3 +1,9 @@
+# Copyright (c) 2015 The Regents of the University of Michigan.
+# All Rights Reserved.
+# Licensed according to the terms of the Revised BSD License
+# See LICENSE.md for details.
+
+
 Delayed::Worker.destroy_failed_jobs = false
 #Delayed::Worker.sleep_delay = 60
 Delayed::Worker.max_attempts = 3
