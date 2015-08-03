@@ -1,4 +1,4 @@
-Fabricator(:bag_man_request, class_name: "BagMan::Request") do
+Fabricator(:bag_man_request, class_name: "BagManRequest") do
   source_location { Faker::Internet.url }
   preservation_location nil
   status :requested

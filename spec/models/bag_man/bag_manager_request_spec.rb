@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe BagMan::Request, type: :model do
+describe BagManRequest, type: :model do
   it "has a valid factory" do
     expect(Fabricate(:bag_man_request)).to be_valid
   end

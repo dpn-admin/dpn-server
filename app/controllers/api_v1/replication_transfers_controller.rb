@@ -272,7 +272,7 @@ class ApiV1::ReplicationTransfersController < ApplicationController
     transfer.replication_status = ReplicationStatus.find_by_name(new_status)
     if transfer.save
       if spawn_bag_preserve_job
-        bag_man_request = BagMan::Request.find(transfer.bag_man_request_id)
+        bag_man_request = BagManRequest.find(transfer.bag_man_request_id)
         BagMan::BagPreserveJob.perform_later(bag_man_request, bag_man_request.staging_location, Rails.configuration.repo_dir)
       end
       render json: ApiV1::ReplicationTransferPresenter.new(transfer)

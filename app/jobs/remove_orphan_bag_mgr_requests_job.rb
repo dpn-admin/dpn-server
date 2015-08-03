@@ -1,22 +1,14 @@
 class RemoveOrphanBagmanRequestsJob < ActiveJob::Base
   queue_as :internal
 
-  def perform(local_namespace = Rails.configuration.local_namespace)
-    local_node = Node.find_by_namespace!(local_namespace)
-    client = FrequentApple.client(local_node.api_root, local_node.auth_credential)
+  def perform
+    orphaned_bag_man_requests = BagManRequest
+      .joins(replication_transfer: :replication_status)
+      .where(to_node: Node.local_node!)
+      .where(replication_statuses: {name: [:cancelled, :stored, :rejected]})
 
-    wayne_transfers = ReplicationTransfer # the transfers' parents are dead
-        .joins(:replication_status)
-        .where(to_node: local_node)
-        .where(replication_statuses: {name: [:cancelled, :stored, :rejected]})
-        .where.not(bag_man_request_id: nil)
-
-    wayne_transfers.each do |parent|
-      response = client.delete("/bag_man/requests/#{parent.bag_man_request_id}")
-      if response.ok? || response.status == 404 # 404 could indicate it's already been deleted
-        parent.bag_man_request_id = nil
-        parent.save!
-      end
+    orphaned_bag_man_requests.each do |orphaned_bag_man_request|
+      orphaned_bag_man_request.destroy
     end
   end
 end

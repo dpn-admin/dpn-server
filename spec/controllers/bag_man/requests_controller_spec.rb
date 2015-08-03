@@ -153,7 +153,7 @@ describe BagMan::RequestsController, type: :controller do
         end
         it "destroys the record" do
           delete :destroy, id: @existing.id
-          expect(BagMan::Request.exists?(@existing.id)).to be false
+          expect(BagManRequest.exists?(@existing.id)).to be false
         end
         it "has status code 204" do
           delete :destroy, id: @existing.id
