@@ -149,7 +149,7 @@ class ApiV1::ReplicationTransfersController < ApplicationController
     transfer.protocol = Protocol.find_by_name(params[:protocol])
     transfer.link = params[:link]
     if transfer.save
-      CreateBagManRequestJob.perform_later(transfer)
+      BagMan::Request.create!(source_location: transfer.link, cancelled: false)
       render nothing: true, content_type: "application/json", status: 201,
              location: api_v1_replication_transfers_url(transfer)
     else

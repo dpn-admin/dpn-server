@@ -12,6 +12,10 @@ module BagMan
     validates :validity, inclusion: {in: [nil, false, true]}
     validates :cancelled, inclusion: {in: [false, true]}
 
+    after_create do |record|
+      BagRetrievalJob.perform_later(record, Rails.configuration.staging_dir)
+    end
+
     def staging_location(staging_dir = Rails.configuration.staging_dir)
       destination = File.join staging_dir, self.id.to_s
       staging_location = File.join(destination, File.basename(self.source_location))

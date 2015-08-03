@@ -15,19 +15,6 @@ module BagMan
     end
 
 
-    def create
-      params.require(:source_location)
-      request = Request.create!(
-          source_location: params[:source_location],
-          status: :requested)
-
-      BagRetrievalJob.perform_later(request, Rails.configuration.staging_dir)
-
-      render nothing: true, content_type: "application/json", status: 201,
-          location: api_v1_bag_man_requests_url(request)
-    end
-
-
     def downloaded
       params.require(:id)
       @request = Request.find(params[:id])

@@ -25,7 +25,7 @@ Rails.application.routes.draw do
       put "/requests/:id/validity", controller: :requests, action: :validity
       put "/requests/:id/preserved", controller: :requests, action: :preserved
       put "/requests/:id/cancel", controller: :requests, action: :cancel
-      resources :requests, only: [:index, :show, :create, :destroy], path: :requests
+      resources :requests, only: [:index, :show, :destroy], path: :requests
     end
   end
 end
