@@ -283,7 +283,7 @@ describe ApiV1::NodesController do
           :protocols => Fabricate.times(2, :protocol).collect { |p| p.name },
           :fixity_algorithms => Fabricate.times(3, :fixity_alg).collect { |f| f.name },
           :created_at => @existing_node.created_at.to_formatted_s(:dpn),
-          :updated_at => DateTime.now.utc.strftime(Time::DATE_FORMATS[:dpn]),
+          :updated_at => (DateTime.now + 10.seconds).utc.to_formatted_s(:dpn),
           :storage => {
               :region => @existing_node.storage_region.name,
               :type => @existing_node.storage_type.name
