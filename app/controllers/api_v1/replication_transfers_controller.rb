@@ -155,7 +155,7 @@ class ApiV1::ReplicationTransfersController < ApplicationController
     transfer.protocol = Protocol.find_by_name(params[:protocol])
     transfer.link = params[:link]
     if transfer.save
-      BagMan::Request.create!(source_location: transfer.link, cancelled: false)
+      BagManRequest.create!(source_location: transfer.link, cancelled: false)
       render nothing: true, content_type: "application/json", status: 201,
              location: api_v1_replication_transfers_url(transfer)
     else
@@ -279,7 +279,7 @@ class ApiV1::ReplicationTransfersController < ApplicationController
     if transfer.save
       if spawn_bag_preserve_job
         bag_man_request = BagManRequest.find(transfer.bag_man_request_id)
-        BagMan::BagPreserveJob.perform_later(bag_man_request, bag_man_request.staging_location, Rails.configuration.repo_dir)
+        ::BagMan::BagPreserveJob.perform_later(bag_man_request, bag_man_request.staging_location, Rails.configuration.repo_dir)
       end
       render json: ApiV1::ReplicationTransferPresenter.new(transfer)
     else

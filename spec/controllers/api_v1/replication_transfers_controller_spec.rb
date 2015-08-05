@@ -21,7 +21,7 @@ def build_post_body(repl, status)
       :protocol => repl.protocol.name,
       :link => repl.link,
       :created_at => repl.created_at.to_formatted_s(:dpn),
-      :updated_at => DateTime.now.utc.strftime(Time::DATE_FORMATS[:dpn])
+      :updated_at => (DateTime.now + 10.seconds).utc.to_formatted_s(:dpn)
   }
 
   if [:received, :confirmed, :stored, :cancelled].include?(status)
@@ -322,11 +322,6 @@ describe ApiV1::ReplicationTransfersController do
             post :create, @post_body
             expect(ReplicationTransfer.find_by_replication_id(@post_body[:replication_id])).to be_valid
           end
-          it "spawns a CreateBagmanRequestJob" do
-            expect {
-              post :create, @post_body
-            }.to enqueue_a(CreateBagmanRequestJob)
-          end
           context "duplicate" do
             before(:each) { Fabricate(:replication_transfer, replication_id: @post_body[:replication_id]) }
             it "responds with 409" do
@@ -389,7 +384,7 @@ describe ApiV1::ReplicationTransfersController do
           it_behaves_like "a statemachine", :confirmed, [:cancelled, :stored] { test_context.call }
           it_behaves_like "a statemachine", :stored, [] { test_context.call }
           it_behaves_like "a statemachine", :cancelled, [] { test_context.call }
-          it "spawns a BagPreserveJob" do
+          it "spawns a BagMan::BagPreserveJob" do
             bag_man_request = Fabricate(:bag_man_request)
             transfer = Fabricate(:replication_transfer,
                                  replication_status: ReplicationStatus.find_or_create_by(name: :received),
@@ -400,9 +395,10 @@ describe ApiV1::ReplicationTransfersController do
             body = ApiV1::ReplicationTransferPresenter.new(transfer).to_hash
             body[:status] = :confirmed
             body[:fixity_accept] = true
+            body[:updated_at] = (DateTime.now + 10.seconds).utc.to_formatted_s(:dpn)
             expect {
               put :update, body
-            }.to enqueue_a(BagPreserveJob).with(bag_man_request, bag_man_request.staging_location, Rails.configuration.repo_dir)
+            }.to enqueue_a(::BagMan::BagPreserveJob).with(global_id(bag_man_request), bag_man_request.staging_location, Rails.configuration.repo_dir)
           end
         end
 
