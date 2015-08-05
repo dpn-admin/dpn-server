@@ -20,7 +20,7 @@ class BagManRequest < ActiveRecord::Base
   validates :cancelled, inclusion: {in: [false, true]}
 
   after_create do |record|
-    BagRetrievalJob.perform_later(record, Rails.configuration.staging_dir)
+    ::BagMan::BagRetrievalJob.perform_later(record, Rails.configuration.staging_dir)
   end
 
   def staging_location(staging_dir = Rails.configuration.staging_dir)
