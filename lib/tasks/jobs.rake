@@ -16,4 +16,9 @@ namespace :jobs do
       `ps -ef | grep delayed | grep -v grep | awk '{print $2}' | xargs kill && rm tmp/pids/*`
     end
   end
+
+  desc "Run an arbitrary job for a specific node."
+  task :run, [:jobname, :target_node, :local_node] => :environment do |t, args|
+    args[:jobname].classify.constantize.perform_now(args[:target_node], args[:local_node])
+  end
 end

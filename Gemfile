@@ -25,7 +25,6 @@ gem 'daemons'
 gem 'rails_admin'
 gem 'devise'
 gem 'cancan'
-gem 'whenever'
 
 group :development, :test do
   gem 'byebug'

@@ -1,20 +1,27 @@
-# Copyright (c) 2015 The Regents of the University of Michigan.
-# All Rights Reserved.
-# Licensed according to the terms of the Revised BSD License
-# See LICENSE.md for details.
+# encoding: UTF-8
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
+#
+# Note that this schema.rb definition is the authoritative source for your
+# database schema. If you need to create the application database on another
+# system, you should be using db:schema:load, not running all the migrations
+# from scratch. The latter is a flawed and unsustainable approach (the more migrations
+# you'll amass, the slower it'll run and the greater likelihood for issues).
+#
+# It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20150731213614) do
+ActiveRecord::Schema.define(version: 20150805184158) do
 
   create_table "bag_man_requests", force: :cascade do |t|
     t.string   "source_location",       limit: 255,                 null: false
     t.string   "preservation_location", limit: 255
     t.integer  "status",                limit: 4,   default: 0
     t.string   "fixity",                limit: 255
-    t.boolean  "validity",              limit: 1
+    t.boolean  "validity"
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
-    t.boolean  "cancelled",             limit: 1,   default: false
+    t.boolean  "cancelled",                         default: false
   end
 
   create_table "bags", force: :cascade do |t|
@@ -84,14 +91,6 @@ ActiveRecord::Schema.define(version: 20150731213614) do
   add_index "fixity_checks", ["bag_id", "fixity_alg_id"], name: "index_fixity_checks_on_bag_id_and_fixity_alg_id", unique: true, using: :btree
   add_index "fixity_checks", ["fixity_alg_id"], name: "fk_rails_b310351848", using: :btree
 
-  create_table "frequent_apple_run_times", force: :cascade do |t|
-    t.string   "name",          limit: 255,                                 null: false
-    t.datetime "last_run_time",             default: '1970-01-01 00:00:00', null: false
-    t.string   "namespace",     limit: 255,                                 null: false
-  end
-
-  add_index "frequent_apple_run_times", ["name", "namespace"], name: "index_frequent_apple_run_times_on_name_and_namespace", unique: true, using: :btree
-
   create_table "nodes", force: :cascade do |t|
     t.string   "namespace",          limit: 255, null: false
     t.string   "name",               limit: 255
@@ -152,11 +151,11 @@ ActiveRecord::Schema.define(version: 20150731213614) do
     t.integer  "replication_status_id", limit: 4,     null: false
     t.integer  "protocol_id",           limit: 4,     null: false
     t.string   "link",                  limit: 255,   null: false
-    t.boolean  "bag_valid",             limit: 1
+    t.boolean  "bag_valid"
     t.integer  "fixity_alg_id",         limit: 4,     null: false
     t.text     "fixity_nonce",          limit: 65535
     t.string   "fixity_value",          limit: 255
-    t.boolean  "fixity_accept",         limit: 1
+    t.boolean  "fixity_accept"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "replication_id",        limit: 255
@@ -243,7 +242,7 @@ ActiveRecord::Schema.define(version: 20150731213614) do
 
   create_table "users", force: :cascade do |t|
     t.string   "email",               limit: 255, default: "",    null: false
-    t.boolean  "admin",               limit: 1,   default: false, null: false
+    t.boolean  "admin",                           default: false, null: false
     t.string   "encrypted_password",  limit: 255, default: "",    null: false
     t.datetime "remember_created_at"
     t.integer  "sign_in_count",       limit: 4,   default: 0,     null: false
