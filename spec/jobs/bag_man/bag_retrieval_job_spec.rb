@@ -14,7 +14,7 @@ describe BagMan::BagRetrievalJob, type: :job do
     @expected_dest_file = File.join @expected_dest_dir, File.basename(@request.source_location)
   end
 
-  subject { BagRetrievalJob.perform_now(@request, @staging_dir) }
+  subject { BagMan::BagRetrievalJob.perform_now(@request, @staging_dir) }
 
   after(:each) do
     ActiveJob::Base.queue_adapter.enqueued_jobs = []
@@ -32,20 +32,20 @@ describe BagMan::BagRetrievalJob, type: :job do
     end
 
     it "does not enqueue a BagUnpackJob" do
-      expect {subject}.to_not enqueue_a(BagUnpackJob)
+      expect {subject}.to_not enqueue_a(BagMan::BagUnpackJob)
     end
 
     it "enqueues a BagFixityJob" do
-      expect {subject}.to enqueue_a(BagFixityJob)
+      expect {subject}.to enqueue_a(BagMan::BagFixityJob)
     end
 
     it "passes the request to a BagFixityjob" do
-      expect(BagFixityJob).to receive(:perform_later).with(@request, anything)
+      expect(BagMan::BagFixityJob).to receive(:perform_later).with(@request, anything)
       subject()
     end
 
     it "passes the destination to a BagFixityJob" do
-      expect(BagFixityJob).to receive(:perform_later).with(anything(), @expected_dest_file)
+      expect(BagMan::BagFixityJob).to receive(:perform_later).with(anything(), @expected_dest_file)
       subject
     end
 

@@ -26,7 +26,7 @@ describe BagMan::BagUnpackJob, type: :job do
     ActiveJob::Base.queue_adapter.performed_jobs = []
   end
 
-  subject { BagUnpackJob.perform_now(@request, @bag_location) }
+  subject { BagMan::BagUnpackJob.perform_now(@request, @bag_location) }
 
   [".tar"].each do |file_type|
     context "extension=#{file_type}" do
@@ -37,16 +37,16 @@ describe BagMan::BagUnpackJob, type: :job do
           before(:each) { allow(File).to receive(:directory?).and_return(is_a_directory) }
 
           it "enqueues a BagValidateJob" do
-            expect {subject}.to enqueue_a(BagValidateJob)
+            expect {subject}.to enqueue_a(BagMan::BagValidateJob)
           end
 
           it "passes the request to the BagValidateJob" do
-            expect(BagValidateJob).to receive(:perform_later).with(@request, anything)
+            expect(BagMan::BagValidateJob).to receive(:perform_later).with(@request, anything)
             subject
           end
 
           it "passes the bag_location to the BagValidateJob" do
-            expect(BagValidateJob).to receive(:perform_later).with(anything(), is_a_directory ? @bag_location : @unpacked_location)
+            expect(BagMan::BagValidateJob).to receive(:perform_later).with(anything(), is_a_directory ? @bag_location : @unpacked_location)
             subject
           end
           it "sets request.status to unpacked" do

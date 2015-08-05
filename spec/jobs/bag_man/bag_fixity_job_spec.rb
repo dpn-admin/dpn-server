@@ -16,7 +16,7 @@ describe BagMan::BagFixityJob, type: :job do
     allow(DPN::Bagit::SerializedBag).to receive(:new).and_return(serialized_bag)
   end
 
-  subject { BagFixityJob.perform_now(@request, @bag_location) }
+  subject { BagMan::BagFixityJob.perform_now(@request, @bag_location) }
 
   after(:each) do
     ActiveJob::Base.queue_adapter.enqueued_jobs = []
@@ -29,16 +29,16 @@ describe BagMan::BagFixityJob, type: :job do
   end
 
   it "enqueues a BagUnpackJob" do
-    expect {subject}.to enqueue_a(BagUnpackJob)
+    expect {subject}.to enqueue_a(BagMan::BagUnpackJob)
   end
 
   it "passes the request to a BagUnpackJob" do
-    expect(BagUnpackJob).to receive(:perform_later).with(@request, anything)
+    expect(BagMan::BagUnpackJob).to receive(:perform_later).with(@request, anything)
     subject()
   end
 
   it "passes the bag_location to a BagUnpack job" do
-    expect(BagUnpackJob).to receive(:perform_later).with(anything(), @bag_location)
+    expect(BagMan::BagUnpackJob).to receive(:perform_later).with(anything(), @bag_location)
     subject
   end
 
