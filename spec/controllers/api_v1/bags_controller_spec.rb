@@ -261,7 +261,7 @@ describe ApiV1::BagsController do
           :version => @existing_bag.version,
           :bag_type => "D",
           :created_at => @existing_bag.created_at.to_formatted_s(:dpn),
-          :updated_at => DateTime.now.utc.strftime(Time::DATE_FORMATS[:dpn])
+          :updated_at => (DateTime.now + 10.seconds).utc.to_formatted_s(:dpn)
       }
 
       @existing_bag.fixity_checks.each do |check|
@@ -364,6 +364,7 @@ describe ApiV1::BagsController do
 
           it "responds with 200" do
             put :update, @post_body
+            # expect(response.body).to be(1)
             expect(response).to have_http_status(200)
           end
           it "saves the change to the database" do
