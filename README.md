@@ -13,19 +13,38 @@ All other dependencies are described in the gemfile.
 ## Getting the Files
 
 ```
-git clone git@github.com:dpn-admin/DPN-REST-RAILS.git
+git clone git@github.com:dpn-admin/dpn-server.git
 bundle install --path .bundle
 ```
 
 ## Configuration
 
-The environment variables in config/environments/production.rb must be set.  You
-will also need to set a secret key as specified in config/secrets.yml.  This key
-can be generated with:
+The environment variables in config/environments/production.rb must be set
+under all environments.  As a helper there is an example env-example.sh
+script with all of the required values.  Before running any of the
+```bundle``` commands, you should have these variables defined in your shell
+environment.
+
+
+You will also need to set a secret key as specified in config/secrets.yml.
+This key can be generated with:
 
 ```
 bundle exec rake secret
 ```
+
+### Using Apache Passenger
+
+An example Apache virtualhost file is included in ```apache-dpn-rails-example.conf```
+
+### For Production (i.e. ```config.assets.compile = false``` in application/environment rb configs)
+
+You will need to precompile the assets. This will create a ```public/assets/``` directory.
+
+```
+bundle exec rake assets:precompile
+```
+
 
 ## Database
 
@@ -85,6 +104,13 @@ In order to get bags from other nodes, you'll need to mint a ssh keypair.  The
 private key should be installed locally, and the public key issued to each other
 node.
 
+## Jobs
+
+Various jobs power some of the facilities of the application.  They use
+[ActiveJob](http://edgeguides.rubyonrails.org/active_job_basics.html), which allows
+you to substitute the job runner of your choice.  The default job runner is
+[Delayed Job](https://github.com/collectiveidea/delayed_job), which makes use of
+the "delayed_jobs" database table that was generated for you.
 
 ## Node Configuration
 
@@ -98,14 +124,6 @@ Node.create!(
   private_auth_token: "unencrypted_token",
   auth_credential: "unencrypted_credential")
 ```
-
-## Jobs
-
-Various jobs power some of the facilities of the application.  They use
-[ActiveJob](http://edgeguides.rubyonrails.org/active_job_basics.html), which allows
-you to substitute the job runner of your choice.  The default job runner is
-[Delayed Job](https://github.com/collectiveidea/delayed_job), which makes use of
-the "delayed_jobs" database table that was generated for you.
 
 ### Identification
 
@@ -131,7 +149,7 @@ same (before encryption).
 
 # Contributing
 
-1. Fork it ( https://github.com/dpn-admin/DPN-REST-RAILS/fork )
+1. Fork it ( https://github.com/dpn-admin/dpn-server/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
