@@ -18,3 +18,6 @@
 
 # Rubymine
 /.idea
+
+# Capistrano deployment
+/config/deploy/
