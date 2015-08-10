@@ -13,7 +13,7 @@ set :rbenv_custom_path, '/l/local/rbenv'
 set :rbenv_ruby, '2.2.1'
 set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
 
-set :linked_files, %w{.rbenv-vars}
+set :linked_files, %w{.rbenv-vars .env.production}
 
 
 server ENV['DPN_PROD_SERVER'],

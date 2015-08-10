@@ -5,6 +5,10 @@
 
 source 'https://rubygems.org'
 
+# The require line forces dotenv to be loaded before
+# the other gems.
+gem 'dotenv-rails', require: 'dotenv/rails-now'
+
 gem 'rails', '~> 4.2.2'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'

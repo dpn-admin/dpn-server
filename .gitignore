@@ -18,3 +18,8 @@
 
 # Rubymine
 /.idea
+
+# Ignore application configuration
+/.env.production
+/.env.local
+/.env

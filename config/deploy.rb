@@ -6,8 +6,8 @@
 
 lock '3.4.0'
 
-set :application, 'DPN-REST-RAILS'
-set :repo_url, 'git@github.com:dpn-admin/DPN-REST-RAILS.git'
+set :application, 'dpn-server'
+set :repo_url, 'git@github.com:dpn-admin/dpn-server.git'
 set :scm, :git
 set :format, :pretty
 set :pty, true
