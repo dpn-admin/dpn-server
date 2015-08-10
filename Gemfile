@@ -6,7 +6,6 @@
 source 'https://rubygems.org'
 
 gem 'rails', '~> 4.2.2'
-gem 'mysql2'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'jbuilder', '~> 2.0'
@@ -24,6 +23,10 @@ gem 'daemons'
 gem 'rails_admin'
 gem 'devise'
 gem 'cancan'
+
+group :production do
+  gem 'mysql2'
+end
 
 group :development, :test do
   gem 'sqlite3'
