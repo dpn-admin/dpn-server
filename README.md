@@ -19,25 +19,23 @@ bundle install --path .bundle
 
 ## Configuration
 
+### Development, Test
+
+The default configuration should be sufficient.
+
+### Production 
+
 The environment variables in config/environments/production.rb must be set
-under all environments.  As a helper there is an example env-example.sh
-script with all of the required values.  Before running any of the
+under all environments.  We use [dotenv](https://github.com/bkeepers/dotenv)
+to manage these, so you can se themin a .env.production file.  
+See .env.production.example for the variables that are
+required and what they do.  Before running any of the
 ```bundle``` commands, you should have these variables defined in your shell
 environment.
 
+If you are using Apache with Passenger, An example Apache virtualhost file is 
+included in ```apache-dpn-rails-example.conf```
 
-You will also need to set a secret key as specified in config/secrets.yml.
-This key can be generated with:
-
-```
-bundle exec rake secret
-```
-
-### Using Apache Passenger
-
-An example Apache virtualhost file is included in ```apache-dpn-rails-example.conf```
-
-### For Production (i.e. ```config.assets.compile = false``` in application/environment rb configs)
 
 You will need to precompile the assets. This will create a ```public/assets/``` directory.
 
@@ -45,14 +43,23 @@ You will need to precompile the assets. This will create a ```public/assets/``` 
 bundle exec rake assets:precompile
 ```
 
-
 ## Database
 
+### Development, Test
+
+These environments use a sqlite database.  No configuration is required beyond
+running 
+
+```
+bundle exec rake db:setup
+```
+
+### Production
 You should create a database for your environment.  The project expects a
 MySQL database, and has not been tested with other RDBMSs.
 
-Store the configuration in config/database.yml.  For production, this file
-will instruct Rails to read from the environment.
+The connection credentials should be defined in .env.production, but 
+config/database.yml offers more finely tuned options.
 
 You should not have to create or populate the tables.  Rails will do this
 for you, assuming you have populated the configuration variables.
