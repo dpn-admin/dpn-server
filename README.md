@@ -1,4 +1,7 @@
 # DPN::Server
+
+[![Build Status](https://travis-ci.org/dpn-admin/dpn-server.svg?branch=master)](https://travis-ci.org/dpn-admin/dpn-server)
+
 A Rails implementation of the DPN RESTful communication layer. The current
 maintainer is [Bryan Hockey](https://github.com/malakai97).
 
