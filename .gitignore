@@ -23,3 +23,6 @@
 /.env.production
 /.env.local
 /.env
+
+# Ignore rbenv
+/.ruby-version
