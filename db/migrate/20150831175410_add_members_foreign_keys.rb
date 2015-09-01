@@ -5,6 +5,7 @@ class AddMembersForeignKeys < ActiveRecord::Migration
       
       add_foreign_key :bags, :members,
           column: :member_id,
+          null: false,
           on_delete: :restrict,
           on_update: :cascade
   end
