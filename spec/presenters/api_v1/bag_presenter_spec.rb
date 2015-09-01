@@ -129,6 +129,12 @@ describe ApiV1::BagPresenter do
       expect(hash[:created_at]).to eql(time.to_formatted_s(:dpn))
       expect(hash[:updated_at]).to eql(time.to_formatted_s(:dpn))
     end
+
+    it "returns member name" do
+     member_name = @presenter.to_hash[:member]
+     expect(member_name).to be_a(String)
+     expect(member_name).to_not eql("")
+    end
     
   end
 end
