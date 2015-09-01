@@ -23,8 +23,45 @@ class BagManRequest < ActiveRecord::Base
     ::BagMan::BagRetrievalJob.perform_later(record, Rails.configuration.staging_dir)
   end
 
+  after_update :update_replication_transfer,
+     if: :should_update_replication_transfer?
+
   def staging_location(staging_dir = Rails.configuration.staging_dir)
     destination = File.join staging_dir, self.id.to_s
     staging_location = File.join(destination, File.basename(self.source_location))
+  end
+
+  private
+
+  def update_replication_transfer
+    if replication_transfer
+      replication_transfer.bag_valid = validity
+      replication_transfer.fixity_value = fixity
+      new_status = nil
+      if cancelled
+        new_status = "cancelled"
+      else
+        case status.to_sym
+          when :preserved
+            new_status = "stored"
+          when :rejected
+            new_status = "rejected"
+          when :unpacked
+            if fixity && validity
+              new_status = "received"
+            else
+              new_status = "cancelled"
+            end
+        end
+      end
+      if new_status
+        replication_transfer.replication_status = ReplicationStatus.find_by_name!(new_status)
+      end
+      replication_transfer.save!
+    end
+  end
+
+  def should_update_replication_transfer?
+    status_changed? || validity_changed? || fixity_changed? || cancelled_changed?
   end
 end
