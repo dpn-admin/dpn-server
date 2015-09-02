@@ -6,4 +6,5 @@
 Fabricator(:member) do
   uuid { SecureRandom.uuid }
   name { Faker::Company.name }
+  email { Faker::Internet.email }
 end
