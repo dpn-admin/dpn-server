@@ -52,6 +52,7 @@ class Bag < ActiveRecord::Base
 
   validates :ingest_node, presence: true
   validates :admin_node, presence: true
+  validates :member, presence: true
   validates :local_id, presence: true, uniqueness: true
   validates :size, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
   validates :version_family, presence: true
