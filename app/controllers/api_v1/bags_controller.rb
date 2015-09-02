@@ -94,7 +94,7 @@ class ApiV1::BagsController < ApplicationController
   def create
     expected_params = [:bag_type, :rights, :interpretive, :uuid,
       :local_id, :size, :version, :ingest_node, :admin_node,
-      :replicating_nodes, :first_version_uuid, :fixities
+      :replicating_nodes, :first_version_uuid, :fixities, :member
     ]
 
     unless expected_params.all? {|param| params.has_key?(param)}
@@ -120,6 +120,7 @@ class ApiV1::BagsController < ApplicationController
     bag.local_id = params[:local_id]
     bag.size = params[:size]         #ActiveRecord should convert strings to ints for us
     bag.version = params[:version]   #ActiveRecord should convert strings to ints for us
+    bag.member = Member.find_by_uuid(params[:member])
     bag.ingest_node = Node.find_by_namespace(params[:ingest_node])
     bag.admin_node = Node.find_by_namespace(params[:admin_node])
     bag.replicating_nodes = Node.where(:namespace => params[:replicating_nodes])
