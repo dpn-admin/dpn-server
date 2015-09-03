@@ -45,7 +45,7 @@ class ApiV1::MembersController < ApplicationController
     if member.save
       render nothing:true, content_type: "application/json", status: 201, location: api_v1_member_url(member)
     else 
-      if bags.errors[:uuid].include?("has already been taken")
+      if member.errors[:uuid].include?("has already been taken")
         render json: "Duplicate member", status: 409
       else 
         render json: "Invalid bag", status: 400
