@@ -1,11 +1,10 @@
 class AddMembersForeignKeys < ActiveRecord::Migration
   def change
 
-      add_column :bags, :member_id, :string
+      add_column :bags, :member_id, :integer
       
       add_foreign_key :bags, :members,
           column: :member_id,
-          null: false,
           on_delete: :restrict,
           on_update: :cascade
   end
