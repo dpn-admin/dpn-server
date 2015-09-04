@@ -1,3 +1,5 @@
+# Header
+
 class Member < ActiveRecord::Base
   ### Modifications and Concerns
   include Lowercased

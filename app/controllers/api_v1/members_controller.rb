@@ -54,6 +54,8 @@ class ApiV1::MembersController < ApplicationController
   end
 
   def update
+    # Note: This will ignore any changes in the json to the uuid and name
+    #       Not sure if we want to mark those as invalid requests or what
     member = Member.find_by_uuid!(params[:uuid])
     member.email = params[:email]
 
