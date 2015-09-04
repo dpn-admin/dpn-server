@@ -71,7 +71,7 @@ class ApiV1::MembersController < ApplicationController
       render nothing: true, status: 403 and return
     end
 
-    member = Member.find_by_uuid!(params[:member])
+    member = Member.find_by_uuid!(params[:uuid])
     member.destroy!
     render nothing: true, status: 204
   end
