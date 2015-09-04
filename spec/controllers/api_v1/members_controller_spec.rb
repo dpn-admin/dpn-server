@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 describe ApiV1::MembersController do
-  describe "GET #index" do
-    before(:each) do
-      @member = Fabricate(:member)
-      @node = Fabricate(:node)
-    end
+  # These are lazily initialized
+  let(:node) { Fabricate(:node) }
+  let(:member) { Fabricate(:member) }
+  let(:local_node) { Fabricate(:local_node, namespace: Rails.configuration.local_namespace) }
 
+  describe "GET #index" do
     context "without authorization" do
       it "responds with 401" do
           get :index
@@ -20,7 +20,7 @@ describe ApiV1::MembersController do
 
     context "with authorization" do
       before(:each) do
-        @request.headers["Authorization"] = "Token token=#{@node.auth_credential}"
+        @request.headers["Authorization"] = "Token token=#{node.auth_credential}"
       end
 
       context "with paging parameters" do
@@ -40,14 +40,20 @@ describe ApiV1::MembersController do
   end
 
   describe "GET #show" do
-    before(:each) do
-      @node = Fabricate(:node)
-      @member = Fabricate(:member)
+    context "without authorization" do
+      it "responds with 401" do
+        get :show, uuid: member.uuid
+        expect(response).to have_http_status(401)
+      end
+      it "does not display data" do
+        get :show, uuid: member.uuid
+        expect(response).to render_template(nil)
+      end
     end
 
     context "with authorization" do
       before(:each) do
-        @request.headers["Authorization"] = "Token token=#{@node.auth_credential}"
+        @request.headers["Authorization"] = "Token token=#{node.auth_credential}"
       end
 
       context "without existing member" do
@@ -63,11 +69,11 @@ describe ApiV1::MembersController do
 
       context "with existing member" do
         it "responds with 200" do
-          get :show, uuid: @member.uuid
+          get :show, uuid: member.uuid
           expect(response).to have_http_status(200)
         end
         it "renders json" do
-          get :show, uuid: @member.uuid
+          get :show, uuid: member.uuid
           expect(response.content_type).to eql("application/json")
         end
       end
@@ -87,11 +93,22 @@ describe ApiV1::MembersController do
       }
     end
 
+    context "without authorization" do
+      it "responds with 401" do
+        post :create, @post_body
+        expect(response).to have_http_status(401)
+      end
+      it "does not create the record" do
+        post :create, @post_body
+        expect(Member.find_by_uuid(@post_body[:uuid])).to be_nil
+      end
+
+    end
+
     context "with authorization" do
       context "as local node" do
         before(:each) do
-          @node = Fabricate(:local_node, namespace: Rails.configuration.local_namespace)
-          @request.headers["Authorization"] = "Token token=#{@node.auth_credential}"
+          @request.headers["Authorization"] = "Token token=#{local_node.auth_credential}"
         end
 
         context "with valid attributes" do
@@ -107,14 +124,12 @@ describe ApiV1::MembersController do
 
           context "duplicate" do
             it "responds with 409" do
-              existing_member = Fabricate(:member)
-              @post_body[:uuid] = existing_member.uuid
+              @post_body[:uuid] = member.uuid
               post :create, @post_body
               expect(response).to have_http_status(409)
             end
           end
         end
-
       end
     end
   end
@@ -122,18 +137,28 @@ describe ApiV1::MembersController do
   describe "PUT #update" do
     before(:each) do
       @request.headers["Content-Type"] = "application/json"
-      @existing_member = Fabricate(:member)
       @post_body = {
-        :uuid => @existing_member.uuid,
-        :name => @existing_member.name,
+        :uuid => member.uuid,
+        :name => member.name,
         :email => Faker::Internet.email
       }
     end
+
+    context "without authorization" do
+      it "responds with 401" do
+        put :update, @post_body
+        expect(response).to have_http_status(401)
+      end
+      it "does not update the record" do
+        put :update, @post_body
+        expect(Member.find_by_uuid(@post_body[:uuid])).to eql(member)
+      end
+    end
+
     context "with authorization" do
       context "as local node" do
         before(:each) do
-          @node = Fabricate(:local_node, namespace: Rails.configuration.local_namespace)
-          @request.headers["Authorization"] = "Token token=#{@node.auth_credential}"
+          @request.headers["Authorization"] = "Token token=#{local_node.auth_credential}"
         end
         context "with valid attributes" do 
           it "responds with 200" do
@@ -142,13 +167,13 @@ describe ApiV1::MembersController do
           end
           it "saves the changes to the db" do
             put :update, @post_body
-            expect(Member.find_by_uuid(@existing_member.uuid).email).to eql(@post_body[:email])
+            expect(Member.find_by_uuid(member.uuid).email).to eql(@post_body[:email])
           end
 
           context "with new name" do
             before(:each) do
               @post_body[:name] = Faker::Company.name
-              @post_body[:email] = @existing_member.email
+              @post_body[:email] = member.email
             end
             it "responds with 400" do
               put :update, @post_body
@@ -156,7 +181,7 @@ describe ApiV1::MembersController do
             end
             it "does not update the record" do
               put :update, @post_body
-              expect(Member.find_by_uuid(@existing_member.uuid).name).to eql(@existing_member.name)
+              expect(Member.find_by_uuid(member.uuid).name).to eql(member.name)
             end
           end 
         end
@@ -173,42 +198,49 @@ describe ApiV1::MembersController do
             put :update, @post_body
             expect(Bag.find_by_uuid(@post_body[:uuid])).to be_nil
           end
-
         end
       end
     end
   end
 
   describe "DELETE #destroy" do
-    before(:each) do
-      @member = Fabricate(:member)
-      context "with authorization" do
-        context "as local node" do
-          before(:each) do  
-            @node = Fabricate(:local_node, namespace: Rails.configuration.local_namespace)
-            @request.headers["Authorization"] = "Token token=#{@node.auth_credential}"
+    subject {delete :destroy, uuid: member.uuid}
+
+    context "without authorization" do
+      it "responds with 401" do
+        subject()
+        expect(response).to have_http_status(401)
+      end
+      it "does not delete the record" do
+        subject()
+            expect(Member.find_by_uuid(member[:uuid])).to be_valid
+      end
+    end
+
+    context "with authorization" do
+      context "as local node" do
+        before(:each) do  
+          @request.headers["Authorization"] = "Token token=#{local_node.auth_credential}"
+        end
+        context "with existing member" do
+          it "responds with 204" do
+            subject()
+            expect(response).to have_http_status(204)
           end
-          context "with existing member" do
-            subject {delete :destroy, uuid: @member.uuid}
-            it "responds with 204" do
-              subject()
-              expect(response).to have_http_status(204)
-            end
-            it "deletes the member" do
-              subject()
-              expect(Member.find_by_uuid(@member[:uuid])).to be_nil
-            end
+          it "deletes the member" do
+            subject()
+            expect(Member.find_by_uuid(member[:uuid])).to be_nil
           end
-          context "without existing member" do
-            subject {delete :destroy, uuid: @member.uuid}
-            it "responds with 404" do
-              subject()
-              expect(response).to have_http_status(404)
-            end
-            it "renders nothing" do
-              subject()
-              expect(response).to render_template(nil)
-            end
+        end
+        context "without existing member" do
+          subject {delete :destroy, uuid: SecureRandom.uuid}
+          it "responds with 404" do
+            subject()
+            expect(response).to have_http_status(404)
+          end
+          it "renders nothing" do
+            subject()
+            expect(response).to render_template(nil)
           end
         end
       end
