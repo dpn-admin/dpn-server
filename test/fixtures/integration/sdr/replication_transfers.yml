@@ -1,0 +1,336 @@
+xfer01_to_hathi:
+    link: dpn.hathi@127.0.0.1:outbound/40000000-0000-4000-a000-000000000001.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-1
+    bag: sdr01
+    from_node: sdr
+    to_node: hathi
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer02_to_hathi:
+    link: dpn.hathi@127.0.0.1:outbound/40000000-0000-4000-a000-000000000002.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-2
+    bag: sdr02
+    from_node: sdr
+    to_node: hathi
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer03_to_hathi:
+    link: dpn.hathi@127.0.0.1:outbound/40000000-0000-4000-a000-000000000003.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-3
+    bag: sdr03
+    from_node: sdr
+    to_node: hathi
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer04_to_hathi:
+    link: dpn.hathi@127.0.0.1:outbound/40000000-0000-4000-a000-000000000004.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-4
+    bag: sdr04
+    from_node: sdr
+    to_node: hathi
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer05_to_hathi:
+    link: dpn.hathi@127.0.0.1:outbound/40000000-0000-4000-a000-000000000005.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-5
+    bag: sdr05
+    from_node: sdr
+    to_node: hathi
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer06_to_hathi:
+    link: dpn.hathi@127.0.0.1:outbound/40000000-0000-4000-a000-000000000006.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-6
+    bag: sdr06
+    from_node: sdr
+    to_node: hathi
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer01_to_chron:
+    link: dpn.chron@127.0.0.1:outbound/40000000-0000-4000-a000-000000000001.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-7
+    bag: sdr01
+    from_node: sdr
+    to_node: chron
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer02_to_chron:
+    link: dpn.chron@127.0.0.1:outbound/40000000-0000-4000-a000-000000000002.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-8
+    bag: sdr02
+    from_node: sdr
+    to_node: chron
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer03_to_chron:
+    link: dpn.chron@127.0.0.1:outbound/40000000-0000-4000-a000-000000000003.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-9
+    bag: sdr03
+    from_node: sdr
+    to_node: chron
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer04_to_chron:
+    link: dpn.chron@127.0.0.1:outbound/40000000-0000-4000-a000-000000000004.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-10
+    bag: sdr04
+    from_node: sdr
+    to_node: chron
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer05_to_chron:
+    link: dpn.chron@127.0.0.1:outbound/40000000-0000-4000-a000-000000000005.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-11
+    bag: sdr05
+    from_node: sdr
+    to_node: chron
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer06_to_chron:
+    link: dpn.chron@127.0.0.1:outbound/40000000-0000-4000-a000-000000000006.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-12
+    bag: sdr06
+    from_node: sdr
+    to_node: chron
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer01_to_aptrust:
+    link: dpn.aptrust@127.0.0.1:outbound/40000000-0000-4000-a000-000000000001.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-13
+    bag: sdr01
+    from_node: sdr
+    to_node: aptrust
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer02_to_aptrust:
+    link: dpn.aptrust@127.0.0.1:outbound/40000000-0000-4000-a000-000000000002.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-14
+    bag: sdr02
+    from_node: sdr
+    to_node: aptrust
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer03_to_aptrust:
+    link: dpn.aptrust@127.0.0.1:outbound/40000000-0000-4000-a000-000000000003.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-15
+    bag: sdr03
+    from_node: sdr
+    to_node: aptrust
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer04_to_aptrust:
+    link: dpn.aptrust@127.0.0.1:outbound/40000000-0000-4000-a000-000000000004.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-16
+    bag: sdr04
+    from_node: sdr
+    to_node: aptrust
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer05_to_aptrust:
+    link: dpn.aptrust@127.0.0.1:outbound/40000000-0000-4000-a000-000000000005.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-17
+    bag: sdr05
+    from_node: sdr
+    to_node: aptrust
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer06_to_aptrust:
+    link: dpn.aptrust@127.0.0.1:outbound/40000000-0000-4000-a000-000000000006.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-18
+    bag: sdr06
+    from_node: sdr
+    to_node: aptrust
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer01_to_tdr:
+    link: dpn.tdr@127.0.0.1:outbound/40000000-0000-4000-a000-000000000001.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-19
+    bag: sdr01
+    from_node: sdr
+    to_node: tdr
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer02_to_tdr:
+    link: dpn.tdr@127.0.0.1:outbound/40000000-0000-4000-a000-000000000002.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-20
+    bag: sdr02
+    from_node: sdr
+    to_node: tdr
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer03_to_tdr:
+    link: dpn.tdr@127.0.0.1:outbound/40000000-0000-4000-a000-000000000003.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-21
+    bag: sdr03
+    from_node: sdr
+    to_node: tdr
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer04_to_tdr:
+    link: dpn.tdr@127.0.0.1:outbound/40000000-0000-4000-a000-000000000004.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-22
+    bag: sdr04
+    from_node: sdr
+    to_node: tdr
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer05_to_tdr:
+    link: dpn.tdr@127.0.0.1:outbound/40000000-0000-4000-a000-000000000005.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-23
+    bag: sdr05
+    from_node: sdr
+    to_node: tdr
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer06_to_tdr:
+    link: dpn.tdr@127.0.0.1:outbound/40000000-0000-4000-a000-000000000006.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: sdr-24
+    bag: sdr06
+    from_node: sdr
+    to_node: tdr
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
