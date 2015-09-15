@@ -26,3 +26,6 @@
 
 # Ignore rbenv
 /.ruby-version
+
+# Mac thing
+.DS_Store
