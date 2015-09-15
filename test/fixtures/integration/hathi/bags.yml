@@ -1,5 +1,5 @@
 hathi01:
-    uuid: 10000000-0000-4000-a000-000000000001
+    uuid: 30000000-0000-4000-a000-000000000001
     ingest_node: hathi
     admin_node: hathi
     local_id: Hathi Bag 1
@@ -11,7 +11,7 @@ hathi01:
     version_family: vf01
 
 hathi02:
-    uuid: 10000000-0000-4000-a000-000000000002
+    uuid: 30000000-0000-4000-a000-000000000002
     ingest_node: hathi
     admin_node: hathi
     local_id: Hathi Bag 2
@@ -23,7 +23,7 @@ hathi02:
     version_family: vf02
 
 hathi03:
-    uuid: 10000000-0000-4000-a000-000000000003
+    uuid: 30000000-0000-4000-a000-000000000003
     ingest_node: hathi
     admin_node: hathi
     local_id: Hathi Bag 3
@@ -35,7 +35,7 @@ hathi03:
     version_family: vf03
 
 hathi04:
-    uuid: 10000000-0000-4000-a000-000000000004
+    uuid: 30000000-0000-4000-a000-000000000004
     ingest_node: hathi
     admin_node: hathi
     local_id: Hathi Bag 4
@@ -47,7 +47,7 @@ hathi04:
     version_family: vf04
 
 hathi05:
-    uuid: 10000000-0000-4000-a000-000000000005
+    uuid: 30000000-0000-4000-a000-000000000005
     ingest_node: hathi
     admin_node: hathi
     local_id: Hathi Bag 5
@@ -59,7 +59,7 @@ hathi05:
     version_family: vf05
 
 hathi06:
-    uuid: 10000000-0000-4000-a000-000000000006
+    uuid: 30000000-0000-4000-a000-000000000006
     ingest_node: hathi
     admin_node: hathi
     local_id: Hathi Bag 6
