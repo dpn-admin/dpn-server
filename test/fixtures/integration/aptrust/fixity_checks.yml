@@ -1,0 +1,35 @@
+# Fixity for IntTestValidBag01.tar, aka APTrust bag 10000000-0000-4000-a000-000000000001
+fixity01:
+    bag: aptrust01
+    fixity_alg: sha256
+    value: 13743e26e07afcdab0600104989c5e5de0271ed2dff61cf7804ea294060a75ac
+
+# Fixity for IntTestValidBag02.tar, aka APTrust bag 10000000-0000-4000-a000-000000000002
+fixity02:
+    bag: aptrust02
+    fixity_alg: sha256
+    value: cf647be269c4e84d85eb1bec1eea372f5fd3b5ee0638672890890e3a7b0087bf
+
+# Fixity for IntTestValidBag03.tar, aka APTrust bag 10000000-0000-4000-a000-000000000003
+fixity03:
+    bag: aptrust03
+    fixity_alg: sha256
+    value: de2fdde502591667fdb06b6164ab041d183f6b22cd4bccdf4350d18f50397872
+
+# Fixity for IntTestValidBag04.tar, aka APTrust bag 10000000-0000-4000-a000-000000000004
+fixity04:
+    bag: aptrust04
+    fixity_alg: sha256
+    value: e112ad47b3b280b92a38af2c5be38da7f04b79f4b180cbb92811f74ebc831d18
+
+# Fixity for IntTestValidBag05.tar, aka APTrust bag 10000000-0000-4000-a000-000000000005
+fixity05:
+    bag: aptrust05
+    fixity_alg: sha256
+    value: 2adf29844559d571d921c50c671756a5f6a32af4aebd4c3219f6552d1519a367
+
+# Fixity for IntTestValidBag06.tar, aka APTrust bag 10000000-0000-4000-a000-000000000006
+fixity06:
+    bag: aptrust06
+    fixity_alg: sha256
+    value: 05290a56b4a27258c0e48ac3abcfb9540e39db4d554f4a3d676135b4ecf64888
