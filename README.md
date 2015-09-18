@@ -178,7 +178,7 @@ script/migrate_cluster.sh
 When the databases are ready, run the cluster with this command:
 
 ```
-script/migrate_cluster.sh
+script/run_cluster.sh
 ```
 
 This will run five local DPN nodes on five different ports, each
@@ -196,7 +196,7 @@ each node has bag entries and replication requests for _its own_ six bags, and n
 node knows about the bags in the other nodes.
 
 You can log in to the admin UI for each of these nodes at
-__http://localhost:<port>/admin__ with email address __admin@dpn.org__ and
+__http://localhost:&lt;port&gt;/admin__ with email address __admin@dpn.org__ and
 password __password__.
 
 You can access the REST API of each of these local nodes using one of the following
