@@ -26,17 +26,17 @@ bundle install --path .bundle
 
 The default configuration should be sufficient.
 
-### Production 
+### Production
 
 The environment variables in config/environments/production.rb must be set
 under all environments.  We use [dotenv](https://github.com/bkeepers/dotenv)
-to manage these, so you can se themin a .env.production file.  
+to manage these, so you can se themin a .env.production file.
 See .env.production.example for the variables that are
 required and what they do.  Before running any of the
 ```bundle``` commands, you should have these variables defined in your shell
 environment.
 
-If you are using Apache with Passenger, An example Apache virtualhost file is 
+If you are using Apache with Passenger, An example Apache virtualhost file is
 included in ```apache-dpn-rails-example.conf```
 
 
@@ -51,7 +51,7 @@ bundle exec rake assets:precompile
 ### Development, Test
 
 These environments use a sqlite database.  No configuration is required beyond
-running 
+running
 
 ```
 bundle exec rake db:setup
@@ -61,7 +61,7 @@ bundle exec rake db:setup
 You should create a database for your environment.  The project expects a
 MySQL database, and has not been tested with other RDBMSs.
 
-The connection credentials should be defined in .env.production, but 
+The connection credentials should be defined in .env.production, but
 config/database.yml offers more finely tuned options.
 
 You should not have to create or populate the tables.  Rails will do this
@@ -157,6 +157,88 @@ from each other node.
 Note that for the local node, the auth_credential and private_auth_token should be the
 same (before encryption).
 
+## Running a Local DPN Cluster
+
+You can run a local DPN REST cluster using the run_cluster script in the script
+directory. If you have never run the cluster before, you'll need to set up the
+SQLite databases for the cluster by running this command from the top-level directory
+of the project:
+
+```
+script/setup_cluster.sh
+```
+
+If you have run the cluster before, and you have new database migrations to run, run
+this from the top-level directory of the prject:
+
+```
+script/migrate_cluster.sh
+```
+
+When the databases are ready, run the cluster with this command:
+
+```
+script/migrate_cluster.sh
+```
+
+This will run five local DPN nodes on five different ports, each
+impersonating one of the actual DPN nodes. The run as follows:
+
+1. APTrust on port 3001
+2. Chronopolis on port 3002
+3. Hathi Trust on port 3003
+4. Stanford on port 3004
+5. Texas on port 3005
+
+All of these nodes will have a set of pre-loaded data for testing, and each time
+you run run_cluster.sh, it resets the data in all the nodes. In the pre-load data,
+each node has bag entries and replication requests for _its own_ six bags, and no
+node knows about the bags in the other nodes.
+
+You can log in to the admin UI for each of these nodes at
+__http://localhost:<port>/admin__ with email address __admin@dpn.org__ and
+password __password__.
+
+You can access the REST API of each of these local nodes using one of the following
+API keys:
+
+1. APTrust: aptrust_token
+2. Chronopolis: chron_token
+3. Hathi Trust: hathi_token
+4. Stanford: sdr_token
+5. Texas: tdr_token
+
+You should be able to connect to any node using any of these tokens. To test, you
+can run the following curl command, substiting the token and port number as necessary.
+Note the format of the token header.
+
+```
+curl -H "Authorization: Token token=sdr_token" -L http://localhost:3001/api-v1/bag/
+```
+
+You should see a JSON response with a list of bags. If you see a response that says
+"HTTP Token: Access denied" make sure your Authorization header is formatted
+correctly.
+
+### Test Data for the Cluster
+
+The test data for the local DPN cluster is in test/fixtures/integration. The YAML
+fixtures are reloaded each time the cluster starts, wiping out any data from previous
+tests.
+
+There are also six test bags in test/fixtures/integration/testbags/. The bag entries
+for each node refer to these six bags, and the bag sizes and tag manifest checksums
+match the actual bags. There are notes in the YAML files explaining that final two
+digits of each bag registry entry match the final two digits of the test bag names.
+So a bag UUID ending in 01 matches the bag IntTestValidBag01.tar. The UUID ending in
+02 refers to the bag IntTestValidBag02.tar, etc.
+
+Also note that the first digit of each bag UUID matches the bag's admin node. So all
+APTrust bag UUIDs start with 1, matching APTrust port 3001. Chronopolis bag UUIDs
+start with 2, matching Chronopolis port 3002, etc. This should provide some cues
+to help remember what's what when you are visually reviewing test results and log
+file entries.
+
 # Contributing
 
 1. Fork it ( https://github.com/dpn-admin/dpn-server/fork )
@@ -171,5 +253,3 @@ Copyright (c) 2015 The Regents of the University of Michigan.
 All Rights Reserved.
 Licensed according to the terms of the Revised BSD License.
 See LICENSE.md for details.
-
-

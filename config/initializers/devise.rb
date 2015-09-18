@@ -12,6 +12,15 @@ Devise.setup do |config|
   # by default. You can change it below and use your own secret key.
   # config.secret_key = '6edfbc8cdf0d8e4b5ee4e5fe2c82732a6d0023aaad3caed2b425186cf001b9c80d51b6f02e94e4202034a4f24ca79d385d128d3a42d199192f9c195b7c415325'
 
+  # Set a Devise secret key if we're impersonating a node. This only applies
+  # when we're running a local cluster for testing, in which case we run
+  # several local nodes, each of which impersonates a real DPN node. See
+  # script/run_cluster.sh for how it works. The RAILS_ENV is set for each
+  # node in that script.
+  if ENV['RAILS_ENV'] && ENV['RAILS_ENV'].start_with?("impersonate_")
+    config.secret_key = '6e43de7f4a199ef787adc5757fd8dcd4bdf9a43d1b176a2840a86df9669460ed048e8d1c93c978e4aedff6806945ac96b2465567e4e7f7e54ae43625743e2f1c'
+  end
+
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
