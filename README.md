@@ -30,7 +30,7 @@ The default configuration should be sufficient.
 
 The environment variables in config/environments/production.rb must be set
 under all environments.  We use [dotenv](https://github.com/bkeepers/dotenv)
-to manage these, so you can se themin a .env.production file.  
+to manage these, so you can set them in a .env.production file.
 See .env.production.example for the variables that are
 required and what they do.  Before running any of the
 ```bundle``` commands, you should have these variables defined in your shell
