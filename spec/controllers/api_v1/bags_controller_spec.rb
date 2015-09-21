@@ -227,6 +227,17 @@ describe ApiV1::BagsController do
             post :create, @post_body
             expect(response).to have_http_status(201)
           end
+          it "returns the saved object" do
+            post :create, @post_body
+            expect(response.header['Content-Type']).to include('application/json')
+            response_obj = JSON.parse(response.body)
+            expect(response_obj[:admin_node]).to eq(@post_body['admin_node'])
+            expect(response_obj[:size]).to eq(@post_body['size'])
+            expect(response_obj[:uuid]).to eq(@post_body['uuid'])
+            expect(response_obj[:bag_type]).to eq(@post_body['bag_type'])
+            expect(response_obj[:rights]).to eq(@post_body['rights'])
+            expect(response_obj[:interpretive]).to eq(@post_body['interpretive'])
+          end
           it "saves the new object to the database" do
             post :create, @post_body
             expect(Bag.find_by_uuid(@post_body[:uuid])).to be_valid
@@ -252,6 +263,26 @@ describe ApiV1::BagsController do
           it "responds with 400" do
             post :create, @post_body
             expect(response).to have_http_status(400)
+          end
+          it "returns a descriptive error" do
+            post :create, @post_body
+            response_obj = JSON.parse(response.body)
+            expect(response_obj['size']).to eq(['is not a number'])
+          end
+          it "tells me what bag types are valid" do
+            @post_body[:bag_type] = 'x'
+            post :create, @post_body
+            response_obj = JSON.parse(response.body)
+            expect(response).to have_http_status(400)
+            expect(response_obj['bag_type']).to eq(['Invalid bag_type, must be one of D|R|I'])
+          end
+          it "tells me what parameters are missing" do
+            @post_body.delete(:uuid)
+            @post_body.delete(:size)
+            post :create, @post_body
+            response_obj = JSON.parse(response.body)
+            expect(response).to have_http_status(400)
+            expect(response_obj['params']).to eq(['Bag is missing parameters uuid, size'])
           end
         end
 
@@ -455,4 +486,3 @@ describe ApiV1::BagsController do
     end
   end
 end
-
