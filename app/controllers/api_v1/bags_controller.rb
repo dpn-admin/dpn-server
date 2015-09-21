@@ -134,12 +134,12 @@ class ApiV1::BagsController < ApplicationController
     end
 
     if bag.save
-      render nothing: true, content_type: "application/json", status: 201, location: api_v1_bag_url(bag)
+      render json: ApiV1::BagPresenter.new(bag), content_type: "application/json", status: 201
     else
       if bag.errors[:uuid].include?("has already been taken")
-        render json: "Duplicate bag", status: 409
+        render json: { error: "Bag #{params[:uuid]} already exists" }, status: 409
       else
-        render json: "Invalid bag", status: 400
+        render json: bag.errors, status: 400
       end
     end
 
