@@ -19,7 +19,7 @@ module ApiV1
         :version => @bag.version,
         :ingest_node => @bag.ingest_node.namespace,
         :admin_node => @bag.admin_node.namespace,
-        :member => @bag.member.name,
+        :member => @bag.member.uuid,
         :replicating_nodes => @bag.replicating_nodes.pluck(:namespace),
         :fixities => {},
         :created_at => @bag.created_at.to_formatted_s(:dpn),
