@@ -17,8 +17,8 @@ module ApiV1
         :api_root => @node.api_root,
         :ssh_pubkey => @node.ssh_pubkey,
         :storage => {
-          :region => @node.storage_region.name,
-          :type => @node.storage_type.name
+          :region => @node.storage_region ? @node.storage_region.name : nil,
+          :type => @node.storage_type ? @node.storage_type.name : nil
         },
         :fixity_algorithms => @node.fixity_algs.pluck(:name),
         :protocols => @node.protocols.pluck(:name),
