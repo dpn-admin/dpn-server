@@ -9,9 +9,9 @@ aptrust:
     auth_credential: aptrust_token
     storage_region: va
     storage_type: magnetic_disk
-    fixity_algs: 
-        - sha256 
-    protocols: 
+    fixity_algs:
+        - sha256
+    protocols:
         - rsync
 
 chron:
@@ -25,9 +25,9 @@ chron:
     auth_credential: chron_token
     storage_region: ca
     storage_type: magnetic_disk
-    fixity_algs: 
-        - sha256 
-    protocols: 
+    fixity_algs:
+        - sha256
+    protocols:
         - rsync
 
 hathi:
@@ -41,9 +41,9 @@ hathi:
     auth_credential: hathi_token
     storage_region: mi
     storage_type: magnetic_disk
-    fixity_algs: 
-        - sha256 
-    protocols: 
+    fixity_algs:
+        - sha256
+    protocols:
         - rsync
 
 sdr:
@@ -55,11 +55,11 @@ sdr:
     api_root: http://127.0.0.1:3004
     private_auth_token: sdr_token
     auth_credential: sdr_token
-    storage_region: tx
+    storage_region: ca
     storage_type: magnetic_disk
-    fixity_algs: 
-        - sha256 
-    protocols: 
+    fixity_algs:
+        - sha256
+    protocols:
         - rsync
 
 tdr:
@@ -71,9 +71,9 @@ tdr:
     api_root: http://127.0.0.1:3005
     private_auth_token: tdr_token
     auth_credential: tdr_token
-    storage_region: default
-    storage_type: default
-    fixity_algs: 
-        - sha256 
-    protocols: 
+    storage_region: tx
+    storage_type: magnetic_disk
+    fixity_algs:
+        - sha256
+    protocols:
         - rsync
