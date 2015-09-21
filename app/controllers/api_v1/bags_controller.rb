@@ -97,8 +97,10 @@ class ApiV1::BagsController < ApplicationController
       :replicating_nodes, :first_version_uuid, :fixities
     ]
 
-    unless expected_params.all? {|param| params.has_key?(param)}
-      render json: "Illegal bag, missing parameters", status: 400
+    missing_params = expected_params - params.to_unsafe_hash.keys.map {|key| key.to_sym}
+    if missing_params.count > 0
+      err_message = "Bag is missing parameters #{missing_params.join(', ')}"
+      render json: { params: [ err_message ] }, content_type: "application/json", status: 400
       return
     end
 
@@ -112,7 +114,7 @@ class ApiV1::BagsController < ApplicationController
       when "I", "i"
         bag = InterpretiveBag.new
       else
-        render json: "Invalid bag_type, must be one of D|R|I", status: 400
+        render json: { bag_type: ["Invalid bag_type, must be one of D|R|I"] }, status: 400
         return
     end
 
@@ -137,9 +139,9 @@ class ApiV1::BagsController < ApplicationController
       render json: ApiV1::BagPresenter.new(bag), content_type: "application/json", status: 201
     else
       if bag.errors[:uuid].include?("has already been taken")
-        render json: { error: "Bag #{params[:uuid]} already exists" }, status: 409
+        render json: { uuid: ["Bag #{params[:uuid]} already exists"] }, content_type: "application/json", status: 409
       else
-        render json: bag.errors, status: 400
+        render json: bag.errors, content_type: "application/json", status: 400
       end
     end
 

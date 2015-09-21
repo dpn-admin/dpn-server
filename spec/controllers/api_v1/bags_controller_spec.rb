@@ -248,6 +248,26 @@ describe ApiV1::BagsController do
             post :create, @post_body
             expect(response).to have_http_status(400)
           end
+          it "returns a descriptive error" do
+            post :create, @post_body
+            response_obj = JSON.parse(response.body)
+            expect(response_obj['size']).to eq(['is not a number'])
+          end
+          it "tells me what bag types are valid" do
+            @post_body[:bag_type] = 'x'
+            post :create, @post_body
+            response_obj = JSON.parse(response.body)
+            expect(response).to have_http_status(400)
+            expect(response_obj['bag_type']).to eq(['Invalid bag_type, must be one of D|R|I'])
+          end
+          it "tells me what parameters are missing" do
+            @post_body.delete(:uuid)
+            @post_body.delete(:size)
+            post :create, @post_body
+            response_obj = JSON.parse(response.body)
+            expect(response).to have_http_status(400)
+            expect(response_obj['params']).to eq(['Bag is missing parameters uuid, size'])
+          end
         end
 
       end
