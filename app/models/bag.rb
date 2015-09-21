@@ -21,7 +21,7 @@ class Bag < ActiveRecord::Base
   belongs_to :admin_node, :foreign_key => "admin_node_id", :class_name => "Node",
              autosave: true, inverse_of: :admin_bags
   belongs_to :member, :foreign_key => "member_id", :class_name => "Member",
-             autosave: true, inverse_of: :member_bags
+             autosave: true, inverse_of: :bags
 
   has_many :fixity_checks, autosave: true, dependent: :destroy, inverse_of: :bag
   validates_associated :fixity_checks

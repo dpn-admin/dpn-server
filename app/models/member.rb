@@ -9,7 +9,7 @@ class Member < ActiveRecord::Base
     uuid
   end
 
-  has_many :member_bags, class_name: "Bag", foreign_key: "member_id", autosave: true, inverse_of: :member
+  has_many :bags, class_name: "Bag", foreign_key: "member_id", autosave: true, inverse_of: :member
 
   ### ActiveModel::Dirty Validations
   validates_with ChangeValidator # Only perform a save if the record actually changed.
