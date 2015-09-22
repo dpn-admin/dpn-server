@@ -20,6 +20,8 @@ class Bag < ActiveRecord::Base
              autosave: true, inverse_of: :ingest_bags
   belongs_to :admin_node, :foreign_key => "admin_node_id", :class_name => "Node",
              autosave: true, inverse_of: :admin_bags
+  belongs_to :member, :foreign_key => "member_id", :class_name => "Member",
+             autosave: true, inverse_of: :bags
 
   has_many :fixity_checks, autosave: true, dependent: :destroy, inverse_of: :bag
   validates_associated :fixity_checks
@@ -50,6 +52,7 @@ class Bag < ActiveRecord::Base
 
   validates :ingest_node, presence: true
   validates :admin_node, presence: true
+  validates :member, presence: true
   validates :local_id, presence: true, uniqueness: true
   validates :size, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
   validates :version_family, presence: true

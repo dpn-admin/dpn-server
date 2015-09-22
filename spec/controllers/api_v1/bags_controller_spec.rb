@@ -150,6 +150,7 @@ describe ApiV1::BagsController do
       @request.headers["Content-Type"] = "application/json"
       ingest_node = Fabricate(:node)
       admin_node = ingest_node
+      member = Fabricate(:member)
       interpretive  = Fabricate.times(3, :interpretive_bag)
       rights = Fabricate.times(2, :rights_bag)
       replicating_nodes = Fabricate.times(3, :node)
@@ -157,6 +158,7 @@ describe ApiV1::BagsController do
       uuid = SecureRandom.uuid
       @post_body = {
           :uuid => uuid,
+          :member => member.uuid,
           :ingest_node => ingest_node.namespace,
           :interpretive => interpretive.collect { |bag| bag.uuid },
           :rights => rights.collect { |bag| bag.uuid },

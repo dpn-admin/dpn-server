@@ -12,6 +12,7 @@ namespace :db do
     FixityCheck.delete_all
     Bag.destroy_all
     Node.delete_all
+    Member.delete_all
   end
 
 end

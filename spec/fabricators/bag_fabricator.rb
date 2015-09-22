@@ -14,4 +14,5 @@ Fabricator(:bag) do
   end
   ingest_node { Fabricate(:node) }
   admin_node { Fabricate(:node) }
+  member { Fabricate(:member) }
 end

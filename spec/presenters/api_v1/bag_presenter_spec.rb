@@ -129,6 +129,10 @@ describe ApiV1::BagPresenter do
       expect(hash[:created_at]).to eql(time.to_formatted_s(:dpn))
       expect(hash[:updated_at]).to eql(time.to_formatted_s(:dpn))
     end
+
+    it "returns member uuid" do
+      expect(@presenter.to_hash[:member]).to match(@uuid_pattern)
+    end
     
   end
 end

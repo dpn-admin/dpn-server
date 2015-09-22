@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     resources :replication_transfers, only: [:index, :show, :create, :update, :destroy], path: :replicate, param: :replication_id
     put "/replicate/:id/set_bag_man_request", controller: :replication_transfers, action: :set_bag_man_request
     resources :restore_transfers, only: [:index, :show, :create, :update, :destroy], path: :restore, param: :restore_id
+    resources :members, only: [:index, :show, :create, :update, :destroy], path: :member, param: :uuid
 
     namespace :bag_man do
       put "/requests/:id/downloaded", controller: :requests, action: :downloaded
