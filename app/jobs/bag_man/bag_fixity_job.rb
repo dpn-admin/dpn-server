@@ -13,7 +13,6 @@ module BagMan
         bag = DPN::Bagit::SerializedBag.new(bag_location)
         request.fixity = bag.fixity(:sha256)
         request.save!
-        BagUnpackJob.perform_later(request, bag_location)
       end
     end
   end

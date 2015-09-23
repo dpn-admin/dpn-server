@@ -21,6 +21,7 @@ module BagMan
         request.status = :unpacked
         request.save!
         BagValidateJob.perform_later(request, bag_location)
+        BagFixityJob.perform_later(request, bag_location)
       end
     end
 

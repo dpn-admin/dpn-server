@@ -31,21 +31,21 @@ describe BagMan::BagRetrievalJob, type: :job do
       expect(Rsync).to have_received(:run).once.with(@request.source_location, @expected_dest_dir, anything)
     end
 
-    it "does not enqueue a BagUnpackJob" do
-      expect {subject}.to_not enqueue_a(BagMan::BagUnpackJob)
+    it "does not enqueue a BagFixityJob" do
+      expect {subject}.to_not enqueue_a(BagMan::BagFixityJob)
     end
 
-    it "enqueues a BagFixityJob" do
-      expect {subject}.to enqueue_a(BagMan::BagFixityJob)
+    it "enqueues a BagUnpackJob" do
+      expect {subject}.to enqueue_a(BagMan::BagUnpackJob)
     end
 
-    it "passes the request to a BagFixityjob" do
-      expect(BagMan::BagFixityJob).to receive(:perform_later).with(@request, anything)
+    it "passes the request to a BagUnpackJob" do
+      expect(BagMan::BagUnpackJob).to receive(:perform_later).with(@request, anything)
       subject()
     end
 
-    it "passes the destination to a BagFixityJob" do
-      expect(BagMan::BagFixityJob).to receive(:perform_later).with(anything(), @expected_dest_file)
+    it "passes the destination to a BagUnpackJob" do
+      expect(BagMan::BagUnpackJob).to receive(:perform_later).with(anything(), @expected_dest_file)
       subject
     end
 
