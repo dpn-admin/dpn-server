@@ -320,14 +320,8 @@ describe ApiV1::ReplicationTransfersController do
           end
           it "saves the new object to the database" do
             post :create, @post_body
-            expect(ReplicationTransfer.find_by_replication_id(@post_body[:replication_id])).to be_valid
-          end
-          context "duplicate" do
-            before(:each) { Fabricate(:replication_transfer, replication_id: @post_body[:replication_id]) }
-            it "responds with 409" do
-              post :create, @post_body
-              expect(response).to have_http_status(409)
-            end
+            replication_obj = JSON.parse(response.body)
+            expect(ReplicationTransfer.find_by_replication_id(replication_obj['replication_id'])).to be_valid
           end
         end
         context "without valid attributes" do
@@ -687,4 +681,3 @@ describe ApiV1::ReplicationTransfersController do
     end
   end
 end
-

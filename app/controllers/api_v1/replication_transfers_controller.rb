@@ -142,7 +142,6 @@ class ApiV1::ReplicationTransfersController < ApplicationController
   # This method is internal
   def create
     transfer = ReplicationTransfer.new
-    transfer.replication_id = params[:replication_id]
     transfer.from_node = Node.find_by_namespace(params[:from_node])
     transfer.to_node = Node.find_by_namespace(params[:to_node])
     transfer.bag = Bag.find_by_uuid(params[:uuid])
@@ -156,14 +155,10 @@ class ApiV1::ReplicationTransfersController < ApplicationController
     transfer.link = params[:link]
     if transfer.save
       BagManRequest.create!(source_location: transfer.link, cancelled: false)
-      render nothing: true, content_type: "application/json", status: 201,
-             location: api_v1_replication_transfers_url(transfer)
+      @replication_transfer = ApiV1::ReplicationTransferPresenter.new(transfer)
+      render json: @replication_transfer, content_type: "application/json", status: 201
     else
-      if transfer.errors[:replication_id].include?("has already been taken")
-        render nothing: true, status: 409
-      else
-        render nothing: true, status: 400
-      end
+      render json: transfer.errors, content_type: "application/json", status: 400
     end
   end
 
