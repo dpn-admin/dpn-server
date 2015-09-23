@@ -318,6 +318,24 @@ describe ApiV1::ReplicationTransfersController do
             post :create, @post_body
             expect(response).to have_http_status(201)
           end
+          it "returns newly created replication record" do
+            post :create, @post_body
+            expect(response.body).not_to be_empty
+            replication_obj = JSON.parse(response.body)
+            expect(replication_obj.keys).to include('replication_id')
+            expect(replication_obj.keys).to include('from_node')
+            expect(replication_obj.keys).to include('to_node')
+            expect(replication_obj.keys).to include('uuid')
+            expect(replication_obj.keys).to include('fixity_algorithm')
+            expect(replication_obj.keys).to include('fixity_nonce')
+            expect(replication_obj.keys).to include('fixity_value')
+            expect(replication_obj.keys).to include('fixity_accept')
+            expect(replication_obj.keys).to include('status')
+            expect(replication_obj.keys).to include('protocol')
+            expect(replication_obj.keys).to include('link')
+            expect(replication_obj.keys).to include('created_at')
+            expect(replication_obj.keys).to include('updated_at')
+          end
           it "saves the new object to the database" do
             post :create, @post_body
             replication_obj = JSON.parse(response.body)
@@ -330,11 +348,17 @@ describe ApiV1::ReplicationTransfersController do
           end
           it "does not create the record" do
             post :create, @post_body
-            expect(ReplicationTransfer.find_by_replication_id(@post_body[:replication_id])).to be_nil
+            response_obj = JSON.parse(response.body)
+            expect(response_obj.keys).not_to include('replication_id')
           end
           it "responds with 400" do
             post :create, @post_body
             expect(response).to have_http_status(400)
+          end
+          it "returns detailed errors" do
+            post :create, @post_body
+            response_obj = JSON.parse(response.body)
+            expect(response_obj).to include('replication_status' => ["can't be blank"])
           end
         end
       end
