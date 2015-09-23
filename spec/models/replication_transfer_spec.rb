@@ -12,7 +12,6 @@ describe ReplicationTransfer do
   end
 
 
-
   context "update" do
     it "requires a replication_id" do
       record = Fabricate(:replication_transfer)
@@ -51,7 +50,6 @@ describe ReplicationTransfer do
 
     end
   end
-
-
-
+  
 end
+

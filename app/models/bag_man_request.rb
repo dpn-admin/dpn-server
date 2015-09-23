@@ -20,7 +20,7 @@ class BagManRequest < ActiveRecord::Base
   validates :cancelled, inclusion: {in: [false, true]}
 
   after_create do |record|
-    ::BagMan::BagRetrievalJob.perform_later(record, Rails.configuration.staging_dir)
+    ::BagMan::BagRetrievalJob.perform_later(record, Rails.configuration.staging_dir.to_s)
   end
 
   after_update :update_replication_transfer,

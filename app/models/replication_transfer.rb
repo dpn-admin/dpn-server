@@ -9,6 +9,7 @@ class ReplicationTransfer < ActiveRecord::Base
   ### Modifications and Concerns
   include UUIDFormat
   make_uuid :replication_id
+
   FIXITY_VALUE_STATES =  ["received", "confirmed", "stored"]
   BAG_VALID_STATES = ["received", "confirmed", "stored"]
   FIXITY_ACCEPT_STATES = ["confirmed", "stored"]
@@ -34,7 +35,7 @@ class ReplicationTransfer < ActiveRecord::Base
   end
 
   before_create do |record|
-    if record.from_node.namespace == Rails.configuration.local_namespace
+    if record.replication_id == nil && record.from_node.namespace == Rails.configuration.local_namespace
       record.replication_id = SecureRandom.uuid.delete('-').downcase
     end
   end
