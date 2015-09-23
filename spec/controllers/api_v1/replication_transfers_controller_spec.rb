@@ -517,6 +517,11 @@ describe ApiV1::ReplicationTransfersController do
             instance = ReplicationTransfer.find_by_replication_id(@existing_repl[:replication_id])
             expect(instance).to eql(@existing_repl)
           end
+          it "returns descriptive errors" do
+            put :update, @post_body
+            err = JSON.parse(response.body)
+            expect(err).to include('updated_at' => ['Body describes an old record'])
+          end
         end
         context "record does not exist" do
           before(:each) do
