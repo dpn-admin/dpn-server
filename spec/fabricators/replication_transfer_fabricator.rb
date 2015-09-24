@@ -5,7 +5,7 @@
 
 
 Fabricator(:replication_transfer) do
-  replication_id { Faker::Internet.password(7) }
+  replication_id { SecureRandom.uuid }
   bag { Fabricate(:bag) }
   from_node { Fabricate(:node) }
   to_node { Fabricate(:node) }

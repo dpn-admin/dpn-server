@@ -7,8 +7,8 @@
 class ReplicationTransfer < ActiveRecord::Base
 
   ### Modifications and Concerns
-  include Lowercased
-  make_lowercased :replication_id
+  include UUIDFormat
+  make_uuid :replication_id
   FIXITY_VALUE_STATES =  ["received", "confirmed", "stored"]
   BAG_VALID_STATES = ["received", "confirmed", "stored"]
   FIXITY_ACCEPT_STATES = ["confirmed", "stored"]
@@ -33,8 +33,17 @@ class ReplicationTransfer < ActiveRecord::Base
     end
   end
 
+  before_create do |record|
+    if record.from_node.namespace == Rails.configuration.local_namespace
+      record.replication_id = SecureRandom.uuid.delete('-').downcase
+    end
+  end
+
   ### Static Validations
-  validates :replication_id, presence: true, uniqueness: true
+  validates :replication_id, uniqueness: true
+  validates :replication_id, read_only: true, on: :update
+  validates :replication_id, presence: true, on: :create, if: "from_node.namespace != Rails.configuration.local_namespace"
+  validates :replication_id, presence: false, on: :create, if: "from_node.namespace == Rails.configuration.local_namespace"
   validates :link, presence: true
   validates :replication_status, presence: true
   validates :fixity_value, presence: true, if: :check_fixity_value?

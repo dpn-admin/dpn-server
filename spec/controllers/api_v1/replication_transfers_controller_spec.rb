@@ -44,7 +44,7 @@ shared_examples "failure" do |id_field|
   end
   it "does not update the record" do
     put :update, post_body
-    instance_from_db = existing_instance.class.public_send("find_by_#{id_field}", existing_instance.public_send(id_field))
+    instance_from_db = existing_instance.class.public_send("find_by_#{id_field}!", existing_instance.public_send(id_field))
     expect(instance_from_db).to eql(existing_instance)
   end
 end
@@ -57,7 +57,7 @@ shared_examples "success" do |id_field, changed_fields|
   end
   it "updates the record" do
     put :update, post_body
-    instance_from_db = existing_instance.class.public_send("find_by_#{id_field}", existing_instance.public_send(id_field))
+    instance_from_db = existing_instance.class.public_send("find_by_#{id_field}!", existing_instance.public_send(id_field))
     changed_fields.each do |changed_field|
       expect(instance_from_db.public_send(changed_field)).to_not eql(existing_instance.public_send(changed_field))
     end
@@ -69,7 +69,7 @@ shared_examples "a statemachine" do |starting_status, allowed_statuses|
   context "starting_status==#{starting_status}" do
     before(:each) do
       status_hash = {
-          replication_status: ReplicationStatus.find_by_name(starting_status)
+          replication_status: ReplicationStatus.find_by_name!(starting_status)
       }
       @existing_instance = Fabricate("replication_transfer_#{starting_status}".to_sym, more_params)
     end
