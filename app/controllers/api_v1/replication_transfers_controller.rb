@@ -121,9 +121,12 @@ class ApiV1::ReplicationTransfersController < ApplicationController
       ApiV1::ReplicationTransferPresenter.new(transfer)
     end
 
+    total_records = ReplicationTransfer.joins(join_tables).where(conditions).count
+    next_link = link_to_next_page(raw_transfers.total_count) if total_records > (@page * @page_size)
+
     output = {
       :count => @replication_transfers.size,
-      :next => link_to_next_page(raw_transfers.total_count),
+      :next => next_link,
       :previous => link_to_previous_page,
       :results => @replication_transfers
     }
