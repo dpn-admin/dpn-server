@@ -23,6 +23,11 @@ class ApiV1::BagsController < ApplicationController
       join_tables.push :admin_node
     end
 
+    if params[:member]
+      conditions[:members] = { uuid: params[:member] }
+      join_tables.push :member
+    end
+
     if params[:bag_type]
       case params[:bag_type]
         when "D", "d"

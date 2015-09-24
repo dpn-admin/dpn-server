@@ -50,6 +50,20 @@ describe ApiV1::BagsController do
           get :index, @params
           expect(response.content_type).to eql("application/json")
         end
+
+        describe "member parameter" do
+          let(:uuid) { SecureRandom.uuid }
+          it "finds bags with the specified member" do
+            Fabricate(:data_bag, member: Fabricate(:member, uuid: uuid))
+            get :index, @params.merge(member: uuid)
+            expect(assigns(:bags).size).to eql(1)
+          end
+          it "doesn't find bags with different members" do
+            Fabricate(:data_bag, member: Fabricate(:member, uuid: SecureRandom.uuid))
+            get :index, @params.merge(member: uuid)
+            expect(assigns(:bags)).to be_empty
+          end
+        end
       end
 
       context "without paging parameters" do
