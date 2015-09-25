@@ -156,6 +156,16 @@ class ApiV1::ReplicationTransfersController < ApplicationController
     transfer.replication_status = ReplicationStatus.find_by_name(params[:status])
     transfer.protocol = Protocol.find_by_name(params[:protocol])
     transfer.link = params[:link]
+
+    # If we're creating a new replication record on our own node,
+    # there should be no replication_id param, since we'll create
+    # that internally on save. If our sync client is copyin a new
+    # replication request from another node, there will be a
+    # replication_id param.
+    if params[:from_node] != Rails.configuration.local_namespace && !params[:replication_id].blank?
+      transfer.replication_id = params[:replication_id]
+    end
+
     if transfer.save
       BagManRequest.create!(source_location: transfer.link, cancelled: false)
       @replication_transfer = ApiV1::ReplicationTransferPresenter.new(transfer)

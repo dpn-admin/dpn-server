@@ -351,6 +351,19 @@ describe ApiV1::ReplicationTransfersController do
             replication_obj = JSON.parse(response.body)
             expect(ReplicationTransfer.find_by_replication_id(replication_obj['replication_id'])).to be_valid
           end
+          it "assigns a replication id if from_node is local node" do
+            @post_body[:from_node] = Rails.configuration.local_namespace
+            post :create, @post_body
+            replication_obj = JSON.parse(response.body)
+            expect(replication_obj['replication_id']).not_to be_empty
+          end
+          it "saves existing replication id if from_node is other node" do
+            # This assumes fabricator is not making nodes with our local
+            # namespace. It's currently not.
+            post :create, @post_body
+            replication_obj = JSON.parse(response.body)
+            expect(replication_obj['replication_id']).not_to be_empty
+          end
         end
         context "without valid attributes" do
           before(:each) do
