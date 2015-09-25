@@ -10,7 +10,7 @@ class ApiV1::ReplicationTransfersController < ApplicationController
   include Authenticate
   include Pagination
 
-  local_node_only :create, :set_bag_man_request, :destroy
+  local_node_only :create, :destroy
   uses_pagination :index
 
   before_action :accept_newer_only, only: :update
@@ -286,25 +286,6 @@ class ApiV1::ReplicationTransfersController < ApplicationController
       render nothing: true, status: 400
     end
 
-  end
-
-
-  # This method is internal
-  def set_bag_man_request
-    params.require(:id)
-    params.require(:bag_man_request_id)
-    replication_transfer = ReplicationTransfer.find(params[:id])
-    if replication_transfer.bag_man_request_id
-      render json: "Already have a bag_man_request_id", status: 409
-    else
-      replication_transfer.bag_man_request_id = params[:bag_man_request_id]
-      if replication_transfer.save
-        @replication_transfer = ApiV1::ReplicationTransferPresenter.new(replication_transfer)
-        render json: @replication_transfer, status: 200
-      else
-        render json: "Value #{params[:bag_man_request_id]} not allowed.", status: 400
-      end
-    end
   end
 
 
