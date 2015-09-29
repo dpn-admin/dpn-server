@@ -10,4 +10,6 @@ Fabricator(:replication_status) do
       "replication_status_#{i}"
     end
   end
+  created_at 1.second.ago
+  updated_at 1.second.ago
 end

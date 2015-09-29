@@ -3,10 +3,6 @@
 # Licensed according to the terms of the Revised BSD License
 # See LICENSE.md for details.
 
-
-class RestoreStatus < ActiveRecord::Base
-  has_many :restore_transfers
-
-  include Lowercased
-  make_lowercased :name
+shared_context "with authentication" do
+  include_context "with authentication as", Faker::Lorem.word.downcase
 end

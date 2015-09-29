@@ -18,6 +18,8 @@ Fabricator(:replication_transfer) do
   fixity_value nil
   fixity_accept nil
   bag_man_request_id nil
+  created_at 1.second.ago
+  updated_at 1.second.ago
 end
 
 Fabricator(:replication_transfer_requested, from: :replication_transfer) do

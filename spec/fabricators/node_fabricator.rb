@@ -35,4 +35,6 @@ Fabricator(:local_node, class_name: :node) do
   api_root { Faker::Internet.url }
   auth_credential { Faker::Code.isbn }
   private_auth_token { |attrs| "#{attrs[:auth_credential]}" }
+  created_at 1.second.ago
+  updated_at 1.second.ago
 end

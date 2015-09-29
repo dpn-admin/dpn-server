@@ -17,10 +17,6 @@ hash[:replication_status].each do |status|
   ReplicationStatus.create!(name: status)
 end
 
-hash[:restore_status].each do |status|
-  RestoreStatus.create!(name: status)
-end
-
 hash[:fixity_alg].each do |alg|
   FixityAlg.create!(name: alg)
 end

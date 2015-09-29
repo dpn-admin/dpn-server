@@ -10,4 +10,6 @@ Fabricator(:storage_type) do
       "storage_type_#{i}"
     end
   end
+  created_at 1.second.ago
+  updated_at 1.second.ago
 end

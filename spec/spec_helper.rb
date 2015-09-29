@@ -11,6 +11,8 @@ Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].e
 
 RSpec.configure do |config|
   config.include(RSpec::ActiveJob)
+  config.include ControllerHelpers, :type => :controller #within examples
+  config.extend ControllerHelpers, :type => :controller #within example groups
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest

@@ -15,4 +15,6 @@ Fabricator(:bag) do
   ingest_node { Fabricate(:node) }
   admin_node { Fabricate(:node) }
   member { Fabricate(:member) }
+  created_at 1.second.ago
+  updated_at 1.second.ago
 end

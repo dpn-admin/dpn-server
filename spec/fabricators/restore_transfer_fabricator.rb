@@ -9,7 +9,9 @@ Fabricator(:restore_transfer) do
   bag { Fabricate(:bag) }
   from_node { Fabricate(:node) }
   to_node { Fabricate(:node) }
-  restore_status { Fabricate(:restore_status) }
+  status :requested
   protocol { Fabricate(:protocol) }
   link { Faker::Internet.url }
+  created_at 1.second.ago
+  updated_at 1.second.ago
 end

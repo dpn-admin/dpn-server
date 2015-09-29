@@ -1,0 +1,6 @@
+{
+  "count": <%= paged_collection.total_count %>,
+  "next": <%= next_page(paged_collection.current_page, paged_collection.total_pages, params[:page_size]) %>,
+  "previous": <%= previous_page(paged_collection.current_page, params[:page_size]) %>,
+  "results": <%= render partial: "single_object", collection: paged_collection  %>
+}

@@ -16,4 +16,12 @@ describe RestoreTransfer do
     instance.restore_id = nil
     expect(instance).to_not be_valid
   end
+
+  it "updates updated_at" do
+    instance = Fabricate(:restore_transfer)
+    old_time = instance.updated_at
+    instance.status = :cancelled
+    instance.save
+    expect(instance.updated_at).to be > old_time
+  end
 end
