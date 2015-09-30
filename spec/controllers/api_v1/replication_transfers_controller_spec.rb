@@ -157,6 +157,16 @@ describe ApiV1::ReplicationTransfersController do
           get :index, @params
           expect(response.content_type).to eql("application/json")
         end
+        it "has next link if there are more results" do
+          get :index, {page: 1, page_size: 1}
+          response_obj = JSON.parse(response.body)
+          expect(response_obj['next']).to_not be_empty
+        end
+        it "has null next link if there no are more results" do
+          get :index, {page: 1, page_size: 100}
+          response_obj = JSON.parse(response.body)
+          expect(response_obj['next']).to be_nil
+        end
       end
 
       context "without paging parameters" do
@@ -318,16 +328,41 @@ describe ApiV1::ReplicationTransfersController do
             post :create, @post_body
             expect(response).to have_http_status(201)
           end
+          it "returns newly created replication record" do
+            post :create, @post_body
+            expect(response.body).not_to be_empty
+            replication_obj = JSON.parse(response.body)
+            expect(replication_obj.keys).to include('replication_id')
+            expect(replication_obj.keys).to include('from_node')
+            expect(replication_obj.keys).to include('to_node')
+            expect(replication_obj.keys).to include('uuid')
+            expect(replication_obj.keys).to include('fixity_algorithm')
+            expect(replication_obj.keys).to include('fixity_nonce')
+            expect(replication_obj.keys).to include('fixity_value')
+            expect(replication_obj.keys).to include('fixity_accept')
+            expect(replication_obj.keys).to include('status')
+            expect(replication_obj.keys).to include('protocol')
+            expect(replication_obj.keys).to include('link')
+            expect(replication_obj.keys).to include('created_at')
+            expect(replication_obj.keys).to include('updated_at')
+          end
           it "saves the new object to the database" do
             post :create, @post_body
-            expect(ReplicationTransfer.find_by_replication_id(@post_body[:replication_id])).to be_valid
+            replication_obj = JSON.parse(response.body)
+            expect(ReplicationTransfer.find_by_replication_id(replication_obj['replication_id'])).to be_valid
           end
-          context "duplicate" do
-            before(:each) { Fabricate(:replication_transfer, replication_id: @post_body[:replication_id]) }
-            it "responds with 409" do
-              post :create, @post_body
-              expect(response).to have_http_status(409)
-            end
+          it "assigns a replication id if from_node is local node" do
+            @post_body[:from_node] = Rails.configuration.local_namespace
+            post :create, @post_body
+            replication_obj = JSON.parse(response.body)
+            expect(replication_obj['replication_id']).not_to be_empty
+          end
+          it "saves existing replication id if from_node is other node" do
+            # This assumes fabricator is not making nodes with our local
+            # namespace. It's currently not.
+            post :create, @post_body
+            replication_obj = JSON.parse(response.body)
+            expect(replication_obj['replication_id']).not_to be_empty
           end
         end
         context "without valid attributes" do
@@ -336,11 +371,17 @@ describe ApiV1::ReplicationTransfersController do
           end
           it "does not create the record" do
             post :create, @post_body
-            expect(ReplicationTransfer.find_by_replication_id(@post_body[:replication_id])).to be_nil
+            response_obj = JSON.parse(response.body)
+            expect(response_obj.keys).not_to include('replication_id')
           end
           it "responds with 400" do
             post :create, @post_body
             expect(response).to have_http_status(400)
+          end
+          it "returns detailed errors" do
+            post :create, @post_body
+            response_obj = JSON.parse(response.body)
+            expect(response_obj).to include('replication_status' => ["can't be blank"])
           end
         end
       end
@@ -499,6 +540,11 @@ describe ApiV1::ReplicationTransfersController do
             instance = ReplicationTransfer.find_by_replication_id(@existing_repl[:replication_id])
             expect(instance).to eql(@existing_repl)
           end
+          it "returns descriptive errors" do
+            put :update, @post_body
+            err = JSON.parse(response.body)
+            expect(err).to include('updated_at' => ['Body describes an old record'])
+          end
         end
         context "record does not exist" do
           before(:each) do
@@ -594,4 +640,3 @@ describe ApiV1::ReplicationTransfersController do
     end
   end
 end
-

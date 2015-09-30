@@ -1,0 +1,5 @@
+# Admin user for all "impersonate_*" nodes in the dpn cluster
+admin:
+    email: admin@dpn.org
+    encrypted_password: $2a$10$b3e8eA3WsqbI68U1vAZj/eKKzBfeEjsKqrnLE/ZXUudWXr0AzxO46
+    admin: true

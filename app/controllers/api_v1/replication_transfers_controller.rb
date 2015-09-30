@@ -121,9 +121,12 @@ class ApiV1::ReplicationTransfersController < ApplicationController
       ApiV1::ReplicationTransferPresenter.new(transfer)
     end
 
+    total_records = ReplicationTransfer.joins(join_tables).where(conditions).count
+    next_link = link_to_next_page(raw_transfers.total_count) if total_records > (@page * @page_size)
+
     output = {
       :count => @replication_transfers.size,
-      :next => link_to_next_page(raw_transfers.total_count),
+      :next => next_link,
       :previous => link_to_previous_page,
       :results => @replication_transfers
     }
@@ -154,16 +157,13 @@ class ApiV1::ReplicationTransfersController < ApplicationController
     transfer.replication_status = ReplicationStatus.find_by_name(params[:status])
     transfer.protocol = Protocol.find_by_name(params[:protocol])
     transfer.link = params[:link]
+
     if transfer.save
       BagManRequest.create!(source_location: transfer.link, cancelled: false)
-      render nothing: true, content_type: "application/json", status: 201,
-             location: api_v1_replication_transfers_url(transfer)
+      @replication_transfer = ApiV1::ReplicationTransferPresenter.new(transfer)
+      render json: @replication_transfer, content_type: "application/json", status: 201
     else
-      if transfer.errors[:replication_id].include?("has already been taken")
-        render nothing: true, status: 409
-      else
-        render nothing: true, status: 400
-      end
+      render json: transfer.errors, content_type: "application/json", status: 400
     end
   end
 
@@ -176,8 +176,11 @@ class ApiV1::ReplicationTransfersController < ApplicationController
       :created_at, :updated_at
     ]
 
-    unless expected_params.all? { |param| params.has_key?(param)}
-      render nothing: true, status: 400 and return
+    missing_params = expected_params - params.to_unsafe_hash.keys.map {|key| key.to_sym}
+    if missing_params.count > 0
+      err_message = "Record is missing parameters #{missing_params.join(', ')}"
+      render json: { params: [ err_message ] }, content_type: "application/json", status: 400
+      return
     end
 
     transfer = ReplicationTransfer.find_by_replication_id!(params[:replication_id])
@@ -191,7 +194,7 @@ class ApiV1::ReplicationTransfersController < ApplicationController
     elsif @requester.namespace == params[:to_node]
       from = :to_node
     else
-      render nothing: true, status: 403 and return
+      render json: { forbidden: ['Your node has no part in this transfer'] }, status: 403 and return
     end
 
     case local_namespace
@@ -204,12 +207,17 @@ class ApiV1::ReplicationTransfersController < ApplicationController
     end
 
     if from == :to_node && role == :none
-      render nothing: true, status: 403 and return
+      render json: { forbidden: ['Your node has no part in this transfer'] }, status: 403 and return
     end
 
-    if old_status == new_status # do nothing
-      render nothing: true, status: 400 and return
-    end
+    # TODO: Do not accept fixity_accept from an external caller
+    # if we are the from_node. See https://jira.duraspace.org/browse/DPN-56
+
+    # TODO: Should we allow params to_node and from_node in the request?
+    # Those should never change once a request is created. Same probably
+    # goes for uuid, fixity_algorithm, fixity_nonce, protocol, link,
+    # and created_at. We can updated updated_at internally, so maybe
+    # no need for that param either.
 
     spawn_bag_preserve_job = false
     # requester | local_node's role | old status | new status
@@ -272,7 +280,9 @@ class ApiV1::ReplicationTransfersController < ApplicationController
       when [:to_node, :from_node, :confirmed, :stored]
       when [:to_node, :from_node, :confirmed, :cancelled]
       else
-        render nothing: true, status: 400 and return
+        # Not sure I can unwind this logic to figure out what went wrong.
+        # Let's just tell the user we hate them.
+        render json: { error: ["The big switch statement didn't like your data"] }, status: 400 and return
     end
 
     transfer.replication_status = ReplicationStatus.find_by_name(new_status)
@@ -283,7 +293,7 @@ class ApiV1::ReplicationTransfersController < ApplicationController
       end
       render json: ApiV1::ReplicationTransferPresenter.new(transfer)
     else
-      render nothing: true, status: 400
+      render json: transfer.errors, content_type: "application/json", status: 400
     end
 
   end
@@ -307,7 +317,7 @@ class ApiV1::ReplicationTransfersController < ApplicationController
     repl = ReplicationTransfer.find_by_replication_id!(params[:replication_id])
 
     if params[:updated_at] < repl.updated_at
-      render json: "Body describes an old record.", status: 400 and return
+      render json: { updated_at: ["Body describes an old record"] }, status: 400 and return
     end
   end
 

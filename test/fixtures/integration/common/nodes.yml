@@ -1,0 +1,79 @@
+aptrust:
+    namespace: aptrust
+    name: aptrust
+    ssh_pubkey: null
+    created_at: 2015-09-15T17:39:46.329Z
+    updated_at: 2015-09-15T17:39:46.329Z
+    api_root: http://127.0.0.1:3001
+    private_auth_token: aptrust_token
+    auth_credential: aptrust_token
+    storage_region: va
+    storage_type: magnetic_disk
+    fixity_algs:
+        - sha256
+    protocols:
+        - rsync
+
+chron:
+    namespace: chron
+    name: chron
+    ssh_pubkey: null
+    created_at: 2015-09-15T17:39:46.320Z
+    updated_at: 2015-09-15T17:39:46.320Z
+    api_root: http://127.0.0.1:3002
+    private_auth_token: chron_token
+    auth_credential: chron_token
+    storage_region: ca
+    storage_type: magnetic_disk
+    fixity_algs:
+        - sha256
+    protocols:
+        - rsync
+
+hathi:
+    namespace: hathi
+    name: hathi
+    ssh_pubkey: null
+    created_at: 2015-09-15T17:39:46.286Z
+    updated_at: 2015-09-15T17:39:46.286Z
+    api_root: http://127.0.0.1:3003
+    private_auth_token: hathi_token
+    auth_credential: hathi_token
+    storage_region: mi
+    storage_type: magnetic_disk
+    fixity_algs:
+        - sha256
+    protocols:
+        - rsync
+
+sdr:
+    namespace: sdr
+    name: sdr
+    ssh_pubkey: null
+    created_at: 2015-09-15T17:39:46.296Z
+    updated_at: 2015-09-15T17:39:46.296Z
+    api_root: http://127.0.0.1:3004
+    private_auth_token: sdr_token
+    auth_credential: sdr_token
+    storage_region: ca
+    storage_type: magnetic_disk
+    fixity_algs:
+        - sha256
+    protocols:
+        - rsync
+
+tdr:
+    namespace: tdr
+    name: tdr
+    ssh_pubkey: null
+    created_at: 2015-09-15T17:39:46.309Z
+    updated_at: 2015-09-15T17:39:46.309Z
+    api_root: http://127.0.0.1:3005
+    private_auth_token: tdr_token
+    auth_credential: tdr_token
+    storage_region: tx
+    storage_type: magnetic_disk
+    fixity_algs:
+        - sha256
+    protocols:
+        - rsync
