@@ -15,7 +15,7 @@ module BagMan
         perform_rsync(request.source_location, destination)
         request.status = :downloaded
         request.save!
-        BagFixityJob.perform_later(request, request.staging_location(staging_dir))
+        BagUnpackJob.perform_later(request, request.staging_location(staging_dir))
       end
     end
 

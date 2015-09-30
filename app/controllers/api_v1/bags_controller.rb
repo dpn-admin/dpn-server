@@ -23,6 +23,11 @@ class ApiV1::BagsController < ApplicationController
       join_tables.push :admin_node
     end
 
+    if params[:member]
+      conditions[:members] = { uuid: params[:member] }
+      join_tables.push :member
+    end
+
     if params[:bag_type]
       case params[:bag_type]
         when "D", "d"
@@ -94,7 +99,7 @@ class ApiV1::BagsController < ApplicationController
   def create
     expected_params = [:bag_type, :rights, :interpretive, :uuid,
       :local_id, :size, :version, :ingest_node, :admin_node,
-      :replicating_nodes, :first_version_uuid, :fixities
+      :replicating_nodes, :first_version_uuid, :fixities, :member
     ]
 
     missing_params = expected_params - params.to_unsafe_hash.keys.map {|key| key.to_sym}
@@ -122,6 +127,7 @@ class ApiV1::BagsController < ApplicationController
     bag.local_id = params[:local_id]
     bag.size = params[:size]         #ActiveRecord should convert strings to ints for us
     bag.version = params[:version]   #ActiveRecord should convert strings to ints for us
+    bag.member = Member.find_by_uuid(params[:member])
     bag.ingest_node = Node.find_by_namespace(params[:ingest_node])
     bag.admin_node = Node.find_by_namespace(params[:admin_node])
     bag.replicating_nodes = Node.where(:namespace => params[:replicating_nodes])

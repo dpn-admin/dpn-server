@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150805184158) do
+ActiveRecord::Schema.define(version: 20150831175410) do
 
   create_table "bag_man_requests", force: :cascade do |t|
     t.string   "source_location",                       null: false
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20150805184158) do
     t.string   "type"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.integer  "member_id"
   end
 
   add_index "bags", ["uuid"], name: "index_bags_on_uuid", unique: true
@@ -84,6 +85,16 @@ ActiveRecord::Schema.define(version: 20150805184158) do
   end
 
   add_index "fixity_checks", ["bag_id", "fixity_alg_id"], name: "index_fixity_checks_on_bag_id_and_fixity_alg_id", unique: true
+
+  create_table "members", force: :cascade do |t|
+    t.string   "uuid",       null: false
+    t.string   "name",       null: false
+    t.string   "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "members", ["uuid"], name: "index_members_on_uuid", unique: true
 
   create_table "nodes", force: :cascade do |t|
     t.string   "namespace",          null: false

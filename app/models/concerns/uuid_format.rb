@@ -15,20 +15,22 @@ module UUIDFormat
         if uuid
           uuid = uuid.delete('-').downcase
         end
-        write_attribute(field.to_sym, uuid)
+        self[field.to_sym] = uuid
       end
 
       # Override the field's getter method.
       define_method("#{field}") do
-        _uuid = read_attribute(field.to_sym)
-        # 9th, 14th, 19th and 24th
-        if _uuid.include?("-") == false
-          _uuid.insert(8, "-")
-          _uuid.insert(13, "-")
-          _uuid.insert(18, "-")
-          _uuid.insert(23, "-")
+        uuid = self[field.to_sym]
+        if uuid && uuid.size == 32
+          unless uuid.include?("-")
+            uuid = uuid.dup # prevents changing the field on the object itself
+            uuid.insert(8, "-")   # 9th, 14th, 19th and 24th
+            uuid.insert(13, "-")
+            uuid.insert(18, "-")
+            uuid.insert(23, "-")
+          end
         end
-        _uuid
+        uuid
       end
 
       # Override the find_by_field(value) class method.
@@ -49,8 +51,8 @@ module UUIDFormat
 
       # Create validations
       validates field.to_sym, format: {
-          with: /\A[a-f0-9]{8}[a-f0-9]{4}[a-f0-9]{4}[a-f0-9]{4}[a-f0-9]{12}\Z/,
-          message: "must be a UUIDv4 without dashes to save to the db."
+          with: /\A[a-f0-9]{8}\-?[a-f0-9]{4}\-?[a-f0-9]{4}\-?[a-f0-9]{4}\-?[a-f0-9]{12}\Z/,
+          message: "Must be a UUIDv4."
         }, on: :save
 
 

@@ -28,20 +28,10 @@ describe BagMan::BagFixityJob, type: :job do
     expect(DPN::Bagit::SerializedBag).to have_received(:new).with(@bag_location)
   end
 
-  it "enqueues a BagUnpackJob" do
-    expect {subject}.to enqueue_a(BagMan::BagUnpackJob)
+  it "does not enqueue a job" do
+    expect {subject}.to_not enqueue_a(anything)
   end
-
-  it "passes the request to a BagUnpackJob" do
-    expect(BagMan::BagUnpackJob).to receive(:perform_later).with(@request, anything)
-    subject()
-  end
-
-  it "passes the bag_location to a BagUnpack job" do
-    expect(BagMan::BagUnpackJob).to receive(:perform_later).with(anything(), @bag_location)
-    subject
-  end
-
+  
   it "sets the fixity" do
     subject
     expect(@request.reload.fixity).to eql(@fixity)

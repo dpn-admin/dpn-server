@@ -44,7 +44,7 @@ shared_examples "failure" do |id_field|
   end
   it "does not update the record" do
     put :update, post_body
-    instance_from_db = existing_instance.class.public_send("find_by_#{id_field}", existing_instance.public_send(id_field))
+    instance_from_db = existing_instance.class.public_send("find_by_#{id_field}!", existing_instance.public_send(id_field))
     expect(instance_from_db).to eql(existing_instance)
   end
 end
@@ -57,7 +57,7 @@ shared_examples "success" do |id_field, changed_fields|
   end
   it "updates the record" do
     put :update, post_body
-    instance_from_db = existing_instance.class.public_send("find_by_#{id_field}", existing_instance.public_send(id_field))
+    instance_from_db = existing_instance.class.public_send("find_by_#{id_field}!", existing_instance.public_send(id_field))
     changed_fields.each do |changed_field|
       expect(instance_from_db.public_send(changed_field)).to_not eql(existing_instance.public_send(changed_field))
     end
@@ -69,7 +69,7 @@ shared_examples "a statemachine" do |starting_status, allowed_statuses|
   context "starting_status==#{starting_status}" do
     before(:each) do
       status_hash = {
-          replication_status: ReplicationStatus.find_by_name(starting_status)
+          replication_status: ReplicationStatus.find_by_name!(starting_status)
       }
       @existing_instance = Fabricate("replication_transfer_#{starting_status}".to_sym, more_params)
     end
@@ -574,99 +574,6 @@ describe ApiV1::ReplicationTransfersController do
           end
         end
 
-      end
-    end
-  end
-
-  describe "PUT #set_bag_man_request" do
-    before(:each) do
-      @repl = Fabricate(:replication_transfer)
-      @id = rand(10000)
-    end
-
-    context "without authorization" do
-      subject { put :set_bag_man_request, id: @repl.id, bag_man_request_id: @id }
-      it "responds with 401" do
-        subject()
-        expect(response).to have_http_status(401)
-      end
-      it "does not display data" do
-        subject()
-        expect(response).to render_template(nil)
-      end
-      it "does not create the record" do
-        subject()
-        expect(ReplicationTransfer.where(bag_man_request_id: @id)).to be_empty
-      end
-    end
-
-    context "with authorization" do
-      context "as non-local node" do
-        before(:each) do
-          @auth_node = Fabricate(:node)
-          @request.headers["Authorization"] = "Token token=#{@auth_node.auth_credential}"
-        end
-        subject { put :set_bag_man_request, id: @repl.id, bag_man_request_id: @id }
-
-        it "responds with 403" do
-          subject()
-          expect(response).to have_http_status(403)
-        end
-        it "does not create the record" do
-          subject()
-          expect(ReplicationTransfer.where(bag_man_request_id: @id)).to be_empty
-        end
-      end
-
-      context "as local node" do
-        before(:each) do
-          @auth_node = Fabricate(:local_node, namespace: Rails.configuration.local_namespace)
-          @request.headers["Authorization"] = "Token token=#{@auth_node.auth_credential}"
-        end
-
-        context "without pre-existing record" do
-          subject { put :set_bag_man_request, id: rand(10000), bag_man_request_id: @id }
-          it "responds with 404" do
-            subject()
-            expect(response).to have_http_status(404)
-          end
-          it "renders nothing" do
-            subject()
-            expect(response).to render_template(nil)
-          end
-          it "does not create the record" do
-            subject()
-            expect(ReplicationTransfer.where(bag_man_request_id: @id)).to be_empty
-          end
-        end
-
-        context "with pre-existing record" do
-          subject { put :set_bag_man_request, id: @repl.id, bag_man_request_id: @id }
-          context "with id not already assigned" do
-            it "responds with 200" do
-              subject()
-              expect(response).to have_http_status(200)
-            end
-            it "assigns the id to the record" do
-              subject()
-              expect(@repl.reload.bag_man_request_id).to eql(@id)
-            end
-          end
-          context "with id already assigned" do
-            before(:each) do
-              @repl.bag_man_request_id = rand(10000)
-              @repl.save!
-            end
-            it "responds with 409" do
-              subject()
-              expect(response).to have_http_status(409)
-            end
-            it "does not change the id" do
-              subject()
-              expect(@repl.reload.bag_man_request_id).to_not eql(@id)
-            end
-          end
-        end
       end
     end
   end

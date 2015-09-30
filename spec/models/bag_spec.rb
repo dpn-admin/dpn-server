@@ -53,6 +53,17 @@ describe Bag do
     end
   end
 
+  describe "member" do 
+    it "is required" do
+      expect(Fabricate.build(:bag, member: nil)).to_not be_valid
+    end
+    it "allows changing" do
+      bag = Fabricate(:bag)
+      bag.member = Fabricate(:member)
+      expect(bag.save).to be true
+    end
+  end
+
   describe "local_id" do
     it "is required" do
       expect(Fabricate.build(:bag, local_id: nil)).to_not be_valid
@@ -128,6 +139,5 @@ describe Bag do
       expect(bag.save).to be true
     end
   end
-
 
 end

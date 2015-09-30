@@ -50,6 +50,20 @@ describe ApiV1::BagsController do
           get :index, @params
           expect(response.content_type).to eql("application/json")
         end
+
+        describe "member parameter" do
+          let(:uuid) { SecureRandom.uuid }
+          it "finds bags with the specified member" do
+            Fabricate(:data_bag, member: Fabricate(:member, uuid: uuid))
+            get :index, @params.merge(member: uuid)
+            expect(assigns(:bags).size).to eql(1)
+          end
+          it "doesn't find bags with different members" do
+            Fabricate(:data_bag, member: Fabricate(:member, uuid: SecureRandom.uuid))
+            get :index, @params.merge(member: uuid)
+            expect(assigns(:bags)).to be_empty
+          end
+        end
       end
 
       context "without paging parameters" do
@@ -150,6 +164,7 @@ describe ApiV1::BagsController do
       @request.headers["Content-Type"] = "application/json"
       ingest_node = Fabricate(:node)
       admin_node = ingest_node
+      member = Fabricate(:member)
       interpretive  = Fabricate.times(3, :interpretive_bag)
       rights = Fabricate.times(2, :rights_bag)
       replicating_nodes = Fabricate.times(3, :node)
@@ -157,6 +172,7 @@ describe ApiV1::BagsController do
       uuid = SecureRandom.uuid
       @post_body = {
           :uuid => uuid,
+          :member => member.uuid,
           :ingest_node => ingest_node.namespace,
           :interpretive => interpretive.collect { |bag| bag.uuid },
           :rights => rights.collect { |bag| bag.uuid },

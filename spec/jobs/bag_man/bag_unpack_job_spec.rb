@@ -36,19 +36,23 @@ describe BagMan::BagUnpackJob, type: :job do
         context "File.directory? == #{is_a_directory}" do
           before(:each) { allow(File).to receive(:directory?).and_return(is_a_directory) }
 
-          it "enqueues a BagValidateJob" do
-            expect {subject}.to enqueue_a(BagMan::BagValidateJob)
+          %w(BagValidateJob BagFixityJob).each do |spawned_job|
+            let(:spawned_job_class) { "BagMan::#{spawned_job}".constantize }
+            it "enqueues a #{spawned_job}" do
+              expect {subject}.to enqueue_a(spawned_job_class)
+            end
+
+            it "passes the request to the #{spawned_job}" do
+              expect(spawned_job_class).to receive(:perform_later).with(@request, anything)
+              subject
+            end
+
+            it "passes the bag_location to the #{spawned_job}" do
+              expect(spawned_job_class).to receive(:perform_later).with(anything(), is_a_directory ? @bag_location : @unpacked_location)
+              subject
+            end
           end
 
-          it "passes the request to the BagValidateJob" do
-            expect(BagMan::BagValidateJob).to receive(:perform_later).with(@request, anything)
-            subject
-          end
-
-          it "passes the bag_location to the BagValidateJob" do
-            expect(BagMan::BagValidateJob).to receive(:perform_later).with(anything(), is_a_directory ? @bag_location : @unpacked_location)
-            subject
-          end
           it "sets request.status to unpacked" do
             subject
             expect(@request.reload.status).to eql("unpacked")
