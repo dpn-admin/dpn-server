@@ -1,0 +1,19 @@
+sunnydale:
+  name: UC Sunnydale
+  email: buffy@ucsunnydale.edu
+  uuid: 9a000000-0000-4000-a000-000000000001
+
+faber:
+  name: Faber College
+  email: bluto@faber.edu
+  uuid: 9a000000-0000-4000-a000-000000000002
+
+grand_lakes:
+  name: Grand Lakes University
+  email: dangerfield@grandlakes.edu
+  uuid: 9a000000-0000-4000-a000-000000000003
+
+greendale:
+  name: Greendale Community College
+  email: lybrerien@greendalecc.edu
+  uuid: 9a000000-0000-4000-a000-000000000004

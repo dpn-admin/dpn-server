@@ -10,6 +10,7 @@ hathi01:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf01
+    member: 9a000000-0000-4000-a000-000000000001
 
 # Bag IntTestValidBag02.tar
 hathi02:
@@ -23,6 +24,7 @@ hathi02:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf02
+    member: 9a000000-0000-4000-a000-000000000002
 
 # Bag IntTestValidBag03.tar
 hathi03:
@@ -36,6 +38,7 @@ hathi03:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf03
+    member: 9a000000-0000-4000-a000-000000000003
 
 # Bag IntTestValidBag04.tar
 hathi04:
@@ -49,6 +52,7 @@ hathi04:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf04
+    member: 9a000000-0000-4000-a000-000000000004
 
 # Bag IntTestValidBag05.tar
 hathi05:
@@ -62,6 +66,7 @@ hathi05:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf05
+    member: 9a000000-0000-4000-a000-000000000002
 
 # Bag IntTestValidBag06.tar
 hathi06:
@@ -75,3 +80,4 @@ hathi06:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf06
+    member: 9a000000-0000-4000-a000-000000000003
