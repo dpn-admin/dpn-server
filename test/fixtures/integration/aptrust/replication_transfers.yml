@@ -1,0 +1,335 @@
+xfer01_to_hathi:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag01.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-1
+    bag: aptrust01
+    from_node: aptrust
+    to_node: hathi
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer02_to_hathi:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag02.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-2
+    bag: aptrust02
+    from_node: aptrust
+    to_node: hathi
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer03_to_hathi:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag03.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-3
+    bag: aptrust03
+    from_node: aptrust
+    to_node: hathi
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer04_to_hathi:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag04.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-4
+    bag: aptrust04
+    from_node: aptrust
+    to_node: hathi
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer05_to_hathi:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag05.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-5
+    bag: aptrust05
+    from_node: aptrust
+    to_node: hathi
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer06_to_hathi:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag06.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-6
+    bag: aptrust06
+    from_node: aptrust
+    to_node: hathi
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer01_to_chron:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag01.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-7
+    bag: aptrust01
+    from_node: aptrust
+    to_node: chron
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer02_to_chron:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag02.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-8
+    bag: aptrust02
+    from_node: aptrust
+    to_node: chron
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer03_to_chron:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag03.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-9
+    bag: aptrust03
+    from_node: aptrust
+    to_node: chron
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer04_to_chron:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag04.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-10
+    bag: aptrust04
+    from_node: aptrust
+    to_node: chron
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer05_to_chron:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag05.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-11
+    bag: aptrust05
+    from_node: aptrust
+    to_node: chron
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer06_to_chron:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag06.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-12
+    bag: aptrust06
+    from_node: aptrust
+    to_node: chron
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer01_to_sdr:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag01.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-13
+    bag: aptrust01
+    from_node: aptrust
+    to_node: sdr
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer02_to_sdr:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag02.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-14
+    bag: aptrust02
+    from_node: aptrust
+    to_node: sdr
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer03_to_sdr:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag03.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-15
+    bag: aptrust03
+    from_node: aptrust
+    to_node: sdr
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer04_to_sdr:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag04.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-16
+    bag: aptrust04
+    from_node: aptrust
+    to_node: sdr
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer05_to_sdr:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag05.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-17
+    bag: aptrust05
+    from_node: aptrust
+    to_node: sdr
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer06_to_sdr:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag06.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-18
+    bag: aptrust06
+    from_node: aptrust
+    to_node: sdr
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer01_to_tdr:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag01.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-19
+    bag: aptrust01
+    from_node: aptrust
+    to_node: tdr
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer02_to_tdr:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag02.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-20
+    bag: aptrust02
+    from_node: aptrust
+    to_node: tdr
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer03_to_tdr:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag03.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-21
+    bag: aptrust03
+    from_node: aptrust
+    to_node: tdr
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer04_to_tdr:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag04.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-22
+    bag: aptrust04
+    from_node: aptrust
+    to_node: tdr
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer05_to_tdr:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag05.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-23
+    bag: aptrust05
+    from_node: aptrust
+    to_node: tdr
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
+
+xfer06_to_tdr:
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag06.tar
+    bag_valid: true
+    fixity_accept: false
+    created_at: 2015-09-15T19:38:31.562Z
+    updated_at: 2015-09-15T19:38:31.562Z
+    replication_id: aptrust-24
+    bag: aptrust06
+    from_node: aptrust
+    to_node: tdr
+    replication_status: requested
+    protocol: rsync
+    fixity_alg: sha256
