@@ -157,6 +157,16 @@ describe ApiV1::ReplicationTransfersController do
           get :index, @params
           expect(response.content_type).to eql("application/json")
         end
+        it "has next link if there are more results" do
+          get :index, {page: 1, page_size: 1}
+          response_obj = JSON.parse(response.body)
+          expect(response_obj['next']).to_not be_empty
+        end
+        it "has null next link if there no are more results" do
+          get :index, {page: 1, page_size: 100}
+          response_obj = JSON.parse(response.body)
+          expect(response_obj['next']).to be_nil
+        end
       end
 
       context "without paging parameters" do
