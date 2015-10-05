@@ -121,6 +121,16 @@ describe ApiV1::NodePresenter do
       expect(storage[:type]).to_not eql("")
     end
 
+    it "doesn't fail on missing storage" do
+      # Currently, storage type and region are optional (will that change?)
+      # Method NodePresenter#to_hash should not throw the error if storage is nil
+      node_without_storage = Fabricate(:node)
+      node_without_storage.storage_region = nil
+      node_without_storage.storage_type = nil
+      presenter = ApiV1::NodePresenter.new(node_without_storage)
+      expect{presenter.to_hash}.to_not raise_error
+    end
+
     it "returns created_at" do
       created_at = @presenter.to_hash[:created_at]
       through_datetime = DateTime.strptime(created_at, Time::DATE_FORMATS[:dpn]).strftime(Time::DATE_FORMATS[:dpn])
@@ -143,16 +153,3 @@ describe ApiV1::NodePresenter do
 
   end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
