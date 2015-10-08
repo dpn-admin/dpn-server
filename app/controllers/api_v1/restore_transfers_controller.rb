@@ -26,10 +26,10 @@ class ApiV1::RestoreTransfersController < ApplicationController
       ordering = new_ordering unless new_ordering.empty?
     end
     @restore_transfers = RestoreTransfer.updated_after(params[:after])
-      .with_bag(params[:uuid])
+      .with_bag_id(params[:bag_id])
       .with_status(params[:status])
-      .with_to_node(params[:to_node])
-      .with_from_node(params[:from_node])
+      .with_to_node_id(params[:to_node_id])
+      .with_from_node_id(params[:from_node_id])
       .order(ordering)
       .page(@page)
       .per(@page_size)
@@ -48,7 +48,7 @@ class ApiV1::RestoreTransfersController < ApplicationController
     if params[:restore_id] && RestoreTransfer.where(restore_id: params[:restore_id]).exists?
       render nothing: true, status: 409 and return
     else
-      @restore_transfer = RestoreTransfer.create(create_params)
+      @restore_transfer = RestoreTransfer.new(create_params)
       if @restore_transfer.save
         render "shared/create", status: 201
       else
@@ -96,10 +96,6 @@ class ApiV1::RestoreTransfersController < ApplicationController
   private
   def create_params
     params.permit(RestoreTransfer.attribute_names)
-  end
-
-  def update_params
-    params.permit(RestoreTransfer.attribute_names).permit(:requester)
   end
 
 end

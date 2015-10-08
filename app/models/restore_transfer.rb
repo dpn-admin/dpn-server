@@ -59,26 +59,12 @@ class RestoreTransfer < ActiveRecord::Base
 
   ### Scopes
   scope :updated_after, ->(time) { where("updated_at > ?", time) unless time.blank? }
-  scope :with_bag, ->(uuid) {
-    unless uuid.blank?
-      joins(:bag).where(Bag.table_name => {uuid: uuid})
-    end
-  }
+  scope :with_bag_id, ->(id) { where(bag_id: id) unless id.blank? }
+  scope :with_from_node_id, ->(id) { where(from_node_id: id) unless id.blank? }
+  scope :with_to_node_id, ->(id) { where(to_node_id: id) unless id.blank? }
   scope :with_status, ->(status) {
     unless status.blank?
       where(status: RestoreTransfer.statuses[status])
-    end
-  }
-  scope :with_from_node, ->(namespace) {
-    unless namespace.blank?
-      joins("INNER JOIN #{Node.table_name} AS from_nodes ON from_nodes.id=#{table_name}.from_node_id")
-        .where(from_nodes: {namespace: namespace})
-    end
-  }
-  scope :with_to_node, ->(namespace) {
-    unless namespace.blank?
-      joins("INNER JOIN #{Node.table_name} AS to_nodes ON to_nodes.id=#{table_name}.to_node_id")
-        .where(to_nodes: {namespace: namespace})
     end
   }
 
