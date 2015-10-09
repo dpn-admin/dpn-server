@@ -53,6 +53,7 @@ class ApiV1::MembersController < ApplicationController
     member.email = params[:email]
 
     if member.save
+      @member = ApiV1::MemberPresenter.new(member)
       render json: @member, content_type: "application/json", status: 201, location: api_v1_member_url(member)
     else 
       if member.errors[:uuid].include?("has already been taken")
