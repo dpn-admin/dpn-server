@@ -46,10 +46,10 @@ describe Bag do
     it "is required" do
       expect(Fabricate.build(:bag, admin_node: nil)).to_not be_valid
     end
-    it "disallows changing" do
+    it "allows changing" do
       bag = Fabricate(:bag)
       bag.admin_node = Fabricate(:node)
-      expect(bag.save).to be false
+      expect(bag.save).to be true
     end
   end
 

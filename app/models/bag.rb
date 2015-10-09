@@ -40,7 +40,6 @@ class Bag < ActiveRecord::Base
   validates_with ChangeValidator # Only perform a save if the record actually changed.
   validates :uuid, read_only: true, on: :update
   validates :ingest_node_id, read_only: true, on: :update
-  validates :admin_node_id, read_only: true, on: :update
   validates :size, read_only: true, on: :update
   validates :version, read_only: true, on: :update
   validates :version_family_id, read_only: true, on: :update
