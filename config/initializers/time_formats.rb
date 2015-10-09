@@ -7,6 +7,5 @@
 Time::DATE_FORMATS[:dpn] = "%Y-%m-%dT%H:%M:%SZ"
 
 def time_from_string(string_time)
-  #DateTime.strptime(string_time, Time::DATE_FORMATS[:dpn]).utc.in_time_zone
-  Time.zone.parse(string_time)
+  Time.zone.parse(string_time.gsub(/\.[0-9]*Z\Z/, "Z"))
 end

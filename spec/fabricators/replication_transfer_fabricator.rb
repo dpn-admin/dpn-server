@@ -9,7 +9,7 @@ Fabricator(:replication_transfer) do
   bag { Fabricate(:bag) }
   from_node { Fabricate(:node) }
   to_node { Fabricate(:node) }
-  replication_status { Fabricate(:replication_status) }
+  status :requested
   protocol { Fabricate(:protocol) }
   link { Faker::Internet.url }
   bag_valid nil
@@ -23,16 +23,16 @@ Fabricator(:replication_transfer) do
 end
 
 Fabricator(:replication_transfer_requested, from: :replication_transfer) do
-  replication_status { ReplicationStatus.find_or_create_by(name: "requested")}
+  status :requested
 end
 
 Fabricator(:replication_transfer_rejected, from: :replication_transfer) do
-  replication_status { ReplicationStatus.find_or_create_by(name: "rejected")}
+  status :rejected
   bag_man_request_id { Fabricate(:bag_man_request, status: :rejected).id }
 end
 
 Fabricator(:replication_transfer_received, from: :replication_transfer) do
-  replication_status { ReplicationStatus.find_or_create_by(name: "received")}
+  status :received
   fixity_value { Faker::Internet.password(20) }
   bag_valid true
   bag_man_request_id { Fabricate(:bag_man_request,
@@ -42,7 +42,7 @@ Fabricator(:replication_transfer_received, from: :replication_transfer) do
 end
 
 Fabricator(:replication_transfer_confirmed, from: :replication_transfer) do
-  replication_status { ReplicationStatus.find_or_create_by(name: "confirmed")}
+  status :confirmed
   fixity_value { Faker::Internet.password(20) }
   bag_valid true
   fixity_accept true
@@ -53,7 +53,7 @@ Fabricator(:replication_transfer_confirmed, from: :replication_transfer) do
 end
 
 Fabricator(:replication_transfer_stored, from: :replication_transfer) do
-  replication_status { ReplicationStatus.find_or_create_by(name: "stored")}
+  status :stored
   fixity_value { Faker::Internet.password(20) }
   bag_valid true
   fixity_accept true
@@ -64,5 +64,5 @@ Fabricator(:replication_transfer_stored, from: :replication_transfer) do
 end
 
 Fabricator(:replication_transfer_cancelled, from: :replication_transfer) do
-  replication_status { ReplicationStatus.find_or_create_by(name: "cancelled")}
+  status :cancelled
 end

@@ -28,7 +28,7 @@ class BagManRequest < ActiveRecord::Base
 
   def staging_location(staging_dir = Rails.configuration.staging_dir)
     destination = File.join staging_dir, self.id.to_s
-    staging_location = File.join(destination, File.basename(self.source_location))
+    return File.join(destination, File.basename(self.source_location))
   end
 
   private
@@ -39,23 +39,24 @@ class BagManRequest < ActiveRecord::Base
       replication_transfer.fixity_value = fixity
       new_status = nil
       if cancelled
-        new_status = "cancelled"
+        new_status = :cancelled
       else
         case status.to_sym
           when :preserved
-            new_status = "stored"
+            new_status = :stored
           when :rejected
-            new_status = "rejected"
+            new_status = :rejected
           when :unpacked
             if fixity && validity
-              new_status = "received"
+              new_status = :received
             else
-              new_status = "cancelled"
+              new_status = :cancelled
             end
         end
       end
       if new_status
-        replication_transfer.replication_status = ReplicationStatus.find_by_name!(new_status)
+        replication_transfer.status = new_status
+        replication_transfer.requester = Node.local_node!
       end
       replication_transfer.save!
     end

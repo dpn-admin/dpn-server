@@ -12,7 +12,7 @@ class ApiV1::RestoreTransfersController < ApplicationController
 
   local_node_only :create, :destroy
   uses_pagination :index
-
+  adapt!
 
   def index
     ordering = {updated_at: :desc}
@@ -45,7 +45,7 @@ class ApiV1::RestoreTransfersController < ApplicationController
 
 
   def create
-    if params[:restore_id] && RestoreTransfer.where(restore_id: params[:restore_id]).exists?
+    if RestoreTransfer.where(restore_id: params[:restore_id]).exists?
       render nothing: true, status: 409 and return
     else
       @restore_transfer = RestoreTransfer.new(create_params)
@@ -61,26 +61,18 @@ class ApiV1::RestoreTransfersController < ApplicationController
   def update
     @restore_transfer = RestoreTransfer.find_by_restore_id!(params[:restore_id])
 
-    if @requester != @restore_transfer.to_node && @requester.namespace != Rails.configuration.local_namespace
+    if @requester != @restore_transfer.from_node && @requester.namespace != Rails.configuration.local_namespace
       render nothing: true, status: 403 and return
     end
 
-    @restore_transfer.from_node_id = params[:from_node_id]
-    @restore_transfer.to_node_id = params[:to_node_id]
-    @restore_transfer.bag_id = params[:bag_id]
-    @restore_transfer.protocol_id = params[:protocol_id]
-    @restore_transfer.status = params[:status]
-    @restore_transfer.requester = @requester
-
-    unless @restore_transfer.valid?
-      render "shared/errors", status: 400 and return
-    end
-
-
-    if params[:updated_at] < @restore_transfer.updated_at
-      @restore_transfer.reload
-    else
-      @restore_transfer.save
+    if params[:updated_at] > @restore_transfer.updated_at
+      @restore_transfer.attributes = update_params
+      @restore_transfer.requester = @requester
+      if ChangeValidator.new.is_valid?(@restore_transfer)
+        unless @restore_transfer.save
+          render "shared/errors", status: 400 and return
+        end
+      end
     end
 
     render "shared/update", status: 200
@@ -96,6 +88,10 @@ class ApiV1::RestoreTransfersController < ApplicationController
   private
   def create_params
     params.permit(RestoreTransfer.attribute_names)
+  end
+
+  def update_params
+    params.permit(RestoreTransfer.attribute_names + [:requester])
   end
 
 end

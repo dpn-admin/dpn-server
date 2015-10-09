@@ -1,12 +1,4 @@
 {
-  "replication_status": [
-    "requested",
-    "rejected",
-    "received",
-    "confirmed",
-    "stored",
-    "cancelled"
-  ],
   "fixity_alg":[
     "sha256",
     "md5"

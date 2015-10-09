@@ -4,12 +4,7 @@
 # See LICENSE.md for details.
 
 
-Fabricator(:replication_status) do
-  name do
-    sequence(:name, 50) do |i|
-      "replication_status_#{i}"
-    end
-  end
-  created_at 1.second.ago
-  updated_at 1.second.ago
+Fabricator(:fixity_check) do
+  fixity_alg
+  value { SecureRandom.uuid }
 end

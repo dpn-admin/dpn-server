@@ -17,8 +17,8 @@ shared_examples "a destroy endpoint" do |key|
   context "with authentication" do
     include_context "with authentication"
     before(:each) do
-      @instance = Fabricate(:restore_transfer)
-      delete :destroy, restore_id: @instance.restore_id
+      @instance = Fabricate(factory)
+      delete :destroy, key => @instance.send(key)
     end
     it_behaves_like "an unauthorized request"
     it "does not delete data" do

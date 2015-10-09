@@ -17,4 +17,5 @@ Fabricator(:bag) do
   member { Fabricate(:member) }
   created_at 1.second.ago
   updated_at 1.second.ago
+  type "DataBag"
 end

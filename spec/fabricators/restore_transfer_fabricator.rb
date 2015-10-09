@@ -5,7 +5,7 @@
 
 
 Fabricator(:restore_transfer) do
-  restore_id { Faker::Internet.password(7) }
+  restore_id { SecureRandom.uuid }
   bag { Fabricate(:bag) }
   from_node { Fabricate(:node) }
   to_node { Fabricate(:node) }

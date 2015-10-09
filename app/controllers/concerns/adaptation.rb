@@ -7,13 +7,17 @@
 module Adaptation
   extend ActiveSupport::Concern
 
-  included do
-    append_before_action :adapt_params
+  module ClassMethods
+    def adapt!
+      append_before_action :adapt_params
+    end
   end
 
   private
   def adapt_params
     adapter = "#{controller_path.classify}Adapter".constantize
-    params.merge!(adapter.from_public(params).to_params_hash)
+    params.transform_keys! {|key| key.to_sym}
+    params.merge!(adapter.from_public(params).to_params_hash) {|key,lhs,rhs| lhs}
   end
+
 end

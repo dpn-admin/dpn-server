@@ -41,15 +41,15 @@ describe ApiV1::RestoreTransfersController do
       it_behaves_like "an unauthenticated request"
     end
 
-    context "with authentication as to_node" do
-      include_context "with authentication as", "to_node_namespace"
-      options = proc {{to_node: Node.find_by_namespace!("to_node_namespace")}}
+    context "with authentication as from_node" do
+      include_context "with authentication as", "from_node_namespace"
+      options = proc {{from_node: Node.find_by_namespace!("from_node_namespace")}}
       it_behaves_like "an authorized update", :restore_id, options, legal_update, illegal_update
 
     end
 
 
-    context "with authentication as local_node" do
+    context "with authentication as local node" do
       include_context "with local authentication"
       it_behaves_like "an authorized update", :restore_id, nil, legal_update, illegal_update
     end
@@ -63,7 +63,7 @@ describe ApiV1::RestoreTransfersController do
 
 
   describe "DELETE #destroy" do
-    it_behaves_like "a destroy endpoint", :restore_id, :restore_transfer
+    it_behaves_like "a destroy endpoint", :restore_id
   end
 
 

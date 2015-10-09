@@ -1,84 +1,84 @@
-
-require_relative '../../../app/presenters/api_v1/member_presenter'
-
 class ApiV1::MembersController < ApplicationController
   include Authenticate
   include Pagination
+  include Adaptation
 
   local_node_only :create, :update, :destroy
   uses_pagination :index
+  adapt!
 
   def index
-    raw = Member.with_name(params[:name])
+    ordering = {updated_at: :desc}
+    if params[:order_by]
+      new_ordering = {}
+      params[:order_by].split(',').each do |order_column|
+        if [:updated_at].include?(order_column.to_sym)
+          new_ordering[order_column.to_sym] = :desc
+        end
+      end
+      ordering = new_ordering unless new_ordering.empty?
+    end
+
+    @members = Member.with_name(params[:name])
       .with_email(params[:email])
+      .order(ordering)
       .page(@page)
       .per(@page_size)
 
-    @members = raw.collect do |member|
-      ApiV1::MemberPresenter.new(member)
-    end
-
-    output = {
-      :count => raw.size,
-      :next => link_to_next_page(raw.total_count),
-      :previous => link_to_previous_page,
-      :results => @members
-    }
-
-    render json: output
+    render "shared/index", status: 200
   end
+
 
   def show
-    member = Member.find_by_uuid!(params[:uuid])
-    @member = ApiV1::MemberPresenter.new(member)
-    render json: @member
+    @member = Member.find_by_uuid!(params[:uuid])
+    render "shared/show", status: 200
   end
 
+
   def create
-    expected_params = [:uuid, :name, :email]
-
-    unless expected_params.all? {|param| params.has_key?(param)}
-      render json: "Illegal member, missing parameters", status: 400 and return
-    end
-    
-    member = Member.new
-    member.uuid = params[:uuid]
-    member.name = params[:name]
-    member.email = params[:email]
-
-    if member.save
-      @member = ApiV1::MemberPresenter.new(member)
-      render json: @member, content_type: "application/json", status: 201, location: api_v1_member_url(member)
-    else 
-      if member.errors[:uuid].include?("has already been taken")
-        render json: "Duplicate member", status: 409
-      else 
-        render json: "Invalid member", status: 400
+    if params[:uuid] && Member.find_by_uuid(params[:uuid]).present?
+      render nothing: true, status: 409 and return
+    else
+      @member = Member.new(create_params)
+      if @member.save
+        render "shared/create", status: 201
+      else
+        render "shared/errors", status: 400
       end
     end
   end
 
-  def update
-    # Note: This will ignore any changes in the json to the uuid and name
-    #       Not sure if we want to mark those as invalid requests or what
-    member = Member.find_by_uuid!(params[:uuid])
-    member.email = params[:email]
 
-    if member.changed? && member.save
-      render json: ApiV1::MemberPresenter.new(member), status: 200
-    else
-      render json: {message: "Bad Parameters", errors: member.errors.messages}, status: 400 and return
+  def update
+    @member = Member.find_by_uuid!(params[:uuid])
+
+    if params[:updated_at] > @member.updated_at
+      @member.attributes = update_params
+      if ChangeValidator.new.is_valid?(@member)
+        unless @member.save
+          render "shared/errors", status: 400 and return
+        end
+      end
     end
+
+    render "shared/update", status: 200
   end
 
-  def destroy
-    if Rails.env.production?
-      render nothing: true, status: 403 and return
-    end
 
+  def destroy
     member = Member.find_by_uuid!(params[:uuid])
     member.destroy!
     render nothing: true, status: 204
+  end
+
+
+  private
+  def create_params
+    params.permit(Member.attribute_names)
+  end
+
+  def update_params
+    params.permit(Member.attribute_names)
   end
 
 end

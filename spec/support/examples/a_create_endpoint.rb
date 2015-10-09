@@ -3,17 +3,28 @@
 # Licensed according to the terms of the Revised BSD License
 # See LICENSE.md for details.
 
-shared_examples "a create endpoint" do |key|
+shared_examples "a create endpoint" do |key, extra_params|
+  extra_params ||= []
+
+  def body_from_instance(instance, extra_params)
+    body = adapter.from_model(instance).to_public_hash
+    extra_params.each do |param|
+      body[param] = instance.send(param)
+    end
+    return body
+  end
+
+
   before(:each) do
-    @number_of_records = model_class.count
     @request.headers["Content-Type"] = "application/json"
   end
 
   context "without authentication" do
     before(:each) do
       instance = Fabricate(factory)
-      post_body = adapter.from_model(instance).to_public_hash
+      post_body = body_from_instance(instance, extra_params)
       model_class.delete(instance.id)
+      @number_of_records = model_class.count
       post :create, post_body
     end
     it_behaves_like "an unauthenticated request"
@@ -26,8 +37,9 @@ shared_examples "a create endpoint" do |key|
     include_context "with authentication"
     before(:each) do
       instance = Fabricate(factory)
-      post_body = adapter.from_model(instance).to_public_hash
+      post_body = body_from_instance(instance, extra_params)
       model_class.delete(instance.id)
+      @number_of_records = model_class.count
       post :create, post_body
     end
     it_behaves_like "an unauthorized request"
@@ -41,7 +53,7 @@ shared_examples "a create endpoint" do |key|
     context "duplicate" do
       before(:each) do
         instance = Fabricate(factory)
-        post_body = adapter.from_model(instance).to_public_hash
+        post_body = body_from_instance(instance, extra_params)
         @number_of_records = model_class.count
         post :create, post_body
       end
@@ -59,8 +71,9 @@ shared_examples "a create endpoint" do |key|
     context "with valid post body" do
       before(:each) do
         instance = Fabricate(factory)
-        @post_body = adapter.from_model(instance).to_public_hash
+        @post_body = body_from_instance(instance, extra_params)
         model_class.delete(instance.id)
+        @number_of_records = model_class.count
         post :create, @post_body
       end
 
@@ -84,6 +97,7 @@ shared_examples "a create endpoint" do |key|
 
     context "with invalid post body" do
       before(:each) do
+        @number_of_records = model_class.count
         post :create, {}
       end
       it "responds with 400" do

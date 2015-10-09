@@ -7,8 +7,8 @@
 class RestoreTransfer < ActiveRecord::Base
 
   ### Modifications and Concerns
-  include UUIDFormat
-  make_uuid :restore_id
+  include Lowercased
+  make_lowercased :restore_id
 
   def to_param
     restore_id
@@ -39,13 +39,26 @@ class RestoreTransfer < ActiveRecord::Base
   belongs_to :protocol
 
 
+  ### Callbacks
+  before_validation do |record|
+    if record.restore_id == nil && record.to_node && record.to_node.namespace == Rails.configuration.local_namespace
+      record.restore_id = SecureRandom.uuid
+    end
+  end
+
+
   ### Static Validations
-  validates :restore_id, presence: true, uniqueness: true
+  validates :restore_id, uniqueness: true
+  validates :restore_id, presence: true, on: :create, if: "to_node ? to_node.namespace != Rails.configuration.local_namespace : false"
+  validates :restore_id, presence: false, on: :create, if: "to_node ? to_node.namespace == Rails.configuration.local_namespace : false"
   validates :from_node, presence: true
   validates :to_node, presence: true
   validates :bag, presence: true
   validates :protocol, presence: true
   validates :status, presence: true
+  validates :restore_id, allow_nil: true,
+    format: { with: /\A[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}\z/i,
+      message: "must be a valid v4 uuid." }
 
 
   ### ActiveModel::Dirty Validations

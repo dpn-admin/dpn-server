@@ -5,7 +5,7 @@
 
 shared_examples "a show endpoint" do |key|
   context "without authentication" do
-    before(:each) { get :show, restore_id: Fabricate(:restore_transfer).restore_id }
+    before(:each) { get :show, key => Fabricate(factory).send(key) }
     it_behaves_like "an unauthenticated request"
   end
 
