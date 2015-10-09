@@ -9,17 +9,11 @@ class ApiV1::MembersController < ApplicationController
   uses_pagination :index
 
   def index
-    conditions = {}
+    raw = Member.with_name(params[:name])
+      .with_email(params[:email])
+      .page(@page)
+      .per(@page_size)
 
-    if params[:email]
-      conditions[:email] = params[:email]
-    end
-
-    if params[:name]
-      conditions[:name] = params[:name]
-    end
-
-    raw = Member.where(conditions).page(@page).per(@page_size)
     @members = raw.collect do |member|
       ApiV1::MemberPresenter.new(member)
     end
