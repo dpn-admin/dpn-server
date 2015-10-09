@@ -9,7 +9,17 @@ class ApiV1::MembersController < ApplicationController
   uses_pagination :index
 
   def index
-    raw = Member.page(@page).per(@page_size)
+    conditions = {}
+
+    if params[:email]
+      conditions[:email] = params[:email]
+    end
+
+    if params[:name]
+      conditions[:name] = params[:name]
+    end
+
+    raw = Member.where(conditions).page(@page).per(@page_size)
     @members = raw.collect do |member|
       ApiV1::MemberPresenter.new(member)
     end
@@ -43,12 +53,12 @@ class ApiV1::MembersController < ApplicationController
     member.email = params[:email]
 
     if member.save
-      render nothing:true, content_type: "application/json", status: 201, location: api_v1_member_url(member)
+      render json: @member, content_type: "application/json", status: 201, location: api_v1_member_url(member)
     else 
       if member.errors[:uuid].include?("has already been taken")
         render json: "Duplicate member", status: 409
       else 
-        render json: "Invalid bag", status: 400
+        render json: "Invalid member", status: 400
       end
     end
   end
