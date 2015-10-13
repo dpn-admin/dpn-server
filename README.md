@@ -1,6 +1,8 @@
 # DPN::Server
 
 [![Build Status](https://travis-ci.org/dpn-admin/dpn-server.svg?branch=master)](https://travis-ci.org/dpn-admin/dpn-server)
+[![Code Climate](https://codeclimate.com/github/dpn-admin/dpn-server/badges/gpa.svg)](https://codeclimate.com/github/dpn-admin/dpn-server)
+[![Test Coverage](https://codeclimate.com/github/dpn-admin/dpn-server/badges/coverage.svg)](https://codeclimate.com/github/dpn-admin/dpn-server/coverage)
 
 A Rails implementation of the DPN RESTful communication layer. The current
 maintainer is [Bryan Hockey](https://github.com/malakai97).
