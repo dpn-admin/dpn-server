@@ -3,6 +3,8 @@
 # Licensed according to the terms of the Revised BSD License
 # See LICENSE.md for details.
 
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
 
 require "rspec/active_job"
 Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}
