@@ -46,4 +46,24 @@ describe Member do
       expect(member.save).to be true
     end
   end
+
+  describe "scope" do
+    # Define two distinct entities
+    let(:member_a) { Fabricate(:member) }
+    let(:member_b) { Fabricate(:member) }
+
+    # Create queries specific to member_a
+    let(:members_by_name) { Member.with_name(member_a.name) }
+    let(:members_by_email) { Member.with_email(member_a.email) }
+
+    it 'filters based on name' do
+      expect(members_by_name).to include(member_a)
+      expect(members_by_name).to_not include(member_b)
+    end
+
+    it 'filters based on email' do
+      expect(members_by_email).to include(member_a)
+      expect(members_by_email).to_not include(member_b)
+    end
+  end
 end
