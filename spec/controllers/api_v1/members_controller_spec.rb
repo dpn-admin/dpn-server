@@ -3,14 +3,14 @@ require 'rails_helper'
 describe ApiV1::MembersController do
   # These are lazily initialized
   let(:node) { Fabricate(:node) }
-  let(:member) { Fabricate(:member) }
+  let(:model) { Fabricate(:member) }
   let(:local_node) { Fabricate(:local_node, namespace: Rails.configuration.local_namespace) }
 
   describe "GET #index" do
     context "without authorization" do
       it "responds with 401" do
-          get :index
-          expect(response).to have_http_status(401)
+        get :index
+        expect(response).to have_http_status(401)
       end
       it "does not display data" do
         get :index
@@ -22,6 +22,9 @@ describe ApiV1::MembersController do
       before(:each) do
         @request.headers["Authorization"] = "Token token=#{node.auth_credential}"
       end
+
+      it_behaves_like "a queryable endpoint", :name
+      it_behaves_like "a queryable endpoint", :email
 
       context "with paging parameters" do
         before(:each) do
@@ -42,11 +45,11 @@ describe ApiV1::MembersController do
   describe "GET #show" do
     context "without authorization" do
       it "responds with 401" do
-        get :show, uuid: member.uuid
+        get :show, uuid: model.uuid
         expect(response).to have_http_status(401)
       end
       it "does not display data" do
-        get :show, uuid: member.uuid
+        get :show, uuid: model.uuid
         expect(response).to render_template(nil)
       end
     end
@@ -69,11 +72,11 @@ describe ApiV1::MembersController do
 
       context "with existing member" do
         it "responds with 200" do
-          get :show, uuid: member.uuid
+          get :show, uuid: model.uuid
           expect(response).to have_http_status(200)
         end
         it "renders json" do
-          get :show, uuid: member.uuid
+          get :show, uuid: model.uuid
           expect(response.content_type).to eql("application/json")
         end
       end
@@ -124,7 +127,7 @@ describe ApiV1::MembersController do
 
           context "duplicate" do
             it "responds with 409" do
-              @post_body[:uuid] = member.uuid
+              @post_body[:uuid] = model.uuid
               post :create, @post_body
               expect(response).to have_http_status(409)
             end
@@ -138,8 +141,8 @@ describe ApiV1::MembersController do
     before(:each) do
       @request.headers["Content-Type"] = "application/json"
       @post_body = {
-        :uuid => member.uuid,
-        :name => member.name,
+        :uuid => model.uuid,
+        :name => model.name,
         :email => Faker::Internet.email
       }
     end
@@ -151,7 +154,7 @@ describe ApiV1::MembersController do
       end
       it "does not update the record" do
         put :update, @post_body
-        expect(Member.find_by_uuid(@post_body[:uuid])).to eql(member)
+        expect(Member.find_by_uuid(@post_body[:uuid])).to eql(model)
       end
     end
 
@@ -167,13 +170,13 @@ describe ApiV1::MembersController do
           end
           it "saves the changes to the db" do
             put :update, @post_body
-            expect(Member.find_by_uuid(member.uuid).email).to eql(@post_body[:email])
+            expect(Member.find_by_uuid(model.uuid).email).to eql(@post_body[:email])
           end
 
           context "with new name" do
             before(:each) do
               @post_body[:name] = Faker::Company.name
-              @post_body[:email] = member.email
+              @post_body[:email] = model.email
             end
             it "responds with 400" do
               put :update, @post_body
@@ -181,7 +184,7 @@ describe ApiV1::MembersController do
             end
             it "does not update the record" do
               put :update, @post_body
-              expect(Member.find_by_uuid(member.uuid).name).to eql(member.name)
+              expect(Member.find_by_uuid(model.uuid).name).to eql(model.name)
             end
           end 
         end
@@ -204,7 +207,7 @@ describe ApiV1::MembersController do
   end
 
   describe "DELETE #destroy" do
-    subject {delete :destroy, uuid: member.uuid}
+    subject {delete :destroy, uuid: model.uuid}
 
     context "without authorization" do
       it "responds with 401" do
@@ -213,7 +216,7 @@ describe ApiV1::MembersController do
       end
       it "does not delete the record" do
         subject()
-            expect(Member.find_by_uuid(member[:uuid])).to be_valid
+            expect(Member.find_by_uuid(model[:uuid])).to be_valid
       end
     end
 
@@ -229,7 +232,7 @@ describe ApiV1::MembersController do
           end
           it "deletes the member" do
             subject()
-            expect(Member.find_by_uuid(member[:uuid])).to be_nil
+            expect(Member.find_by_uuid(model[:uuid])).to be_nil
           end
         end
         context "without existing member" do
