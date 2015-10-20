@@ -22,4 +22,16 @@ class Member < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true
   validates :email, presence: true
 
+  scope :with_name, -> (name) {
+    unless name.blank?
+      where(name: name)
+    end
+  }
+  scope :with_email, -> (email) {
+    unless email.blank?
+      where(email: email)
+    end
+  }
+
+
 end
