@@ -7,9 +7,9 @@
 module ApplicationHelper
   def assignee
     if action_name == "index"
-      :"#{model_name.underscore.pluralize}"
+      :"@#{model_name.underscore.pluralize}"
     else
-      :"#{model_name.underscore}"
+      :"@#{model_name.underscore}"
     end
   end
 

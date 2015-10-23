@@ -21,13 +21,13 @@ describe ApplicationHelper do
     context "index action" do
       before(:each) { Rails.configuration.fake_action_name = "index" }
       it "finds the plural symbol" do
-        expect(assignee).to eql(:nodes)
+        expect(assignee).to eql(:"@nodes")
       end
     end
     context "other action" do
       before(:each) { Rails.configuration.fake_action_name = "show" }
       it "finds the singular symbol" do
-        expect(assignee).to eql(:node)
+        expect(assignee).to eql(:"@node")
       end
     end
   end
