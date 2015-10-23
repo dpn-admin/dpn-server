@@ -11,15 +11,16 @@
 #        really happen on an index I'm not sure if that's necessary.
 shared_examples "a queryable endpoint" do |key|
   raise ArgumentError, "Missing required parameters" unless key
-  page_size = 2 
-  let(:val) { model.send(key) }
+  page_size = 2
   before(:each) do
+    @model = Fabricate(factory)
+    @other_model = Fabricate(factory)
     @params = {page: 1, page_size: page_size}
-  end 
+  end
 
   context "with param #{key}" do
     before(:each) do
-      @params[key] = val
+      @params[key] = @model.send(key)
     end
 
     it "responds with 200" do
@@ -28,15 +29,18 @@ shared_examples "a queryable endpoint" do |key|
       expect(response.content_type).to eql("application/json")
     end 
 
-    it "contains the model" do
+    it "assigns the correct object to @#{factory.to_s.pluralize}" do
       get :index, @params
-      response_obj = JSON.parse(response.body)
-      # As of now we only expect one, but that could change...
-      # Might want to find a better solution than this
-      # (i.e. multiple models to find -> count.eq models.size,
-      #                               -> results includes models)
-      expect(response_obj['count']).to eql(1)
-      expect(response_obj['results'][0][key.to_s]).to eql(val)
-    end 
+      assignee = assigns(:"#{factory.to_s.pluralize}")
+      expect(assignee).to respond_to(:size)
+      expect(assignee).to include(@model)
+    end
+
+    it "doesn't assign incorrect objects to @#{factory.to_s.pluralize}" do
+      get :index, @params
+      assignee = assigns(:"#{factory.to_s.pluralize}")
+      expect(assignee).to respond_to(:size)
+      expect(assignee).to_not include(@other_model)
+    end
   end
 end
