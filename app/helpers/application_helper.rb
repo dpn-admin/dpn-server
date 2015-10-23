@@ -7,9 +7,9 @@
 module ApplicationHelper
   def assignee
     if action_name == "index"
-      "@#{model_name.underscore.pluralize}"
+      :"#{model_name.underscore.pluralize}"
     else
-      "@#{model_name.underscore}"
+      :"#{model_name.underscore}"
     end
   end
 
@@ -18,6 +18,6 @@ module ApplicationHelper
   end
 
   def adapter
-    "#{model_name}Adapter".constantize
+    "#{controller_name.gsub("Controller", "").singularize}Adapter".constantize
   end
 end
