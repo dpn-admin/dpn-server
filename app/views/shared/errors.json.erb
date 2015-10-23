@@ -1,3 +1,3 @@
 {
-  "errors": <%= instance_variable_get(assignee).errors.full_messages.join(",") %>
+  "errors": <%= instance_variable_get(assignee).errors.full_messages.to_json.html_safe %>
 }
