@@ -5,27 +5,20 @@
 
 require 'rails_helper'
 
-
-module ApplicationHelper
-  def controller_name
-    "ApiV1::NodesController"
-  end
-  def action_name
-    Rails.configuration.fake_action_name
-  end
-end
-
 describe ApplicationHelper do
+  before(:each) do
+    allow(ActionController::Metal).to receive(:controller_name).and_return("ApiV1::NodesController")
+  end
 
   describe "assignee" do
     context "index action" do
-      before(:each) { Rails.configuration.fake_action_name = "index" }
+      before(:each) { controller.action_name = "index" }
       it "finds the plural symbol" do
         expect(assignee).to eql(:"@nodes")
       end
     end
     context "other action" do
-      before(:each) { Rails.configuration.fake_action_name = "show" }
+      before(:each) { controller.action_name = "show" }
       it "finds the singular symbol" do
         expect(assignee).to eql(:"@node")
       end
