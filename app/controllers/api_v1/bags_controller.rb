@@ -14,23 +14,12 @@ class ApiV1::BagsController < ApplicationController
   adapt!
 
   def index
-    ordering = {updated_at: :desc}
-    if params[:order_by]
-      new_ordering = {}
-      params[:order_by].split(',').each do |order_column|
-        if [:updated_at].include?(order_column.to_sym)
-          new_ordering[order_column.to_sym] = :desc
-        end
-      end
-      ordering = new_ordering unless new_ordering.empty?
-    end
-
     @bags = Bag.updated_after(params[:after])
       .updated_before(params[:before])
       .with_admin_node_id(params[:admin_node_id])
       .with_member_id(params[:member_id])
       .with_bag_type(params[:type])
-      .order(ordering)
+      .order(parse_ordering(params[:order_by]))
       .page(@page)
       .per(@page_size)
 

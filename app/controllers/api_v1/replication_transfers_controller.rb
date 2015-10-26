@@ -14,17 +14,6 @@ class ApiV1::ReplicationTransfersController < ApplicationController
   adapt!
 
   def index
-    ordering = {updated_at: :desc}
-    if params[:order_by]
-      new_ordering = {}
-      params[:order_by].split(',').each do |order_column|
-        if [:created_at, :updated_at].include?(order_column.to_sym)
-          new_ordering[order_column.to_sym] = :desc
-        end
-      end
-      ordering = new_ordering unless new_ordering.empty?
-    end
-
     @replication_transfers = ReplicationTransfer.updated_after(params[:after])
       .with_bag_id(params[:bag_id])
       .with_status(params[:status])
@@ -32,7 +21,7 @@ class ApiV1::ReplicationTransfersController < ApplicationController
       .with_bag_valid(params[:bag_valid])
       .with_to_node_id(params[:to_node_id])
       .with_from_node_id(params[:from_node_id])
-      .order(ordering)
+      .order(parse_ordering(params[:order_by]))
       .page(@page)
       .per(@page_size)
 

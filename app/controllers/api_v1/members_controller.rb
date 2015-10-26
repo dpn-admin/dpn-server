@@ -8,20 +8,9 @@ class ApiV1::MembersController < ApplicationController
   adapt!
 
   def index
-    ordering = {updated_at: :desc}
-    if params[:order_by]
-      new_ordering = {}
-      params[:order_by].split(',').each do |order_column|
-        if [:updated_at].include?(order_column.to_sym)
-          new_ordering[order_column.to_sym] = :desc
-        end
-      end
-      ordering = new_ordering unless new_ordering.empty?
-    end
-
     @members = Member.with_name(params[:name])
       .with_email(params[:email])
-      .order(ordering)
+      .order(parse_ordering(params[:order_by]))
       .page(@page)
       .per(@page_size)
 

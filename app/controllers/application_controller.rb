@@ -14,6 +14,20 @@ class ApplicationController < ActionController::Base
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
+  def parse_ordering(orders)
+    ordering = {updated_at: :desc}
+    if orders
+      new_ordering = {}
+      orders.split(',').each do |order_column|
+        if [:created_at, :updated_at].include?(order_column.to_sym)
+          new_ordering[order_column.to_sym] = :desc
+        end
+      end
+      ordering = new_ordering unless new_ordering.empty?
+    end
+    return ordering
+  end
+
   private
   def record_not_found
     render nothing: true, status: 404
