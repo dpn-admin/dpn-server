@@ -59,6 +59,16 @@ class Bag < ActiveRecord::Base
   validates_uniqueness_of :version, :scope => :version_family
   validate :self_legal_if_first_version?, on: [:create, :update], unless: "version_family_id.nil?"
 
+
+  ### Scopes
+  scope :updated_before, ->(time) { where("updated_at < ?", time) unless time.blank? }
+  scope :updated_after, ->(time) { where("updated_at > ?", time) unless time.blank? }
+  scope :with_admin_node_id, ->(id) { where(from_admin_id: id) unless id.blank? }
+  scope :with_member_id, ->(id) { where(member_id: id) unless id.blank? }
+  scope :with_bag_type, ->(bag_type) { where(type: bag_type) unless bag_type.blank? }
+
+
+  private
   def self.legal_if_first_version?(version, uuid, version_family_uuid)
     if version == 1 || uuid == version_family_uuid
       return uuid == version_family_uuid && version == 1
@@ -67,7 +77,6 @@ class Bag < ActiveRecord::Base
     end
   end
 
-  private
   def self_legal_if_first_version?
     unless Bag.legal_if_first_version?(version, uuid, version_family.uuid)
       errors.add(:version, "version == 1 IFF uuid==version_family.uuid\n" +

@@ -13,14 +13,6 @@ else
   hash = JSON.parse(File.read("db/seeds/dev.seeds.json"), symbolize_names: true)
 end
 
-hash[:replication_status].each do |status|
-  ReplicationStatus.create!(name: status)
-end
-
-hash[:restore_status].each do |status|
-  RestoreStatus.create!(name: status)
-end
-
 hash[:fixity_alg].each do |alg|
   FixityAlg.create!(name: alg)
 end

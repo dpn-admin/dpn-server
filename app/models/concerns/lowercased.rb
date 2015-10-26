@@ -35,7 +35,8 @@ module Lowercased
       end
 
       # Create a validation
-      validates field.to_sym, format: { with: /[^A-Z\s]+/, message: "does not allow whitespace or capital letters."}
+      validates field.to_sym, allow_nil: true,
+        format: { with: /[^A-Z\s]+/, message: "does not allow whitespace or capital letters."}
 
     end
   end

@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
   skip_before_action :verify_authenticity_token
   before_action :convert_time_strings
+  before_action :set_default_response_json
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
@@ -23,12 +24,16 @@ class ApplicationController < ActionController::Base
       if params.has_key?(key)
         begin
           timestamp = params[key].gsub(/\.[0-9]*Z\Z/, "Z")
-          params[key] = DateTime.strptime(timestamp, Time::DATE_FORMATS[:dpn])
+          params[key] = time_from_string(timestamp)
         rescue ArgumentError
-          render json: "Bad #{key}", status: 400 and return
+          params[key] = nil
         end
       end
     end
+  end
+
+  def set_default_response_json
+    request.format = :json unless params[:format]
   end
 
 end

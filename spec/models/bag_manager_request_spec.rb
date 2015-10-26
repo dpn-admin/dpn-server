@@ -7,6 +7,7 @@
 require 'rails_helper'
 
 describe BagManRequest, type: :model do
+  before(:each) { Fabricate(:local_node, namespace: Rails.configuration.local_namespace)}
   it "has a valid factory" do
     expect(Fabricate(:bag_man_request)).to be_valid
   end
@@ -25,14 +26,6 @@ describe BagManRequest, type: :model do
   end
 
   describe "#update" do
-    before(:all) do
-      Fabricate(:replication_status, name: "cancelled")
-      Fabricate(:replication_status, name: "rejected")
-      Fabricate(:replication_status, name: "received")
-    end
-    after(:all) do
-      ReplicationStatus.destroy_all
-    end
     let!(:bag_man_request) { Fabricate(:bag_man_request, cancelled: false) }
     let!(:replication) { Fabricate(:replication_transfer, bag_man_request_id: bag_man_request.id) }
 
@@ -40,7 +33,7 @@ describe BagManRequest, type: :model do
       it "cancels the replication" do
         bag_man_request.cancelled = true
         bag_man_request.save!
-        expect(replication.reload.replication_status.name).to eql("cancelled")
+        expect(replication.reload.status).to eql("cancelled")
       end
     end
 
@@ -48,7 +41,7 @@ describe BagManRequest, type: :model do
       it "sets the replication to rejected" do
         bag_man_request.status = :rejected
         bag_man_request.save!
-        expect(replication.reload.replication_status.name).to eql("rejected")
+        expect(replication.reload.status).to eql("rejected")
       end
     end
 
@@ -60,7 +53,7 @@ describe BagManRequest, type: :model do
             bag_man_request.validity = true
             bag_man_request.status = :unpacked
             bag_man_request.save!
-            expect(replication.reload.replication_status.name).to eql("received")
+            expect(replication.reload.status).to eql("received")
           end
         end
         context "with validity==false" do
@@ -69,7 +62,7 @@ describe BagManRequest, type: :model do
             bag_man_request.validity = false
             bag_man_request.status = :unpacked
             bag_man_request.save!
-            expect(replication.reload.replication_status.name).to eql("cancelled")
+            expect(replication.reload.status).to eql("cancelled")
           end
         end
       end

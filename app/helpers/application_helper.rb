@@ -5,4 +5,19 @@
 
 
 module ApplicationHelper
+  def assignee
+    if action_name == "index"
+      :"@#{model_name.underscore.pluralize}"
+    else
+      :"@#{model_name.underscore}"
+    end
+  end
+
+  def model_name
+    controller_name.demodulize.gsub("Controller", "").singularize
+  end
+
+  def adapter
+    "#{controller_name.gsub("Controller", "").singularize}Adapter".constantize
+  end
 end
