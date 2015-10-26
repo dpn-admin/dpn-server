@@ -108,9 +108,8 @@ class ReplicationTransfer < ActiveRecord::Base
   validates :link, read_only: true, on: :update
 
   ## Special update validations
-  validates :requester, presence: true, on: :update, if: proc {|r| r.status_changed? }
-  validate :involved_or_local, on: :update, if: proc {|r| r.status_changed? }
-  validate :giant_case_statement, on: :update, if: proc {|r| r.status_changed? }
+  validate :involved_or_local, on: :update, if: proc {|r| r.status_changed? && r.requester }
+  validate :giant_case_statement, on: :update, if: proc {|r| r.status_changed? && r.requester}
 
 
   ### Scopes

@@ -56,7 +56,6 @@ class BagManRequest < ActiveRecord::Base
       end
       if new_status
         replication_transfer.status = new_status
-        replication_transfer.requester = Node.local_node!
       end
       replication_transfer.save!
     end
