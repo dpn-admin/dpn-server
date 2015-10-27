@@ -10,7 +10,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
   skip_before_action :verify_authenticity_token
   before_action :convert_time_strings
-  before_action :set_default_response_json
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
@@ -44,10 +43,6 @@ class ApplicationController < ActionController::Base
         end
       end
     end
-  end
-
-  def set_default_response_json
-    request.format = :json unless params[:format]
   end
 
 end
