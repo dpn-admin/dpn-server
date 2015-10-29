@@ -14,10 +14,10 @@ module ApplicationHelper
   end
 
   def model_name
-    controller_name.demodulize.gsub("Controller", "").singularize
+    controller_name.classify
   end
 
   def adapter
-    "#{controller_name.gsub("Controller", "").singularize}Adapter".constantize
+    "#{controller_path.classify.gsub("Controller", "")}Adapter".constantize
   end
 end

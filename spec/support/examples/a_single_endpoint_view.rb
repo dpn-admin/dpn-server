@@ -9,7 +9,8 @@ require 'rails_helper'
 
 shared_examples "a single endpoint view" do
   before(:each) do
-    allow(ActionController::Metal).to receive(:controller_name).and_return("ApiV1::NodesController")
+    allow(ActionController::Metal).to receive(:controller_name).and_return(ApiV1::NodesController.controller_name)
+    allow(ActionController::Metal).to receive(:controller_path).and_return(ApiV1::NodesController.controller_path)
     @model = Fabricate(:node)
     assign(:node, @model)
     render

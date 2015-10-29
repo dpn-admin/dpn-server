@@ -112,7 +112,7 @@ module Adapter
 
 
   # Create an instance from a public representation.
-  # @param [Hash] public
+  # @param [ActionController::Parameters] public
   # @return the adapter
   def from_public(public)
     internals = {}
@@ -125,7 +125,7 @@ module Adapter
     end
 
     extras = {}
-    (public.keys - public_fields).each do |extra_key|
+    (public.keys.map{|k|k.to_sym} - public_fields).each do |extra_key|
       extras[extra_key] = public[extra_key]
     end
 
@@ -141,7 +141,7 @@ module Adapter
     if time.is_a? String
       return time_from_string(time)
     else
-      return nil
+      return time
     end
   end
 

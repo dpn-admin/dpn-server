@@ -19,9 +19,8 @@ module Adaptation
 
   private
   def adapt_params
-    adapter = "#{controller_path.classify}Adapter".constantize
-    params.transform_keys! {|key| key.to_sym}
-    params.merge!(adapter.from_public(params).to_params_hash) {|key,lhs,rhs| lhs}
+    adapter = "#{controller_path.classify.gsub("Controller", "")}Adapter".constantize
+    params.merge!(adapter.from_public(params).to_params_hash) {|key,lhs,rhs| rhs}
   end
 
   def set_default_response_json

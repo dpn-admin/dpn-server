@@ -7,7 +7,8 @@ require 'rails_helper'
 
 describe ApplicationHelper do
   before(:each) do
-    allow(ActionController::Metal).to receive(:controller_name).and_return("ApiV1::NodesController")
+    allow(ActionController::Metal).to receive(:controller_name).and_return(ApiV1::NodesController.controller_name)
+    allow(ActionController::Metal).to receive(:controller_path).and_return(ApiV1::NodesController.controller_path)
   end
 
   describe "assignee" do
