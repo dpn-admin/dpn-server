@@ -23,6 +23,7 @@ class ReplicationTransfer < ActiveRecord::Base
     cancelled: 5
   }
 
+  FIXITY_CHECK_STATES = [:received, :requested]
   FIXITY_VALUE_STATES =  [:received, :confirmed, :stored]
   BAG_VALID_STATES = [:received, :confirmed, :stored]
   FIXITY_ACCEPT_STATES = [:confirmed, :stored]
@@ -73,6 +74,35 @@ class ReplicationTransfer < ActiveRecord::Base
     end
   end
 
+  before_update do |record|
+    # Only check fixity if we are in a pre-confirmed state and it has been set
+    # Allows for the state to be set if the fixity == false or bag_valid == false
+    # TODO: What if a client sets the fixity to be an empty string?
+    #       i.e. do we want to define empty as being equivalent to null
+    # TODO: Uhhhhh "received"? Find a way to use the enum and not a magic val
+    if "received" == record.status # FIXITY_CHECK_STATES.include?(record.status) &&
+       record.from_node.namespace == Rails.configuration.local_namespace
+
+      # logger.info "updating fixty_accept and state"
+      bag = record.bag
+      # Set the fixity_accept field
+      if record.fixity_value != nil
+        fixity_check = bag.fixity_checks.find_by_fixity_alg_id(record.fixity_alg_id)
+        if fixity_check != nil
+          record.fixity_accept = fixity_check.value == record.fixity_value
+        end # else false?
+      end
+
+      # Check if we should push the state along
+      if record.fixity_accept && record.bag_valid
+        record.status = :confirmed
+      # Check if either is false
+      elsif record.fixity_accept == false || record.bag_valid == false
+        record.status = :cancelled
+      end
+    end
+  end
+
   before_validation do |record|
     if record.replication_id == nil && record.from_node && record.from_node.namespace == Rails.configuration.local_namespace
       record.replication_id = SecureRandom.uuid.downcase
@@ -91,9 +121,9 @@ class ReplicationTransfer < ActiveRecord::Base
   validates :fixity_alg, presence: true
   validates :link, presence: true
   validates :status, presence: true
-  validates :fixity_value, presence: true, if: :check_fixity_value?
-  validates :bag_valid, :inclusion => {:in => [true, false]}, if: :check_bag_valid?
-  validates :fixity_accept, :inclusion => {:in => [true, false]}, if: :check_fixity_accept?
+  # validates :fixity_value, presence: true, if: :check_fixity_value?
+  # validates :bag_valid, :inclusion => {:in => [true, false]}, if: :check_bag_valid?
+  # validates :fixity_accept, :inclusion => {:in => [true, false]}, if: :check_fixity_accept?
   validates :replication_id, allow_nil: true,
     format: { with: /\A[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}\z/i,
       message: "must be a valid v4 uuid." }
@@ -107,9 +137,9 @@ class ReplicationTransfer < ActiveRecord::Base
   validates :bag_id, read_only: true, on: :update
   validates :fixity_alg_id, read_only: true, on: :update
   validates :fixity_nonce, read_only: true, on: :update
-  validates :fixity_value, read_only: true, on: :update, unless: proc {|r| r.fixity_value_changed?(from: nil)}
-  validates :fixity_accept, read_only: true, on: :update, unless: proc {|r| r.fixity_accept_changed?(from: nil)}
-  validates :bag_valid, read_only: true, on: :update, unless: proc {|r| r.bag_valid_changed?(from: nil)}
+  # validates :fixity_value, read_only: true, on: :update, unless: proc {|r| r.fixity_value_changed?(from: nil)}
+  # validates :fixity_accept, read_only: true, on: :update, unless: proc {|r| r.fixity_accept_changed?(from: nil)}
+  # validates :bag_valid, read_only: true, on: :update, unless: proc {|r| r.bag_valid_changed?(from: nil)}
   validates :protocol_id, read_only: true, on: :update
   validates :link, read_only: true, on: :update
 
@@ -218,12 +248,15 @@ class ReplicationTransfer < ActiveRecord::Base
         flag_changed_fields(:bag_valid, :fixity_value, :fixity_accept)
       when [:us, :none, :confirmed, :stored]
         flag_changed_fields(:bag_valid, :fixity_value, :fixity_accept)
+      #TODO: From node shouldn't be setting fixity_accept, may want to reject/ignore them
       when [:to_node, :from_node, :requested, :rejected]
         flag_changed_fields(:bag_valid, :fixity_value, :fixity_accept)
       when [:to_node, :from_node, :requested, :received]
         flag_changed_fields(:fixity_accept)
       when [:to_node, :from_node, :requested, :cancelled]
         flag_changed_fields(:fixity_value, :fixity_accept)
+      when [:to_node, :from_node, :received, :received]
+        flag_changed_fields(:fixity_value, :bag_valid)
       when [:to_node, :from_node, :received, :cancelled]
         flag_changed_fields(:bag_valid, :fixity_value, :fixity_accept)
       when [:to_node, :from_node, :confirmed, :stored]
@@ -241,57 +274,5 @@ class ReplicationTransfer < ActiveRecord::Base
         errors.add(field, "cannot change in this transition.")
       end
     end
-
   end
-
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
