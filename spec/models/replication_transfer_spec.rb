@@ -79,9 +79,22 @@ describe ReplicationTransfer do
         Fabricate(:replication_transfer, replication_id: "someuuid")
       }.to raise_error ActiveRecord::RecordInvalid
     end
+    it "does not create a BagMan::Request" do
+      expect(Fabricate(:replication_transfer).bag_man_request).to be_nil
+    end
   end
 
   context "create" do
+    context "to_node == local_node" do
+      let(:record) { Fabricate(:replication_transfer, to_node: Fabricate(:local_node)) }
+      it "creates a BagMan::Request" do
+        expect(record.bag_man_request).to be_valid
+      end
+      it "assigns link to the BagMan::Request source_location" do
+        expect(record.link).to eql(record.bag_man_request.source_location)
+      end
+    end
+
     context "from_node != local_node" do
       it "requires a replication_id" do
         expect {

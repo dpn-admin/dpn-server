@@ -48,6 +48,12 @@ class ReplicationTransfer < ActiveRecord::Base
 
 
   ### Callbacks
+  after_create do |record|
+    if record.to_node.namespace == Rails.configuration.local_namespace && record.bag_man_request_id.nil?
+      BagManRequest.create!(source_location: record.link, cancelled: false, replication_transfer: record)
+    end
+  end
+
   after_update do |record|
     if record.bag_man_request_id
       if record.status_changed?(from: "received", to: "confirmed") && record.fixity_accept == true
