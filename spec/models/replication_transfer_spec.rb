@@ -11,12 +11,12 @@ ALL_STATUSES = [ :requested, :rejected, :received, :confirmed, :stored, :cancell
 def change!(record, new_status)
   if record.status.to_sym == :requested
     if new_status == :confirmed
-      record.fixity_value ||= "somefixityvalueasdfasfasfafasd"
+      record.fixity_value ||= "somefixityvalue"
       record.bag_valid ||= [true,false].sample
     end
   else
     if [:received, :confirmed, :stored, :cancelled].include?(new_status)
-      record.fixity_value ||= "somefixityvalueasdfasfasfafasd"
+      record.fixity_value ||= "somefixityvalue"
       record.bag_valid ||= [true,false].sample
       unless record.status.to_sym == :received && new_status == :cancelled || new_status == :received
         record.fixity_accept ||= [true,false].sample
@@ -136,6 +136,67 @@ describe ReplicationTransfer do
       expect(record).to_not be_valid
     end
 
+
+    context "callback" do
+      let(:cancelled) { "cancelled" }
+      let(:confirmed) { "confirmed" }
+      before(:each) do
+        # Fabricator sets the fixity_alg for our replication_transfer
+        @record = Fabricate(:replication_transfer_received_nil, 
+                            from_node: @local_node)
+
+        # Grab the first fixity check since we only gen one
+        @check = @record.bag.fixity_checks[0]
+
+        # Set the fixity algorithm for the transfer record to be the same as the fixity check
+        # @record.fixity_alg = @check.fixity_alg
+      end
+
+      context "updates fixity_accept" do
+        it "sets true when matches" do
+          @record.fixity_value = @check.value
+          expect(@record).to be_valid
+          expect(@record.save).to be true
+          expect(@record.fixity_accept).to be true
+        end
+
+        it "sets false when wrong" do
+          @record.fixity_value = SecureRandom.uuid
+          expect(@record.save).to be true
+          expect(@record.fixity_accept).to be false
+        end
+      end
+
+      context "updates status" do
+        context "with bag_valid" do
+          before(:each) do
+            @record.bag_valid = true
+          end
+
+          it "is confirmed with good fixity" do
+            @record.fixity_value = @check.value
+            expect(@record.save).to be true
+            expect(@record.status).to eq(confirmed)
+          end
+
+          it "is cancelled with bad fixity" do
+            @record.fixity_value = SecureRandom.uuid
+            expect(@record.save).to be true
+            expect(@record.status).to eq(cancelled)
+          end
+        end
+        
+        context "with invalid bag" do
+          it "is cancelled with good fixity" do
+            @record.bag_valid = false
+            @record.fixity_value = @check.value
+            expect(@record.save).to be true
+            expect(@record.status).to eq(cancelled)
+          end
+        end
+      end
+    end
+
     context "when from_node==local_node && requester==local_node" do
       before(:each) do
         @from_node = @local_node
@@ -158,12 +219,10 @@ describe ReplicationTransfer do
       end
       it_behaves_like "a statemachine", :requested, [:rejected, :received, :cancelled]
       it_behaves_like "a statemachine", :rejected, []
-      it_behaves_like "a statemachine", :received, [:cancelled]
+      it_behaves_like "a statemachine", :received, [:received, :cancelled]
       it_behaves_like "a statemachine", :confirmed, [:stored, :cancelled]
       it_behaves_like "a statemachine", :stored, []
       it_behaves_like "a statemachine", :cancelled, []
-
-
     end
 
     context "when to_node==local_node && requester==local_node" do
@@ -182,7 +241,7 @@ describe ReplicationTransfer do
         bag_man_request = Fabricate(:bag_man_request)
         record = Fabricate(:replication_transfer,
           status: :received,
-          fixity_value: "dfafasdfasggdgadg",
+          fixity_value: "fixity_value",
           to_node: @local_node,
           bag_valid: true,
           bag_man_request: bag_man_request)
@@ -225,10 +284,5 @@ describe ReplicationTransfer do
       it_behaves_like "a statemachine", :stored, []
       it_behaves_like "a statemachine", :cancelled, []
     end
-
-
   end
-
-
 end
-
