@@ -137,9 +137,9 @@ class ReplicationTransfer < ActiveRecord::Base
   validates :bag_id, read_only: true, on: :update
   validates :fixity_alg_id, read_only: true, on: :update
   validates :fixity_nonce, read_only: true, on: :update
-  # validates :fixity_value, read_only: true, on: :update, unless: proc {|r| r.fixity_value_changed?(from: nil)}
-  # validates :fixity_accept, read_only: true, on: :update, unless: proc {|r| r.fixity_accept_changed?(from: nil)}
-  # validates :bag_valid, read_only: true, on: :update, unless: proc {|r| r.bag_valid_changed?(from: nil)}
+  validates :fixity_value, read_only: true, on: :update, unless: proc {|r| r.fixity_value_changed?(from: nil)}
+  validates :fixity_accept, read_only: true, on: :update, unless: proc {|r| r.fixity_accept_changed?(from: nil)}
+  validates :bag_valid, read_only: true, on: :update, unless: proc {|r| r.bag_valid_changed?(from: nil)}
   validates :protocol_id, read_only: true, on: :update
   validates :link, read_only: true, on: :update
 
