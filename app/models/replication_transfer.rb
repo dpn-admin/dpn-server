@@ -80,7 +80,7 @@ class ReplicationTransfer < ActiveRecord::Base
     # TODO: What if a client sets the fixity to be an empty string?
     #       i.e. do we want to define empty as being equivalent to null
     # TODO: Uhhhhh "received"? Use the enum and not a magic val
-    if "received" == record.status # FIXITY_CHECK_STATES.include?(record.status) &&
+    if "received" == record.status && # FIXITY_CHECK_STATES.include?(record.status)
        record.from_node.namespace == Rails.configuration.local_namespace
 
       # logger.info "updating fixty_accept and state"
