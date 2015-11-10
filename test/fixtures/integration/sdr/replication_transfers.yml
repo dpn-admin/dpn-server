@@ -8,7 +8,7 @@ xfer01_to_hathi:
     bag: sdr01
     from_node: sdr
     to_node: hathi
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -22,7 +22,7 @@ xfer02_to_hathi:
     bag: sdr02
     from_node: sdr
     to_node: hathi
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -36,7 +36,7 @@ xfer03_to_hathi:
     bag: sdr03
     from_node: sdr
     to_node: hathi
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -50,7 +50,7 @@ xfer04_to_hathi:
     bag: sdr04
     from_node: sdr
     to_node: hathi
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -64,7 +64,7 @@ xfer05_to_hathi:
     bag: sdr05
     from_node: sdr
     to_node: hathi
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -78,7 +78,7 @@ xfer06_to_hathi:
     bag: sdr06
     from_node: sdr
     to_node: hathi
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -92,7 +92,7 @@ xfer01_to_chron:
     bag: sdr01
     from_node: sdr
     to_node: chron
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -106,7 +106,7 @@ xfer02_to_chron:
     bag: sdr02
     from_node: sdr
     to_node: chron
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -120,7 +120,7 @@ xfer03_to_chron:
     bag: sdr03
     from_node: sdr
     to_node: chron
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -134,7 +134,7 @@ xfer04_to_chron:
     bag: sdr04
     from_node: sdr
     to_node: chron
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -148,7 +148,7 @@ xfer05_to_chron:
     bag: sdr05
     from_node: sdr
     to_node: chron
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -162,7 +162,7 @@ xfer06_to_chron:
     bag: sdr06
     from_node: sdr
     to_node: chron
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -176,7 +176,7 @@ xfer01_to_aptrust:
     bag: sdr01
     from_node: sdr
     to_node: aptrust
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -190,7 +190,7 @@ xfer02_to_aptrust:
     bag: sdr02
     from_node: sdr
     to_node: aptrust
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -204,7 +204,7 @@ xfer03_to_aptrust:
     bag: sdr03
     from_node: sdr
     to_node: aptrust
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -218,7 +218,7 @@ xfer04_to_aptrust:
     bag: sdr04
     from_node: sdr
     to_node: aptrust
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -232,7 +232,7 @@ xfer05_to_aptrust:
     bag: sdr05
     from_node: sdr
     to_node: aptrust
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -246,7 +246,7 @@ xfer06_to_aptrust:
     bag: sdr06
     from_node: sdr
     to_node: aptrust
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -260,7 +260,7 @@ xfer01_to_tdr:
     bag: sdr01
     from_node: sdr
     to_node: tdr
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -274,7 +274,7 @@ xfer02_to_tdr:
     bag: sdr02
     from_node: sdr
     to_node: tdr
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -288,7 +288,7 @@ xfer03_to_tdr:
     bag: sdr03
     from_node: sdr
     to_node: tdr
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -302,7 +302,7 @@ xfer04_to_tdr:
     bag: sdr04
     from_node: sdr
     to_node: tdr
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -316,7 +316,7 @@ xfer05_to_tdr:
     bag: sdr05
     from_node: sdr
     to_node: tdr
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
 
@@ -330,6 +330,6 @@ xfer06_to_tdr:
     bag: sdr06
     from_node: sdr
     to_node: tdr
-    replication_status: requested
+    status: 0
     protocol: rsync
     fixity_alg: sha256
