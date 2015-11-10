@@ -4,7 +4,7 @@ xfer01_to_hathi:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-1
+    replication_id: 10000000-0000-4111-a000-000000000001
     bag: aptrust01
     from_node: aptrust
     to_node: hathi
@@ -18,7 +18,7 @@ xfer02_to_hathi:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-2
+    replication_id: 10000000-0000-4111-a000-000000000002
     bag: aptrust02
     from_node: aptrust
     to_node: hathi
@@ -32,7 +32,7 @@ xfer03_to_hathi:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-3
+    replication_id: 10000000-0000-4111-a000-000000000003
     bag: aptrust03
     from_node: aptrust
     to_node: hathi
@@ -46,7 +46,7 @@ xfer04_to_hathi:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-4
+    replication_id: 10000000-0000-4111-a000-000000000004
     bag: aptrust04
     from_node: aptrust
     to_node: hathi
@@ -60,7 +60,7 @@ xfer05_to_hathi:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-5
+    replication_id: 10000000-0000-4111-a000-000000000005
     bag: aptrust05
     from_node: aptrust
     to_node: hathi
@@ -74,7 +74,7 @@ xfer06_to_hathi:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-6
+    replication_id: 10000000-0000-4111-a000-000000000006
     bag: aptrust06
     from_node: aptrust
     to_node: hathi
@@ -88,7 +88,7 @@ xfer01_to_chron:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-7
+    replication_id: 10000000-0000-4111-a000-000000000007
     bag: aptrust01
     from_node: aptrust
     to_node: chron
@@ -102,7 +102,7 @@ xfer02_to_chron:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-8
+    replication_id: 10000000-0000-4111-a000-000000000008
     bag: aptrust02
     from_node: aptrust
     to_node: chron
@@ -116,7 +116,7 @@ xfer03_to_chron:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-9
+    replication_id: 10000000-0000-4111-a000-000000000009
     bag: aptrust03
     from_node: aptrust
     to_node: chron
@@ -130,7 +130,7 @@ xfer04_to_chron:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-10
+    replication_id: 10000000-0000-4111-a000-000000000010
     bag: aptrust04
     from_node: aptrust
     to_node: chron
@@ -144,7 +144,7 @@ xfer05_to_chron:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-11
+    replication_id: 10000000-0000-4111-a000-000000000011
     bag: aptrust05
     from_node: aptrust
     to_node: chron
@@ -158,7 +158,7 @@ xfer06_to_chron:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-12
+    replication_id: 10000000-0000-4111-a000-000000000012
     bag: aptrust06
     from_node: aptrust
     to_node: chron
@@ -172,7 +172,7 @@ xfer01_to_sdr:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-13
+    replication_id: 10000000-0000-4111-a000-000000000013
     bag: aptrust01
     from_node: aptrust
     to_node: sdr
@@ -186,7 +186,7 @@ xfer02_to_sdr:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-14
+    replication_id: 10000000-0000-4111-a000-000000000014
     bag: aptrust02
     from_node: aptrust
     to_node: sdr
@@ -200,7 +200,7 @@ xfer03_to_sdr:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-15
+    replication_id: 10000000-0000-4111-a000-000000000015
     bag: aptrust03
     from_node: aptrust
     to_node: sdr
@@ -214,7 +214,7 @@ xfer04_to_sdr:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-16
+    replication_id: 10000000-0000-4111-a000-000000000016
     bag: aptrust04
     from_node: aptrust
     to_node: sdr
@@ -228,7 +228,7 @@ xfer05_to_sdr:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-17
+    replication_id: 10000000-0000-4111-a000-000000000017
     bag: aptrust05
     from_node: aptrust
     to_node: sdr
@@ -242,7 +242,7 @@ xfer06_to_sdr:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-18
+    replication_id: 10000000-0000-4111-a000-000000000018
     bag: aptrust06
     from_node: aptrust
     to_node: sdr
@@ -256,7 +256,7 @@ xfer01_to_tdr:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-19
+    replication_id: 10000000-0000-4111-a000-000000000019
     bag: aptrust01
     from_node: aptrust
     to_node: tdr
@@ -270,7 +270,7 @@ xfer02_to_tdr:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-20
+    replication_id: 10000000-0000-4111-a000-000000000020
     bag: aptrust02
     from_node: aptrust
     to_node: tdr
@@ -284,7 +284,7 @@ xfer03_to_tdr:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-21
+    replication_id: 10000000-0000-4111-a000-000000000021
     bag: aptrust03
     from_node: aptrust
     to_node: tdr
@@ -298,7 +298,7 @@ xfer04_to_tdr:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-22
+    replication_id: 10000000-0000-4111-a000-000000000022
     bag: aptrust04
     from_node: aptrust
     to_node: tdr
@@ -312,7 +312,7 @@ xfer05_to_tdr:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-23
+    replication_id: 10000000-0000-4111-a000-000000000023
     bag: aptrust05
     from_node: aptrust
     to_node: tdr
@@ -326,7 +326,7 @@ xfer06_to_tdr:
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: aptrust-24
+    replication_id: 10000000-0000-4111-a000-000000000024
     bag: aptrust06
     from_node: aptrust
     to_node: tdr
