@@ -1,3 +1,4 @@
+# token and credential is "aptrust_token"
 aptrust:
     namespace: aptrust
     name: aptrust
@@ -6,7 +7,7 @@ aptrust:
     updated_at: 2015-09-15T17:39:46.329Z
     api_root: http://127.0.0.1:3001
     private_auth_token: aptrust_token
-    auth_credential: aptrust_token
+    auth_credential: "l4xNuPxI3qt66fI/RKH+HA==\n"
     storage_region: va
     storage_type: magnetic_disk
     fixity_algs:
@@ -14,6 +15,7 @@ aptrust:
     protocols:
         - rsync
 
+# token and credential is "chron_token"
 chron:
     namespace: chron
     name: chron
@@ -22,7 +24,7 @@ chron:
     updated_at: 2015-09-15T17:39:46.320Z
     api_root: http://127.0.0.1:3002
     private_auth_token: chron_token
-    auth_credential: chron_token
+    auth_credential: "ncKrlkxr0g0dFAuzWHMEfA==\n"
     storage_region: ca
     storage_type: magnetic_disk
     fixity_algs:
@@ -30,6 +32,7 @@ chron:
     protocols:
         - rsync
 
+# token and credential is "hathi_token"
 hathi:
     namespace: hathi
     name: hathi
@@ -38,7 +41,7 @@ hathi:
     updated_at: 2015-09-15T17:39:46.286Z
     api_root: http://127.0.0.1:3003
     private_auth_token: hathi_token
-    auth_credential: hathi_token
+    auth_credential: "lewwPcS4gXmPzmBFFv0/tQ==\n"
     storage_region: mi
     storage_type: magnetic_disk
     fixity_algs:
@@ -46,6 +49,7 @@ hathi:
     protocols:
         - rsync
 
+# token and credential is "sdr_token"
 sdr:
     namespace: sdr
     name: sdr
@@ -54,7 +58,7 @@ sdr:
     updated_at: 2015-09-15T17:39:46.296Z
     api_root: http://127.0.0.1:3004
     private_auth_token: sdr_token
-    auth_credential: sdr_token
+    auth_credential: "aR2ChPRO3cm3WOpzBQCXfA==\n"
     storage_region: ca
     storage_type: magnetic_disk
     fixity_algs:
@@ -62,6 +66,7 @@ sdr:
     protocols:
         - rsync
 
+# token and credential is "tdr_token"
 tdr:
     namespace: tdr
     name: tdr
@@ -70,7 +75,7 @@ tdr:
     updated_at: 2015-09-15T17:39:46.309Z
     api_root: http://127.0.0.1:3005
     private_auth_token: tdr_token
-    auth_credential: tdr_token
+    auth_credential: "e4cJftkeoRm7YWW0y55DTg==\n"
     storage_region: tx
     storage_type: magnetic_disk
     fixity_algs:
