@@ -63,7 +63,7 @@ class Bag < ActiveRecord::Base
   ### Scopes
   scope :updated_before, ->(time) { where("updated_at < ?", time) unless time.blank? }
   scope :updated_after, ->(time) { where("updated_at > ?", time) unless time.blank? }
-  scope :with_admin_node_id, ->(id) { where(from_admin_id: id) unless id.blank? }
+  scope :with_admin_node_id, ->(id) { where(admin_node_id: id) unless id.blank? }
   scope :with_member_id, ->(id) { where(member_id: id) unless id.blank? }
   scope :with_bag_type, ->(bag_type) { where(type: bag_type) unless bag_type.blank? }
 
