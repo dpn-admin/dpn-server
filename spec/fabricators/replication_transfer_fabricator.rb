@@ -5,21 +5,23 @@
 
 
 Fabricator(:replication_transfer) do
-  replication_id { SecureRandom.uuid }
-  bag { Fabricate(:bag) }
-  from_node { Fabricate(:node) }
-  to_node { Fabricate(:node) }
-  status :requested
-  protocol { Fabricate(:protocol) }
-  link { Faker::Internet.url }
   bag_valid nil
-  fixity_alg { Fabricate(:fixity_alg) }
-  fixity_nonce { Faker::Internet.password(6) }
   fixity_value nil
   fixity_accept nil
   bag_man_request_id nil
+
+  status :requested
   created_at 1.second.ago
   updated_at 1.second.ago
+
+  bag { Fabricate(:bag) }
+  link { Faker::Internet.url }
+  to_node { Fabricate(:node) }
+  from_node { Fabricate(:node) }
+  protocol { Fabricate(:protocol) }
+  replication_id { SecureRandom.uuid }
+  fixity_alg { Fabricate(:fixity_alg) }
+  fixity_nonce { Faker::Internet.password(6) }
 end
 
 Fabricator(:replication_transfer_requested, from: :replication_transfer) do
@@ -29,6 +31,15 @@ end
 Fabricator(:replication_transfer_rejected, from: :replication_transfer) do
   status :rejected
   bag_man_request_id { Fabricate(:bag_man_request, status: :rejected).id }
+end
+
+Fabricator(:replication_transfer_received_nil, from: :replication_transfer) do
+  status :received
+
+  after_build { |replication_transfer, transients|
+    fixity_alg = bag.fixity_checks[0].fixity_alg
+    replication_transfer.update(fixity_alg: fixity_alg)
+  }
 end
 
 Fabricator(:replication_transfer_received, from: :replication_transfer) do
