@@ -10,7 +10,7 @@ aptrust01:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf01
-    member: 9a000000-0000-4000-a000-000000000001
+    member: sunnydale
 
 # Bag IntTestValidBag02.tar
 aptrust02:
@@ -24,7 +24,7 @@ aptrust02:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf02
-    member: 9a000000-0000-4000-a000-000000000002
+    member: faber
 
 # Bag IntTestValidBag03.tar
 aptrust03:
@@ -38,7 +38,7 @@ aptrust03:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf03
-    member: 9a000000-0000-4000-a000-000000000003
+    member: grand_lakes
 
 # Bag IntTestValidBag04.tar
 aptrust04:
@@ -52,7 +52,7 @@ aptrust04:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf04
-    member: 9a000000-0000-4000-a000-000000000004
+    member: greendale
 
 # Bag IntTestValidBag05.tar
 aptrust05:
@@ -66,7 +66,7 @@ aptrust05:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf05
-    member: 9a000000-0000-4000-a000-000000000001
+    member: sunnydale
 
 # Bag IntTestValidBag06.tar
 aptrust06:
@@ -80,7 +80,7 @@ aptrust06:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf06
-    member: 9a000000-0000-4000-a000-000000000002
+    member: faber
 
 # Bag IntTestValidBag01.tar
 chron01:
@@ -94,7 +94,7 @@ chron01:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf01
-    member: 9a000000-0000-4000-a000-000000000001
+    member: sunnydale
 
 # Bag IntTestValidBag02.tar
 chron02:
@@ -108,7 +108,7 @@ chron02:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf02
-    member: 9a000000-0000-4000-a000-000000000002
+    member: faber
 
 # Bag IntTestValidBag03.tar
 chron03:
@@ -122,7 +122,7 @@ chron03:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf03
-    member: 9a000000-0000-4000-a000-000000000003
+    member: grand_lakes
 
 # Bag IntTestValidBag04.tar
 chron04:
@@ -136,7 +136,7 @@ chron04:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf04
-    member: 9a000000-0000-4000-a000-000000000004
+    member: greendale
 
 # Bag IntTestValidBag05.tar
 chron05:
@@ -150,7 +150,7 @@ chron05:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf05
-    member: 9a000000-0000-4000-a000-000000000004
+    member: greendale
 
 # Bag IntTestValidBag06.tar
 chron06:
@@ -164,7 +164,7 @@ chron06:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf06
-    member: 9a000000-0000-4000-a000-000000000003
+    member: grand_lakes
 
 # Bag IntTestValidBag01.tar
 hathi01:
@@ -178,7 +178,7 @@ hathi01:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf01
-    member: 9a000000-0000-4000-a000-000000000001
+    member: sunnydale
 
 # Bag IntTestValidBag02.tar
 hathi02:
@@ -192,7 +192,7 @@ hathi02:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf02
-    member: 9a000000-0000-4000-a000-000000000002
+    member: faber
 
 # Bag IntTestValidBag03.tar
 hathi03:
@@ -206,7 +206,7 @@ hathi03:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf03
-    member: 9a000000-0000-4000-a000-000000000003
+    member: grand_lakes
 
 # Bag IntTestValidBag04.tar
 hathi04:
@@ -220,7 +220,7 @@ hathi04:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf04
-    member: 9a000000-0000-4000-a000-000000000004
+    member: greendale
 
 # Bag IntTestValidBag05.tar
 hathi05:
@@ -234,7 +234,7 @@ hathi05:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf05
-    member: 9a000000-0000-4000-a000-000000000002
+    member: faber
 
 # Bag IntTestValidBag06.tar
 hathi06:
@@ -248,7 +248,7 @@ hathi06:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf06
-    member: 9a000000-0000-4000-a000-000000000003
+    member: grand_lakes
 
 # Bag IntTestValidBag01.tar
 sdr01:
@@ -262,7 +262,7 @@ sdr01:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf01
-    member: 9a000000-0000-4000-a000-000000000001
+    member: sunnydale
 
 # Bag IntTestValidBag02.tar
 sdr02:
@@ -276,7 +276,7 @@ sdr02:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf02
-    member: 9a000000-0000-4000-a000-000000000002
+    member: faber
 
 # Bag IntTestValidBag03.tar
 sdr03:
@@ -290,7 +290,7 @@ sdr03:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf03
-    member: 9a000000-0000-4000-a000-000000000003
+    member: grand_lakes
 
 # Bag IntTestValidBag04.tar
 sdr04:
@@ -304,7 +304,7 @@ sdr04:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf04
-    member: 9a000000-0000-4000-a000-000000000004
+    member: greendale
 
 # Bag IntTestValidBag05.tar
 sdr05:
@@ -318,7 +318,7 @@ sdr05:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf05
-    member: 9a000000-0000-4000-a000-000000000001
+    member: sunnydale
 
 # Bag IntTestValidBag06.tar
 sdr06:
@@ -332,7 +332,7 @@ sdr06:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf06
-    member: 9a000000-0000-4000-a000-000000000004
+    member: greendale
 
 # Bag IntTestValidBag01.tar
 tdr01:
@@ -346,7 +346,7 @@ tdr01:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf01
-    member: 9a000000-0000-4000-a000-000000000001
+    member: sunnydale
 
 # Bag IntTestValidBag02.tar
 tdr02:
@@ -360,7 +360,7 @@ tdr02:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf02
-    member: 9a000000-0000-4000-a000-000000000002
+    member: faber
 
 # Bag IntTestValidBag03.tar
 tdr03:
@@ -374,7 +374,7 @@ tdr03:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf03
-    member: 9a000000-0000-4000-a000-000000000003
+    member: grand_lakes
 
 # Bag IntTestValidBag04.tar
 tdr04:
@@ -388,7 +388,7 @@ tdr04:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf0
-    member: 9a000000-0000-4000-a000-000000000004
+    member: greendale
 
 # Bag IntTestValidBag05.tar
 tdr05:
@@ -402,7 +402,7 @@ tdr05:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf05
-    member: 9a000000-0000-4000-a000-000000000003
+    member: grand_lakes
 
 # Bag IntTestValidBag06.tar
 tdr06:
@@ -416,4 +416,4 @@ tdr06:
     created_at: 2015-09-15T17:56:03.309Z
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf06
-    member: 9a000000-0000-4000-a000-000000000002
+    member: faber
