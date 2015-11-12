@@ -5,6 +5,7 @@
 
 
 Fabricator(:fixity_check) do
+  bag
   fixity_alg
   value { SecureRandom.uuid }
 end

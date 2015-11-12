@@ -18,4 +18,5 @@ Fabricator(:bag) do
   created_at 1.second.ago
   updated_at 1.second.ago
   type "DataBag"
+  fixity_checks(count: 1) { Fabricate.build(:fixity_check, bag: nil) }
 end
