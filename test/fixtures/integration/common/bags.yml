@@ -11,6 +11,9 @@ aptrust01:
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: vf01
     member: sunnydale
+    replicating_nodes:
+      - chron
+      - hathi
 
 # Bag IntTestValidBag02.tar
 aptrust02:
