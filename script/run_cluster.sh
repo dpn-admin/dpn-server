@@ -22,26 +22,57 @@ if [ ! -f config.ru ]; then
     exit
 fi
 
+LOAD_FIXTURES=false
+while getopts :fh opt; do
+    case $opt in
+        f)
+            echo "Will load local fixtures"
+            LOAD_FIXTURES=true
+            ;;
+        h)
+            echo "Usage: run_cluster.sh [-f]"
+            echo "Runs a local cluster of DPN REST services "
+            echo "on ports 3001-3005. Option -f will load node-specific "
+            echo "fixtures, including bags, replication transfers and "
+            echo "restore transfers for each node. Otherwise, only the "
+            echo "bare minimum fixture data is loaded."
+            exit
+            ;;
+        \?)
+            echo "Invalid option: -$OPTARG." >&2
+            exit
+            ;;
+  esac
+done
+
 # Load fixture data for each node
-echo "Loading fixture data for APTrust node"
+echo "Loading base fixture data for APTrust node"
 RAILS_ENV=impersonate_aptrust bundle exec rake db:fixtures:load FIXTURES_DIR=integration/common
-RAILS_ENV=impersonate_aptrust bundle exec rake db:fixtures:load FIXTURES_DIR=integration/aptrust
 
-echo "Loading fixture data for Hathi node"
+echo "Loading base fixture data for Hathi node"
 RAILS_ENV=impersonate_hathi bundle exec rake db:fixtures:load FIXTURES_DIR=integration/common
-RAILS_ENV=impersonate_hathi bundle exec rake db:fixtures:load FIXTURES_DIR=integration/hathi
 
-echo "Loading fixture data for Chronopolis node"
+echo "Loading base fixture data for Chronopolis node"
 RAILS_ENV=impersonate_chron bundle exec rake db:fixtures:load FIXTURES_DIR=integration/common
-RAILS_ENV=impersonate_chron bundle exec rake db:fixtures:load FIXTURES_DIR=integration/chron
 
-echo "Loading fixture data for Stanford node"
+echo "Loading base fixture data for Stanford node"
 RAILS_ENV=impersonate_sdr bundle exec rake db:fixtures:load FIXTURES_DIR=integration/common
-RAILS_ENV=impersonate_sdr bundle exec rake db:fixtures:load FIXTURES_DIR=integration/sdr
 
-echo "Loading fixture data for Texas node"
+echo "Loading base fixture data for Texas node"
 RAILS_ENV=impersonate_tdr bundle exec rake db:fixtures:load FIXTURES_DIR=integration/common
-RAILS_ENV=impersonate_tdr bundle exec rake db:fixtures:load FIXTURES_DIR=integration/tdr
+
+if $LOAD_FIXTURES; then
+    echo "Loading local bags, transfers and restores for APTrust"
+    RAILS_ENV=impersonate_aptrust bundle exec rake db:fixtures:load FIXTURES_DIR=integration/aptrust
+    echo "Loading local bags, transfers and restores for Hathi Trust"
+    RAILS_ENV=impersonate_hathi bundle exec rake db:fixtures:load FIXTURES_DIR=integration/hathi
+    echo "Loading local bags, transfers and restores for Chronopolis"
+    RAILS_ENV=impersonate_chron bundle exec rake db:fixtures:load FIXTURES_DIR=integration/chron
+    echo "Loading local bags, transfers and restores for Stanford"
+    RAILS_ENV=impersonate_sdr bundle exec rake db:fixtures:load FIXTURES_DIR=integration/sdr
+    echo "Loading local bags, transfers and restores for Texas"
+    RAILS_ENV=impersonate_tdr bundle exec rake db:fixtures:load FIXTURES_DIR=integration/tdr
+fi
 
 echo "Starting aptrust node on http://127.0.0.1:3001"
 RAILS_ENV=impersonate_aptrust rails server -p 3001 -P tmp/pids/impersonate_aptrust.pid &
