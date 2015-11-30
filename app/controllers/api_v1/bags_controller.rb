@@ -40,6 +40,7 @@ class ApiV1::BagsController < ApplicationController
       @bag = Bag.new(create_params)
       @bag.replicating_nodes = params[:replicating_nodes]
       @bag.version_family = params[:version_family]
+      @bag.fixity_checks = params[:fixity_checks]
       if @bag.type == DataBag.to_s
         @bag.rights_bags = params[:rights_bags]
         @bag.interpretive_bags = params[:interpretive_bags]
