@@ -17,3 +17,8 @@ greendale:
   name: Greendale Community College
   email: lybrerien@greendalecc.edu
   uuid: 9a000000-0000-4000-a000-000000000004
+
+test:
+  name: test
+  email: arkyve@test.edu
+  uuid: 9a000000-0000-4000-a000-000000000005
