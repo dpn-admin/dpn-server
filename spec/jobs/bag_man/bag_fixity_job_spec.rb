@@ -11,9 +11,9 @@ describe BagMan::BagFixityJob, type: :job do
     @request = Fabricate(:bag_man_request, status: :downloaded)
     @bag_location = "/tmp/some/fake/location"
     @fixity = "fafasdfsdfasdgdsasdfasdfasdf"
-    serialized_bag = double(:serialized_bag)
-    allow(serialized_bag).to receive(:fixity).with(any_args).and_return(@fixity)
-    allow(DPN::Bagit::SerializedBag).to receive(:new).and_return(serialized_bag)
+    bag = double(:serialized_bag)
+    allow(bag).to receive(:fixity).with(any_args).and_return(@fixity)
+    allow(DPN::Bagit::Bag).to receive(:new).and_return(bag)
   end
 
   subject { BagMan::BagFixityJob.perform_now(@request, @bag_location) }
@@ -25,7 +25,7 @@ describe BagMan::BagFixityJob, type: :job do
 
   it "creates a serialized bag from the bag_location" do
     subject
-    expect(DPN::Bagit::SerializedBag).to have_received(:new).with(@bag_location)
+    expect(DPN::Bagit::Bag).to have_received(:new).with(@bag_location)
   end
 
   it "does not enqueue a job" do
