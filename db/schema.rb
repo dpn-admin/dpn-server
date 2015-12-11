@@ -11,20 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151019220704) do
+ActiveRecord::Schema.define(version: 20151215211317) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "bag_man_requests", force: :cascade do |t|
-    t.string   "source_location",                       null: false
+    t.string   "source_location",                         null: false
     t.string   "preservation_location"
-    t.integer  "status",                default: 0
+    t.integer  "status",                  default: 0
     t.string   "fixity"
     t.boolean  "validity"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
-    t.boolean  "cancelled",             default: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.boolean  "cancelled",               default: false
+    t.integer  "replication_transfer_id"
   end
 
   create_table "bags", force: :cascade do |t|
@@ -139,25 +140,23 @@ ActiveRecord::Schema.define(version: 20151019220704) do
   end
 
   create_table "replication_transfers", force: :cascade do |t|
-    t.integer  "bag_id",                         null: false
-    t.integer  "from_node_id",                   null: false
-    t.integer  "to_node_id",                     null: false
-    t.integer  "protocol_id",                    null: false
-    t.string   "link",                           null: false
+    t.integer  "bag_id",                     null: false
+    t.integer  "from_node_id",               null: false
+    t.integer  "to_node_id",                 null: false
+    t.integer  "protocol_id",                null: false
+    t.string   "link",                       null: false
     t.boolean  "bag_valid"
-    t.integer  "fixity_alg_id",                  null: false
+    t.integer  "fixity_alg_id",              null: false
     t.text     "fixity_nonce"
     t.string   "fixity_value"
     t.boolean  "fixity_accept"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.string   "replication_id"
-    t.integer  "bag_man_request_id"
-    t.integer  "status",             default: 0, null: false
+    t.integer  "status",         default: 0, null: false
   end
-
-  add_index "replication_transfers", ["bag_man_request_id"], name: "index_replication_transfers_on_bag_man_request_id", unique: true, using: :btree
-  add_index "replication_transfers", ["replication_id"], name: "index_replication_transfers_on_replication_id", unique: true, using: :btree
+  
+  add_index "replication_transfers", ["replication_id"], name: "index_replication_transfers_on_replication_id", unique: true
 
   create_table "restore_agreements", force: :cascade do |t|
     t.integer  "from_node_id", null: false

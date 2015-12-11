@@ -90,6 +90,9 @@ describe ReplicationTransfer do
       it "creates a BagMan::Request" do
         expect(record.bag_man_request).to be_valid
       end
+      it "doesn't forget about the BagMan::Request" do
+        expect(record.reload.bag_man_request).to be_valid
+      end
       it "assigns link to the BagMan::Request source_location" do
         expect(record.link).to eql(record.bag_man_request.source_location)
       end
@@ -153,17 +156,17 @@ describe ReplicationTransfer do
       end
 
       context "updates fixity_accept" do
-        it "sets true when matches" do
+        it "sets true when fixity matches" do
           @record.fixity_value = @check.value
           expect(@record).to be_valid
           expect(@record.save).to be true
-          expect(@record.fixity_accept).to be true
+          expect(@record.reload.fixity_accept).to be true
         end
 
-        it "sets false when wrong" do
+        it "sets false when fixity wrong" do
           @record.fixity_value = SecureRandom.uuid
           expect(@record.save).to be true
-          expect(@record.fixity_accept).to be false
+          expect(@record.reload.fixity_accept).to be false
         end
       end
 
@@ -191,7 +194,7 @@ describe ReplicationTransfer do
             @record.bag_valid = false
             @record.fixity_value = @check.value
             expect(@record.save).to be true
-            expect(@record.status).to eq(cancelled)
+            expect(@record.reload.status).to eq(cancelled)
           end
         end
       end

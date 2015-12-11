@@ -45,69 +45,53 @@ class ReplicationTransfer < ActiveRecord::Base
   belongs_to :bag
   belongs_to :fixity_alg
   belongs_to :protocol
-  belongs_to :bag_man_request, foreign_key: "bag_man_request_id", inverse_of: :replication_transfer
+  has_one :bag_man_request, inverse_of: :replication_transfer
 
 
   ### Callbacks
-  after_create do |record|
-    if record.to_node.namespace == Rails.configuration.local_namespace && record.bag_man_request_id.nil?
-      BagManRequest.create!(source_location: record.link, cancelled: false, replication_transfer: record)
-    end
-  end
-
-  after_update do |record|
-    if record.bag_man_request_id
-      if record.status_changed?(from: "received", to: "confirmed") && record.fixity_accept == true
-        ::BagMan::BagPreserveJob.perform_later(
-          record.bag_man_request,
-          record.bag_man_request.staging_location,
-          Rails.configuration.repo_dir)
-      end
-    end
-  end
-
-  after_update do |record|
-    if record.status_changed? && record.bag_man_request_id != nil
-      if [:stored, :rejected, :cancelled].include?(record.status.to_sym)
-        record.bag_man_request.destroy
-      end
-    end
-  end
-
-  before_update do |record|
-    # Only check fixity if we are in a pre-confirmed state and it has been set
-    # Allows for the state to be set if the fixity == false or bag_valid == false
-    # TODO: What if a client sets the fixity to be an empty string?
-    #       i.e. do we want to define empty as being equivalent to null
-    # TODO: Uhhhhh "received"? Use the enum and not a magic val
-    if "received" == record.status && # FIXITY_CHECK_STATES.include?(record.status)
-       record.from_node.namespace == Rails.configuration.local_namespace
-
-      # logger.info "updating fixty_accept and state"
-      bag = record.bag
-      # Set the fixity_accept field
-      if record.fixity_value != nil
-        fixity_check = bag.fixity_checks.find_by_fixity_alg_id(record.fixity_alg_id)
-        if fixity_check != nil
-          record.fixity_accept = fixity_check.value == record.fixity_value
-        end # else false?
-      end
-
-      # Check if we should push the state along
-      if record.fixity_accept && record.bag_valid
-        record.status = :confirmed
-      # Check if either is false
-      elsif record.fixity_accept == false || record.bag_valid == false
-        record.status = :cancelled
-      end
-    end
-  end
-
   before_validation do |record|
     if record.replication_id == nil && record.from_node && record.from_node.namespace == Rails.configuration.local_namespace
       record.replication_id = SecureRandom.uuid.downcase
     end
   end
+
+  before_update :set_fixity_accept, if: :set_fixity_accept?
+
+  before_update if: "bag_valid == false" do |record|
+    record.status = :cancelled
+  end
+
+  before_update if: "they_received && fixity_accept && bag_valid" do |record|
+    record.status = :confirmed
+  end
+
+  after_create do |record|
+    if record.to_node.namespace == Rails.configuration.local_namespace && record.bag_man_request.nil?
+      record.bag_man_request = BagManRequest.create!(source_location: link, cancelled: false)
+    end
+  end
+
+  after_update do |record|
+    if record.bag_man_request
+      if record.status_changed?(from: "received", to: "confirmed") && record.fixity_accept == true
+        record.bag_man_request.okay_to_preserve!
+      end
+    end
+  end
+
+
+  after_update do |record|
+    if record.status_changed? && record.bag_man_request != nil
+      if [:stored, :rejected, :cancelled].include?(record.status.to_sym)
+        record.bag_man_request.cancelled = true
+      end
+    end
+  end
+
+
+  # after_save on: :update, if: "bag_man_request" do
+  #   bag_man_request.replication_transfer_changed(status_was)
+  # end
 
 
   ### Static Validations
@@ -160,6 +144,27 @@ class ReplicationTransfer < ActiveRecord::Base
 
 
   private
+  def set_fixity_accept
+    fixity_check = bag.fixity_checks.find_by_fixity_alg_id(fixity_alg_id)
+    if fixity_check
+      self.fixity_accept = (fixity_check.value == fixity_value)
+    else
+      self.fixity_accept = false
+    end
+    unless self.fixity_accept
+      self.status = :cancelled
+    end
+  end
+
+
+  def set_fixity_accept?
+    they_received && received? && fixity_value_changed?
+  end
+
+  def they_received
+    received? && from_node.namespace == Rails.configuration.local_namespace
+  end
+
   def check_fixity_value?
     FIXITY_VALUE_STATES.include?(status)
   end

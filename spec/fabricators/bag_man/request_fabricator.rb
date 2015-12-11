@@ -11,4 +11,5 @@ Fabricator(:bag_man_request, class_name: "BagManRequest") do
   fixity nil
   validity nil
   cancelled false
+  replication_transfer { Fabricate(:replication_transfer) }
 end

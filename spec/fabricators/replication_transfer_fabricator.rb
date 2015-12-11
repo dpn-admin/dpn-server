@@ -8,7 +8,6 @@ Fabricator(:replication_transfer) do
   bag_valid nil
   fixity_value nil
   fixity_accept nil
-  bag_man_request_id nil
 
   status :requested
   created_at 1.second.ago
@@ -30,7 +29,9 @@ end
 
 Fabricator(:replication_transfer_rejected, from: :replication_transfer) do
   status :rejected
-  bag_man_request_id { Fabricate(:bag_man_request, status: :rejected).id }
+  after_build { |record|
+    Fabricate(:bag_man_request, status: :rejected, replication_transfer: record)
+  }
 end
 
 Fabricator(:replication_transfer_received_nil, from: :replication_transfer) do
@@ -46,10 +47,13 @@ Fabricator(:replication_transfer_received, from: :replication_transfer) do
   status :received
   fixity_value { Faker::Internet.password(20) }
   bag_valid true
-  bag_man_request_id { Fabricate(:bag_man_request,
-                                 fixity: Faker::Internet.password(20),
-                                 validity: true,
-                                 status: :unpacked).id }
+  after_build do |record|
+    Fabricate(:bag_man_request,
+      fixity: Faker::Internet.password(20),
+      validity: true,
+      status: :unpacked,
+      replication_transfer: record)
+  end
 end
 
 Fabricator(:replication_transfer_confirmed, from: :replication_transfer) do
@@ -57,10 +61,13 @@ Fabricator(:replication_transfer_confirmed, from: :replication_transfer) do
   fixity_value { Faker::Internet.password(20) }
   bag_valid true
   fixity_accept true
-  bag_man_request_id { Fabricate(:bag_man_request,
-                                 fixity: Faker::Internet.password(20),
-                                 validity: true,
-                                 status: :unpacked).id }
+  after_build do |record|
+    Fabricate(:bag_man_request,
+      fixity: Faker::Internet.password(20),
+      validity: true,
+      status: :unpacked,
+      replication_transfer: record)
+  end
 end
 
 Fabricator(:replication_transfer_stored, from: :replication_transfer) do
@@ -68,10 +75,13 @@ Fabricator(:replication_transfer_stored, from: :replication_transfer) do
   fixity_value { Faker::Internet.password(20) }
   bag_valid true
   fixity_accept true
-  bag_man_request_id { Fabricate(:bag_man_request,
-                                 fixity: Faker::Internet.password(20),
-                                 validity: true,
-                                 status: :preserved).id }
+  after_build do |record|
+    Fabricate(:bag_man_request,
+      fixity: Faker::Internet.password(20),
+      validity: true,
+      status: :preserved,
+      replication_transfer: record)
+  end
 end
 
 Fabricator(:replication_transfer_cancelled, from: :replication_transfer) do
