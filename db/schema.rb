@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20151019220704) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "bag_man_requests", force: :cascade do |t|
     t.string   "source_location",                       null: false
     t.string   "preservation_location"
@@ -38,21 +41,21 @@ ActiveRecord::Schema.define(version: 20151019220704) do
     t.integer  "member_id"
   end
 
-  add_index "bags", ["uuid"], name: "index_bags_on_uuid", unique: true
+  add_index "bags", ["uuid"], name: "index_bags_on_uuid", unique: true, using: :btree
 
   create_table "data_interpretive", force: :cascade do |t|
     t.integer "data_bag_id",         null: false
     t.integer "interpretive_bag_id", null: false
   end
 
-  add_index "data_interpretive", ["data_bag_id", "interpretive_bag_id"], name: "index_data_interpretive_on_data_bag_id_and_interpretive_bag_id", unique: true
+  add_index "data_interpretive", ["data_bag_id", "interpretive_bag_id"], name: "index_data_interpretive_on_data_bag_id_and_interpretive_bag_id", unique: true, using: :btree
 
   create_table "data_rights", force: :cascade do |t|
     t.integer "data_bag_id",   null: false
     t.integer "rights_bag_id", null: false
   end
 
-  add_index "data_rights", ["data_bag_id", "rights_bag_id"], name: "index_data_rights_on_data_bag_id_and_rights_bag_id", unique: true
+  add_index "data_rights", ["data_bag_id", "rights_bag_id"], name: "index_data_rights_on_data_bag_id_and_rights_bag_id", unique: true, using: :btree
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false
@@ -68,7 +71,7 @@ ActiveRecord::Schema.define(version: 20151019220704) do
     t.datetime "updated_at"
   end
 
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "fixity_algs", force: :cascade do |t|
     t.string   "name",       null: false
@@ -76,7 +79,7 @@ ActiveRecord::Schema.define(version: 20151019220704) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "fixity_algs", ["name"], name: "index_fixity_algs_on_name", unique: true
+  add_index "fixity_algs", ["name"], name: "index_fixity_algs_on_name", unique: true, using: :btree
 
   create_table "fixity_checks", force: :cascade do |t|
     t.integer "bag_id",        null: false
@@ -84,7 +87,7 @@ ActiveRecord::Schema.define(version: 20151019220704) do
     t.text    "value",         null: false
   end
 
-  add_index "fixity_checks", ["bag_id", "fixity_alg_id"], name: "index_fixity_checks_on_bag_id_and_fixity_alg_id", unique: true
+  add_index "fixity_checks", ["bag_id", "fixity_alg_id"], name: "index_fixity_checks_on_bag_id_and_fixity_alg_id", unique: true, using: :btree
 
   create_table "members", force: :cascade do |t|
     t.string   "uuid",       null: false
@@ -94,7 +97,7 @@ ActiveRecord::Schema.define(version: 20151019220704) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "members", ["uuid"], name: "index_members_on_uuid", unique: true
+  add_index "members", ["uuid"], name: "index_members_on_uuid", unique: true, using: :btree
 
   create_table "nodes", force: :cascade do |t|
     t.string   "namespace",          null: false
@@ -109,9 +112,9 @@ ActiveRecord::Schema.define(version: 20151019220704) do
     t.string   "auth_credential"
   end
 
-  add_index "nodes", ["api_root"], name: "index_nodes_on_api_root", unique: true
-  add_index "nodes", ["namespace"], name: "index_nodes_on_namespace", unique: true
-  add_index "nodes", ["private_auth_token"], name: "index_nodes_on_private_auth_token", unique: true
+  add_index "nodes", ["api_root"], name: "index_nodes_on_api_root", unique: true, using: :btree
+  add_index "nodes", ["namespace"], name: "index_nodes_on_namespace", unique: true, using: :btree
+  add_index "nodes", ["private_auth_token"], name: "index_nodes_on_private_auth_token", unique: true, using: :btree
 
   create_table "protocols", force: :cascade do |t|
     t.string   "name",       null: false
@@ -119,14 +122,14 @@ ActiveRecord::Schema.define(version: 20151019220704) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "protocols", ["name"], name: "index_protocols_on_name", unique: true
+  add_index "protocols", ["name"], name: "index_protocols_on_name", unique: true, using: :btree
 
   create_table "replicating_nodes", force: :cascade do |t|
     t.integer "node_id", null: false
     t.integer "bag_id",  null: false
   end
 
-  add_index "replicating_nodes", ["node_id", "bag_id"], name: "index_replicating_nodes_on_node_id_and_bag_id", unique: true
+  add_index "replicating_nodes", ["node_id", "bag_id"], name: "index_replicating_nodes_on_node_id_and_bag_id", unique: true, using: :btree
 
   create_table "replication_agreements", force: :cascade do |t|
     t.integer  "from_node_id", null: false
@@ -153,8 +156,8 @@ ActiveRecord::Schema.define(version: 20151019220704) do
     t.integer  "status",             default: 0, null: false
   end
 
-  add_index "replication_transfers", ["bag_man_request_id"], name: "index_replication_transfers_on_bag_man_request_id", unique: true
-  add_index "replication_transfers", ["replication_id"], name: "index_replication_transfers_on_replication_id", unique: true
+  add_index "replication_transfers", ["bag_man_request_id"], name: "index_replication_transfers_on_bag_man_request_id", unique: true, using: :btree
+  add_index "replication_transfers", ["replication_id"], name: "index_replication_transfers_on_replication_id", unique: true, using: :btree
 
   create_table "restore_agreements", force: :cascade do |t|
     t.integer  "from_node_id", null: false
@@ -175,7 +178,7 @@ ActiveRecord::Schema.define(version: 20151019220704) do
     t.integer  "status",       default: 0, null: false
   end
 
-  add_index "restore_transfers", ["restore_id"], name: "index_restore_transfers_on_restore_id", unique: true
+  add_index "restore_transfers", ["restore_id"], name: "index_restore_transfers_on_restore_id", unique: true, using: :btree
 
   create_table "storage_regions", force: :cascade do |t|
     t.string   "name",       null: false
@@ -183,7 +186,7 @@ ActiveRecord::Schema.define(version: 20151019220704) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "storage_regions", ["name"], name: "index_storage_regions_on_name", unique: true
+  add_index "storage_regions", ["name"], name: "index_storage_regions_on_name", unique: true, using: :btree
 
   create_table "storage_types", force: :cascade do |t|
     t.string   "name",       null: false
@@ -191,21 +194,21 @@ ActiveRecord::Schema.define(version: 20151019220704) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "storage_types", ["name"], name: "index_storage_types_on_name", unique: true
+  add_index "storage_types", ["name"], name: "index_storage_types_on_name", unique: true, using: :btree
 
   create_table "supported_fixity_algs", force: :cascade do |t|
     t.integer "node_id",       null: false
     t.integer "fixity_alg_id", null: false
   end
 
-  add_index "supported_fixity_algs", ["node_id", "fixity_alg_id"], name: "index_supported_fixity_algs_on_node_id_and_fixity_alg_id", unique: true
+  add_index "supported_fixity_algs", ["node_id", "fixity_alg_id"], name: "index_supported_fixity_algs_on_node_id_and_fixity_alg_id", unique: true, using: :btree
 
   create_table "supported_protocols", force: :cascade do |t|
     t.integer "node_id",     null: false
     t.integer "protocol_id", null: false
   end
 
-  add_index "supported_protocols", ["node_id", "protocol_id"], name: "index_supported_protocols_on_node_id_and_protocol_id", unique: true
+  add_index "supported_protocols", ["node_id", "protocol_id"], name: "index_supported_protocols_on_node_id_and_protocol_id", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",               default: "",    null: false
@@ -221,12 +224,43 @@ ActiveRecord::Schema.define(version: 20151019220704) do
     t.datetime "updated_at",                          null: false
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
 
   create_table "version_families", force: :cascade do |t|
     t.string "uuid", null: false
   end
 
-  add_index "version_families", ["uuid"], name: "index_version_families_on_uuid", unique: true
+  add_index "version_families", ["uuid"], name: "index_version_families_on_uuid", unique: true, using: :btree
 
+  add_foreign_key "bags", "members", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "bags", "nodes", column: "admin_node_id", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "bags", "nodes", column: "ingest_node_id", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "bags", "version_families", on_update: :restrict, on_delete: :restrict
+  add_foreign_key "data_interpretive", "bags", column: "data_bag_id", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "data_interpretive", "bags", column: "interpretive_bag_id", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "data_rights", "bags", column: "data_bag_id", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "data_rights", "bags", column: "rights_bag_id", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "fixity_checks", "bags", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "fixity_checks", "fixity_algs", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "nodes", "storage_regions", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "nodes", "storage_types", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "replicating_nodes", "bags", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "replicating_nodes", "nodes", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "replication_agreements", "nodes", column: "from_node_id", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "replication_agreements", "nodes", column: "to_node_id", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "replication_transfers", "bags", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "replication_transfers", "fixity_algs", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "replication_transfers", "nodes", column: "from_node_id", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "replication_transfers", "nodes", column: "to_node_id", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "replication_transfers", "protocols", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "restore_agreements", "nodes", column: "from_node_id", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "restore_agreements", "nodes", column: "to_node_id", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "restore_transfers", "bags", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "restore_transfers", "nodes", column: "from_node_id", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "restore_transfers", "nodes", column: "to_node_id", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "restore_transfers", "protocols", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "supported_fixity_algs", "fixity_algs", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "supported_fixity_algs", "nodes", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "supported_protocols", "nodes", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "supported_protocols", "protocols", on_update: :cascade, on_delete: :restrict
 end

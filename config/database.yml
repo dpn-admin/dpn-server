@@ -15,6 +15,16 @@ development:
   <<: *default
   database: db/development.sqlite3
 
+# The demo server at devops.aptrust.org.
+demo: 
+  adapter: postgresql
+  encoding: utf8
+  database: ENV['DPN_DB_NAME']
+  pool: 5
+  username: ENV['DPN_DB_USER']
+  password: ENV['DPN_DB_PASSWORD']
+  host: ENV['DPN_DB_HOST']
+
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.

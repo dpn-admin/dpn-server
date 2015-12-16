@@ -10,7 +10,7 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` on Rails 4+ applications as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = '6edfbc8cdf0d8e4b5ee4e5fe2c82732a6d0023aaad3caed2b425186cf001b9c80d51b6f02e94e4202034a4f24ca79d385d128d3a42d199192f9c195b7c415325'
+  config.secret_key = ENV['DPN_DEVISE_SECRET_KEY']
 
   # Set a Devise secret key if we're impersonating a node. This only applies
   # when we're running a local cluster for testing, in which case we run

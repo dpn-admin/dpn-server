@@ -32,6 +32,14 @@ group :production do
   gem 'mysql2'
 end
 
+# ----------------------------------------------
+# To skip the postgres installation, run
+# bundle install --without demo
+# ----------------------------------------------
+group :demo do
+  gem 'pg'
+end
+
 group :development, :test do
   gem 'sqlite3'
   gem 'byebug'
