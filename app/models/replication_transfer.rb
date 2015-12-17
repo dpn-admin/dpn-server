@@ -55,14 +55,16 @@ class ReplicationTransfer < ActiveRecord::Base
     end
   end
 
-  before_update :set_fixity_accept, if: :set_fixity_accept?
+  before_update :set_fixity_accept, if: "they_received && fixity_value_changed?"
 
   before_update if: "bag_valid == false" do |record|
     record.status = :cancelled
+    record.updated_at = Time.now
   end
 
   before_update if: "they_received && fixity_accept && bag_valid" do |record|
     record.status = :confirmed
+    record.updated_at = Time.now
   end
 
   after_create do |record|
@@ -87,11 +89,6 @@ class ReplicationTransfer < ActiveRecord::Base
       end
     end
   end
-
-
-  # after_save on: :update, if: "bag_man_request" do
-  #   bag_man_request.replication_transfer_changed(status_was)
-  # end
 
 
   ### Static Validations
@@ -154,12 +151,9 @@ class ReplicationTransfer < ActiveRecord::Base
     unless self.fixity_accept
       self.status = :cancelled
     end
+    self.updated_at = Time.now
   end
 
-
-  def set_fixity_accept?
-    they_received && received? && fixity_value_changed?
-  end
 
   def they_received
     received? && from_node.namespace == Rails.configuration.local_namespace
