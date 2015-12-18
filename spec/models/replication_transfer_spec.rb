@@ -90,6 +90,9 @@ describe ReplicationTransfer do
       it "creates a BagMan::Request" do
         expect(record.bag_man_request).to be_valid
       end
+      it "doesn't forget about the BagMan::Request" do
+        expect(record.reload.bag_man_request).to be_valid
+      end
       it "assigns link to the BagMan::Request source_location" do
         expect(record.link).to eql(record.bag_man_request.source_location)
       end
@@ -153,45 +156,92 @@ describe ReplicationTransfer do
       end
 
       context "updates fixity_accept" do
-        it "sets true when matches" do
-          @record.fixity_value = @check.value
-          expect(@record).to be_valid
-          expect(@record.save).to be true
-          expect(@record.fixity_accept).to be true
+        context "when fixity matches" do
+          before(:each) do
+            @record.fixity_value = @check.value
+            @record.updated_at = 1.minute.ago
+            @record.save!
+          end
+          it "sets fixity_accept to true" do
+            expect(@record.reload.fixity_accept).to be true
+          end
+          it "updates updated_at" do
+            expect(@record.reload.updated_at).to be > 1.minute.ago
+          end
         end
 
-        it "sets false when wrong" do
-          @record.fixity_value = SecureRandom.uuid
-          expect(@record.save).to be true
-          expect(@record.fixity_accept).to be false
+        context "when fixity wrong" do
+          before(:each) do
+            @record.fixity_value = SecureRandom.uuid
+            @record.updated_at = 1.minute.ago
+            @record.save!
+          end
+          it "sets fixity_accept to false" do
+            expect(@record.reload.fixity_accept).to be false
+          end
+          it "updates updated_at" do
+            expect(@record.reload.updated_at).to be > 1.minute.ago
+          end
         end
       end
 
       context "updates status" do
         context "with bag_valid" do
-          before(:each) do
-            @record.bag_valid = true
+          before(:each) { @record.bag_valid = true}
+          context "when fixity matches" do
+            before(:each) do
+              @record.fixity_value = @check.value
+              @record.updated_at = 1.minute.ago
+              @record.save!
+            end
+            it "is confirmed" do
+              expect(@record.reload.status).to eq(confirmed)
+            end
+            it "updates updated_at" do
+              expect(@record.reload.updated_at).to be > 1.minute.ago
+            end
           end
-
-          it "is confirmed with good fixity" do
-            @record.fixity_value = @check.value
-            expect(@record.save).to be true
-            expect(@record.status).to eq(confirmed)
-          end
-
-          it "is cancelled with bad fixity" do
-            @record.fixity_value = SecureRandom.uuid
-            expect(@record.save).to be true
-            expect(@record.status).to eq(cancelled)
+          context "when fixity wrong" do
+            before(:each) do
+              @record.fixity_value = SecureRandom.uuid
+              @record.updated_at = 1.minute.ago
+              @record.save!
+            end
+            it "is cancelled" do
+              expect(@record.reload.status).to eq(cancelled)
+            end
+            it "updates updated_at" do
+              expect(@record.reload.updated_at).to be > 1.minute.ago
+            end
           end
         end
-        
         context "with invalid bag" do
-          it "is cancelled with good fixity" do
-            @record.bag_valid = false
-            @record.fixity_value = @check.value
-            expect(@record.save).to be true
-            expect(@record.status).to eq(cancelled)
+          before(:each) { @record.bag_valid = false}
+          context "when fixity matches" do
+            before(:each) do
+              @record.fixity_value = @check.value
+              @record.updated_at = 1.minute.ago
+              @record.save!
+            end
+            it "is cancelled" do
+              expect(@record.reload.status).to eq(cancelled)
+            end
+            it "updates updated_at" do
+              expect(@record.reload.updated_at).to be > 1.minute.ago
+            end
+          end
+          context "when fixity wrong" do
+            before(:each) do
+              @record.fixity_value = SecureRandom.uuid
+              @record.updated_at = 1.minute.ago
+              @record.save!
+            end
+            it "is cancelled" do
+              expect(@record.reload.status).to eq(cancelled)
+            end
+            it "updates updated_at" do
+              expect(@record.reload.updated_at).to be > 1.minute.ago
+            end
           end
         end
       end
