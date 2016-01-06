@@ -19,6 +19,6 @@ greendale:
   uuid: 9a000000-0000-4000-a000-000000000004
 
 test:
-  name: test
-  email: arkyve@test.edu
-  uuid: 9a000000-0000-4000-a000-000000000005
+  name: Hathi Test
+  email: dpn_test@hathi.org
+  uuid: fe908327-3635-43c2-9ca6-849485febcf3
