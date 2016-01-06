@@ -145,7 +145,7 @@ describe ReplicationTransfer do
       let(:confirmed) { "confirmed" }
       before(:each) do
         # Fabricator sets the fixity_alg for our replication_transfer
-        @record = Fabricate(:replication_transfer_received_nil, 
+        @record = Fabricate(:replication_transfer_received_nil,
                             from_node: @local_node)
 
         # Grab the first fixity check since we only gen one
@@ -281,7 +281,9 @@ describe ReplicationTransfer do
         @to_node = @local_node
         @requester = @local_node
       end
-      it_behaves_like "a statemachine", :requested, [:cancelled, :rejected, :received, :confirmed]
+# The following transition, previously prohibited, is now allowed as
+# part of fix to https://jira.duraspace.org/browse/DPN-81
+#      it_behaves_like "a statemachine", :requested, [:cancelled, :rejected, :received, :confirmed]
       it_behaves_like "a statemachine", :rejected, []
       it_behaves_like "a statemachine", :received, [:confirmed, :cancelled]
       it_behaves_like "a statemachine", :confirmed, [:cancelled, :stored]

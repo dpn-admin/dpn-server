@@ -262,6 +262,14 @@ class ReplicationTransfer < ActiveRecord::Base
         flag_changed_fields(:bag_valid, :fixity_value, :fixity_accept)
       when [:to_node, :from_node, :confirmed, :cancelled]
         flag_changed_fields(:bag_valid, :fixity_value, :fixity_accept)
+
+      # https://jira.duraspace.org/browse/DPN-81
+      # When we're synching records from a remote node, allow us
+      # to copy their records into our DB without stepping through
+      # all the sequential state changes.
+      when [:us, :to_node, :requested, :confirmed]
+      when [:us, :to_node, :requested, :stored]
+        flag_changed_fields()
       else
         errors.add(:status, "cannot change from #{status_was}->#{status} when requester==#{from} and the local_node's role is #{role}")
     end
