@@ -23,7 +23,7 @@ demo:
   pool: 5
   username: <%= ENV['DPN_DB_USER'] %>
   password: <%= ENV['DPN_DB_PASSWORD'] %>
-  host: <%= ENV['DPN_DB_HOST'] %>
+  host: <%= ENV['DPN_DB_HOSTNAME'] %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

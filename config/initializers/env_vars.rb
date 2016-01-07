@@ -1,6 +1,8 @@
 if Rails.env.production?
   dpn_keys = %w{
-    DPN_DB
+    DPN_DB_NAME
+    DPN_DB_ADAPTER
+    DPN_DB_PORT
     DPN_DB_HOSTNAME
     DPN_DB_USER
     DPN_DB_PASSWORD
@@ -14,7 +16,7 @@ if Rails.env.production?
     DPN_SECRET_KEY
     DPN_SALT
   }
-  
+
   dpn_keys.each do |key|
     if ENV[key].blank?
       raise ArgumentError, "Missing environment variable #{key}, see .env.production.example"
