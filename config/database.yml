@@ -17,7 +17,7 @@ development:
 
 # The demo server at devops.aptrust.org.
 demo:
-  adapter: postgresql
+  adapter: <%= ENV['DPN_DB_ADAPTER'] || 'postgresql' %>
   encoding: utf8
   database: <%= ENV['DPN_DB_NAME'] %>
   pool: 5
@@ -60,11 +60,11 @@ impersonate_tdr:
 
 production:
   <<: *default
-  adapter: mysql2
+  adapter: <%= ENV['DPN_DB_ADAPTER'] || 'mysql2' %>
   database: <%= ENV['DPN_DB'] %>
   username: <%= ENV['DPN_DB_USER'] %>
   host: <%= ENV['DPN_DB_HOSTNAME'] %>
   password: <%= ENV['DPN_DB_PASSWORD'] %>
-  port: 3306
+  port: <%= ENV['DPN_DB_PORT'] || 3306 %>
   timeout: 2000
   reconnect: true
