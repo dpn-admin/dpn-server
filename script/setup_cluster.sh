@@ -29,3 +29,5 @@ echo "Setting up db to impersonate local Texas node"
 RAILS_ENV=impersonate_tdr bundle exec rake db:setup
 
 echo "Now run script/run_cluster.sh to run the cluster"
+echo "to run with no pre-loaded data, or script/setup_cluster.sh -f"
+echo "to run with a minimal set of pre-loaded fixture data."
