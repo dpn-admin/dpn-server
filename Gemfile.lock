@@ -288,7 +288,7 @@ DEPENDENCIES
   kaminari
   mysql2
   pg
-  rails (~> 4.2.2)
+  rails (~> 4.2.5)
   rails_admin
   rpairtree
   rspec-activejob
