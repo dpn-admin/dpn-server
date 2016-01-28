@@ -48,8 +48,5 @@ group :development, :test do
   gem 'fabrication'
   gem 'faker'
   gem 'rspec-activejob'
-  gem 'capistrano-rails', '~> 1.1'
-  gem 'capistrano', '~> 3.4.0'
-  gem 'capistrano-rbenv', '~> 2.0'
   gem 'codeclimate-test-reporter'
 end
