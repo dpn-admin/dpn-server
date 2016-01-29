@@ -32,3 +32,6 @@
 
 # Folder attributes file on Macs
 .DS_Store
+
+# Configuration files
+Gemfile.local

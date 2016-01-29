@@ -5,9 +5,12 @@
 
 source 'https://rubygems.org'
 
-# The require line forces dotenv to be loaded before
-# the other gems.
-gem 'dotenv-rails', require: 'dotenv/rails-now'
+# ----------------------------------------------
+# Include gems for your local environment here.
+# e.g. gem "mysql2", group: :production
+# ----------------------------------------------
+
+eval_gemfile "Gemfile.local"
 
 gem 'rails', '~> 4.2.5'
 gem 'sass-rails', '~> 5.0'
@@ -27,18 +30,6 @@ gem 'daemons'
 gem 'rails_admin'
 gem 'devise'
 gem 'cancan'
-
-group :production do
-  gem 'mysql2'
-end
-
-# ----------------------------------------------
-# To skip the postgres installation, run
-# bundle install --without demo
-# ----------------------------------------------
-group :demo do
-  gem 'pg'
-end
 
 group :development, :test do
   gem 'sqlite3'
