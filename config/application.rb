@@ -41,5 +41,15 @@ module Balustrade
         :controller_specs => true,
         :request_specs => true
     end
+
+    config.action_mailer.default_url_options = {
+      host: 'localhost',
+      port: Rails.application.secrets.port
+    }
+
+    config.salt = Rails.application.secrets.salt
+    config.local_namespace = Rails.application.secrets.namespace
+
+
   end
 end
