@@ -10,7 +10,9 @@ source 'https://rubygems.org'
 # e.g. gem "mysql2", group: :production
 # ----------------------------------------------
 
-eval_gemfile "Gemfile.local"
+if File.exists? "Gemfile.local"
+  eval_gemfile "Gemfile.local"
+end
 
 gem 'rails', '~> 4.2.5'
 gem 'sass-rails', '~> 5.0'
