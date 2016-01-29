@@ -35,3 +35,4 @@
 
 # Configuration files
 Gemfile.local
+config/database.yml
