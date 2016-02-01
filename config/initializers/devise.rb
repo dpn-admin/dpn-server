@@ -10,16 +10,8 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` on Rails 4+ applications as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  config.secret_key = ENV['DPN_DEVISE_SECRET_KEY']
+  config.secret_key = Rails.application.secrets.secret_key_base
 
-  # Set a Devise secret key if we're impersonating a node. This only applies
-  # when we're running a local cluster for testing, in which case we run
-  # several local nodes, each of which impersonates a real DPN node. See
-  # script/run_cluster.sh for how it works. The RAILS_ENV is set for each
-  # node in that script.
-  if ENV['RAILS_ENV'] && ENV['RAILS_ENV'].start_with?("impersonate_")
-    config.secret_key = '6e43de7f4a199ef787adc5757fd8dcd4bdf9a43d1b176a2840a86df9669460ed048e8d1c93c978e4aedff6806945ac96b2465567e4e7f7e54ae43625743e2f1c'
-  end
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,

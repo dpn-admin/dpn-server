@@ -1,0 +1,38 @@
+defaults: &defaults
+  secret_key_base:
+    6e43de7f4a199ef787adc5757fd8dcd4bdf9a43d1b176a2840a86df9669460ed048e8d1c93c978e4aedff6806945ac96b2465567e4e7f7e54ae43625743e2f1c
+aptrust:
+  <<: *defaults
+  salt: aptrust_salt
+  local_namespace: aptrust
+  port: 3001
+  database: sqlite3:db/impersonate_aptrust.sqlite3
+
+chron:
+  <<: *defaults
+  salt: chron_salt
+  local_namespace: chron
+  port: 3002
+  database: sqlite3:db/impersonate_chron.sqlite3
+
+hathi:
+  <<: *defaults
+  salt: hathi_salt
+  local_namespace: hathi
+  port: 3003
+  database: sqlite3:db/impersonate_hathi.sqlite3
+
+sdr:
+  <<: *defaults
+  salt: sdr_salt
+  local_namespace: sdr
+  port: 3004
+  database: sqlite3:db/impersonate_sdr.sqlite3
+
+tdr:
+  <<: *defaults
+  salt: tdr_salt
+  local_namespace: tdr
+  port: 3005
+  database: sqlite3:db/impersonate_tdr.sqlite3
+
