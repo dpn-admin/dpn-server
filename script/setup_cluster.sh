@@ -1,5 +1,5 @@
-#!/bin/bash
-#
+#!/usr/bin/env ruby
+
 # setup_cluster.sh
 #
 # Sets up the databases for a cluster of DPN nodes for integration testing.
@@ -7,27 +7,17 @@
 # ----------------------------------------------------------------------
 
 # Make sure we're running from the right directory
-if [ ! -f config.ru ]; then
-    echo "Run this script from the top-level Rails directory "
-    echo "for the dpn-server project. E.g. script/setup_cluster.sh"
-    exit
-fi
+unless File.exists? "config.ru"
+  puts "Run this script from the top-level Rails directory "
+  puts "for the dpn-server project. E.g. script/setup_cluster.sh"
+  exit
+end
 
-echo "Setting up db to impersonate local APTrust node"
-RAILS_ENV=impersonate_aptrust bundle exec rake db:setup
+%w(aptrust chron hathi sdr tdr).each do |node|
+  puts "Setting up db that impersonates local #{node} node."
+  `RAILS_ENV=impersonate IMPERSONATE=#{node} DATABASE_URL=sqlite3:db/impersonate_#{node}.sqlite3 bundle exec rake db:setup`
+end
 
-echo "Setting up db to impersonate local Hathi node"
-RAILS_ENV=impersonate_hathi bundle exec rake db:setup
-
-echo "Setting up db to impersonate local Chronopolis node"
-RAILS_ENV=impersonate_chron bundle exec rake db:setup
-
-echo "Setting up db to impersonate local Stanford node"
-RAILS_ENV=impersonate_sdr bundle exec rake db:setup
-
-echo "Setting up db to impersonate local Texas node"
-RAILS_ENV=impersonate_tdr bundle exec rake db:setup
-
-echo "Now run script/run_cluster.sh to run the cluster"
-echo "to run with no pre-loaded data, or script/setup_cluster.sh -f"
-echo "to run with a minimal set of pre-loaded fixture data."
+puts "Now run script/run_cluster.sh to run the cluster"
+puts "to run with no pre-loaded data, or script/run_cluster.sh -f"
+puts "to run with a minimal set of pre-loaded fixture data."
