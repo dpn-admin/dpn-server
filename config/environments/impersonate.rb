@@ -5,9 +5,14 @@ require Rails.root.join("config/environments/development")
 Rails.application.configure do
 
   node = ENV['IMPERSONATE']
-  raise ArgumentError, "Define IMPERSONATE, see config/impersonate.yml" unless node
+  raise ArgumentError, "Define IMPERSONATE=node, see config/impersonate.yml" unless node
 
-  settings = YAML.load_file(Rails.root.join("config/impersonate.yml")).symbolize_keys[node.to_sym].symbolize_keys!
+  config_path = Rails.root.join("config/impersonate.yml.local")
+  unless File.exists?(config_path)
+    config_path = Rails.root.join("config/impersonate.yml")
+  end
+
+  settings = YAML.load_file(config_path)[node].symbolize_keys!
 
   config.secret_key_base = settings[:secret_key_base]
 
