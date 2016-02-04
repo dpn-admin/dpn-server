@@ -3,15 +3,6 @@
 # Licensed according to the terms of the Revised BSD License
 # See LICENSE.md for details.
 
-module Deprecated
-class DatabaseYamlGenerator < Rails::Generators::Base
-
-  CONTENTS = <<-EOF
-# Copyright (c) 2015 The Regents of the University of Michigan.
-# All Rights Reserved.
-# Licensed according to the terms of the Revised BSD License
-# See LICENSE.md for details.
-
 default: &default
   adapter: sqlite3
   encoding: utf8
@@ -52,11 +43,3 @@ production:
   port: <%= ENV['DPN_DB_PORT'] || 3306 %>
   timeout: 2000
   reconnect: true
-
-EOF
-
-  def create
-    create_file "config/database.yml", CONTENTS
-  end
-end
-end
