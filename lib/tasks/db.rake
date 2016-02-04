@@ -15,4 +15,13 @@ namespace :db do
     Member.delete_all
   end
 
+  desc "Create an admin user."
+  task admin_user: :environment do
+    raise RuntimeError, "Refusing to create a dummy admin user in production." if Rails.env.production?
+    email = "admin@example.org"
+    password = "password"
+    User.create!( email: email, admin: true, password: password)
+    puts "Created user #{email} with password: \"#{password}\", without the quotes."
+  end
+
 end
