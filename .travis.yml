@@ -2,6 +2,9 @@ language: ruby
 rvm:
   - 2.2.1
 script: bundle exec rspec
+install:
+  - bundle install --jobs=3 --retry=3
+  - bundle exec rake config
 addons:
   code_climate:
     repo_token: ce328d44d99a09d03c1dac2198c731dc8bfd22374fefc1917ce528b25a06ec4e
