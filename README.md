@@ -8,7 +8,38 @@ A Rails implementation of the DPN RESTful communication layer. The current
 maintainer is [Bryan Hockey](https://github.com/malakai97).
 
 
-# Installation and Deployment
+# Development and Test
+
+The project is built and tested with ruby 2.2.1.  Bundler is required.
+All other dependencies are described in the gemfile.
+
+```
+git clone git@github.com:dpn-admin/dpn-server.git
+bundle install --path .bundle
+bundle exec rake config
+bundle exec rake db:setup
+```
+
+Then, if you wish to run the tests:
+
+``` bundle exec rspec ```
+
+Or if you want to poke around the admin interface:
+
+```
+bundle exec rake db:admin_user # this will display the login credentials.
+bundle exec rails server
+```
+
+Then visit http://localhost:3000/admin.
+
+
+# Running a Local DPN Cluster
+It is possible to run a local DPN cluster.  This can be quite useful
+for debugging and development.  More information can be found in
+[Cluster.md](Cluster.md).
+
+# Production
 
 ## Dependencies
 
@@ -24,23 +55,29 @@ bundle install --path .bundle
 
 ## Configuration
 
-### Development, Test
+Configuration is set in config/database.yml and
+config/secrets.yml.  These two files are excluded from git.  You
+may also wish to include additional gems specific to your
+deployment, e.g. "mysql2".  This can be done by creating a file
+Gemfile.local with your gems.  See Gemfile.local.example for
+more information.
 
-The default configuration should be sufficient.
+A generator exists to build these basic files, but it only
+includes development and test configurations.  You may wish
+to use it to get started, but the example files are the best
+source of information.  The generator is ```bundle exec rake config```
 
-### Production
+### Changes from Previous Versions
+Previously, we used [dotenv](https://github.com/bkeepers/dotenv) for
+configuration.  This usage is now deprecated, in favor of editing
+the above yaml files, which are excluded from git.  You may wish to
+continue using the old functionality at this time.  To facilitate this,
+a set of generators are provided for you.  Simply run
+```bundle exec rake config:deprecated```, which will generate the
+above described configuration files configured to read the same environment
+variables as before.
 
-The environment variables in config/environments/production.rb must be set
-under all environments.  We use [dotenv](https://github.com/bkeepers/dotenv)
-to manage these, so you can set them in a .env.production file.
-See .env.production.example for the variables that are
-required and what they do.  Before running any of the
-```bundle``` commands, you should have these variables defined in your shell
-environment.
-
-If you are using Apache with Passenger, An example Apache virtualhost file is
-included in ```apache-dpn-rails-example.conf```
-
+### Assets
 
 You will need to precompile the assets. This will create a ```public/assets/``` directory.
 
@@ -50,21 +87,11 @@ bundle exec rake assets:precompile
 
 ## Database
 
-### Development, Test
+You should create a database for your environment.  To date, the project
+has been tested with MySQL and PostgreSQL.
 
-These environments use a sqlite database.  No configuration is required beyond
-running
-
-```
-bundle exec rake db:setup
-```
-
-### Production
-You should create a database for your environment.  The project expects a
-MySQL database, and has not been tested with other RDBMSs.
-
-The connection credentials should be defined in .env.production, but
-config/database.yml offers more finely tuned options.
+Define your database in config/database.yml.  See the configuration section
+for more information.
 
 You should not have to create or populate the tables.  Rails will do this
 for you, assuming you have populated the configuration variables.
@@ -76,7 +103,7 @@ bundle exec rake db:setup
 ## Storage
 
 Separate staging and repository directories are required
-(and specified in config/environments/*.rb). Pruning of old files
+(and specified in config/secrets.yml). Pruning of old files
 in the staging directory is considered environment-specific and
 therefore out of scope for this project.  (We use find. You may
 want something more robust if your bandwidth isn't "free.")
@@ -99,11 +126,12 @@ User.create!(
   password: "unencrypted_passoword")
 ```
 
-The admin interface can be reached at /admin/
+The admin interface can be reached at /admin/.  The admin interface is not
+necessarily easier to use than the rails console for all tasks.
 
 ## Firewall
 
-Each other node will need https and ssh (for rsync) access to your instance.
+Each other node will need incoming https and ssh (for rsync) access to your instance.
 
 ## RSync
 
@@ -112,7 +140,7 @@ in the rsync user's authorized keys.  Since this grants ssh access for a real
 user, we recommend using a chroot environment and restricting the shell using
 [rssh](http://www.pizzashack.org/rssh/).
 
-In order to get bags from other nodes, you'll need to mint a ssh keypair.  The
+In order to get bags from other nodes, you'll need to mint an ssh keypair.  The
 private key should be installed locally, and the public key issued to each other
 node.
 
@@ -137,6 +165,9 @@ Node.create!(
   auth_credential: "unencrypted_credential")
 ```
 
+Do to the secret nature of some of these credentials, no script has yet been
+created to automate this task.  See below for more information.
+
 ### Identification
 
 At minimum, you will need to know each node's namespace string and api root.  The
@@ -152,130 +183,13 @@ You should mint these tokens for each node.  You will not need them again
 after storing them. A one-way hash function is applied to the token, so if the
 authenticated node loses the token a new one will need to be minted.
 
-Likewise, the correspending token used to make requests against other nodes is stored as
+Likewise, the corresponding token used to make requests against other nodes is stored as
 Node.auth_credential.  These are subject to two-way encryption.  These must be obtained
 from each other node.
 
 Note that for the local node, the auth_credential and private_auth_token should be the
 same (before encryption).
 
-## Running a Local DPN Cluster
-
-You can run a local DPN REST cluster using the run_cluster script in the script
-directory. If you have never run the cluster before, you'll need to set up the
-SQLite databases for the cluster by running this command from the top-level directory
-of the project:
-
-```
-./script/setup_cluster.sh
-```
-
-If you have run the cluster before, and you have new database migrations to run, run
-this from the top-level directory of the prject:
-
-```
-./script/migrate_cluster.sh
-```
-
-When the databases are ready, run the cluster with this command:
-
-```
-./script/run_cluster.sh -f
-```
-
-The -f option loads all of the fixtures under test/fixtures/integration.
-As long as your migrations are up to date, you can set up and run the cluster
-with a single command, like this:
-
-```
-./script/setup_cluster.sh && ./script/run_cluster.sh -f
-```
-
-This will run five local DPN nodes on five different ports, each
-impersonating one of the actual DPN nodes. The run as follows:
-
-1. APTrust on port 3001
-2. Chronopolis on port 3002
-3. Hathi Trust on port 3003
-4. Stanford on port 3004
-5. Texas on port 3005
-
-All of these nodes will have a set of pre-loaded data for testing, and each time
-you run run_cluster.sh, it resets the data in all the nodes. In the pre-load data,
-each node has bag entries and replication requests for _its own_ six bags, and no
-node knows about the bags in the other nodes.
-
-You can log in to the admin UI for each of these nodes at
-__http://localhost:&lt;port&gt;/admin__ with email address __admin@dpn.org__ and
-password __password__.
-
-You can access the REST API of each of these local nodes using one of the following
-API keys:
-
-1. APTrust: aptrust_token
-2. Chronopolis: chron_token
-3. Hathi Trust: hathi_token
-4. Stanford: sdr_token
-5. Texas: tdr_token
-
-You should be able to connect to any node using any of these tokens. Connecting
-with aptrust_token will make you admin at APTrust, and a the APTrust user at
-every other node. The same goes for all the other tokens. chron_token makes you
-admin when connecting to Chronopolis, and the Chron user when connecting to
-any other node.
-
-To test whether you can connect to the cluster, run the following curl command,
-substiting the token and port number as necessary. Note the format of the token
-header.
-
-```
-curl -H "Authorization: Token token=sdr_token" -L http://localhost:3001/api-v1/bag/
-```
-
-You should see a JSON response with a list of bags. If you see a response that says
-"HTTP Token: Access denied" make sure your Authorization header is formatted
-correctly.
-
-### Test Data for the Cluster
-
-The test data for the local DPN cluster is in test/fixtures/integration. The YAML
-fixtures are reloaded each time the cluster starts, wiping out any data from previous
-tests.
-
-There are also six test bags in test/fixtures/integration/testbags/. The bag entries
-for each node refer to these six bags, and the bag sizes and tag manifest checksums
-match the actual bags. There are notes in the YAML files explaining that final two
-digits of each bag registry entry match the final two digits of the test bag names.
-So a bag UUID ending in 01 matches the bag IntTestValidBag01.tar. The UUID ending in
-02 refers to the bag IntTestValidBag02.tar, etc.
-
-Also note that the first digit of each bag UUID matches the bag's admin node. So all
-APTrust bag UUIDs start with 1, matching APTrust port 3001. Chronopolis bag UUIDs
-start with 2, matching Chronopolis port 3002, etc. This should provide some cues
-to help remember what's what when you are visually reviewing test results and log
-file entries.
-
-### Testing Replication and Registry Synchronozation
-
-If you configure your DPN sync client to point to the five local nodes, choosing
-one as your own node, you should be able to sync all records from all other nodes
-to your own node. You can use the admin UI at http://localhost:<port>/admin/ to
-check the results of the sync operation. The login is the same for each node:
-
-```
-Email: admin@dpn.org
-Password: password
-```
-
-If you get an error after login, go back to http://localhost:<port>/admin/ and
-you should see the admin page.
-
-To test the synching of bags and replication requests with specific characteristics
-(such as replication requests in a specific state), you can enter records manually
-through the admin UI, or you can enter them as YAML records in
-test/fixtures/integration/<node>/bags.yml. When you restart the cluster, all of the
-old data from the last sync run will be deleted, and the nodes will load whatever
-data is under the test/fixtures/integration directory.
 
 # Contributing
 

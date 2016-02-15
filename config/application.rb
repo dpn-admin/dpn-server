@@ -41,5 +41,6 @@ module Balustrade
         :controller_specs => true,
         :request_specs => true
     end
+
   end
 end

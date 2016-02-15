@@ -5,16 +5,20 @@
 
 source 'https://rubygems.org'
 
-# The require line forces dotenv to be loaded before
-# the other gems.
-gem 'dotenv-rails', require: 'dotenv/rails-now'
+# ----------------------------------------------
+# Include gems for your local environment here.
+# e.g. gem "mysql2", group: :production
+# ----------------------------------------------
+
+if File.exists? "Gemfile.local"
+  eval_gemfile "Gemfile.local"
+end
 
 gem 'rails', '~> 4.2.5'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'jbuilder', '~> 2.0'
 gem 'json'
-gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bcrypt', '~> 3.1.7'
 gem 'therubyracer', platforms: :ruby
 gem 'kaminari'
@@ -28,28 +32,13 @@ gem 'rails_admin'
 gem 'devise'
 gem 'cancan'
 
-group :production do
-  gem 'mysql2'
-end
+gem 'sdoc', '~> 0.4.0', group: :doc
 
-# ----------------------------------------------
-# To skip the postgres installation, run
-# bundle install --without demo
-# ----------------------------------------------
-group :demo do
-  gem 'pg'
-end
-
-group :development, :test do
-  gem 'sqlite3'
-  gem 'byebug'
-  gem 'web-console', '~> 2.1.3'
-  gem 'rspec-rails'
-  gem 'fabrication'
-  gem 'faker'
-  gem 'rspec-activejob'
-  gem 'capistrano-rails', '~> 1.1'
-  gem 'capistrano', '~> 3.4.0'
-  gem 'capistrano-rbenv', '~> 2.0'
-  gem 'codeclimate-test-reporter'
-end
+gem 'sqlite3', group: [:development, :test]
+gem 'byebug', group: [:development, :test]
+gem 'web-console', '~> 2.1.3', group: [:development, :test]
+gem 'rspec-rails', group: [:development, :test]
+gem 'fabrication', group: [:development, :test]
+gem 'faker', group: [:development, :test]
+gem 'rspec-activejob', group: [:development, :test]
+gem 'codeclimate-test-reporter', group: [:development, :test]

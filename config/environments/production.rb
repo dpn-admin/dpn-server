@@ -88,27 +88,27 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Load a salt in what is probably not a good place for it.
-  config.salt = ENV['DPN_SALT']
+  config.salt = Rails.application.secrets.salt
 
   # Set the cipher key used to *crypt the auth_tokens other nodes
   # identify us by.
-  config.cipher_key = ENV['DPN_CIPHER_KEY']
-  config.cipher_iv = ENV['DPN_CIPHER_IV']
+  config.cipher_key = Rails.application.secrets.cipher_key
+  config.cipher_iv = Rails.application.secrets.cipher_iv
 
   # Configure the local node's namespace
-  config.local_namespace = ENV['DPN_NAMESPACE']
+  config.local_namespace = Rails.application.secrets.local_namespace
 
   # Set the local node's api_root
-  config.local_api_root = ENV['DPN_API_ROOT']
+  config.local_api_root = Rails.application.secrets.local_api_root
 
   # Set the staging directory root.
-  config.staging_dir = ENV['DPN_STAGING_DIR']
+  config.staging_dir = Rails.application.secrets.staging_dir
 
   # Set the preservation root
   # The directory "pairtree_root" will be created in this folder
-  config.repo_dir = ENV['DPN_REPO_DIR']
+  config.repo_dir = Rails.application.secrets.repo_dir
 
   # The location of the private key used to pull files from other nodes
-  config.transfer_private_key = ENV['DPN_TRANSFER_PRIVATE_KEY']
+  config.transfer_private_key = Rails.application.secrets.transfer_private_key
 
 end

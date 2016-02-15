@@ -1,30 +1,20 @@
-#!/bin/bash
-#
+#!/usr/bin/env ruby
+
 # migrate_cluster.sh
 #
 # Migrates the databases for a cluster of DPN nodes for integration testing.
 # ----------------------------------------------------------------------
 
 # Make sure we're running from the right directory
-if [ ! -f config.ru ]; then
-    echo "Run this script from the top-level Rails directory "
-    echo "for the dpn-server project. E.g. script/migrate_cluster.sh"
-    exit
-fi
+unless File.exists? "config.ru"
+  puts "Run this script from the top-level Rails directory "
+  puts "for the dpn-server project. E.g. script/migrate_cluster.sh"
+  exit
+end
 
-echo "Migrating db that impersonates local APTrust node"
-RAILS_ENV=impersonate_aptrust bundle exec rake db:migrate
+%w(aptrust chron hathi sdr tdr).each do |node|
+  puts "Migrating db that impersonates local #{node} node."
+  `RAILS_ENV=impersonate IMPERSONATE=#{node} DATABASE_URL=sqlite3:db/impersonate_#{node}.sqlite3 bundle exec rake db:migrate`
+end
 
-echo "Migrating db that impersonates local Hathi node"
-RAILS_ENV=impersonate_hathi bundle exec rake db:migrate
-
-echo "Migrating db that impersonates local Chronopolis node"
-RAILS_ENV=impersonate_chron bundle exec rake db:migrate
-
-echo "Migrating db that impersonates local Stanford node"
-RAILS_ENV=impersonate_sdr bundle exec rake db:migrate
-
-echo "Migrating db that impersonates local Texas node"
-RAILS_ENV=impersonate_tdr bundle exec rake db:migrate
-
-echo "Now run script/run_cluster.sh to run the cluster"
+puts "Now run script/run_cluster.sh to run the cluster"

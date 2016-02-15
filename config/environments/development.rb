@@ -51,26 +51,26 @@ Rails.application.configure do
 
 
   # Load a salt in what is probably not a good place for it.
-  config.salt = ENV['DPN_SALT'] || "development_salt"
+  config.salt = "development_salt"
 
   # Set the cipher key, iv used to *crypt the auth_tokens other nodes
   # identify us by.
-  config.cipher_key = ENV['DPN_CIPHER_KEY'] || "foMXggnM3xLHatbSP0ZXW6ThZXOXqp8ImyaJQ/0Jlqo=\n"
-  config.cipher_iv = ENV['DPN_CIPHER_IV'] || "L213BeYaK4QDG8krUaCYnA==\n"
+  config.cipher_key = "foMXggnM3xLHatbSP0ZXW6ThZXOXqp8ImyaJQ/0Jlqo=\n"
+  config.cipher_iv = "L213BeYaK4QDG8krUaCYnA==\n"
 
   # Configure the local node's namespace
-  config.local_namespace = ENV['DPN_NAMESPACE'] || "hathi"
+  config.local_namespace = "hathi"
 
   # Set the local node's api_root
-  config.local_api_root = ENV['DPN_API_ROOT'] || "http://127.0.0.1"
+  config.local_api_root = "http://127.0.0.1"
 
   # Set the staging directory root.
-  config.staging_dir = ENV['DPN_STAGING_DIR'] || Rails.root.join("dpnrepo", "staging").to_s
+  config.staging_dir = Rails.root.join("dpnrepo", "staging").to_s
 
   # Set the preservation root
   # The directory "pairtree_root" will be created in this folder
-  config.repo_dir = ENV['DPN_REPO_DIR'] || Rails.root.join("dpnrepo", "preservation").to_s
+  config.repo_dir = Rails.root.join("dpnrepo", "preservation").to_s
 
   # The location of the private key used to pull files from other nodes
-  config.transfer_private_key = ENV['DPN_TRANSFER_PRIVATE_KEY'] || "/l/home/dpnadm/.ssh/hathi.key"
+  config.transfer_private_key = "/l/home/dpnadm/.ssh/hathi.key"
 end
