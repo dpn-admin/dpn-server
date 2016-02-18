@@ -41,6 +41,13 @@ namespace :config do
     copy_file "lib/templates/config/current/secrets.yml", "config/secrets.yml"
   end
 
+  desc "Generate cipher iv, key"
+  task :cipher do
+    cipher = EasyCipher::Cipher.new
+    puts "key: #{cipher.key64}"
+    puts "iv: #{cipher.iv64}"
+  end
+
 end
 
 task :config => [:"config:database.yml", :"config:secrets.yml"] do
