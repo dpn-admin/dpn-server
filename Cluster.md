@@ -6,20 +6,20 @@ SQLite databases for the cluster by running this command from the top-level dire
 of the project:
 
 ```
-./script/setup_cluster.sh
+./script/setup_cluster.rb
 ```
 
 If you have run the cluster before, and you have new database migrations to run, run
 this from the top-level directory of the prject:
 
 ```
-./script/migrate_cluster.sh
+./script/migrate_cluster.rb
 ```
 
 When the databases are ready, run the cluster with this command:
 
 ```
-./script/run_cluster.sh -f
+./script/run_cluster.rb -f
 ```
 
 The -f option loads all of the fixtures under test/fixtures/integration.
@@ -27,7 +27,7 @@ As long as your migrations are up to date, you can set up and run the cluster
 with a single command, like this:
 
 ```
-./script/setup_cluster.sh && ./script/run_cluster.sh -f
+./script/setup_cluster.rb && ./script/run_cluster.rb -f
 ```
 
 This will run five local DPN nodes on five different ports, each
@@ -40,7 +40,7 @@ impersonating one of the actual DPN nodes. The run as follows:
 5. Texas on port 3005
 
 All of these nodes will have a set of pre-loaded data for testing, and each time
-you run run_cluster.sh, it resets the data in all the nodes. In the pre-load data,
+you run run_cluster.rb, it resets the data in all the nodes. In the pre-load data,
 each node has bag entries and replication requests for _its own_ six bags, and no
 node knows about the bags in the other nodes.
 
