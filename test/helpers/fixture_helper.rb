@@ -13,6 +13,8 @@
 class FixtureHelper
 
   TEST_MEMBER_UUID = "471fe920-bea3-4eb3-aafc-7841f8160479"
+  APRIL_01_2016    = Time.new(2016, 4, 1, 0, 0, 0, "+00:00").utc
+
 
   def initialize
     @local_namespace = Rails.application.config.local_namespace
@@ -105,8 +107,7 @@ class FixtureHelper
   def rsync
     @rsync ||= Protocol.where(name: 'rsync').first
     if @rsync.nil?
-      now = Time.now.utc
-      @rsync = Protocol.create(name: 'rsync', created_at: now, updated_at: now)
+      @rsync = Protocol.create(name: 'rsync', created_at: APRIL_01_2016, updated_at: APRIL_01_2016)
     end
     @rsync
   end
@@ -116,8 +117,7 @@ class FixtureHelper
   def sha256
     @sha256 ||= FixityAlg.where(name: 'sha256').first
     if @sha256.nil?
-      now = Time.now.utc
-      @sha256 = FixityAlg.create(name: 'sha256', created_at: now, updated_at: now)
+      @sha256 = FixityAlg.create(name: 'sha256', created_at: APRIL_01_2016, updated_at: APRIL_01_2016)
     end
     @sha256
   end
@@ -154,7 +154,6 @@ class FixtureHelper
   # into the database. Requires version_families be
   # loaded first.
   def load_bags
-    now = Time.now.utc
     @bags.values.each do |bag|
       version_family = VersionFamily.where(uuid: bag.uuid).first
       Bag.create!(uuid: bag.uuid,
@@ -164,8 +163,8 @@ class FixtureHelper
                   size: bag.size,
                   version: bag.version,
                   type: "DataBag",
-                  created_at: now,
-                  updated_at: now,
+                  created_at: APRIL_01_2016,
+                  updated_at: APRIL_01_2016,
                   version_family: version_family,
                   member: self.test_member)
     end
@@ -186,7 +185,6 @@ class FixtureHelper
   # test/fixtures/integration/<namespace>/replication_transfers.yml
   # into the database. Requires bags be loaded first.
   def load_replication_transfers
-    now = Time.now.utc
     @replications.values.each do |xfer|
       to_node = Node.where(namespace: xfer.to_node).first
       raise "to_node '#{xfer.to_node}' is missing from the node table." if to_node.nil?
@@ -195,8 +193,8 @@ class FixtureHelper
       ReplicationTransfer.create(link: xfer.link,
                                  bag_valid: true,
                                  fixity_accept: false,
-                                 created_at: now,
-                                 updated_at: now,
+                                 created_at: APRIL_01_2016,
+                                 updated_at: APRIL_01_2016,
                                  replication_id: xfer.replication_id,
                                  bag: bag,
                                  from_node: @this_node,
@@ -211,15 +209,14 @@ class FixtureHelper
   # test/fixtures/integration/<namespace>/restore_transfers.yml
   # into the database. Requires bags be loaded first.
   def load_restore_transfers
-    now = Time.now.utc
     @restores.values.each do |xfer|
       from_node = Node.where(namespace: xfer.from_node).first
       raise "from_node '#{xfer.from_node}' is missing from the node table." if from_node.nil?
       bag_uuid = @bags[xfer.bag].uuid
       bag = Bag.where(uuid: bag_uuid).first
       RestoreTransfer.create(link: xfer.link,
-                             created_at: now,
-                             updated_at: now,
+                             created_at: APRIL_01_2016,
+                             updated_at: APRIL_01_2016,
                              restore_id: xfer.restore_id,
                              bag: bag,
                              from_node: from_node,
