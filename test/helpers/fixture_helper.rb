@@ -129,11 +129,11 @@ class FixtureHelper
     @test_member ||= Member.where(uuid: TEST_MEMBER_UUID).first
     if @test_member.nil?
       now = Time.now.utc
-      test_member = Member.create(uuid: TEST_MEMBER_UUID,
-                                  name: "Integration Test University",
-                                  email: "integration_test@example.com",
-                                  created_at: now,
-                                  updated_at: now)
+      test_member = Member.create!(uuid: TEST_MEMBER_UUID,
+                                   name: "Integration Test University",
+                                   email: "integration_test@example.com",
+                                   created_at: now,
+                                   updated_at: now)
     end
     @test_member
   end

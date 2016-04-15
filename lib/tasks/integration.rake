@@ -47,7 +47,8 @@ namespace :integration do
   # its own home directory. In APTrust, we symlink from the
   # node's own outbound directory to the general outbound dir.
   def set_links_for_aptrust
-    ReplicationTransfer.where(from_node: 'aptrust').each do
+    aptrust = Node.where(namespace: 'aptrust').first
+    ReplicationTransfer.where(from_node: aptrust).each do
       host = URI.parse(Rails.application.config.local_api_root).host
       ReplicationTransfer.where("link LIKE ?", "%IntTestValidBag__.tar").each do |xfer|
         path_to_bag = xfer.link
@@ -58,13 +59,18 @@ namespace :integration do
         # dpn.tdr@dpn-demo.aptrust.org:outbound/533b3a28-03d7-4710-a411-99f49ca29a83.tar
         # We have to disable validation when we make the change,
         # because ReplicationTransfer#link is read-only
-        xfer.link = "dpn.#{xfer.to_node}@#{host}:outbound/#{baguuid}.tar"
+        xfer.link = "dpn.#{xfer.to_node.namespace}@#{host}:outbound/#{baguuid}.tar"
         xfer.save(validate: false)
 
         # Now make sure that there's a link to this bag in the
         # outbound directory for this to_node.
-        symlink_path = "/home/dpn.#{xfer.to_node}/outbound/#{baguuid}.tar"
-        File.symlink(path_to_bag, symlink_path)
+        symlink_path = "/home/dpn.#{xfer.to_node.namespace}/outbound/#{baguuid}.tar"
+        if !File.exist?(symlink_path)
+          puts "Creating symlink #{symlink_path} -> #{path_to_bag}"
+          File.symlink(path_to_bag, symlink_path)
+        else
+          puts "Symlink exists at #{symlink_path}"
+        end
       end
     end
   end
