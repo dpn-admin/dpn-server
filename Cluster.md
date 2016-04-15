@@ -94,6 +94,10 @@ start with 2, matching Chronopolis port 3002, etc. This should provide some cues
 to help remember what's what when you are visually reviewing test results and log
 file entries.
 
+__Note that the data fixtures for testing a local cluster are the same
+as the data fixtures used for internode testing.__ See the
+[InternodeTesting page](InternodeTesting.md) for more info.
+
 ### Testing Replication and Registry Synchronozation
 
 If you configure your DPN sync client to point to the five local nodes, choosing
