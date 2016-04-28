@@ -64,6 +64,12 @@ describe ReplicationTransfer do
   it "has a valid factory" do
     expect(Fabricate(:replication_transfer)).to be_valid
   end
+  
+  it "allows you to replicate to yourself" do
+    node = Fabricate(:node)
+    bag = Fabricate(:data_bag, admin_node: node)
+    expect(Fabricate(:replication_transfer, from_node: node, to_node: node)).to be_valid
+  end
 
   describe "replication_id" do
     it "is required" do
