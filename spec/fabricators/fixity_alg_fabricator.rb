@@ -5,11 +5,7 @@
 
 
 Fabricator(:fixity_alg) do
-  name do
-    sequence(:name, 50) do |i|
-      "fixity_alg_#{i}"
-    end
-  end
+  name { sequence(:fixity_alg_name) { |n| "#{Faker::Address.state_abbr}#{n}"} }
   created_at 1.second.ago
   updated_at 1.second.ago
 end

@@ -5,11 +5,7 @@
 
 
 Fabricator(:protocol) do
-  name do
-    sequence(:name, 50) do |i|
-      "protocol_#{i}"
-    end
-  end
+  name { sequence(:protocol_name, 50) {|i| "protocol_#{i}"} }
   created_at 1.second.ago
   updated_at 1.second.ago
 end
