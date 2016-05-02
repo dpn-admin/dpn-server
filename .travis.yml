@@ -1,6 +1,10 @@
 language: ruby
 rvm:
   - 2.2.1
+branches:
+  only:
+    - master
+    - develop
 script: bundle exec rspec
 install:
   - bundle install --jobs=3 --retry=3
