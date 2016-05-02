@@ -4,8 +4,8 @@
 # See LICENSE.md for details.
 
 
-Fabricator(:fixity_check) do
-  bag
-  fixity_alg
-  value { SecureRandom.uuid }
+class MessageDigest < ActiveRecord::Base
+  belongs_to :node
+  belongs_to :bag
+  belongs_to :fixity_alg
 end

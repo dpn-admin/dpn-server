@@ -4,9 +4,10 @@
 # See LICENSE.md for details.
 
 
-class FixityCheck < ActiveRecord::Base
-  belongs_to :fixity_alg
-  belongs_to :bag
-
-  validates :value, presence: true
+Fabricator(:message_digest) do
+  bag
+  node
+  fixity_alg
+  value { SecureRandom.uuid }
+  created_at 1.second.ago
 end

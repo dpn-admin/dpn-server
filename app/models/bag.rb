@@ -23,8 +23,8 @@ class Bag < ActiveRecord::Base
   belongs_to :member, :foreign_key => "member_id", :class_name => "Member",
              autosave: true, inverse_of: :bags
 
-  has_many :fixity_checks, autosave: true, dependent: :destroy, inverse_of: :bag
-  validates_associated :fixity_checks
+  has_many :message_digests, autosave: true, dependent: :destroy, inverse_of: :bag
+  validates_associated :message_digests
 
   belongs_to :version_family, :inverse_of => :bags, autosave: true
   validates_associated :version_family
