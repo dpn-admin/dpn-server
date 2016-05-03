@@ -6,6 +6,8 @@
 
 module ApiV1
   class BagAdapter < ::AbstractAdapter
+    map_date :created_at, :created_at, Time::DATE_FORMATS[:dpn]
+    map_date :updated_at, :updated_at, Time::DATE_FORMATS[:dpn]
 
     map_simple :uuid, :uuid
     map_simple :local_id, :local_id
