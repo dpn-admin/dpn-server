@@ -4,7 +4,7 @@
 # See LICENSE.md for details.
 
 module ApiV2
-  class BagsController < ::ApiV1::BagsController
+  class BagsController < ApplicationController
     include Authenticate
     include Pagination
     include Adaptation
