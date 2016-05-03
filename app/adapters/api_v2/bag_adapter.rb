@@ -4,8 +4,11 @@
 # See LICENSE.md for details.
 
 
-module ApiV1
+module ApiV2
   class BagAdapter < ::AbstractAdapter
+
+    map_date :created_at, :created_at, Time::DATE_FORMATS[:dpn]
+    map_date :updated_at, :updated_at, Time::DATE_FORMATS[:dpn]
 
     map_simple :uuid, :uuid
     map_simple :local_id, :local_id
@@ -34,30 +37,7 @@ module ApiV1
       {version_family: VersionFamily.find_or_initialize_by(uuid: uuid)}
     end
 
-    map_from_public :fixities do |public_fixities|
-      fixity_checks = []
-      if public_fixities.respond_to? :keys
-        public_fixities.keys.each do |public_fixity_alg|
-          fixity_checks << FixityCheck.find_or_initialize_by(
-            fixity_alg: FixityAlg.find_by_name(public_fixity_alg),
-            value: public_fixities[public_fixity_alg]
-          )
-        end
-      end
-      {fixity_checks: fixity_checks}
-    end
-    map_to_public :fixity_checks do |fixity_checks|
-      public_fixities = {}
-      fixity_checks.each do |fc|
-        public_fixities[fc.fixity_alg.name.to_sym] = fc.value
-      end
-      {fixities: public_fixities}
-    end
-
-
-
-
-    private
+        private
 
     @@bag_types = {
       d: "DataBag",

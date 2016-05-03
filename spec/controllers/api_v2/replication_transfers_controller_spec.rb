@@ -3,9 +3,12 @@
 # Licensed according to the terms of the Revised BSD License
 # See LICENSE.md for details.
 
+
 require 'rails_helper'
 
-describe ApiV1::RestoreTransfersController do
+
+
+describe ApiV2::ReplicationTransfersController do
 
   describe "GET #index" do
     context "without authentication" do
@@ -20,12 +23,12 @@ describe ApiV1::RestoreTransfersController do
 
 
   describe "GET #show" do
-    it_behaves_like "a show endpoint", :restore_id
+    it_behaves_like "a show endpoint", :replication_id
   end
 
 
   describe "POST #create" do
-    it_behaves_like "a create endpoint", :restore_id
+    it_behaves_like "a create endpoint", :replication_id
   end
 
 
@@ -35,37 +38,38 @@ describe ApiV1::RestoreTransfersController do
 
     context "without authentication" do
       before(:each) {
-        put_body = adapter.from_model(Fabricate(:restore_transfer)).to_public_hash
+        put_body = adapter.from_model(Fabricate(:replication_transfer)).to_public_hash
         put :update, legal_update.call(put_body)
       }
       it_behaves_like "an unauthenticated request"
     end
 
-    context "with authentication as from_node" do
-      include_context "with authentication as", "from_node_namespace"
-      options = proc {{from_node: Node.find_by_namespace!("from_node_namespace")}}
-      it_behaves_like "an authorized update", :restore_id, options, legal_update, illegal_update
-
+    context "with authentication as to_node" do
+      include_context "with authentication as", "to_node_namespace"
+      options = proc {
+        {
+          to_node: Node.find_by_namespace!("to_node_namespace"),
+          from_node: Fabricate(:local_node)
+        }
+      }
+      it_behaves_like "an authorized update", :replication_id, options, legal_update, illegal_update
     end
-
 
     context "with authentication as local node" do
       include_context "with local authentication"
-      it_behaves_like "an authorized update", :restore_id, nil, legal_update, illegal_update
+      it_behaves_like "an authorized update", :replication_id, nil, legal_update, illegal_update
     end
 
     context "with authentication as unrelated node" do
       include_context "with authentication as", "some_other_node"
-      it_behaves_like "an unauthorized update", :restore_id, nil, legal_update, illegal_update
+      it_behaves_like "an unauthorized update", :replication_id, nil, legal_update, illegal_update
     end
 
   end
 
 
   describe "DELETE #destroy" do
-    it_behaves_like "a destroy endpoint", :restore_id
+    it_behaves_like "a destroy endpoint", :replication_id
   end
 
-
 end
-

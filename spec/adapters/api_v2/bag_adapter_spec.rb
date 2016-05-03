@@ -5,7 +5,7 @@
 
 require 'rails_helper'
 
-describe ApiV1::BagAdapter do
+describe ApiV2::BagAdapter do
   uuid = SecureRandom.uuid
   rights_uuid = SecureRandom.uuid
   interpretive_uuid = SecureRandom.uuid
@@ -31,11 +31,7 @@ describe ApiV1::BagAdapter do
     @model.rights_bags = [Fabricate(:rights_bag, uuid: rights_uuid)]
     @model.interpretive_bags = [Fabricate(:interpretive_bag, uuid: interpretive_uuid)]
     @model.replicating_nodes = [Fabricate(:node, namespace: repl_node_namespace)]
-    fc = Fabricate.build(:fixity_check,
-                         value: "some_fixity_value",
-                         fixity_alg: Fabricate(:fixity_alg, name: "sha2")
-    )
-    @model.fixity_checks = [fc]
+
     @model.save!
 
     @public_hash = {
@@ -46,7 +42,6 @@ describe ApiV1::BagAdapter do
       replicating_nodes: [repl_node_namespace],
       admin_node: admin_node_namespace,
       member: member_uuid,
-      fixities: {sha2: "some_fixity_value" },
       local_id: local_id,
       size: 10101,
       first_version_uuid: uuid,
@@ -70,7 +65,6 @@ describe ApiV1::BagAdapter do
       interpretive_bags: @model.interpretive_bags,
       rights_bags: @model.rights_bags,
       replicating_nodes: @model.replicating_nodes,
-      fixity_checks: @model.fixity_checks,
       type: "DataBag"
     }
   end

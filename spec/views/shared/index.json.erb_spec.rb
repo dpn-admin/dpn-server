@@ -7,10 +7,10 @@ require 'rails_helper'
 
 describe "shared/index.json.erb" do
   before(:each) do
-    allow(ActionController::Metal).to receive(:controller_name).and_return(ApiV1::NodesController.controller_name)
-    allow(ActionController::Metal).to receive(:controller_path).and_return(ApiV1::NodesController.controller_path)
+    allow(ActionController::Metal).to receive(:controller_name).and_return(ApiV2::NodesController.controller_name)
+    allow(ActionController::Metal).to receive(:controller_path).and_return(ApiV2::NodesController.controller_path)
     controller.action_name = "index"
-    params[:controller] = "api_v1/nodes"
+    params[:controller] = "api_v2/nodes"
 
     Fabricate.times(5, :node)
     @nodes = Node.all.page(1).per(3)
@@ -35,7 +35,7 @@ describe "shared/index.json.erb" do
     json = JSON.parse(rendered)
     expect(json).to have_key "next"
     url = url_for(
-      controller: "api_v1/nodes",
+      controller: "api_v2/nodes",
       action: "index",
       page: 2,
       page_size: 3
@@ -60,7 +60,7 @@ describe "shared/index.json.erb" do
     json = JSON.parse(rendered)
     expect(json).to have_key "results"
     expected_array = @nodes.map do |node|
-      ApiV1::NodeAdapter.from_model(node).to_public_hash
+      ApiV2::NodeAdapter.from_model(node).to_public_hash
     end
     # The extra conversion here handles any nesting.
     expect(json["results"]).to match_array(JSON.parse(expected_array.to_json))

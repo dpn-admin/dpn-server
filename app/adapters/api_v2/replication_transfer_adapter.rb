@@ -3,8 +3,11 @@
 # Licensed according to the terms of the Revised BSD License
 # See LICENSE.md for details.
 
-module ApiV1
+module ApiV2
   class ReplicationTransferAdapter < ::AbstractAdapter
+    map_date :created_at, :created_at, Time::DATE_FORMATS[:dpn]
+    map_date :updated_at, :updated_at, Time::DATE_FORMATS[:dpn]
+
     map_simple :replication_id, :replication_id
     map_simple :fixity_nonce, :fixity_nonce
     map_simple :fixity_value, :fixity_value

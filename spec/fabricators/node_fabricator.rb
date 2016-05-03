@@ -6,13 +6,8 @@
 
 require 'securerandom'
 
-Fabricator(:node) do
-  namespace do
-    sequence(:namespace, 50) do |i|
-      "namespace_#{i}"
-    end
-  end
-
+Fabricator(:node) do |f|
+  f.namespace { sequence(:node_namespace) {|i| "namespace_#{i}"} }
   name { Faker::Company.name }
   ssh_pubkey { Faker::Internet.password(20) }
   storage_region
@@ -24,8 +19,8 @@ Fabricator(:node) do
   updated_at 1.second.ago
 end
 
-Fabricator(:local_node, class_name: :node) do
-  namespace { Rails.configuration.local_namespace }
+Fabricator(:local_node, class_name: :node) do |f|
+  f.namespace { Rails.configuration.local_namespace }
   name { Faker::Company.name }
   ssh_pubkey { Faker::Internet.password(20) }
   storage_region

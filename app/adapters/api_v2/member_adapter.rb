@@ -4,8 +4,11 @@
 # See LICENSE.md for details.
 
 
-module ApiV1
+module ApiV2
   class MemberAdapter < ::AbstractAdapter
+    map_date :created_at, :created_at, Time::DATE_FORMATS[:dpn]
+    map_date :updated_at, :updated_at, Time::DATE_FORMATS[:dpn]
+
     map_simple :uuid, :uuid
     map_simple :name, :name
     map_simple :email, :email

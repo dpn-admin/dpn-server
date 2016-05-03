@@ -5,7 +5,7 @@
 
 require 'rails_helper'
 
-describe ApiV1::MemberAdapter do
+describe ApiV2::MemberAdapter do
   uuid = SecureRandom.uuid
   name = Faker::Company.name
   email = Faker::Internet.email

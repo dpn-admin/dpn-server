@@ -15,6 +15,20 @@ module Adapter
   end
 
 
+  # Register a one-to-one mapping of a date field.
+  # @param [Symbol] model_field
+  # @param [Symbol] public_field
+  # @param [String] date_format The Date format to use.
+  def map_date(model_field, public_field, date_format)
+    map_from_public public_field do |value|
+      {model_field => time_from_public(value)}
+    end
+    map_to_public model_field do |value|
+      {public_field => value.strftime(date_format)}
+    end
+  end
+
+
   # Register a hidden field.
   # @param [Symbol] model_field
   def hidden_field(model_field)
@@ -120,10 +134,6 @@ module Adapter
       internals[model_field] = public[public_field]
     end
 
-    date_fields.each do |date_field|
-      internals[date_field] = time_from_public(public[date_field])
-    end
-
     extras = {}
     (public.keys.map{|k|k.to_sym} - public_fields).each do |extra_key|
       extras[extra_key] = public[extra_key]
@@ -157,16 +167,13 @@ module Adapter
     @from_maps ||= []
   end
 
-  def date_fields
-    [:created_at, :updated_at]
-  end
 
   def model_fields
-    @model_fields ||= date_fields
+    @model_fields ||= []
   end
 
   def public_fields
-    @public_fields ||= date_fields
+    @public_fields ||= []
   end
 
 

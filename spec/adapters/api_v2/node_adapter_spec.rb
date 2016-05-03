@@ -5,7 +5,7 @@
 
 require 'rails_helper'
 
-describe ApiV1::NodeAdapter do
+describe ApiV2::NodeAdapter do
   name = "fake_name"
   namespace = "fake_namespace"
   ssh_pubkey = Faker::Internet.password(20)
