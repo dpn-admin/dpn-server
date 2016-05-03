@@ -4,7 +4,7 @@
 # See LICENSE.md for details.
 
 
-Fabricator(:bag) do
+Fabricator(:bag_without_digests, class_name: :bag) do
   uuid { SecureRandom.uuid }
   local_id { Faker::Bitcoin.address }
   size { Faker::Number.number(12) }
@@ -18,5 +18,8 @@ Fabricator(:bag) do
   created_at 1.second.ago
   updated_at 1.second.ago
   type "DataBag"
+end
+
+Fabricator(:bag, from: :bag_without_digests) do
   after_create { |bag| bag.message_digests = Fabricate.times(2, :message_digest, bag: bag) }
 end
