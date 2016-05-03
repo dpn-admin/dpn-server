@@ -3,7 +3,7 @@
 # Licensed according to the terms of the Revised BSD License
 # See LICENSE.md for details.
 
-shared_examples "a create endpoint" do |key, extra_params|
+shared_examples "a create endpoint" do |unused_param, extra_params| #backwards compatibility
   extra_params ||= []
 
   def body_from_instance(instance, extra_params)
@@ -81,7 +81,7 @@ shared_examples "a create endpoint" do |key, extra_params|
         expect(response).to have_http_status(201)
       end
       it "creates the record" do
-        expect(model_class.public_send(:"find_by_#{key}", @post_body[key])).to be_valid
+        expect(model_class.public_send(:last)).to be_valid
       end
       it "assigns the correct object to @#{factory.to_s}" do
         expect(assigns(factory)).to be_a model_class
