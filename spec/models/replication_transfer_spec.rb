@@ -155,7 +155,7 @@ describe ReplicationTransfer do
                             from_node: @local_node)
 
         # Grab the first fixity check since we only gen one
-        @check = @record.bag.fixity_checks[0]
+        @check = @record.bag.message_digests[0]
 
         # Set the fixity algorithm for the transfer record to be the same as the fixity check
         # @record.fixity_alg = @check.fixity_alg
