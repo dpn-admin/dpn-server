@@ -28,6 +28,10 @@ Rails.application.routes.draw do
 
   namespace :api_v2, path: :"api-v2" do
     resources :bags, only: [:index, :show, :create, :update, :destroy], path: :bag, param: :uuid
+    get   "/digest",                      controller: :message_digests, action: :index
+    get   "/bag/:bag/digest",             controller: :message_digests, action: :index
+    post  "/bag/:bag/digest",             controller: :message_digests, action: :create
+    get   "/bag/:bag/digest/:algorithm",  controller: :message_digests, action: :show
   end
 
 end
