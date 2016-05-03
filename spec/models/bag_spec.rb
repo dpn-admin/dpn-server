@@ -127,17 +127,5 @@ describe Bag do
       expect(Fabricate.build(:bag, restore_transfers: [])).to be_valid
     end
   end
-
-  describe "fixity_checks" do
-    it "can be empty" do
-      expect(Fabricate.build(:bag, fixity_checks: [])).to be_valid
-    end
-    it "allows adding them" do
-      bag = Fabricate(:bag)
-      bag.fixity_checks << FixityCheck.new(value: Faker::Bitcoin.address, fixity_alg: Fabricate(:fixity_alg) )
-      bag.fixity_checks << FixityCheck.new(value: Faker::Bitcoin.address, fixity_alg: Fabricate(:fixity_alg) )
-      expect(bag.save).to be true
-    end
-  end
-
+  
 end
