@@ -22,7 +22,7 @@ class FixityCheck < ActiveRecord::Base
       message: "must be a valid v4 uuid." }
   validates :bag,             presence: true
   validates :node,            presence: true
-  validates :success,         presence: true, inclusion: {in: [false, true]}
+  validates :success,         inclusion: {in: [false, true]}
   validates :fixity_at,       presence: true
   validates :created_at,      presence: true
   validate :fixity_at_less_than_or_equal_to_created_at
@@ -35,8 +35,10 @@ class FixityCheck < ActiveRecord::Base
 
   private 
   def fixity_at_less_than_or_equal_to_created_at
-    unless fixity_at <= created_at
-      errors.add(fixity_at: "must be <= created_at")
+    if fixity_at && created_at
+      unless fixity_at <= created_at
+        errors.add(:fixity_at, "must be <= created_at")
+      end
     end
   end
   
