@@ -50,6 +50,8 @@ class Node < ActiveRecord::Base
 
   has_many :admin_bags, class_name: "Bag", foreign_key: "admin_node_id", autosave: true,
            inverse_of: :admin_node
+  
+  has_many :fixity_checks, inverse_of: :node
 
   belongs_to :storage_region, autosave: true, inverse_of: :nodes
   belongs_to :storage_type, autosave: true, inverse_of: :nodes
