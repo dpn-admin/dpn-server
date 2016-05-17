@@ -1,4 +1,3 @@
-# Bag IntTestValidBag01.tar
 aptrust01:
     uuid: 10000000-0000-4000-a000-000000000001
     ingest_node: aptrust
@@ -15,7 +14,7 @@ aptrust01:
       - chron
       - hathi
 
-# Bag IntTestValidBag02.tar
+
 aptrust02:
     uuid: 10000000-0000-4000-a000-000000000002
     ingest_node: aptrust
@@ -29,7 +28,7 @@ aptrust02:
     version_family: aptrust_vf02
     member: faber
 
-# Bag IntTestValidBag03.tar
+
 aptrust03:
     uuid: 10000000-0000-4000-a000-000000000003
     ingest_node: aptrust
@@ -43,7 +42,7 @@ aptrust03:
     version_family: aptrust_vf03
     member: grand_lakes
 
-# Bag IntTestValidBag04.tar
+
 aptrust04:
     uuid: 10000000-0000-4000-a000-000000000004
     ingest_node: aptrust
@@ -57,7 +56,7 @@ aptrust04:
     version_family: aptrust_vf04
     member: greendale
 
-# Bag IntTestValidBag05.tar
+
 aptrust05:
     uuid: 10000000-0000-4000-a000-000000000005
     ingest_node: aptrust
@@ -71,7 +70,7 @@ aptrust05:
     version_family: aptrust_vf05
     member: sunnydale
 
-# Bag IntTestValidBag06.tar
+
 aptrust06:
     uuid: 10000000-0000-4000-a000-000000000006
     ingest_node: aptrust
@@ -87,7 +86,6 @@ aptrust06:
 
 # This Hathi bag is referenced by the restore
 # request in restore_transfers.yml.
-# Bag IntTestValidBag01.tar
 hathi01:
     uuid: 30000000-0000-4000-a000-000000000001
     ingest_node: hathi

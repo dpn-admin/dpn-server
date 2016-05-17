@@ -1,5 +1,5 @@
 xfer01_to_hathi:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag01.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000001.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -13,7 +13,7 @@ xfer01_to_hathi:
     fixity_alg: sha256
 
 xfer02_to_hathi:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag02.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000002.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -27,7 +27,7 @@ xfer02_to_hathi:
     fixity_alg: sha256
 
 xfer03_to_hathi:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag03.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000003.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -41,7 +41,7 @@ xfer03_to_hathi:
     fixity_alg: sha256
 
 xfer04_to_hathi:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag04.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000004.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -55,7 +55,7 @@ xfer04_to_hathi:
     fixity_alg: sha256
 
 xfer05_to_hathi:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag05.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000005.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -69,7 +69,7 @@ xfer05_to_hathi:
     fixity_alg: sha256
 
 xfer06_to_hathi:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag06.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000006.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -83,7 +83,7 @@ xfer06_to_hathi:
     fixity_alg: sha256
 
 xfer01_to_chron:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag01.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000001.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -97,7 +97,7 @@ xfer01_to_chron:
     fixity_alg: sha256
 
 xfer02_to_chron:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag02.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000002.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -111,7 +111,7 @@ xfer02_to_chron:
     fixity_alg: sha256
 
 xfer03_to_chron:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag03.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000003.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -125,7 +125,7 @@ xfer03_to_chron:
     fixity_alg: sha256
 
 xfer04_to_chron:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag04.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000004.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -139,7 +139,7 @@ xfer04_to_chron:
     fixity_alg: sha256
 
 xfer05_to_chron:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag05.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000005.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -153,7 +153,7 @@ xfer05_to_chron:
     fixity_alg: sha256
 
 xfer06_to_chron:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag06.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000006.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -167,7 +167,7 @@ xfer06_to_chron:
     fixity_alg: sha256
 
 xfer01_to_sdr:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag01.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000001.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -181,7 +181,7 @@ xfer01_to_sdr:
     fixity_alg: sha256
 
 xfer02_to_sdr:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag02.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000002.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -195,7 +195,7 @@ xfer02_to_sdr:
     fixity_alg: sha256
 
 xfer03_to_sdr:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag03.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000003.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -209,7 +209,7 @@ xfer03_to_sdr:
     fixity_alg: sha256
 
 xfer04_to_sdr:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag04.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000004.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -223,7 +223,7 @@ xfer04_to_sdr:
     fixity_alg: sha256
 
 xfer05_to_sdr:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag05.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000005.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -237,7 +237,7 @@ xfer05_to_sdr:
     fixity_alg: sha256
 
 xfer06_to_sdr:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag06.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000006.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -251,7 +251,7 @@ xfer06_to_sdr:
     fixity_alg: sha256
 
 xfer01_to_aptrust:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag01.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000001.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -265,7 +265,7 @@ xfer01_to_aptrust:
     fixity_alg: sha256
 
 xfer02_to_aptrust:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag02.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000002.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -279,7 +279,7 @@ xfer02_to_aptrust:
     fixity_alg: sha256
 
 xfer03_to_aptrust:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag03.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000003.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -293,7 +293,7 @@ xfer03_to_aptrust:
     fixity_alg: sha256
 
 xfer04_to_aptrust:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag04.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000004.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -307,7 +307,7 @@ xfer04_to_aptrust:
     fixity_alg: sha256
 
 xfer05_to_aptrust:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag05.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000005.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -321,7 +321,7 @@ xfer05_to_aptrust:
     fixity_alg: sha256
 
 xfer06_to_aptrust:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag06.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000006.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z

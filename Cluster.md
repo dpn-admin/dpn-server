@@ -83,10 +83,7 @@ tests.
 
 There are also six test bags in test/fixtures/integration/testbags/. The bag entries
 for each node refer to these six bags, and the bag sizes and tag manifest checksums
-match the actual bags. There are notes in the YAML files explaining that final two
-digits of each bag registry entry match the final two digits of the test bag names.
-So a bag UUID ending in 01 matches the bag IntTestValidBag01.tar. The UUID ending in
-02 refers to the bag IntTestValidBag02.tar, etc.
+match the actual bags.
 
 Also note that the first digit of each bag UUID matches the bag's admin node. So all
 APTrust bag UUIDs start with 1, matching APTrust port 3001. Chronopolis bag UUIDs

@@ -1,4 +1,3 @@
-# Bag IntTestValidBag01.tar
 hathi01:
     uuid: 30000000-0000-4000-a000-000000000001
     ingest_node: hathi
@@ -12,7 +11,6 @@ hathi01:
     version_family: hathi_vf01
     member: sunnydale
 
-# Bag IntTestValidBag02.tar
 hathi02:
     uuid: 30000000-0000-4000-a000-000000000002
     ingest_node: hathi
@@ -26,7 +24,6 @@ hathi02:
     version_family: hathi_vf02
     member: faber
 
-# Bag IntTestValidBag03.tar
 hathi03:
     uuid: 30000000-0000-4000-a000-000000000003
     ingest_node: hathi
@@ -40,7 +37,6 @@ hathi03:
     version_family: hathi_vf03
     member: grand_lakes
 
-# Bag IntTestValidBag04.tar
 hathi04:
     uuid: 30000000-0000-4000-a000-000000000004
     ingest_node: hathi
@@ -54,7 +50,6 @@ hathi04:
     version_family: hathi_vf04
     member: greendale
 
-# Bag IntTestValidBag05.tar
 hathi05:
     uuid: 30000000-0000-4000-a000-000000000005
     ingest_node: hathi
@@ -68,7 +63,6 @@ hathi05:
     version_family: hathi_vf05
     member: faber
 
-# Bag IntTestValidBag06.tar
 hathi06:
     uuid: 30000000-0000-4000-a000-000000000006
     ingest_node: hathi

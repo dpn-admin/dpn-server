@@ -1,4 +1,3 @@
-# Bag IntTestValidBag01.tar
 chron01:
     uuid: 20000000-0000-4000-a000-000000000001
     ingest_node: chron
@@ -12,7 +11,6 @@ chron01:
     version_family: chron_vf01
     member: sunnydale
 
-# Bag IntTestValidBag02.tar
 chron02:
     uuid: 20000000-0000-4000-a000-000000000002
     ingest_node: chron
@@ -26,7 +24,6 @@ chron02:
     version_family: chron_vf02
     member: faber
 
-# Bag IntTestValidBag03.tar
 chron03:
     uuid: 20000000-0000-4000-a000-000000000003
     ingest_node: chron
@@ -40,7 +37,6 @@ chron03:
     version_family: chron_vf03
     member: grand_lakes
 
-# Bag IntTestValidBag04.tar
 chron04:
     uuid: 20000000-0000-4000-a000-000000000004
     ingest_node: chron
@@ -54,7 +50,6 @@ chron04:
     version_family: chron_vf04
     member: greendale
 
-# Bag IntTestValidBag05.tar
 chron05:
     uuid: 20000000-0000-4000-a000-000000000005
     ingest_node: chron
@@ -68,7 +63,6 @@ chron05:
     version_family: chron_vf05
     member: greendale
 
-# Bag IntTestValidBag06.tar
 chron06:
     uuid: 20000000-0000-4000-a000-000000000006
     ingest_node: chron

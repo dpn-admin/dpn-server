@@ -1,5 +1,5 @@
 restore01_from_aptrust:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag01.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000001.tar
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
     restore_id: 31000000-0000-4111-a000-000000000001
@@ -10,7 +10,7 @@ restore01_from_aptrust:
     protocol: rsync
 
 restore01_from_chron:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag01.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000001.tar
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
     restore_id: 31000000-0000-4111-a000-000000000002
@@ -21,7 +21,7 @@ restore01_from_chron:
     protocol: rsync
 
 restore01_from_sdr:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag01.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000001.tar
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
     restore_id: 31000000-0000-4111-a000-000000000003
@@ -32,7 +32,7 @@ restore01_from_sdr:
     protocol: rsync
 
 restore01_from_tdr:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/IntTestValidBag01.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000001.tar
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
     restore_id: 31000000-0000-4111-a000-000000000004
