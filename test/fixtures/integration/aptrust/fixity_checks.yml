@@ -1,35 +1,4 @@
-# Fixity for tagmanifest-sha256.txt (10000000-0000-4000-a000-000000000001)
 fixity01:
     bag: aptrust01
     fixity_alg: sha256
     value: 7569cf2d4bcd8b000b75bcbca82512be6e34f90f5a5479ccf7322b4d56825fde
-
-# Fixity for tagmanifest-sha256.txt (10000000-0000-4000-a000-000000000002)
-fixity02:
-    bag: aptrust02
-    fixity_alg: sha256
-    value: 27c36dda6ec9f74cc8ff0f9ef766953d937960379afa777bacbad34711305e3e
-
-# Fixity for tagmanifest-sha256.txt (10000000-0000-4000-a000-000000000003)
-fixity03:
-    bag: aptrust03
-    fixity_alg: sha256
-    value: d398bc8751f21f2891c62e44654bdbbf47d03784594f180aee6fa78ff2786ce8
-
-# Fixity for tagmanifest-sha256.txt (10000000-0000-4000-a000-000000000004)
-fixity04:
-    bag: aptrust04
-    fixity_alg: sha256
-    value: ff4930fcff595917d6c80bd3a96327c45c69e8a9095b88fbc3b9ed0f6b7b1057
-
-# Fixity for tagmanifest-sha256.txt (10000000-0000-4000-a000-000000000005)
-fixity05:
-    bag: aptrust05
-    fixity_alg: sha256
-    value: 138cd1066c72cb6c5e4312c33c220e0e89b4a20be2c8ad567de568e1129d1695
-
-# Fixity for tagmanifest-sha256.txt (10000000-0000-4000-a000-000000000006)
-fixity06:
-    bag: aptrust06
-    fixity_alg: sha256
-    value: a37f9e8cc96ad25035dcf4d214b5d5285131724c9d52412005a92a817a122e80

@@ -1,5 +1,5 @@
 tdr01:
-    uuid: 50000000-0000-4000-a000-000000000001
+    uuid: 00000000-0000-4000-a000-000000000005
     ingest_node: tdr
     admin_node: tdr
     local_id: Texas Bag 1
@@ -10,68 +10,3 @@ tdr01:
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: tdr_vf01
     member: sunnydale
-
-tdr02:
-    uuid: 50000000-0000-4000-a000-000000000002
-    ingest_node: tdr
-    admin_node: tdr
-    local_id: Texas Bag 2
-    size: 619008
-    version: 1
-    type: DataBag
-    created_at: 2015-09-15T17:56:03.309Z
-    updated_at: 2015-09-15T17:56:03.309Z
-    version_family: tdr_vf02
-    member: faber
-
-tdr03:
-    uuid: 50000000-0000-4000-a000-000000000003
-    ingest_node: tdr
-    admin_node: tdr
-    local_id: Texas Bag 3
-    size: 62464
-    version: 1
-    type: DataBag
-    created_at: 2015-09-15T17:56:03.309Z
-    updated_at: 2015-09-15T17:56:03.309Z
-    version_family: tdr_vf03
-    member: grand_lakes
-
-tdr04:
-    uuid: 50000000-0000-4000-a000-000000000004
-    ingest_node: tdr
-    admin_node: tdr
-    local_id: Texas Bag 4
-    size: 44544
-    version: 1
-    type: DataBag
-    created_at: 2015-09-15T17:56:03.309Z
-    updated_at: 2015-09-15T17:56:03.309Z
-    version_family: tdr_vf04
-    member: greendale
-
-tdr05:
-    uuid: 50000000-0000-4000-a000-000000000005
-    ingest_node: tdr
-    admin_node: tdr
-    local_id: Texas Bag 5
-    size: 268800
-    version: 1
-    type: DataBag
-    created_at: 2015-09-15T17:56:03.309Z
-    updated_at: 2015-09-15T17:56:03.309Z
-    version_family: tdr_vf05
-    member: grand_lakes
-
-tdr06:
-    uuid: 50000000-0000-4000-a000-000000000006
-    ingest_node: tdr
-    admin_node: tdr
-    local_id: Texas Bag 6
-    size: 365056
-    version: 1
-    type: DataBag
-    created_at: 2015-09-15T17:56:03.309Z
-    updated_at: 2015-09-15T17:56:03.309Z
-    version_family: tdr_vf06
-    member: faber

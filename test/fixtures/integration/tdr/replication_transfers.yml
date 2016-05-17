@@ -1,5 +1,5 @@
 xfer01_to_hathi:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000001.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000005.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -12,78 +12,8 @@ xfer01_to_hathi:
     protocol: rsync
     fixity_alg: sha256
 
-xfer02_to_hathi:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000002.tar
-    bag_valid: true
-    fixity_accept: false
-    created_at: 2015-09-15T19:38:31.562Z
-    updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: 50000000-0000-4000-a000-000000000002
-    bag: tdr02
-    from_node: tdr
-    to_node: hathi
-    status: 0
-    protocol: rsync
-    fixity_alg: sha256
-
-xfer03_to_hathi:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000003.tar
-    bag_valid: true
-    fixity_accept: false
-    created_at: 2015-09-15T19:38:31.562Z
-    updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: 50000000-0000-4000-a000-000000000003
-    bag: tdr03
-    from_node: tdr
-    to_node: hathi
-    status: 0
-    protocol: rsync
-    fixity_alg: sha256
-
-xfer04_to_hathi:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000004.tar
-    bag_valid: true
-    fixity_accept: false
-    created_at: 2015-09-15T19:38:31.562Z
-    updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: 50000000-0000-4000-a000-000000000004
-    bag: tdr04
-    from_node: tdr
-    to_node: hathi
-    status: 0
-    protocol: rsync
-    fixity_alg: sha256
-
-xfer05_to_hathi:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000005.tar
-    bag_valid: true
-    fixity_accept: false
-    created_at: 2015-09-15T19:38:31.562Z
-    updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: 50000000-0000-4000-a000-000000000005
-    bag: tdr05
-    from_node: tdr
-    to_node: hathi
-    status: 0
-    protocol: rsync
-    fixity_alg: sha256
-
-xfer06_to_hathi:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000006.tar
-    bag_valid: true
-    fixity_accept: false
-    created_at: 2015-09-15T19:38:31.562Z
-    updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: 50000000-0000-4000-a000-000000000006
-    bag: tdr06
-    from_node: tdr
-    to_node: hathi
-    status: 0
-    protocol: rsync
-    fixity_alg: sha256
-
 xfer01_to_chron:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000001.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000005.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -96,78 +26,8 @@ xfer01_to_chron:
     protocol: rsync
     fixity_alg: sha256
 
-xfer02_to_chron:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000002.tar
-    bag_valid: true
-    fixity_accept: false
-    created_at: 2015-09-15T19:38:31.562Z
-    updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: 50000000-0000-4000-a000-000000000008
-    bag: tdr02
-    from_node: tdr
-    to_node: chron
-    status: 0
-    protocol: rsync
-    fixity_alg: sha256
-
-xfer03_to_chron:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000003.tar
-    bag_valid: true
-    fixity_accept: false
-    created_at: 2015-09-15T19:38:31.562Z
-    updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: 50000000-0000-4000-a000-000000000009
-    bag: tdr03
-    from_node: tdr
-    to_node: chron
-    status: 0
-    protocol: rsync
-    fixity_alg: sha256
-
-xfer04_to_chron:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000004.tar
-    bag_valid: true
-    fixity_accept: false
-    created_at: 2015-09-15T19:38:31.562Z
-    updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: 50000000-0000-4000-a000-000000000010
-    bag: tdr04
-    from_node: tdr
-    to_node: chron
-    status: 0
-    protocol: rsync
-    fixity_alg: sha256
-
-xfer05_to_chron:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000005.tar
-    bag_valid: true
-    fixity_accept: false
-    created_at: 2015-09-15T19:38:31.562Z
-    updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: 50000000-0000-4000-a000-000000000011
-    bag: tdr05
-    from_node: tdr
-    to_node: chron
-    status: 0
-    protocol: rsync
-    fixity_alg: sha256
-
-xfer06_to_chron:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000006.tar
-    bag_valid: true
-    fixity_accept: false
-    created_at: 2015-09-15T19:38:31.562Z
-    updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: 50000000-0000-4000-a000-000000000012
-    bag: tdr06
-    from_node: tdr
-    to_node: chron
-    status: 0
-    protocol: rsync
-    fixity_alg: sha256
-
 xfer01_to_sdr:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000001.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000005.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
@@ -180,154 +40,14 @@ xfer01_to_sdr:
     protocol: rsync
     fixity_alg: sha256
 
-xfer02_to_sdr:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000002.tar
-    bag_valid: true
-    fixity_accept: false
-    created_at: 2015-09-15T19:38:31.562Z
-    updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: 50000000-0000-4000-a000-000000000014
-    bag: tdr02
-    from_node: tdr
-    to_node: sdr
-    status: 0
-    protocol: rsync
-    fixity_alg: sha256
-
-xfer03_to_sdr:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000003.tar
-    bag_valid: true
-    fixity_accept: false
-    created_at: 2015-09-15T19:38:31.562Z
-    updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: 50000000-0000-4000-a000-000000000015
-    bag: tdr03
-    from_node: tdr
-    to_node: sdr
-    status: 0
-    protocol: rsync
-    fixity_alg: sha256
-
-xfer04_to_sdr:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000004.tar
-    bag_valid: true
-    fixity_accept: false
-    created_at: 2015-09-15T19:38:31.562Z
-    updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: 50000000-0000-4000-a000-000000000016
-    bag: tdr04
-    from_node: tdr
-    to_node: sdr
-    status: 0
-    protocol: rsync
-    fixity_alg: sha256
-
-xfer05_to_sdr:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000005.tar
-    bag_valid: true
-    fixity_accept: false
-    created_at: 2015-09-15T19:38:31.562Z
-    updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: 50000000-0000-4000-a000-000000000017
-    bag: tdr05
-    from_node: tdr
-    to_node: sdr
-    status: 0
-    protocol: rsync
-    fixity_alg: sha256
-
-xfer06_to_sdr:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000006.tar
-    bag_valid: true
-    fixity_accept: false
-    created_at: 2015-09-15T19:38:31.562Z
-    updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: 50000000-0000-4000-a000-000000000018
-    bag: tdr06
-    from_node: tdr
-    to_node: sdr
-    status: 0
-    protocol: rsync
-    fixity_alg: sha256
-
 xfer01_to_aptrust:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000001.tar
+    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000005.tar
     bag_valid: true
     fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
     replication_id: 50000000-0000-4000-a000-000000000019
     bag: tdr01
-    from_node: tdr
-    to_node: aptrust
-    status: 0
-    protocol: rsync
-    fixity_alg: sha256
-
-xfer02_to_aptrust:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000002.tar
-    bag_valid: true
-    fixity_accept: false
-    created_at: 2015-09-15T19:38:31.562Z
-    updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: 50000000-0000-4000-a000-000000000020
-    bag: tdr02
-    from_node: tdr
-    to_node: aptrust
-    status: 0
-    protocol: rsync
-    fixity_alg: sha256
-
-xfer03_to_aptrust:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000003.tar
-    bag_valid: true
-    fixity_accept: false
-    created_at: 2015-09-15T19:38:31.562Z
-    updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: 50000000-0000-4000-a000-000000000021
-    bag: tdr03
-    from_node: tdr
-    to_node: aptrust
-    status: 0
-    protocol: rsync
-    fixity_alg: sha256
-
-xfer04_to_aptrust:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000004.tar
-    bag_valid: true
-    fixity_accept: false
-    created_at: 2015-09-15T19:38:31.562Z
-    updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: 50000000-0000-4000-a000-000000000022
-    bag: tdr04
-    from_node: tdr
-    to_node: aptrust
-    status: 0
-    protocol: rsync
-    fixity_alg: sha256
-
-xfer05_to_aptrust:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000005.tar
-    bag_valid: true
-    fixity_accept: false
-    created_at: 2015-09-15T19:38:31.562Z
-    updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: 50000000-0000-4000-a000-000000000023
-    bag: tdr05
-    from_node: tdr
-    to_node: aptrust
-    status: 0
-    protocol: rsync
-    fixity_alg: sha256
-
-xfer06_to_aptrust:
-    link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000006.tar
-    bag_valid: true
-    fixity_accept: false
-    created_at: 2015-09-15T19:38:31.562Z
-    updated_at: 2015-09-15T19:38:31.562Z
-    replication_id: 50000000-0000-4000-a000-000000000024
-    bag: tdr06
     from_node: tdr
     to_node: aptrust
     status: 0
