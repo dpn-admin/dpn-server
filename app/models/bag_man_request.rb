@@ -18,7 +18,8 @@ class BagManRequest < ActiveRecord::Base
 
   def staging_location(staging_dir = Rails.configuration.staging_dir)
     destination = File.join staging_dir, self.id.to_s
-    return File.join(destination, File.basename(self.source_location))
+    extension = File.extname source_location
+    return File.join(destination, File.basename(source_location, extension))
   end
 
 
@@ -37,6 +38,7 @@ class BagManRequest < ActiveRecord::Base
       end
     end
   end
+
 
 
   ### Associations
