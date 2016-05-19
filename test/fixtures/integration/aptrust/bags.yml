@@ -10,3 +10,6 @@ aptrust01:
     updated_at: 2015-09-15T17:56:03.309Z
     version_family: aptrust_vf01
     member: sunnydale
+    replicating_nodes:
+      - chron
+      - hathi
