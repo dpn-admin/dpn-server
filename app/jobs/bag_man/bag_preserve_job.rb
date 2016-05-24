@@ -15,6 +15,7 @@ module BagMan
       unless request.cancelled
         bag = DPN::Bagit::Bag.new(bag_location)
         pairtree = ::Pairtree.at(storage_dir, create: false)
+        pairtree = Pairtree.at(storage_dir, create: true)
         ppath = pairtree.mk(bag.uuid)
         perform_rsync(File.join(bag_location, "*"), ppath.path)
         request.status = :preserved
