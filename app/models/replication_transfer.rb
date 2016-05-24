@@ -90,6 +90,12 @@ class ReplicationTransfer < ActiveRecord::Base
     end
   end
 
+  after_update do |record|
+    if record.status_changed?(from: "confirmed", to: "stored") && they_received
+      record.bag.replicating_nodes << record.to_node
+    end
+  end
+
 
   ### Static Validations
   validates :replication_id, uniqueness: true
