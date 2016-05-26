@@ -117,7 +117,6 @@ class ReplicationTransfer < ActiveRecord::Base
 
 
   ### ActiveModel::Dirty Validations
-  validates_with ChangeValidator # Only perform a save if the record actually changed.
   validates :replication_id, read_only: true, on: :update
   validates :from_node_id, read_only: true, on: :update
   validates :to_node_id, read_only: true, on: :update

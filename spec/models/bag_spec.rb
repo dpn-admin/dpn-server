@@ -11,12 +11,6 @@ describe Bag do
     expect(Fabricate.build(:bag)).to be_valid
   end
 
-  it "is invalid if only the timestamps changed" do
-    bag = Fabricate(:bag)
-    bag.updated_at = Time.now
-    expect(bag.save).to be false
-  end
-
   describe "uuid" do
     it "is required" do
       expect(Fabricate.build(:bag, uuid: nil)).to_not be_valid
@@ -138,6 +132,21 @@ describe Bag do
       bag.fixity_checks << FixityCheck.new(value: Faker::Bitcoin.address, fixity_alg: Fabricate(:fixity_alg) )
       expect(bag.save).to be true
     end
+    it "updates updated_at when added" do
+      bag = Fabricate(:bag, updated_at: 2.hours.ago)
+      bag.fixity_checks << Fabricate(:fixity_check)
+      bag.save
+      expect(bag.updated_at).to be > 2.hours.ago
+    end
   end
-
+  
+  describe "replicating_nodes" do
+    it "updates updated_at when added" do
+      bag = Fabricate(:bag, updated_at: 2.hours.ago)
+      bag.replicating_nodes << Fabricate(:node)
+      bag.save
+      expect(bag.updated_at).to be > 2.hours.ago
+    end
+  end
+  
 end

@@ -5,11 +5,7 @@
 
 
 Fabricator(:storage_region) do
-  name do
-    sequence(:name, 50) do |i|
-      "region_#{i}"
-    end
-  end
-  created_at 1.second.ago
-  updated_at 1.second.ago
+  name { Faker::Internet.password(10, 20) }
+  created_at 1.month.ago
+  updated_at 1.month.ago
 end

@@ -12,6 +12,6 @@ Fabricator(:restore_transfer) do
   status :requested
   protocol { Fabricate(:protocol) }
   link { Faker::Internet.url }
-  created_at 1.second.ago
-  updated_at 1.second.ago
+  created_at 1.month.ago
+  updated_at 1.month.ago
 end
