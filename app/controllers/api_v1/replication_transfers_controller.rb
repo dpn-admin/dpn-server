@@ -57,14 +57,10 @@ class ApiV1::ReplicationTransfersController < ApplicationController
       render nothing: true, status: 403 and return
     end
 
-    if params[:updated_at] > @replication_transfer.updated_at
-      @replication_transfer.attributes = update_params
-      @replication_transfer.requester = @requester
-      if ChangeValidator.new.is_valid?(@replication_transfer)
-        unless @replication_transfer.save
-          render "shared/errors", status: 400 and return
-        end
-      end
+    @replication_transfer.attributes = update_params
+    @replication_transfer.requester = @requester
+    unless @replication_transfer.save
+      render "shared/errors", status: 400 and return
     end
 
     render "shared/update", status: 200
@@ -85,7 +81,13 @@ class ApiV1::ReplicationTransfersController < ApplicationController
   end
 
   def update_params
-    params.permit(ReplicationTransfer.attribute_names + [:requester])
+    params.permit(
+      :bag_id, :from_node_id, :to_node_id,
+      :protocol_id, :link, :bag_valid,
+      :fixity_alg_id, :fixity_nonce,
+      :fixity_value, :fixity_accept, 
+      :replication_id, :status, :requester  # note :requester is virtual
+    )
   end
 
 

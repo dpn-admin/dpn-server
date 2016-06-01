@@ -8,12 +8,21 @@ shared_examples "an authorized update" do |key, options, legal_update, illegal_u
   unless options
     options = proc {{}}
   end
+  
+  old_updated_at = 1.year.ago.utc
+  params_updated_at = 1.day.ago.utc
 
   before(:each) do
     @request.headers["Content-Type"] = "application/json"
-    @existing_record = Fabricate(factory, options.call)
+    model_options = options.call
+    model_options[:updated_at] = old_updated_at
+    @existing_record = Fabricate(factory, model_options)
     @put_body = adapter.from_model(@existing_record).to_public_hash
-    @put_body[:updated_at] = Time.now.utc.to_formatted_s(:dpn)
+    @put_body[:updated_at] = params_updated_at.to_formatted_s(:dpn)
+  end
+  
+  it "fabricates the record with the correct timestamp" do
+    expect(@existing_record.reload.updated_at.to_s).to eql(old_updated_at.to_s)
   end
 
   context "record doesn't exist" do
@@ -28,14 +37,27 @@ shared_examples "an authorized update" do |key, options, legal_update, illegal_u
       expect(response).to render_template(nil)
     end
     it "does not update the record" do
-      expect(@existing_record.updated_at.to_s).to eql(@existing_record.reload.updated_at.to_s)
+      expect(@existing_record.reload.updated_at.to_s).to eql(old_updated_at.to_s)
     end
   end
 
   context "with valid put body" do
     before(:each) { put :update, legal_update.call(@put_body) }
-    it_behaves_like "a successful update" do
-      let(:existing_record) { @existing_record }
+    it "responds with 200" do
+      expect(response).to have_http_status(200)
+    end
+    it "updates the record" do
+      expect(@existing_record.reload.updated_at).to be > old_updated_at + 1.second
+    end
+    it "assigns the correct object to @#{factory}" do
+      expect(assigns(factory)).to be_an @existing_record.class
+      expect(assigns(factory).id).to eql(@existing_record.id)
+    end
+    it "renders json" do
+      expect(response.content_type).to eql("application/json")
+    end
+    it "renders the create template" do
+      expect(response).to render_template(:update)
     end
   end
 
@@ -45,7 +67,7 @@ shared_examples "an authorized update" do |key, options, legal_update, illegal_u
       expect(response).to have_http_status(400)
     end
     it "does not update the record" do
-      expect(@existing_record.updated_at.to_s).to eql(@existing_record.reload.updated_at.to_s)
+      expect(@existing_record.reload.updated_at.to_s).to eql(old_updated_at.to_s)
     end
     it "assigns the correct object to @#{factory}" do
       expect(assigns(factory)).to be_an model_class
@@ -68,7 +90,7 @@ shared_examples "an authorized update" do |key, options, legal_update, illegal_u
       expect(response).to have_http_status(200)
     end
     it "does not update the record" do
-      expect(@existing_record.updated_at.to_s).to eql(@existing_record.reload.updated_at.to_s)
+      expect(@existing_record.reload.updated_at.to_s).to eql(old_updated_at.to_s)
     end
     it "assigns the correct object to @#{factory}" do
       expect(assigns(factory)).to be_an model_class
@@ -91,8 +113,8 @@ shared_examples "an authorized update" do |key, options, legal_update, illegal_u
     it "responds with 200" do
       expect(response).to have_http_status(200)
     end
-    it "does not update the record" do
-      expect(@existing_record.updated_at.to_s).to eql(@existing_record.reload.updated_at.to_s)
+    it "updates the record" do
+      expect(@existing_record.reload.updated_at).to be > old_updated_at + 1.second
     end
     it "assigns the correct object to @#{factory}" do
       expect(assigns(factory)).to be_an @existing_record.class
@@ -101,7 +123,7 @@ shared_examples "an authorized update" do |key, options, legal_update, illegal_u
     it "renders json" do
       expect(response.content_type).to eql("application/json")
     end
-    it "renders the update template" do
+    it "renders the create template" do
       expect(response).to render_template(:update)
     end
   end

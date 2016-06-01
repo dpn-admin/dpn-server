@@ -7,12 +7,7 @@
 require 'securerandom'
 
 Fabricator(:node) do
-  namespace do
-    sequence(:namespace, 50) do |i|
-      "namespace_#{i}"
-    end
-  end
-
+  namespace { Faker::Internet.password(10, 20) }
   name { Faker::Company.name }
   ssh_pubkey { Faker::Internet.password(20) }
   storage_region
@@ -20,8 +15,14 @@ Fabricator(:node) do
   private_auth_token { Faker::Code.isbn }
   api_root { Faker::Internet.url }
   auth_credential { Faker::Code.isbn }
-  created_at 1.second.ago
-  updated_at 1.second.ago
+  created_at 1.month.ago
+  transient :updated_at
+  after_save do |record, transients|
+    if transients[:updated_at]
+      record.updated_at = transients[:updated_at]
+      record.save!
+    end
+  end
 end
 
 Fabricator(:local_node, class_name: :node) do
@@ -33,6 +34,6 @@ Fabricator(:local_node, class_name: :node) do
   api_root { Faker::Internet.url }
   auth_credential { Faker::Code.isbn }
   private_auth_token { |attrs| "#{attrs[:auth_credential]}" }
-  created_at 1.hour.ago
-  updated_at 1.hour.ago
+  created_at 1.month.ago
+  updated_at 1.month.ago
 end
