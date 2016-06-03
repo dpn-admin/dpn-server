@@ -1,5 +1,4 @@
-# Fixity for tagmanifest-sha256.txt in (20000000-0000-4000-a000-000000000001)
 fixity01:
     bag: hathi01
     fixity_alg: sha256
-    value: d398bc8751f21f2891c62e44654bdbbf47d03784594f180aee6fa78ff2786ce8
+    value: 6b0c77595fa6209c6afbf5851cb76160c8b0ae0e3cb06238b1b316c31200c7a6
