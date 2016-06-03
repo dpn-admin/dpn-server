@@ -12,7 +12,6 @@ class Member < ActiveRecord::Base
   has_many :bags, class_name: "Bag", foreign_key: "member_id", autosave: true, inverse_of: :member
 
   ### ActiveModel::Dirty Validations
-  validates_with ChangeValidator # Only perform a save if the record actually changed.
   validates :uuid, read_only: true, on: :update
 
   ### Static Validations

@@ -62,7 +62,6 @@ class RestoreTransfer < ActiveRecord::Base
 
 
   ### ActiveModel::Dirty Validations
-  validates_with ChangeValidator, on: :update
   validates :restore_id, read_only: true, on: :update
   validates :from_node_id, read_only: true, on: :update
   validates :to_node_id, read_only: true, on: :update

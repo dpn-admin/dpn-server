@@ -5,5 +5,6 @@
 
 
 class RightsBag < Bag
-  has_and_belongs_to_many :data_bags, :uniq => true, :join_table => "data_rights"
+  has_many :data_rights, class_name: "DataRights", inverse_of: :rights_bag
+  has_many :data_bags, through: :data_rights
 end

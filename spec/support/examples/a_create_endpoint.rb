@@ -70,7 +70,7 @@ shared_examples "a create endpoint" do |key, extra_params|
 
     context "with valid post body" do
       before(:each) do
-        instance = Fabricate(factory)
+        instance = Fabricate(factory, created_at: Time.now, updated_at: Time.now)
         @post_body = body_from_instance(instance, extra_params)
         model_class.delete(instance.id)
         @number_of_records = model_class.count

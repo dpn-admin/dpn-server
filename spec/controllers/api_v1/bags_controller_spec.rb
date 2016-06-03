@@ -30,7 +30,7 @@ describe ApiV1::BagsController do
 
 
   describe "PUT #update" do
-    legal_update = proc {|record| record[:admin_node] = Fabricate(:node).namespace; record }
+    legal_update = proc {|record| record[:local_id] = Faker::Lorem.word; record }
     illegal_update = proc {|record| record[:size] = 9182309182; record}
 
     context "without authentication" do

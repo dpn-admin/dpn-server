@@ -15,8 +15,17 @@ Fabricator(:bag) do
   ingest_node { Fabricate(:node) }
   admin_node { Fabricate(:node) }
   member { Fabricate(:member) }
-  created_at 1.second.ago
-  updated_at 1.second.ago
   type "DataBag"
   fixity_checks(count: 1) { Fabricate.build(:fixity_check, bag: nil) }
+  created_at 1.month.ago
+  updated_at 1.month.ago
+  transient :updated_at
+  after_save do |record, transients|
+    if transients[:updated_at]
+      record.updated_at = transients[:updated_at]
+      record.save!
+    end
+  end
 end
+
+

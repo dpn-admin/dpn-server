@@ -15,7 +15,8 @@ module BagMan
         perform_rsync(request.source_location, destination)
         request.status = :downloaded
         request.save!
-        BagUnpackJob.perform_later(request, request.staging_location(staging_dir))
+        saved_location = File.join destination, File.basename(request.source_location)
+        BagUnpackJob.perform_later(request, saved_location)
       end
     end
 

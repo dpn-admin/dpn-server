@@ -19,9 +19,9 @@ describe BagManRequest, type: :model do
   end
 
   it "returns the source location" do
-    request = Fabricate(:bag_man_request)
+    request = Fabricate(:bag_man_request, source_location: "testcontent.tar")
     staging_dir = "/herpderp"
-    expected = File.join staging_dir, request.id.to_s, File.basename(request.source_location)
+    expected = File.join staging_dir, request.id.to_s, "testcontent"
     expect(request.staging_location(staging_dir)).to eql(expected)
   end
 

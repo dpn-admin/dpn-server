@@ -55,14 +55,10 @@ class ApiV1::RestoreTransfersController < ApplicationController
       render nothing: true, status: 403 and return
     end
 
-    if params[:updated_at] > @restore_transfer.updated_at
-      @restore_transfer.attributes = update_params
-      @restore_transfer.requester = @requester
-      if ChangeValidator.new.is_valid?(@restore_transfer)
-        unless @restore_transfer.save
-          render "shared/errors", status: 400 and return
-        end
-      end
+    @restore_transfer.attributes = update_params
+    @restore_transfer.requester = @requester
+    unless @restore_transfer.save
+      render "shared/errors", status: 400 and return
     end
 
     render "shared/update", status: 200
@@ -81,7 +77,12 @@ class ApiV1::RestoreTransfersController < ApplicationController
   end
 
   def update_params
-    params.permit(RestoreTransfer.attribute_names + [:requester])
+    params.permit(
+      :bag_id, :from_node_id,
+      :to_node_id, :protocol_id,
+      :link, :restore_id, :status, 
+      :requester # note requester is virtual
+    )
   end
 
 end
