@@ -6,6 +6,7 @@
 namespace :db do
   desc "Clear the data tuples from the db."
   task clear: :environment do
+    raise RuntimeError, "Refusing to wipe out production database." if Rails.env.production?
     RestoreTransfer.delete_all
     BagManRequest.delete_all
     ReplicationTransfer.delete_all
