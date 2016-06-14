@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160429211031) do
+ActiveRecord::Schema.define(version: 20160510205152) do
 
   create_table "bag_man_requests", force: :cascade do |t|
     t.string   "source_location",                         null: false
@@ -78,6 +78,17 @@ ActiveRecord::Schema.define(version: 20160429211031) do
   end
 
   add_index "fixity_algs", ["name"], name: "index_fixity_algs_on_name", unique: true
+
+  create_table "fixity_checks", force: :cascade do |t|
+    t.string   "fixity_check_id", null: false
+    t.integer  "bag_id",          null: false
+    t.integer  "node_id",         null: false
+    t.boolean  "success",         null: false
+    t.datetime "fixity_at",       null: false
+    t.datetime "created_at",      null: false
+  end
+
+  add_index "fixity_checks", ["fixity_check_id"], name: "index_fixity_checks_on_fixity_check_id", unique: true
 
   create_table "members", force: :cascade do |t|
     t.string   "uuid",       null: false

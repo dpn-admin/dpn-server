@@ -28,6 +28,9 @@ Rails.application.routes.draw do
     get   "/bag/:bag/digest",             controller: :message_digests, action: :index
     post  "/bag/:bag/digest",             controller: :message_digests, action: :create
     get   "/bag/:bag/digest/:algorithm",  controller: :message_digests, action: :show
+
+    get   "/fixity_check",                controller: :fixity_checks, action: :index
+    post  "/fixity_check",                controller: :fixity_checks, action: :create
   end
 
 end
