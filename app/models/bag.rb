@@ -27,6 +27,7 @@ class Bag < ActiveRecord::Base
   validates_associated :message_digests
   
   has_many :fixity_checks, inverse_of: :bag
+  has_many :ingests, inverse_of: :bag
 
   belongs_to :version_family, :inverse_of => :bags, autosave: true
   validates_associated :version_family
