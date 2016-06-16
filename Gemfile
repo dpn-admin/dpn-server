@@ -16,7 +16,7 @@ end
 
 gem 'rails', '~> 4.2.5'
 gem 'sass-rails', '~> 5.0'
-gem 'uglifier', '>= 1.3.0'
+gem 'uglifier', '~> 2.7'
 gem 'jbuilder', '~> 2.0'
 gem 'json'
 gem 'bcrypt', '~> 3.1.7'
@@ -29,7 +29,7 @@ gem 'rpairtree'
 gem 'easy_cipher', '~>0.9.1'
 gem 'daemons'
 gem 'rails_admin'
-gem 'devise'
+gem 'devise', '~> 3.5'
 gem 'cancan'
 
 gem 'sdoc', '~> 0.4.0', group: :doc
