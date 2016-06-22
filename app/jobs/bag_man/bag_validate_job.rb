@@ -4,17 +4,17 @@
 # See LICENSE.md for details.
 
 module BagMan
-
+  ##
+  # BagValidateJob checks the validity for a DPN::BagIt::Bag
+  # and it updates the request validity field.
   class BagValidateJob < ActiveJob::Base
     queue_as :internal
 
     def perform(request, bag_location)
-      unless request.cancelled
-        bag = DPN::Bagit::Bag.new(bag_location)
-        request.validity = bag.valid?
-        request.save!
-      end
+      return if request.cancelled
+      bag = DPN::Bagit::Bag.new(bag_location)
+      request.validity = bag.valid?
+      request.save!
     end
   end
-
 end
