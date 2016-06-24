@@ -10,13 +10,11 @@ source 'https://rubygems.org'
 # e.g. gem "mysql2", group: :production
 # ----------------------------------------------
 
-if File.exists? "Gemfile.local"
-  eval_gemfile "Gemfile.local"
-end
+eval_gemfile 'Gemfile.local' if File.exist? 'Gemfile.local'
 
 gem 'rails', '~> 4.2.5'
 gem 'sass-rails', '~> 5.0'
-gem 'uglifier', '>= 1.3.0'
+gem 'uglifier', '~> 2.7'
 gem 'jbuilder', '~> 2.0'
 gem 'json'
 gem 'bcrypt', '~> 3.1.7'
@@ -29,16 +27,21 @@ gem 'rpairtree'
 gem 'easy_cipher', '~>0.9.1'
 gem 'daemons'
 gem 'rails_admin'
-gem 'devise'
+gem 'devise', '~> 3.5'
 gem 'cancan'
 
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-gem 'sqlite3', group: [:development, :test]
-gem 'byebug', group: [:development, :test]
-gem 'web-console', '~> 2.1.3', group: [:development, :test]
-gem 'rspec-rails', group: [:development, :test]
-gem 'fabrication', group: [:development, :test]
-gem 'faker', group: [:development, :test]
-gem 'rspec-activejob', group: [:development, :test]
-gem 'codeclimate-test-reporter', group: [:development, :test]
+group :development, :test do
+  gem 'byebug'
+  gem 'codeclimate-test-reporter'
+  gem 'fabrication'
+  gem 'faker'
+  gem 'pry'
+  gem 'pry-doc'
+  gem 'rspec-activejob'
+  gem 'rspec-rails'
+  gem 'sqlite3'
+  gem 'web-console', '~> 2.1.3'
+  gem 'yard'
+end
