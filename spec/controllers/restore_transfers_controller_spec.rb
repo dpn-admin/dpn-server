@@ -5,7 +5,7 @@
 
 require 'rails_helper'
 
-describe ApiV1::RestoreTransfersController do
+describe RestoreTransfersController do
 
   describe "GET #index" do
     context "without authentication" do

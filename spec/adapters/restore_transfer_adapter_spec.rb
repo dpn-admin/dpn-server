@@ -6,7 +6,7 @@
 
 require 'rails_helper'
 
-describe ApiV1::RestoreTransferAdapter do
+describe RestoreTransferAdapter do
 
   before(:each) do
     @model = Fabricate(:restore_transfer,

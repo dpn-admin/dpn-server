@@ -9,8 +9,8 @@ require 'rails_helper'
 
 shared_examples "a single endpoint view" do
   before(:each) do
-    allow(ActionController::Metal).to receive(:controller_name).and_return(ApiV1::NodesController.controller_name)
-    allow(ActionController::Metal).to receive(:controller_path).and_return(ApiV1::NodesController.controller_path)
+    allow(ActionController::Metal).to receive(:controller_name).and_return(NodesController.controller_name)
+    allow(ActionController::Metal).to receive(:controller_path).and_return(NodesController.controller_path)
     @model = Fabricate(:node)
     assign(:node, @model)
     render
@@ -23,6 +23,6 @@ shared_examples "a single endpoint view" do
   end
 
   it "calls the adapter" do
-    expect(rendered).to eql(ApiV1::NodeAdapter.from_model(@model).to_public_hash.to_json)
+    expect(rendered).to eql(NodeAdapter.from_model(@model).to_public_hash.to_json)
   end
 end

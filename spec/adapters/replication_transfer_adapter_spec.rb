@@ -6,7 +6,7 @@
 
 require 'rails_helper'
 
-describe ApiV1::ReplicationTransferAdapter do
+describe ReplicationTransferAdapter do
   replication_id = SecureRandom.uuid
   from_node_namespace = "fake_from_node"
   to_node_namespace = "fake_to_node"

@@ -5,7 +5,7 @@
 
 require 'rails_helper'
 
-describe ApiV1::BagAdapter do
+describe BagAdapter do
   uuid = SecureRandom.uuid
   rights_uuid = SecureRandom.uuid
   interpretive_uuid = SecureRandom.uuid

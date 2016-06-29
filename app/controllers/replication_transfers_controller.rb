@@ -4,7 +4,7 @@
 # See LICENSE.md for details.
 
 
-class ApiV1::ReplicationTransfersController < ApplicationController
+class ReplicationTransfersController < ApplicationController
   include Authenticate
   include Adaptation
   include Pagination
