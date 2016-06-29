@@ -7,8 +7,8 @@ require 'rails_helper'
 
 describe "shared/errors.json.erb" do
   before(:each) do
-    allow(ActionController::Metal).to receive(:controller_name).and_return(ApiV2::BagsController.controller_name)
-    allow(ActionController::Metal).to receive(:controller_path).and_return(ApiV2::BagsController.controller_path)
+    allow(ActionController::Metal).to receive(:controller_name).and_return(BagsController.controller_name)
+    allow(ActionController::Metal).to receive(:controller_path).and_return(BagsController.controller_path)
     @bag = Fabricate.build(:data_bag, uuid: "herpderp", local_id: nil)
     assign(:bag, @bag)
     @bag.valid? # Populates the errors array, which we'll always call in practice.

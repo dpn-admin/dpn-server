@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   # RailsAdmin routes
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   
-  namespace :api_v2, path: :"api-v2" do
+  scope "api-v#{VERSION}" do
     resources :nodes, only: [:index, :show, :create, :update, :destroy], path: :node, param: :namespace
     put "/node/:namespace/auth_credential", controller: :nodes, action: :update_auth_credential
     resources :bags, only: [:index, :show, :create, :update, :destroy], path: :bag, param: :uuid
