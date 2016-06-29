@@ -8,7 +8,7 @@ require 'rails_helper'
 
 
 
-describe ApiV1::ReplicationTransfersController do
+describe ReplicationTransfersController do
 
   describe "GET #index" do
     context "without authentication" do

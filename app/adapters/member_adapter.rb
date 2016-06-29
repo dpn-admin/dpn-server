@@ -4,10 +4,8 @@
 # See LICENSE.md for details.
 
 
-module ApiV1
-  class MemberAdapter < ::AbstractAdapter
-    map_simple :uuid, :uuid
-    map_simple :name, :name
-    map_simple :email, :email
-  end
+class MemberAdapter < ::AbstractAdapter
+  map_simple :uuid, :uuid
+  map_simple :name, :name
+  map_simple :email, :email
 end

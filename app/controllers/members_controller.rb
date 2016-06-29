@@ -1,4 +1,4 @@
-class ApiV1::MembersController < ApplicationController
+class MembersController < ApplicationController
   include Authenticate
   include Pagination
   include Adaptation

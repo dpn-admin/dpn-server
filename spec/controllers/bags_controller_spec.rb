@@ -3,10 +3,9 @@
 # Licensed according to the terms of the Revised BSD License
 # See LICENSE.md for details.
 
-
 require 'rails_helper'
 
-describe ApiV1::NodesController do
+describe BagsController do
 
   describe "GET #index" do
     context "without authentication" do
@@ -21,23 +20,22 @@ describe ApiV1::NodesController do
 
 
   describe "GET #show" do
-    it_behaves_like "a show endpoint", :namespace
+    it_behaves_like "a show endpoint", :uuid
   end
 
 
   describe "POST #create" do
-    extra_params = [:private_auth_token, :auth_credential]
-    it_behaves_like "a create endpoint", :namespace, extra_params
+    it_behaves_like "a create endpoint", :uuid
   end
 
 
   describe "PUT #update" do
-    legal_update = proc {|record| record[:name] = "some_new_name"; record }
-    illegal_update = proc {|record| record[:name] = nil; record}
+    legal_update = proc {|record| record[:local_id] = Faker::Lorem.word; record }
+    illegal_update = proc {|record| record[:size] = 9182309182; record}
 
     context "without authentication" do
       before(:each) do
-        put_body = adapter.from_model(Fabricate(:node)).to_public_hash
+        put_body = adapter.from_model(Fabricate(:data_bag)).to_public_hash
         put :update, legal_update.call(put_body)
       end
       it_behaves_like "an unauthenticated request"
@@ -45,19 +43,18 @@ describe ApiV1::NodesController do
 
     context "with authentication as non-local node" do
       include_context "with authentication"
-      it_behaves_like "an unauthorized update", :namespace, nil, legal_update, illegal_update
+      it_behaves_like "an unauthorized update", :uuid, nil, legal_update, illegal_update
     end
 
     context "with authentication as local node" do
       include_context "with local authentication"
-      it_behaves_like "an authorized update", :namespace, nil, legal_update, illegal_update
+      it_behaves_like "an authorized update", :uuid, nil, legal_update, illegal_update
     end
   end
 
 
   describe "DELETE #destroy" do
-    it_behaves_like "a destroy endpoint", :namespace
+    it_behaves_like "a destroy endpoint", :uuid
   end
 
 end
-

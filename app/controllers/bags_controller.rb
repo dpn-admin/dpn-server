@@ -4,7 +4,7 @@
 # See LICENSE.md for details.
 
 
-class ApiV1::BagsController < ApplicationController
+class BagsController < ApplicationController
   include Authenticate
   include Pagination
   include Adaptation

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ApiV1::MembersController do
+describe MembersController do
 
   describe "GET #index" do
     context "without authentication" do

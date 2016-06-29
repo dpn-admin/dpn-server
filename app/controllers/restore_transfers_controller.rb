@@ -5,7 +5,7 @@
 
 
 
-class ApiV1::RestoreTransfersController < ApplicationController
+class RestoreTransfersController < ApplicationController
   include Authenticate
   include Adaptation
   include Pagination

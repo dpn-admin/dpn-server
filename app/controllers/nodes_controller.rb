@@ -4,7 +4,7 @@
 # See LICENSE.md for details.
 
 
-class ApiV1::NodesController < ApplicationController
+class NodesController < ApplicationController
   include Authenticate
   include Pagination
   include Adaptation
