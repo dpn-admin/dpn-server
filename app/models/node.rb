@@ -53,6 +53,9 @@ class Node < ActiveRecord::Base
   
   has_many :fixity_checks, inverse_of: :node
 
+  has_many :node_ingests, inverse_of: :node
+  has_many :ingests, through: :node_ingests, source: :ingest
+
   belongs_to :storage_region, autosave: true, inverse_of: :nodes
   belongs_to :storage_type, autosave: true, inverse_of: :nodes
 

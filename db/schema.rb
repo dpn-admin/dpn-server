@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160510205152) do
+ActiveRecord::Schema.define(version: 20160616191514) do
 
   create_table "bag_man_requests", force: :cascade do |t|
     t.string   "source_location",                         null: false
@@ -90,6 +90,15 @@ ActiveRecord::Schema.define(version: 20160510205152) do
 
   add_index "fixity_checks", ["fixity_check_id"], name: "index_fixity_checks_on_fixity_check_id", unique: true
 
+  create_table "ingests", force: :cascade do |t|
+    t.string   "ingest_id",  null: false
+    t.integer  "bag_id",     null: false
+    t.boolean  "ingested",   null: false
+    t.datetime "created_at", null: false
+  end
+
+  add_index "ingests", ["ingest_id"], name: "index_ingests_on_ingest_id", unique: true
+
   create_table "members", force: :cascade do |t|
     t.string   "uuid",       null: false
     t.string   "name",       null: false
@@ -126,6 +135,13 @@ ActiveRecord::Schema.define(version: 20160510205152) do
   add_index "nodes", ["api_root"], name: "index_nodes_on_api_root", unique: true
   add_index "nodes", ["namespace"], name: "index_nodes_on_namespace", unique: true
   add_index "nodes", ["private_auth_token"], name: "index_nodes_on_private_auth_token", unique: true
+
+  create_table "nodes_ingests", force: :cascade do |t|
+    t.integer "node_id",   null: false
+    t.integer "ingest_id", null: false
+  end
+
+  add_index "nodes_ingests", ["node_id", "ingest_id"], name: "index_nodes_ingests_on_node_id_and_ingest_id", unique: true
 
   create_table "protocols", force: :cascade do |t|
     t.string   "name",       null: false

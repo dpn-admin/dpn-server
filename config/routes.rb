@@ -31,6 +31,9 @@ Rails.application.routes.draw do
 
     get   "/fixity_check",                controller: :fixity_checks, action: :index
     post  "/fixity_check",                controller: :fixity_checks, action: :create
+
+    get   "/ingest",                      controller: :ingests, action: :index
+    post  "/ingest",                      controller: :ingests, action: :create
   end
 
 end
