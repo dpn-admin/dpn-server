@@ -59,11 +59,11 @@ class Node < ActiveRecord::Base
   belongs_to :storage_region, autosave: true, inverse_of: :nodes
   belongs_to :storage_type, autosave: true, inverse_of: :nodes
 
-  has_and_belongs_to_many :fixity_algs, join_table: "supported_fixity_algs", uniq: true,
-                          autosave: true, inverse_of: :nodes
+  has_many :supported_fixity_algs, inverse_of: :node
+  has_many :fixity_algs, through: :supported_fixity_algs
 
-  has_and_belongs_to_many :protocols, join_table: "supported_protocols", uniq: true,
-                          autosave: true, inverse_of: :nodes
+  has_many :supported_protocols, inverse_of: :node
+  has_many :protocols, through: :supported_protocols
 
   has_many :replicator_agreements, foreign_key: "from_node_id", class_name: "ReplicationAgreement",
            autosave: true, inverse_of: :from_node
@@ -91,11 +91,10 @@ class Node < ActiveRecord::Base
   has_many :restore_transfers_to, class_name: "RestoreTransfer", foreign_key: "to_node_id",
            inverse_of: :to_node
 
-  has_and_belongs_to_many :replicated_bags, join_table: "replicating_nodes", uniq: true,
-                          inverse_of: :replicating_nodes, class_name: "Bag"
+  has_many :bag_nodes, inverse_of: :node
+  has_many :replicated_bags, through: :bag_nodes, source: :bag
 
   ### ActiveModel::Dirty Validations
-  validates_with ChangeValidator # Only perform a save if the record actually changed.
   validates :namespace, read_only: true, on: :update
 
 

@@ -1,35 +1,4 @@
-# Fixity for tagmanifest-sha256.txt in IntTestValidBag01.tar (10000000-0000-4000-a000-000000000001)
 fixity01:
     bag: tdr01
     fixity_alg: sha256
-    value: c76dba32693e2c3359921043c5ddfbb3087047cd743856da82ad0291d8546abb
-
-# Fixity for tagmanifest-sha256.txt in IntTestValidBag01.tar (10000000-0000-4000-a000-000000000002)
-fixity02:
-    bag: tdr02
-    fixity_alg: sha256
-    value: 8cfab27fbd661c083feead209052df9fa708e5d3c905f0f57c74f0d69ee354db
-
-# Fixity for tagmanifest-sha256.txt in IntTestValidBag01.tar (10000000-0000-4000-a000-000000000003)
-fixity03:
-    bag: tdr03
-    fixity_alg: sha256
-    value: deeab1dc5cad4059b7284179ba242b86caf0d2227a53d2b9bec3e55cb5c7fda0
-
-# Fixity for tagmanifest-sha256.txt in IntTestValidBag01.tar (10000000-0000-4000-a000-000000000004)
-fixity04:
-    bag: tdr04
-    fixity_alg: sha256
-    value: cc3e46d7432eb064e9b06a663e5d5437cbab5fafe5e14fd8fc7ef39de00a7c45
-
-# Fixity for tagmanifest-sha256.txt in IntTestValidBag01.tar (10000000-0000-4000-a000-000000000005)
-fixity05:
-    bag: tdr05
-    fixity_alg: sha256
-    value: d10e6c515673438b85675e51b7077fb920ce11b9ee98e25f1a8eb27124c7546a
-
-# Fixity for tagmanifest-sha256.txt in IntTestValidBag01.tar (10000000-0000-4000-a000-000000000006)
-fixity06:
-    bag: tdr06
-    fixity_alg: sha256
-    value: 8be8e2a9ac3f0557643f33a1b290c3a67b29e63548bdb7c120de141d9ce0c6b5
+    value: d2d13ae37a9d54e5341a7a8c7782228a20af761d5c6ffe7a71680f84ea17f4a7

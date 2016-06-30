@@ -26,14 +26,14 @@ class FixityCheck < ActiveRecord::Base
   validates :fixity_at,       presence: true
   validates :created_at,      presence: true
   validate :fixity_at_less_than_or_equal_to_created_at
-  
+
   ### Scopes
   scope :created_after, ->(time) { where("created_at < ?", time) unless time.blank? }
   scope :created_before, ->(time) { where("created_at > ?", time) unless time.blank? }
   scope :with_bag_id, ->(id) { where(bag_id: id) unless id.blank? }
   scope :with_node_id, ->(id) { where(node_id: id) unless id.blank? }
 
-  private 
+  private
   def fixity_at_less_than_or_equal_to_created_at
     if fixity_at && created_at
       unless fixity_at <= created_at
@@ -41,5 +41,5 @@ class FixityCheck < ActiveRecord::Base
       end
     end
   end
-  
+
 end

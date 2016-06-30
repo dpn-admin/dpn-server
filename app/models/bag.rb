@@ -35,12 +35,10 @@ class Bag < ActiveRecord::Base
   has_many :replication_transfers, autosave: true, inverse_of: :bag
   has_many :restore_transfers, autosave: true, inverse_of: :bag
 
-  has_and_belongs_to_many :replicating_nodes, :join_table => "replicating_nodes", :class_name => "Node",
-                          :uniq => true, autosave: true, inverse_of: :replicated_bags
-
-
+  has_many :bag_nodes, inverse_of: :bag
+  has_many :replicating_nodes, through: :bag_nodes, source: :node
+  
   ### ActiveModel::Dirty Validations
-  validates_with ChangeValidator # Only perform a save if the record actually changed.
   validates :uuid, read_only: true, on: :update
   validates :ingest_node_id, read_only: true, on: :update
   validates :size, read_only: true, on: :update

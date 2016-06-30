@@ -50,7 +50,7 @@ namespace :integration do
     aptrust = Node.where(namespace: 'aptrust').first
     ReplicationTransfer.where(from_node: aptrust).each do
       host = URI.parse(Rails.application.config.local_api_root).host
-      ReplicationTransfer.where("link LIKE ?", "%IntTestValidBag__.tar").each do |xfer|
+      ReplicationTransfer.where("link LIKE ?", "%00000000-0000-4000-a000-00000000000_.tar").each do |xfer|
         path_to_bag = xfer.link
         bagname = xfer.link.split('/').last
         baguuid = xfer.bag.uuid

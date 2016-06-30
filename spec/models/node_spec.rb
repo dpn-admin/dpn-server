@@ -117,4 +117,36 @@ describe Node do
       expect(Node.local_node!.namespace).to eql(Rails.configuration.local_namespace)
     end
   end
+  
+  {
+    protocols: :protocol, 
+    fixity_algs: :fixity_alg,
+    replicate_to_nodes: :node,
+    replicate_from_nodes: :node,
+    restore_to_nodes: :node,
+    restore_from_nodes: :node
+  }.each do |field, fabricator|
+    describe field do
+      it "updates updated_at when added" do
+        node = Fabricate(:node, updated_at: 2.hours.ago)
+        node.public_send(field) << Fabricate(fabricator)
+        node.save
+        expect(node.updated_at).to be > 2.hours.ago
+      end
+    end
+  end
+  
+  [
+    :storage_region,
+    :storage_type
+  ].each do |field|
+    describe field do
+      it "updates updated_at when changed" do
+        node = Fabricate(:node, updated_at: 2.hours.ago)
+        node.update(field => Fabricate(field))
+        node.save
+        expect(node.updated_at).to be > 2.hours.ago
+      end
+    end
+  end
 end

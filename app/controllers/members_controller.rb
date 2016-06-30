@@ -1,4 +1,3 @@
-
 class MembersController < ApplicationController
   include Authenticate
   include Pagination
@@ -42,13 +41,9 @@ class MembersController < ApplicationController
   def update
     @member = Member.find_by_uuid!(params[:uuid])
 
-    if params[:updated_at] > @member.updated_at
-      @member.attributes = update_params
-      if ChangeValidator.new.is_valid?(@member)
-        unless @member.save
-          render "shared/errors", status: 400 and return
-        end
-      end
+    @member.attributes = update_params
+    unless @member.save
+      render "shared/errors", status: 400 and return
     end
 
     render "shared/update", status: 200
@@ -68,7 +63,7 @@ class MembersController < ApplicationController
   end
 
   def update_params
-    params.permit(Member.attribute_names)
+    params.permit(:uuid, :name, :email)
   end
 
 end

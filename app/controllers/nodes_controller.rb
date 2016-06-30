@@ -47,13 +47,9 @@ class NodesController < ApplicationController
   def update
     @node = Node.find_by_namespace!(params[:namespace])
 
-    if params[:updated_at] > @node.updated_at
-      update_node(@node)
-      if ChangeValidator.new.is_valid?(@node)
-        unless @node.save
-          render "shared/errors", status: 400 and return
-        end
-      end
+    update_node(@node)
+    unless @node.save
+      render "shared/errors", status: 400 and return
     end
 
     render "shared/update", status: 200
@@ -84,7 +80,7 @@ class NodesController < ApplicationController
 
   def update_params
     params.permit(:name, :namespace, :ssh_pubkey,
-      :api_root, :created_at, :updated_at,
+      :api_root,
       :storage_region_id, :storage_type_id)
   end
 

@@ -25,14 +25,13 @@ describe BagAdapter do
       ingest_node: Fabricate(:node, namespace: ingest_node_namespace),
       admin_node: Fabricate(:node, namespace: admin_node_namespace),
       member: Fabricate(:member, uuid: member_uuid),
-      created_at: time_from_string("2015-02-25T15:27:40Z"),
-      updated_at: time_from_string("2015-02-25T15:27:40Z")
+      created_at: time_from_string("2015-02-25T15:27:40Z")
     )
     @model.rights_bags = [Fabricate(:rights_bag, uuid: rights_uuid)]
     @model.interpretive_bags = [Fabricate(:interpretive_bag, uuid: interpretive_uuid)]
     @model.replicating_nodes = [Fabricate(:node, namespace: repl_node_namespace)]
-
-    @model.save!
+    @model.updated_at = time_from_string("2015-02-25T15:27:40Z") # This timestamp gets set to now
+    @model.save!                                                 # when has_many rels populated.
 
     @public_hash = {
       uuid: uuid,

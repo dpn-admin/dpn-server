@@ -8,7 +8,9 @@ class FixityAlg < ActiveRecord::Base
   include Lowercased
   make_lowercased :name
 
-  has_and_belongs_to_many :nodes, :join_table => "supported_fixity_algs", :uniq => true
+  has_many :supported_fixity_algs, inverse_of: :fixity_alg
+  has_many :nodes, through: :supported_fixity_algs
+
   has_many :message_digests
   has_many :replication_transfers
 end

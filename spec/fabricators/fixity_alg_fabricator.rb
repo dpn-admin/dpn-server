@@ -5,7 +5,7 @@
 
 
 Fabricator(:fixity_alg) do
-  name { sequence(:fixity_alg_name) { |n| "#{Faker::Address.state_abbr}#{n}"} }
-  created_at 1.second.ago
-  updated_at 1.second.ago
+  name { Faker::Internet.password(10, 20) }
+  created_at 1.month.ago
+  updated_at 1.month.ago
 end

@@ -5,6 +5,9 @@
 
 
 class DataBag < Bag
-  has_and_belongs_to_many :interpretive_bags, :uniq => true, :join_table => "data_interpretive"
-  has_and_belongs_to_many :rights_bags, :uniq => true, :join_table => "data_rights"
-end
+  has_many :data_interpretives, inverse_of: :data_bag
+  has_many :interpretive_bags, through: :data_interpretives
+
+  has_many :data_rights, inverse_of: :data_bag, class_name: "DataRights"
+  has_many :rights_bags, through: :data_rights
+end  

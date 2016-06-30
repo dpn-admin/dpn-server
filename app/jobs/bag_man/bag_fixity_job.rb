@@ -4,17 +4,17 @@
 # See LICENSE.md for details.
 
 module BagMan
-
+  ##
+  # BagFixityJob calculates BagIt fixity using the SHA256 algorithm
+  # and updates a request.fixity field.
   class BagFixityJob < ActiveJob::Base
     queue_as :internal
 
     def perform(request, bag_location)
-      unless request.cancelled
-        bag = DPN::Bagit::Bag.new(bag_location)
-        request.fixity = bag.fixity(:sha256)
-        request.save!
-      end
+      return if request.cancelled
+      bag = DPN::Bagit::Bag.new(bag_location)
+      request.fixity = bag.fixity(:sha256)
+      request.save!
     end
   end
-
 end

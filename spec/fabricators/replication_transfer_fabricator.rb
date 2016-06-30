@@ -10,8 +10,8 @@ Fabricator(:replication_transfer) do
   fixity_accept nil
 
   status :requested
-  created_at 1.second.ago
-  updated_at 1.second.ago
+  created_at 1.month.ago
+  updated_at 1.month.ago
 
   bag { Fabricate(:bag) }
   link { Faker::Internet.url }

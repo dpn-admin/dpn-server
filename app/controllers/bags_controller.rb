@@ -55,13 +55,9 @@ class BagsController < ApplicationController
   def update
     @bag = Bag.find_by_uuid!(params[:uuid])
 
-    if params[:updated_at] > @bag.updated_at
-      update_bag(@bag)
-      if ChangeValidator.new.is_valid?(@bag)
-        unless @bag.save
-          render "shared/errors", status: 400 and return
-        end
-      end
+    update_bag(@bag)
+    unless @bag.save
+      render "shared/errors", status: 400 and return
     end
 
     render "shared/update", status: 200
@@ -81,11 +77,17 @@ class BagsController < ApplicationController
   end
 
   def update_params
-    params.permit(Bag.attribute_names)
+    params.permit(
+      :uuid, :local_id, :size,
+      :version, :version_family_id,
+      :ingest_node_id, :admin_node_id,
+      :type, :member_id
+    )
   end
 
   def update_bag(bag)
     bag.attributes = update_params
+    bag.replicating_nodes = params[:replicating_nodes]
     bag.version_family = params[:version_family]
     if bag.type == DataBag.to_s
       bag.rights_bags = params[:rights_bags]

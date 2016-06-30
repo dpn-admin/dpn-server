@@ -15,10 +15,18 @@ Fabricator(:bag_without_digests, class_name: :bag) do
   ingest_node { Fabricate(:node) }
   admin_node { Fabricate(:node) }
   member { Fabricate(:member) }
-  created_at 1.second.ago
-  updated_at 1.second.ago
   type "DataBag"
+  created_at 1.month.ago
+  updated_at 1.month.ago
+  transient :updated_at
+  after_save do |record, transients|
+    if transients[:updated_at]
+      record.updated_at = transients[:updated_at]
+      record.save!
+    end
+  end
 end
+
 
 Fabricator(:bag, from: :bag_without_digests) do
   after_create { |bag| bag.message_digests = Fabricate.times(2, :message_digest, bag: bag) }

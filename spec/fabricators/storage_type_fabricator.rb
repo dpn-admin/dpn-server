@@ -5,7 +5,7 @@
 
 
 Fabricator(:storage_type) do
-  name { sequence(:storage_type_name) { |n| "#{Faker::Lorem.word}#{n}"} }
-  created_at 1.second.ago
-  updated_at 1.second.ago
+  name { Faker::Internet.password(10, 20) }
+  created_at 1.month.ago
+  updated_at 1.month.ago
 end
