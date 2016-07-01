@@ -114,6 +114,7 @@ GEM
       actionpack (>= 3)
       activesupport (>= 3)
       railties (>= 3)
+    logstash-event (1.2.02)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.4)
@@ -275,6 +276,7 @@ DEPENDENCIES
   json
   kaminari
   lograge
+  logstash-event
   pry
   pry-doc
   rails (~> 4.2.5)
