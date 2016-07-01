@@ -32,6 +32,7 @@ gem 'rails_admin'
 gem 'devise', '~> 3.5'
 gem 'cancan'
 gem 'lograge'
+gem 'logstash-event'
 
 gem 'sdoc', '~> 0.4.0', group: :doc
 
