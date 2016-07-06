@@ -37,6 +37,8 @@
 Gemfile.local
 config/database.yml
 config/impersonate.yml.local
+config/resque.yml
+config/resque-pool.yml
 config/secrets.yml
 
 # Ignore capistrano

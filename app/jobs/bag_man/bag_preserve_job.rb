@@ -9,7 +9,7 @@ module BagMan
   ##
   # BagPreserveJob transfers a retrieved BagIt bag into the storage location
   class BagPreserveJob < ActiveJob::Base
-    queue_as :internal
+    queue_as :repl
 
     def perform(request, bag_location, storage_dir)
       return if request.cancelled

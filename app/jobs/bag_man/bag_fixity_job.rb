@@ -8,7 +8,7 @@ module BagMan
   # BagFixityJob calculates BagIt fixity using the SHA256 algorithm
   # and updates a request.fixity field.
   class BagFixityJob < ActiveJob::Base
-    queue_as :internal
+    queue_as :repl
 
     def perform(request, bag_location)
       return if request.cancelled

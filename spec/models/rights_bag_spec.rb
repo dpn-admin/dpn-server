@@ -16,4 +16,10 @@ describe RightsBag do
     record = Fabricate(:rights_bag, updated_at: 1.year.ago)
     expect(record.updated_at.change(usec: 0)).to eql time.change(usec: 0)
   end
+
+  describe "::find_fields" do
+    it "returns its find fields" do
+      expect(Bag.find_fields).to eql(Set.new([:uuid]))
+    end
+  end
 end

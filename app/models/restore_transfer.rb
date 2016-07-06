@@ -15,6 +15,10 @@ class RestoreTransfer < ActiveRecord::Base
     restore_id
   end
 
+  def self.find_fields
+    Set.new [:restore_id]
+  end
+
   enum status: {
     requested: 0,
     accepted: 1,

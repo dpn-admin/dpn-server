@@ -11,6 +11,12 @@ describe VersionFamily do
     expect(Fabricate(:version_family)).to be_valid
   end
 
+  describe "::find_fields" do
+    it "returns its find fields" do
+      expect(VersionFamily.find_fields).to eql(Set.new([:uuid]))
+    end
+  end
+
   it "is invalid without a uuid" do
     expect {
       Fabricate(:version_family, uuid: nil)

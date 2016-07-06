@@ -17,6 +17,12 @@ describe Member do
     expect(record.updated_at.change(usec: 0)).to eql time.change(usec: 0)
   end
 
+  describe "::find_fields" do
+    it "returns its find fields" do
+      expect(Member.find_fields).to eql(Set.new([:uuid]))
+    end
+  end
+
   describe "uuid" do
     it "is required" do
       expect(Fabricate.build(:member, uuid: nil)).to_not be_valid

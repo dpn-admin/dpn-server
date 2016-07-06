@@ -7,7 +7,7 @@ module BagMan
   ##
   # BagRetrievalJob uses rsync to retrieve a DPN bag from a remote node
   class BagRetrievalJob < ActiveJob::Base
-    queue_as :internal
+    queue_as :repl
 
     def perform(request, staging_dir)
       return if request.cancelled

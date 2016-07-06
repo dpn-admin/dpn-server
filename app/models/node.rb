@@ -13,6 +13,10 @@ class Node < ActiveRecord::Base
   include Lowercased
   make_lowercased :namespace
 
+  def self.find_fields
+    Set.new [:namespace]
+  end
+
   def self.local_node!
     self.find_by_namespace!(Rails.configuration.local_namespace)
   end

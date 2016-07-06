@@ -17,6 +17,12 @@ describe FixityAlg do
     }.to raise_error
   end
 
+  describe "::find_fields" do
+    it "returns its find fields" do
+      expect(FixityAlg.find_fields).to eql(Set.new([:name]))
+    end
+  end
+
   it "can find records" do
     name = "derp"
     Fabricate(:fixity_alg, name: name)

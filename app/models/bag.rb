@@ -27,7 +27,10 @@ class Bag < ActiveRecord::Base
     end
   end
   
-  
+  def self.find_fields
+    Set.new [:uuid]
+  end
+
   ### Associations
   belongs_to :ingest_node, :foreign_key => "ingest_node_id", :class_name => "Node",
              autosave: true, inverse_of: :ingest_bags

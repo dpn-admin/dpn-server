@@ -6,9 +6,15 @@
 
 require 'rails_helper'
 
-describe Digest do
+describe MessageDigest do
   it "has a valid factory" do
     expect(Fabricate(:message_digest)).to be_valid
+  end
+
+  describe "::find_fields" do
+    it "returns its find fields" do
+      expect(MessageDigest.find_fields).to eql(Set.new([:bag_id, :fixity_alg_id]))
+    end
   end
 
   [:bag, :node, :fixity_alg, :value].each do |field|

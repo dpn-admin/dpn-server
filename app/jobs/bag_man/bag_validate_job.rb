@@ -8,7 +8,7 @@ module BagMan
   # BagValidateJob checks the validity for a DPN::BagIt::Bag
   # and it updates the request validity field.
   class BagValidateJob < ActiveJob::Base
-    queue_as :internal
+    queue_as :repl
 
     def perform(request, bag_location)
       return if request.cancelled

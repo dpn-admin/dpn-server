@@ -11,6 +11,12 @@ describe Ingest do
   it "has a valid factory" do
     expect(Fabricate(:ingest)).to be_valid
   end
+
+  describe "::find_fields" do
+    it "returns its find fields" do
+      expect(Ingest.find_fields).to eql(Set.new([:ingest_id]))
+    end
+  end
   
   describe "#ingest_id" do
     it "is required" do
