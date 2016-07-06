@@ -40,8 +40,8 @@ class NodeAdapter < ::AbstractAdapter
       storage_type_id: nil
     }
     if storage.respond_to? :has_key?
-      region = StorageRegion.find_by_name(storage[:region])
-      type   = StorageType.find_by_name(storage[:type])
+      region = StorageRegion.find_by(name: storage[:region])
+      type   = StorageType.find_by(name: storage[:type])
       result[:storage_region_id] = region ? region.id : nil
       result[:storage_type_id] = type ? type.id : nil
     end
