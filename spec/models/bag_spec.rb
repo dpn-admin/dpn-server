@@ -10,6 +10,12 @@ describe Bag do
   it "has a valid factory" do
     expect(Fabricate.build(:bag)).to be_valid
   end
+  
+  it "has a factory that honors updated_at" do
+    time = 1.year.ago
+    bag = Fabricate(:bag, updated_at: 1.year.ago)
+    expect(bag.updated_at.change(usec: 0)).to eql time.change(usec: 0)
+  end
 
   describe "uuid" do
     it "is required" do

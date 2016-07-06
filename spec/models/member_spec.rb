@@ -11,6 +11,12 @@ describe Member do
     expect(Fabricate.build(:member)).to be_valid
   end
 
+  it "has a factory that honors updated_at" do
+    time = 1.year.ago
+    record = Fabricate(:member, updated_at: 1.year.ago)
+    expect(record.updated_at.change(usec: 0)).to eql time.change(usec: 0)
+  end
+
   describe "uuid" do
     it "is required" do
       expect(Fabricate.build(:member, uuid: nil)).to_not be_valid

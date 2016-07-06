@@ -11,6 +11,12 @@ describe RestoreTransfer do
     expect(Fabricate(:restore_transfer)).to be_valid
   end
 
+  it "has a factory that honors updated_at" do
+    time = 1.year.ago
+    record = Fabricate(:restore_transfer, updated_at: 1.year.ago)
+    expect(record.updated_at.change(usec: 0)).to eql time.change(usec: 0)
+  end
+  
   it "updates updated_at" do
     instance = Fabricate(:restore_transfer)
     old_time = instance.updated_at

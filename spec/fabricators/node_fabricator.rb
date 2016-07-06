@@ -19,7 +19,7 @@ Fabricator(:node) do |f|
   transient :updated_at
   after_save do |record, transients|
     if transients[:updated_at]
-      record.updated_at = transients[:updated_at]
+      record.update_columns(updated_at: transients[:updated_at])
       record.save!
     end
   end

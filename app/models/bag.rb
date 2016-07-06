@@ -7,14 +7,15 @@
 class Bag < ActiveRecord::Base
 
   ### Modifications and Concerns
+  include ManagedUpdate
   include Lowercased
   make_lowercased :uuid
 
   def to_param
     uuid
   end
-
-
+  
+  
   ### Associations
   belongs_to :ingest_node, :foreign_key => "ingest_node_id", :class_name => "Node",
              autosave: true, inverse_of: :ingest_bags
@@ -84,5 +85,8 @@ class Bag < ActiveRecord::Base
         "\tgot version=#{version}, uuid=#{uuid}, version_family.uuid=#{version_family.uuid}")
     end
   end
+  
+ 
+  
 
 end

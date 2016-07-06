@@ -7,6 +7,7 @@
 class ReplicationTransfer < ActiveRecord::Base
 
   ### Modifications and Concerns
+  include ManagedUpdate
   include Lowercased
   make_lowercased :replication_id
 

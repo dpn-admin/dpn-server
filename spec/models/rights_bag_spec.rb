@@ -10,4 +10,10 @@ describe RightsBag do
   it "has a valid factory" do
     expect(Fabricate(:rights_bag)).to be_valid
   end
+
+  it "has a factory that honors updated_at" do
+    time = 1.year.ago
+    record = Fabricate(:rights_bag, updated_at: 1.year.ago)
+    expect(record.updated_at.change(usec: 0)).to eql time.change(usec: 0)
+  end
 end

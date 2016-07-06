@@ -2,6 +2,7 @@
 
 class Member < ActiveRecord::Base
   ### Modifications and Concerns
+  include ManagedUpdate
   include Lowercased
   make_lowercased :uuid
 

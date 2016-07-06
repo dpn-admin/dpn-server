@@ -37,7 +37,7 @@ class RestoreTransfersController < ApplicationController
     if RestoreTransfer.where(restore_id: params[:restore_id]).exists?
       render nothing: true, status: 409 and return
     else
-      @restore_transfer = RestoreTransfer.new(create_params)
+      @restore_transfer = RestoreTransfer.new(permitted_params)
       if @restore_transfer.save
         render "shared/create", status: 201
       else
@@ -54,13 +54,13 @@ class RestoreTransfersController < ApplicationController
       render nothing: true, status: 403 and return
     end
 
-    @restore_transfer.attributes = update_params
-    @restore_transfer.requester = @requester
-    unless @restore_transfer.save
-      render "shared/errors", status: 400 and return
+    @restore_transfer = update_transfer(@restore_transfer, params)
+    if @restore_transfer.save
+      render "shared/update", status: 200
+    else
+      render "shared/errors", status: 400
     end
 
-    render "shared/update", status: 200
   end
 
 
@@ -71,17 +71,14 @@ class RestoreTransfersController < ApplicationController
   end
 
   private
-  def create_params
-    params.permit(RestoreTransfer.attribute_names)
+  def permitted_params
+    params.permit(RestoreTransfer.attribute_names + [:requester])
   end
-
-  def update_params
-    params.permit(
-      :bag_id, :from_node_id,
-      :to_node_id, :protocol_id,
-      :link, :restore_id, :status, 
-      :requester # note requester is virtual
-    )
+  
+  def update_transfer(transfer, params)
+    transfer.attributes = permitted_params
+    transfer.requester = @requester
+    return transfer
   end
 
 end

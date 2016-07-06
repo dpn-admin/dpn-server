@@ -64,6 +64,12 @@ describe ReplicationTransfer do
   it "has a valid factory" do
     expect(Fabricate(:replication_transfer)).to be_valid
   end
+
+  it "has a factory that honors updated_at" do
+    time = 1.year.ago
+    record = Fabricate(:replication_transfer, updated_at: 1.year.ago)
+    expect(record.updated_at.change(usec: 0)).to eql time.change(usec: 0)
+  end
   
   it "allows you to replicate to yourself" do
     node = Fabricate(:node)

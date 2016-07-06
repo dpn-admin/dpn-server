@@ -28,13 +28,7 @@ class NodesController < ApplicationController
     if Node.find_by_namespace(params[:namespace]).present?
       render nothing: true, status: 409 and return
     else
-      @node = Node.new(create_params)
-      @node.replicate_from_nodes = params[:replicate_from_nodes]
-      @node.replicate_to_nodes = params[:replicate_to_nodes]
-      @node.restore_from_nodes = params[:restore_from_nodes]
-      @node.restore_to_nodes = params[:restore_to_nodes]
-      @node.protocols = params[:protocols]
-      @node.fixity_algs = params[:fixity_algs]
+      @node = create_node(params)
       if @node.save
         render "shared/create", status: 201
       else
@@ -46,13 +40,12 @@ class NodesController < ApplicationController
 
   def update
     @node = Node.find_by_namespace!(params[:namespace])
-
-    update_node(@node)
-    unless @node.save
-      render "shared/errors", status: 400 and return
+    @node = update_node(@node, params)
+    if @node.save
+      render "shared/update", status: 200
+    else
+      render "shared/errors", status: 400
     end
-
-    render "shared/update", status: 200
   end
 
 
@@ -77,14 +70,24 @@ class NodesController < ApplicationController
   def create_params
     params.permit(Node.attribute_names)
   end
-
+  
   def update_params
-    params.permit(:name, :namespace, :ssh_pubkey,
-      :api_root,
-      :storage_region_id, :storage_type_id)
+    create_params.except(:auth_credential, :private_auth_token)
+  end
+  
+  
+  def create_node(params)
+    node = Node.new(create_params)
+    node.replicate_from_nodes = params[:replicate_from_nodes]
+    node.replicate_to_nodes = params[:replicate_to_nodes]
+    node.restore_from_nodes = params[:restore_from_nodes]
+    node.restore_to_nodes = params[:restore_to_nodes]
+    node.protocols = params[:protocols]
+    node.fixity_algs = params[:fixity_algs]
+    return node
   end
 
-  def update_node(node)
+  def update_node(node, params)
     node.attributes = update_params
     node.replicate_from_nodes = params[:replicate_from_nodes]
     node.replicate_to_nodes = params[:replicate_to_nodes]
