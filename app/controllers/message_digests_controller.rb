@@ -39,7 +39,7 @@ class MessageDigestsController < ApplicationController
     if existing
       render nothing: true, status: 409 and return
     else
-      @message_digest = MessageDigest.new(create_params)
+      @message_digest = MessageDigest.new(create_params(params))
       if @message_digest.save
         render "shared/create", status: 201
       else
@@ -51,7 +51,7 @@ class MessageDigestsController < ApplicationController
   private
 
 
-  def create_params
+  def create_params(params)
     params.permit(MessageDigest.attribute_names)
   end
   

@@ -39,7 +39,7 @@ class ReplicationTransfersController < ApplicationController
     if ReplicationTransfer.where(replication_id: params[:replication_id]).exists?
       render nothing: true, status: 409 and return
     else
-      @replication_transfer = ReplicationTransfer.new(permitted_params)
+      @replication_transfer = ReplicationTransfer.new(create_params(params))
       if @replication_transfer.save
         render "shared/create", status: 201
       else
@@ -56,7 +56,7 @@ class ReplicationTransfersController < ApplicationController
       render nothing: true, status: 403 and return
     end
 
-    @replication_transfer = update_transfer(@replication_transfer, params)
+    @replication_transfer = update_transfer(@replication_transfer, update_params(params))
     if @replication_transfer.save
       render "shared/update", status: 200
     else
@@ -75,12 +75,18 @@ class ReplicationTransfersController < ApplicationController
 
 
   private
-  def permitted_params
+  def create_params(params)
     params.permit(ReplicationTransfer.attribute_names + [:requester])
   end
-  
+
+
+  def update_params(params)
+    create_params(params)
+  end
+
+
   def update_transfer(transfer, params)
-    transfer.attributes = permitted_params
+    transfer.attributes = params
     transfer.requester = @requester
     return transfer
   end

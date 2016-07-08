@@ -26,7 +26,7 @@ class IngestsController < ApplicationController
     if Ingest.find_by_ingest_id(params[:ingest_id]).present?
       render nothing: true, status: 409 and return
     else
-      @ingest = Ingest.new(create_params)
+      @ingest = Ingest.new(create_params(params))
       if @ingest.save
         render "shared/create", status: 201
       else
@@ -37,7 +37,7 @@ class IngestsController < ApplicationController
   
   
   private
-  def create_params
+  def create_params(params)
     params.permit(Ingest.attribute_names)
   end
 

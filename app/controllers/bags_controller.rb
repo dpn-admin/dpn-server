@@ -46,7 +46,7 @@ class BagsController < ApplicationController
       else
         Bag.new
       end
-      if @bag.update_with_associations(permitted_params)
+      if @bag.update_with_associations(create_params(params))
         render "shared/create", status: 201
       else
         render "shared/errors", status: 400
@@ -58,7 +58,7 @@ class BagsController < ApplicationController
   def update
     @bag = Bag.find_by_uuid!(params[:uuid])
 
-    if @bag.update_with_associations(permitted_params)
+    if @bag.update_with_associations(update_params(params))
       render "shared/update", status: 200
     else
       render "shared/errors", status: 400
@@ -74,12 +74,18 @@ class BagsController < ApplicationController
 
 
   private
-  def permitted_params
+
+
+  def create_params(params)
     new_params = params.permit(Bag.attribute_names)
     new_params.merge! params.slice(
       :replicating_nodes, :version_family,
       :rights_bags, :interpretive_bags)
     return new_params
+  end
+
+  def update_params(params)
+    create_params(params)
   end
 
 
