@@ -36,8 +36,17 @@ class BagsController < ApplicationController
     if Bag.find_by_uuid(params[:uuid]).present?
       render nothing: true, status: 409 and return
     else
-      @bag = create_bag(params)
-      if @bag.save
+      @bag = case params[:type]
+      when DataBag.to_s
+        DataBag.new
+      when RightsBag.to_s
+        RightsBag.new
+      when InterpretiveBag.to_s
+        InterpretiveBag.new
+      else
+        Bag.new
+      end
+      if @bag.update_with_associations(permitted_params)
         render "shared/create", status: 201
       else
         render "shared/errors", status: 400
@@ -49,8 +58,7 @@ class BagsController < ApplicationController
   def update
     @bag = Bag.find_by_uuid!(params[:uuid])
 
-    @bag = update_bag(@bag, params)
-    if @bag.save
+    if @bag.update_with_associations(permitted_params)
       render "shared/update", status: 200
     else
       render "shared/errors", status: 400
@@ -67,30 +75,12 @@ class BagsController < ApplicationController
 
   private
   def permitted_params
-    params.permit(Bag.attribute_names)
-  end
-  
-  def create_bag(params)
-    bag = Bag.new(permitted_params)
-    bag.replicating_nodes = params[:replicating_nodes]
-    bag.version_family = params[:version_family]
-    if bag.type == DataBag.to_s
-      bag.rights_bags = params[:rights_bags]
-      bag.interpretive_bags = params[:interpretive_bags]
-    end
-    return bag
+    new_params = params.permit(Bag.attribute_names)
+    new_params.merge! params.slice(
+      :replicating_nodes, :version_family,
+      :rights_bags, :interpretive_bags)
+    return new_params
   end
 
-
-  def update_bag(bag, params)
-    bag.attributes = permitted_params
-    bag.replicating_nodes = params[:replicating_nodes]
-    bag.version_family = params[:version_family]
-    if bag.type == DataBag.to_s
-      bag.rights_bags = params[:rights_bags]
-      bag.interpretive_bags = params[:interpretive_bags]
-    end
-    return bag
-  end
 
 end
