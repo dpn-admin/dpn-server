@@ -28,8 +28,8 @@ class NodesController < ApplicationController
     if Node.find_by_namespace(params[:namespace]).present?
       render nothing: true, status: 409 and return
     else
-      @node = create_node(params)
-      if @node.save
+      @node = Node.new
+      if @node.update_with_associations(create_params(params))
         render "shared/create", status: 201
       else
         render "shared/errors", status: 400
@@ -40,8 +40,7 @@ class NodesController < ApplicationController
 
   def update
     @node = Node.find_by_namespace!(params[:namespace])
-    @node = update_node(@node, params)
-    if @node.save
+    if @node.update_with_associations(update_params(params))
       render "shared/update", status: 200
     else
       render "shared/errors", status: 400
@@ -67,41 +66,18 @@ class NodesController < ApplicationController
 
 
   private
-  def create_params
-    params.permit(Node.attribute_names)
+  def create_params(params)
+    new_params = params.permit(Node.attribute_names)
+    new_params.merge! params.slice(
+      :replicate_from_nodes, :replicate_to_nodes,
+      :restore_from_nodes, :restore_to_nodes,
+      :protocols, :fixity_algs
+    )
+    return new_params
   end
   
-  def update_params
-    create_params.except(:auth_credential, :private_auth_token)
-  end
-  
-  
-  def create_node(params)
-    node = Node.new(create_params)
-    node.replicate_from_nodes = params[:replicate_from_nodes]
-    node.replicate_to_nodes = params[:replicate_to_nodes]
-    node.restore_from_nodes = params[:restore_from_nodes]
-    node.restore_to_nodes = params[:restore_to_nodes]
-    node.protocols = params[:protocols]
-    node.fixity_algs = params[:fixity_algs]
-    return node
-  end
-
-  def update_node(node, params)
-    node.attributes = update_params
-    node.replicate_from_nodes = params[:replicate_from_nodes]
-    node.replicate_to_nodes = params[:replicate_to_nodes]
-    node.restore_from_nodes = params[:restore_from_nodes]
-    node.restore_to_nodes = params[:restore_to_nodes]
-    node.protocols = params[:protocols]
-    node.fixity_algs = params[:fixity_algs]
-    if params[:private_auth_token]
-      node.private_auth_token = params[:private_auth_token]
-    end
-    if params[:auth_credential]
-      node.auth_credential = params[:auth_credential]
-    end
-    return node
+  def update_params(params)
+    create_params(params).except(:auth_credential, :private_auth_token)
   end
 
 
