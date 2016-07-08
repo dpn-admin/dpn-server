@@ -15,6 +15,18 @@ class Bag < ActiveRecord::Base
     uuid
   end
   
+  def update_with_associations(new_attributes)
+    return set_attributes_with_associations(new_attributes) do |bag|
+      bag.save
+    end
+  end
+  
+  def update_with_associations!(new_attributes)
+    set_attributes_with_associations(new_attributes) do |bag|
+      bag.save!
+    end
+  end
+  
   
   ### Associations
   belongs_to :ingest_node, :foreign_key => "ingest_node_id", :class_name => "Node",
@@ -84,6 +96,19 @@ class Bag < ActiveRecord::Base
       errors.add(:version, "version == 1 IFF uuid==version_family.uuid\n" +
         "\tgot version=#{version}, uuid=#{uuid}, version_family.uuid=#{version_family.uuid}")
     end
+  end
+  
+  
+  def set_attributes_with_associations(new_attributes, &block)
+    new_attributes = new_attributes.with_indifferent_access
+    self.attributes = new_attributes.slice(*attribute_names)
+    self.replicating_nodes = new_attributes[:replicating_nodes]
+    self.version_family = new_attributes[:version_family]
+    if self.is_a?(DataBag)
+      self.rights_bags = new_attributes[:rights_bags]
+      self.interpretive_bags = new_attributes[:interpretive_bags]
+    end
+    yield self
   end
   
  
