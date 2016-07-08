@@ -28,7 +28,7 @@ class MembersController < ApplicationController
     if params[:uuid] && Member.find_by_uuid(params[:uuid]).present?
       render nothing: true, status: 409 and return
     else
-      @member = Member.new(permitted_params)
+      @member = Member.new(create_params(params))
       if @member.save
         render "shared/create", status: 201
       else
@@ -41,7 +41,7 @@ class MembersController < ApplicationController
   def update
     @member = Member.find_by_uuid!(params[:uuid])
 
-    @member.attributes = permitted_params
+    @member.attributes = update_params(params)
     if @member.save
       render "shared/update", status: 200
     else
@@ -58,9 +58,12 @@ class MembersController < ApplicationController
 
 
   private
-  def permitted_params
+  def create_params(params)
     params.permit(Member.attribute_names)
   end
 
+  def update_params(params)
+    create_params(params)
+  end
 
 end

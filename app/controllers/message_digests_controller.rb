@@ -25,16 +25,21 @@ class MessageDigestsController < ApplicationController
   
   
   def show
-    @message_digest = find_message_digest
-    raise ActiveRecord::RecordNotFound unless @message_digest
+    @message_digest = MessageDigest.find_by!(
+      bag_id: params[:bag_id],
+      fixity_alg_id: params[:fixity_alg_id])
     render "shared/show", status: 200
   end
   
   def create
-    if find_message_digest
+    existing = MessageDigest.find_by(
+      bag_id: params[:bag_id],
+      fixity_alg_id: params[:fixity_alg_id]
+    )
+    if existing
       render nothing: true, status: 409 and return
     else
-      @message_digest = MessageDigest.new(create_params)
+      @message_digest = MessageDigest.new(create_params(params))
       if @message_digest.save
         render "shared/create", status: 201
       else
@@ -44,15 +49,9 @@ class MessageDigestsController < ApplicationController
   end
   
   private
-  
-  def find_message_digest
-    return MessageDigest
-      .where(bag_id: params[:bag_id])
-      .where(fixity_alg_id: params[:fixity_alg_id])
-      .first
-  end
 
-  def create_params
+
+  def create_params(params)
     params.permit(MessageDigest.attribute_names)
   end
   

@@ -27,7 +27,7 @@ class FixityChecksController < ApplicationController
     if FixityCheck.find_by_fixity_check_id(params[:fixity_check_id]).present?
       render nothing: true, status: 409 and return
     else
-      @fixity_check = FixityCheck.new(create_params)
+      @fixity_check = FixityCheck.new(create_params(params))
       if @fixity_check.save
         render "shared/create", status: 201
       else
@@ -38,7 +38,7 @@ class FixityChecksController < ApplicationController
 
 
   private
-  def create_params
+  def create_params(params)
     params.permit(FixityCheck.attribute_names)
   end
 
