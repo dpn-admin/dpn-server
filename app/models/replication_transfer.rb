@@ -7,6 +7,7 @@
 class ReplicationTransfer < ActiveRecord::Base
 
   ### Modifications and Concerns
+  include ManagedUpdate
   include Lowercased
   make_lowercased :replication_id
 
@@ -147,7 +148,7 @@ class ReplicationTransfer < ActiveRecord::Base
 
   private
   def set_fixity_accept
-    fixity_check = bag.fixity_checks.find_by_fixity_alg_id(fixity_alg_id)
+    fixity_check = bag.message_digests.find_by_fixity_alg_id(fixity_alg_id)
     if fixity_check
       self.fixity_accept = (fixity_check.value == fixity_value)
     else

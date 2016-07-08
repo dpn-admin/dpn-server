@@ -3,7 +3,6 @@
 # Licensed according to the terms of the Revised BSD License
 # See LICENSE.md for details.
 
-
 class ReplicationTransfersController < ApplicationController
   include Authenticate
   include Adaptation
@@ -40,7 +39,7 @@ class ReplicationTransfersController < ApplicationController
     if ReplicationTransfer.where(replication_id: params[:replication_id]).exists?
       render nothing: true, status: 409 and return
     else
-      @replication_transfer = ReplicationTransfer.new(create_params)
+      @replication_transfer = ReplicationTransfer.new(create_params(params))
       if @replication_transfer.save
         render "shared/create", status: 201
       else
@@ -57,13 +56,13 @@ class ReplicationTransfersController < ApplicationController
       render nothing: true, status: 403 and return
     end
 
-    @replication_transfer.attributes = update_params
-    @replication_transfer.requester = @requester
-    unless @replication_transfer.save
-      render "shared/errors", status: 400 and return
+    @replication_transfer = update_transfer(@replication_transfer, update_params(params))
+    if @replication_transfer.save
+      render "shared/update", status: 200
+    else
+      render "shared/errors", status: 400
     end
 
-    render "shared/update", status: 200
   end
 
 
@@ -76,18 +75,20 @@ class ReplicationTransfersController < ApplicationController
 
 
   private
-  def create_params
-    params.permit(ReplicationTransfer.attribute_names)
+  def create_params(params)
+    params.permit(ReplicationTransfer.attribute_names + [:requester])
   end
 
-  def update_params
-    params.permit(
-      :bag_id, :from_node_id, :to_node_id,
-      :protocol_id, :link, :bag_valid,
-      :fixity_alg_id, :fixity_nonce,
-      :fixity_value, :fixity_accept, 
-      :replication_id, :status, :requester  # note :requester is virtual
-    )
+
+  def update_params(params)
+    create_params(params)
+  end
+
+
+  def update_transfer(transfer, params)
+    transfer.attributes = params
+    transfer.requester = @requester
+    return transfer
   end
 
 

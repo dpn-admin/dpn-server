@@ -7,14 +7,27 @@
 class Bag < ActiveRecord::Base
 
   ### Modifications and Concerns
+  include ManagedUpdate
   include Lowercased
   make_lowercased :uuid
 
   def to_param
     uuid
   end
-
-
+  
+  def update_with_associations(new_attributes)
+    return set_attributes_with_associations(new_attributes) do |bag|
+      bag.save
+    end
+  end
+  
+  def update_with_associations!(new_attributes)
+    set_attributes_with_associations(new_attributes) do |bag|
+      bag.save!
+    end
+  end
+  
+  
   ### Associations
   belongs_to :ingest_node, :foreign_key => "ingest_node_id", :class_name => "Node",
              autosave: true, inverse_of: :ingest_bags
@@ -23,8 +36,11 @@ class Bag < ActiveRecord::Base
   belongs_to :member, :foreign_key => "member_id", :class_name => "Member",
              autosave: true, inverse_of: :bags
 
-  has_many :fixity_checks, autosave: true, dependent: :destroy, inverse_of: :bag
-  validates_associated :fixity_checks
+  has_many :message_digests, autosave: true, dependent: :destroy, inverse_of: :bag
+  validates_associated :message_digests
+  
+  has_many :fixity_checks, inverse_of: :bag
+  has_many :ingests, inverse_of: :bag
 
   belongs_to :version_family, :inverse_of => :bags, autosave: true
   validates_associated :version_family
@@ -81,5 +97,21 @@ class Bag < ActiveRecord::Base
         "\tgot version=#{version}, uuid=#{uuid}, version_family.uuid=#{version_family.uuid}")
     end
   end
+  
+  
+  def set_attributes_with_associations(new_attributes, &block)
+    new_attributes = new_attributes.with_indifferent_access
+    self.attributes = new_attributes.slice(*attribute_names)
+    self.replicating_nodes = new_attributes[:replicating_nodes]
+    self.version_family = new_attributes[:version_family]
+    if self.is_a?(DataBag)
+      self.rights_bags = new_attributes[:rights_bags]
+      self.interpretive_bags = new_attributes[:interpretive_bags]
+    end
+    yield self
+  end
+  
+ 
+  
 
 end

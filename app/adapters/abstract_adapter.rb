@@ -35,9 +35,6 @@ class AbstractAdapter
       simple_maps.each do |model_field, public_field|
         @public_hash[public_field] = @internals[model_field]
       end
-      date_fields.each do |date_field|
-        @public_hash[date_field] = @internals[date_field].to_formatted_s(:dpn)
-      end
       to_maps.each do |model_field, process|
         @public_hash.merge!(process.call(@internals[model_field])) do |k,l,r|
           merge_strategy.call(k,l,r)
@@ -53,7 +50,7 @@ class AbstractAdapter
   # Define an instance method for each of the class methods
   # we want to access, otherwise we have to prepend
   # "self.class." each time.
-  [:simple_maps, :date_fields, :to_maps].each do |method_name|
+  [:simple_maps, :to_maps].each do |method_name|
     define_method(method_name) do
       self.class.send(method_name)
     end

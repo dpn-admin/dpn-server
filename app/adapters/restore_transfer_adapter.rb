@@ -5,6 +5,9 @@
 
 
 class RestoreTransferAdapter < ::AbstractAdapter
+  map_date :created_at, :created_at, Time::DATE_FORMATS[:dpn]
+  map_date :updated_at, :updated_at, Time::DATE_FORMATS[:dpn]
+
   map_simple :restore_id, :restore_id
   map_simple :status, :status
   map_simple :link, :link

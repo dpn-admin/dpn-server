@@ -4,7 +4,7 @@
 # See LICENSE.md for details.
 
 
-Fabricator(:bag) do
+Fabricator(:bag_without_digests, class_name: :bag) do
   uuid { SecureRandom.uuid }
   local_id { Faker::Bitcoin.address }
   size { Faker::Number.number(12) }
@@ -16,16 +16,18 @@ Fabricator(:bag) do
   admin_node { Fabricate(:node) }
   member { Fabricate(:member) }
   type "DataBag"
-  fixity_checks(count: 1) { Fabricate.build(:fixity_check, bag: nil) }
   created_at 1.month.ago
   updated_at 1.month.ago
   transient :updated_at
   after_save do |record, transients|
     if transients[:updated_at]
-      record.updated_at = transients[:updated_at]
+      record.update_columns(updated_at: transients[:updated_at])
       record.save!
     end
   end
 end
 
 
+Fabricator(:bag, from: :bag_without_digests) do
+  after_create { |bag| bag.message_digests = Fabricate.times(2, :message_digest, bag: bag) }
+end

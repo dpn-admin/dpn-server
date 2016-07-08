@@ -7,6 +7,7 @@
 class RestoreTransfer < ActiveRecord::Base
 
   ### Modifications and Concerns
+  include ManagedUpdate
   include Lowercased
   make_lowercased :restore_id
 

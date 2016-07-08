@@ -7,7 +7,6 @@
 require 'rails_helper'
 
 describe RestoreTransferAdapter do
-
   before(:each) do
     @model = Fabricate(:restore_transfer,
       restore_id: "f107347c-81ea-4c6f-a508-a90d4b797497",

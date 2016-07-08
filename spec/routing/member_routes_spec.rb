@@ -14,4 +14,3 @@ describe "MemberRouting" do
   end
 
 end
-

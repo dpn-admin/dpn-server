@@ -3,7 +3,6 @@
 # Licensed according to the terms of the Revised BSD License
 # See LICENSE.md for details.
 
-
 class BagsController < ApplicationController
   include Authenticate
   include Pagination
@@ -37,15 +36,17 @@ class BagsController < ApplicationController
     if Bag.find_by_uuid(params[:uuid]).present?
       render nothing: true, status: 409 and return
     else
-      @bag = Bag.new(create_params)
-      @bag.replicating_nodes = params[:replicating_nodes]
-      @bag.version_family = params[:version_family]
-      @bag.fixity_checks = params[:fixity_checks]
-      if @bag.type == DataBag.to_s
-        @bag.rights_bags = params[:rights_bags]
-        @bag.interpretive_bags = params[:interpretive_bags]
+      @bag = case params[:type]
+      when DataBag.to_s
+        DataBag.new
+      when RightsBag.to_s
+        RightsBag.new
+      when InterpretiveBag.to_s
+        InterpretiveBag.new
+      else
+        Bag.new
       end
-      if @bag.save
+      if @bag.update_with_associations(create_params(params))
         render "shared/create", status: 201
       else
         render "shared/errors", status: 400
@@ -57,12 +58,11 @@ class BagsController < ApplicationController
   def update
     @bag = Bag.find_by_uuid!(params[:uuid])
 
-    update_bag(@bag)
-    unless @bag.save
-      render "shared/errors", status: 400 and return
+    if @bag.update_with_associations(update_params(params))
+      render "shared/update", status: 200
+    else
+      render "shared/errors", status: 400
     end
-
-    render "shared/update", status: 200
   end
 
 
@@ -74,29 +74,19 @@ class BagsController < ApplicationController
 
 
   private
-  def create_params
-    params.permit(Bag.attribute_names)
+
+
+  def create_params(params)
+    new_params = params.permit(Bag.attribute_names)
+    new_params.merge! params.slice(
+      :replicating_nodes, :version_family,
+      :rights_bags, :interpretive_bags)
+    return new_params
   end
 
-  def update_params
-    params.permit(
-      :uuid, :local_id, :size, 
-      :version, :version_family_id,
-      :ingest_node_id, :admin_node_id,
-      :type, :member_id
-    )
+  def update_params(params)
+    create_params(params)
   end
 
-  def update_bag(bag)
-    bag.attributes = update_params
-    bag.replicating_nodes = params[:replicating_nodes]
-    bag.version_family = params[:version_family]
-    bag.fixity_checks = params[:fixity_checks]
-    if bag.type == DataBag.to_s
-      bag.rights_bags = params[:rights_bags]
-      bag.interpretive_bags = params[:interpretive_bags]
-    end
-    return bag
-  end
 
 end

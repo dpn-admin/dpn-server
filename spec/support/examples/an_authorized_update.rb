@@ -90,7 +90,7 @@ shared_examples "an authorized update" do |key, options, legal_update, illegal_u
       expect(response).to have_http_status(200)
     end
     it "does not update the record" do
-      expect(@existing_record.reload.updated_at.to_s).to eql(old_updated_at.to_s)
+      expect(@existing_record.reload.updated_at.change(usec: 0)).to eql(old_updated_at.change(usec: 0))
     end
     it "assigns the correct object to @#{factory}" do
       expect(assigns(factory)).to be_an model_class
@@ -114,7 +114,7 @@ shared_examples "an authorized update" do |key, options, legal_update, illegal_u
       expect(response).to have_http_status(200)
     end
     it "updates the record" do
-      expect(@existing_record.reload.updated_at).to be > old_updated_at + 1.second
+      expect(@existing_record.reload.updated_at.change(usec: 0)).to be > old_updated_at.change(usec: 0)
     end
     it "assigns the correct object to @#{factory}" do
       expect(assigns(factory)).to be_an @existing_record.class

@@ -10,4 +10,10 @@ describe InterpretiveBag do
   it "has a valid factory" do
     expect(Fabricate(:interpretive_bag)).to be_valid
   end
+
+  it "has a factory that honors updated_at" do
+    time = 1.year.ago
+    record = Fabricate(:interpretive_bag, updated_at: 1.year.ago)
+    expect(record.updated_at.change(usec: 0)).to eql time.change(usec: 0)
+  end
 end

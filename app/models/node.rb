@@ -9,6 +9,7 @@ require 'bcrypt'
 class Node < ActiveRecord::Base
 
   ### Modifications and Concerns
+  include ManagedUpdate
   include Lowercased
   make_lowercased :namespace
 
@@ -44,12 +45,31 @@ class Node < ActiveRecord::Base
   end
 
 
+  def update_with_associations(new_attributes)
+    return set_attributes_with_associations(new_attributes) do |node|
+      node.save
+    end
+  end
+
+
+  def update_with_associations!(new_attributes)
+    set_attributes_with_associations(new_attributes) do |node|
+      node.save!
+    end
+  end
+
+
   ### Associations
   has_many :ingest_bags, class_name: "Bag", foreign_key: "ingest_node_id", autosave: true,
            inverse_of: :ingest_node
 
   has_many :admin_bags, class_name: "Bag", foreign_key: "admin_node_id", autosave: true,
            inverse_of: :admin_node
+  
+  has_many :fixity_checks, inverse_of: :node
+
+  has_many :node_ingests, inverse_of: :node
+  has_many :ingests, through: :node_ingests, source: :ingest
 
   belongs_to :storage_region, autosave: true, inverse_of: :nodes
   belongs_to :storage_type, autosave: true, inverse_of: :nodes
@@ -117,6 +137,24 @@ class Node < ActiveRecord::Base
 
   def decrypt(value)
     Rails.configuration.cipher.decrypt(value)
+  end
+
+  def set_attributes_with_associations(new_attributes, &block)
+    new_attributes = new_attributes.with_indifferent_access
+    self.attributes = new_attributes.slice *(attribute_names - [:private_auth_token, :auth_credential] )
+    self.replicate_from_nodes = new_attributes[:replicate_from_nodes]
+    self.replicate_to_nodes = new_attributes[:replicate_to_nodes]
+    self.restore_from_nodes = new_attributes[:restore_from_nodes]
+    self.restore_to_nodes = new_attributes[:restore_to_nodes]
+    self.protocols = new_attributes[:protocols]
+    self.fixity_algs = new_attributes[:fixity_algs]
+    if new_attributes[:private_auth_token]
+      self.private_auth_token = new_attributes[:private_auth_token]
+    end
+    if new_attributes[:auth_credential]
+      self.auth_credential = new_attributes[:auth_credential]
+    end
+    yield self
   end
 
 end

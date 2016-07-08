@@ -38,7 +38,7 @@ Fabricator(:replication_transfer_received_nil, from: :replication_transfer) do
   status :received
 
   after_build { |replication_transfer, transients|
-    fixity_alg = bag.fixity_checks[0].fixity_alg
+    fixity_alg = bag.message_digests[0].fixity_alg
     replication_transfer.update(fixity_alg: fixity_alg)
   }
 end

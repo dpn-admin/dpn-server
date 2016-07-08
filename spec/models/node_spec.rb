@@ -22,6 +22,12 @@ describe Node do
     expect(Fabricate(:node)).to be_valid
   end
 
+  it "has a factory that honors updated_at" do
+    time = 1.year.ago
+    record = Fabricate(:node, updated_at: 1.year.ago)
+    expect(record.updated_at.change(usec: 0)).to eql time.change(usec: 0)
+  end
+
   it "has a storage region" do
     node = Fabricate.build(:node)
     storage_region = node.storage_region

@@ -10,6 +10,12 @@ describe Bag do
   it "has a valid factory" do
     expect(Fabricate.build(:bag)).to be_valid
   end
+  
+  it "has a factory that honors updated_at" do
+    time = 1.year.ago
+    bag = Fabricate(:bag, updated_at: 1.year.ago)
+    expect(bag.updated_at.change(usec: 0)).to eql time.change(usec: 0)
+  end
 
   describe "uuid" do
     it "is required" do
@@ -122,24 +128,6 @@ describe Bag do
     end
   end
 
-  describe "fixity_checks" do
-    it "can be empty" do
-      expect(Fabricate.build(:bag, fixity_checks: [])).to be_valid
-    end
-    it "allows adding them" do
-      bag = Fabricate(:bag)
-      bag.fixity_checks << FixityCheck.new(value: Faker::Bitcoin.address, fixity_alg: Fabricate(:fixity_alg) )
-      bag.fixity_checks << FixityCheck.new(value: Faker::Bitcoin.address, fixity_alg: Fabricate(:fixity_alg) )
-      expect(bag.save).to be true
-    end
-    it "updates updated_at when added" do
-      bag = Fabricate(:bag, updated_at: 2.hours.ago)
-      bag.fixity_checks << Fabricate(:fixity_check)
-      bag.save
-      expect(bag.updated_at).to be > 2.hours.ago
-    end
-  end
-  
   describe "replicating_nodes" do
     it "updates updated_at when added" do
       bag = Fabricate(:bag, updated_at: 2.hours.ago)

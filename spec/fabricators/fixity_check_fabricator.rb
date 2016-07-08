@@ -5,7 +5,10 @@
 
 
 Fabricator(:fixity_check) do
+  fixity_check_id { SecureRandom.uuid }
   bag
-  fixity_alg
-  value { SecureRandom.uuid }
+  node
+  success true
+  fixity_at 3.seconds.ago
+  created_at 1.second.ago
 end
