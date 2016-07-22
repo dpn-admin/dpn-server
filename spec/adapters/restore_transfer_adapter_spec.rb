@@ -25,7 +25,7 @@ describe RestoreTransferAdapter do
       restore_id: "f107347c-81ea-4c6f-a508-a90d4b797497",
       from_node: "fake_from_node",
       to_node: "fake_to_node",
-      uuid: "9c0d880f-058c-4240-a71f-7048be13f448",
+      bag: "9c0d880f-058c-4240-a71f-7048be13f448",
       protocol: "fake_transfer_protocol",
       link: "user@herp.derp.org:/blah",
       status: "prepared",

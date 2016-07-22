@@ -42,7 +42,7 @@ describe ReplicationTransferAdapter do
       replication_id: replication_id,
       from_node: from_node_namespace,
       to_node: to_node_namespace,
-      uuid: uuid,
+      bag: uuid,
       fixity_algorithm: fixity_algorithm_name,
       fixity_nonce: nil,
       fixity_value: fixity_value,
