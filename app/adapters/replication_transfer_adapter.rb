@@ -12,7 +12,7 @@ class ReplicationTransferAdapter < ::AbstractAdapter
   map_simple :status, :status
   map_simple :link, :link
 
-  map_belongs_to :bag, :uuid
+  map_belongs_to :bag, :bag, sub_method: :uuid
   map_belongs_to :fixity_alg, :fixity_algorithm, sub_method: :name
   map_belongs_to :protocol, :protocol, sub_method: :name
   map_belongs_to :from_node, :from_node, model_class: Node, sub_method: :namespace
