@@ -12,7 +12,7 @@ class RestoreTransferAdapter < ::AbstractAdapter
   map_simple :status, :status
   map_simple :link, :link
 
-  map_belongs_to :bag, :uuid
+  map_belongs_to :bag, :bag, sub_method: :uuid
   map_belongs_to :protocol, :protocol, sub_method: :name
   map_belongs_to :from_node, :from_node, model_class: Node, sub_method: :namespace
   map_belongs_to :to_node, :to_node, model_class: Node, sub_method: :namespace
