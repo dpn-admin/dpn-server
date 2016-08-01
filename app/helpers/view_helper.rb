@@ -11,4 +11,9 @@ module ViewHelper
       results:  collection.map{|item| single_object(item)}
     }
   end
+
+  def paged_bag_collection(collection, page_size)
+    paged_collection(collection, page_size).merge!( { total_size: collection.sum(:size) })
+  end
+
 end

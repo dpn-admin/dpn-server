@@ -23,7 +23,7 @@ class BagsController < ApplicationController
       .page(@page)
       .per(@page_size)
 
-    render "shared/index", status: 200
+    render "bags/index", status: 200
   end
 
 
