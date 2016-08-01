@@ -16,6 +16,7 @@ class BagsController < ApplicationController
     @bags = Bag.updated_after(params[:after])
       .updated_before(params[:before])
       .with_admin_node_id(params[:admin_node_id])
+      .with_ingest_node_id(params[:ingest_node_id])
       .with_member_id(params[:member_id])
       .with_bag_type(params[:type])
       .order(parse_ordering(params[:order_by]))
