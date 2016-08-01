@@ -29,6 +29,7 @@ class Ingest < ActiveRecord::Base
   scope :created_after, ->(time) { where("created_at < ?", time) unless time.blank? }
   scope :created_before, ->(time) { where("created_at > ?", time) unless time.blank? }
   scope :with_bag_id, ->(id) { where(bag_id: id) unless id.blank? }
+  scope :with_ingested, ->(ingested) { where(ingested: ingested) unless ingested.blank? }
   
   private
   
