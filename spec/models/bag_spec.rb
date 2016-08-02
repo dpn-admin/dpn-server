@@ -136,5 +136,113 @@ describe Bag do
       expect(bag.updated_at).to be > 2.hours.ago
     end
   end
+
+  describe "scope updated_before" do
+    let!(:bag) { Fabricate(:bag, updated_at: 1.hour.ago)}
+    it "includes older" do
+      expect(Bag.updated_before(5.minutes.ago)).to include(bag)
+    end
+    it "excludes newer" do
+      expect(Bag.updated_before(2.hours.ago)).to_not include(bag)
+    end
+  end
+
+  describe "scope updated_after" do
+    let!(:bag) { Fabricate(:bag, updated_at: 1.hour.ago)}
+    it "excludes older" do
+      expect(Bag.updated_after(5.minutes.ago)).to_not include(bag)
+    end
+    it "includes newer" do
+      expect(Bag.updated_after(2.hours.ago)).to include(bag)
+    end
+  end
+
+  describe "scope with_admin_node_id" do
+    let!(:bag) { Fabricate(:bag) }
+    it "includes matching only" do
+      Fabricate(:bag)
+      expect(Bag.with_admin_node_id(bag.admin_node_id)).to match_array [bag]
+    end
+  end
+
+  describe "scope with_ingest_node_id" do
+    let!(:bag) { Fabricate(:bag) }
+    it "includes matching only" do
+      Fabricate(:bag)
+      expect(Bag.with_ingest_node_id(bag.ingest_node_id)).to match_array [bag]
+    end
+  end
+
+  describe "scope with_member_id" do
+    let!(:bag) { Fabricate(:bag) }
+    it "includes matching only" do
+      Fabricate(:bag)
+      expect(Bag.with_member_id(bag.member_id)).to match_array [bag]
+    end
+  end
+
+  describe "scope with_bag_type" do
+    let!(:data_bag) { Fabricate(:data_bag) }
+    let!(:rights_bag) { Fabricate(:rights_bag) }
+    let!(:interpretive_bag) { Fabricate(:interpretive_bag) }
+    it "includes matching only" do
+      expect(Bag.with_bag_type(rights_bag.type)).to include(rights_bag)
+      expect(Bag.with_bag_type(rights_bag.type)).to_not include(data_bag, interpretive_bag)
+    end
+  end
+
+  describe "scope replicated_by" do
+    before(:each) do
+      Bag.destroy_all
+      @nodes = Fabricate.times(3, :node)
+      @bags = Fabricate.times(3, :bag)
+
+      (0..2).to_a.each do |i|
+        @bags[i].replicating_nodes = [@nodes[i]]
+      end
+
+      @bag12 = Fabricate(:bag)
+      @bag12.replicating_nodes = [@nodes[1], @nodes[2]]
+
+    end
+
+    context "replicated_by nodes[0]" do
+      it "includes bags[0]" do
+        expect(Bag.replicated_by([@nodes[0]])).to include @bags[0]
+      end
+      it "excludes bags[1], bags[2], bag12" do
+        expect(Bag.replicated_by([@nodes[0]])).to_not include @bags[1]
+        expect(Bag.replicated_by([@nodes[0]])).to_not include @bags[2]
+        expect(Bag.replicated_by([@nodes[0]])).to_not include @bag12
+      end
+    end
+
+    context "replicated_by nodes[1]" do
+      it "includes bags[1], bag12" do
+        expect(Bag.replicated_by([@nodes[1]])).to include @bags[1]
+        expect(Bag.replicated_by([@nodes[1]])).to include @bag12
+      end
+      it "excludes bags[0], bags[2]" do
+        expect(Bag.replicated_by([@nodes[1]])).to_not include @bags[0]
+        expect(Bag.replicated_by([@nodes[1]])).to_not include @bags[2]
+      end
+    end
+
+    context "replicated_by nodes[0], nodes[2]" do
+      it "includes bags[0], bags[2], bag12" do
+        expect(Bag.replicated_by([@nodes[0], @nodes[2]])).to include @bags[0]
+        expect(Bag.replicated_by([@nodes[0], @nodes[2]])).to include @bags[2]
+        expect(Bag.replicated_by([@nodes[0], @nodes[2]])).to include @bag12
+      end
+      it "excludes bags[1]" do
+        expect(Bag.replicated_by([@nodes[0], @nodes[2]])).to_not include @bags[1]
+      end
+    end
+
+  end
+
+
+
+
   
 end

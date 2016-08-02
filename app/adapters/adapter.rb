@@ -28,6 +28,18 @@ module Adapter
     end
   end
 
+  # Register a one-to-one mapping of a boolean field
+  # @param [Symbol] model_field
+  # @param [Symbol] public_field
+  def map_bool(model_field, public_field)
+    map_from_public public_field do |value|
+      {model_field => to_bool(value) }
+    end
+
+    map_to_public model_field do |value|
+      {public_field => value}
+    end
+  end
 
   # Register a hidden field.
   # @param [Symbol] model_field
@@ -174,6 +186,14 @@ module Adapter
 
   def public_fields
     @public_fields ||= []
+  end
+
+  private
+
+  def to_bool(value)
+    return true if value == true || value =~ (/^(true|t|yes|y|1)$/i)
+    return false if value == false || value.blank? || value =~ (/^(false|f|no|n|0)$/i)
+    raise ArgumentError.new("invalid value for boolean: \"#{value}\"")
   end
 
 

@@ -15,8 +15,10 @@ class FixityChecksController < ApplicationController
   def index
     @fixity_checks = FixityCheck.created_after(params[:after])
       .created_before(params[:before])
+      .with_success(params[:success])
       .with_node_id(params[:node_id])
       .with_bag_id(params[:bag_id])
+      .latest_only(convert_bool(params[:latest]))
       .page(@page)
       .per(@page_size)
     render "shared/index", status: 200
