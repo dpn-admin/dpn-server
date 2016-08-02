@@ -81,6 +81,11 @@ class Bag < ActiveRecord::Base
   scope :with_ingest_node_id, ->(id) { where(ingest_node_id: id) unless id.blank? }
   scope :with_member_id, ->(id) { where(member_id: id) unless id.blank? }
   scope :with_bag_type, ->(bag_type) { where(type: bag_type) unless bag_type.blank? }
+  scope :replicated_by, ->(nodes) {
+    unless nodes.empty?
+      joins(:bag_nodes).where(replicating_nodes: { node_id: nodes.map(&:id) } )
+    end
+  }
 
 
   private

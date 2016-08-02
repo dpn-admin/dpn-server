@@ -19,6 +19,7 @@ class BagsController < ApplicationController
       .with_ingest_node_id(params[:ingest_node_id])
       .with_member_id(params[:member_id])
       .with_bag_type(params[:type])
+      .replicated_by(params[:replicating_nodes])
       .order(parse_ordering(params[:order_by]))
       .page(@page)
       .per(@page_size)
