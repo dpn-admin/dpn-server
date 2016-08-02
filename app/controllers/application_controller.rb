@@ -25,6 +25,16 @@ class ApplicationController < ActionController::Base
     return ordering
   end
 
+  def convert_bool(value)
+    if value == true || value =~ (/^(true|t|yes|y|1)$/i)
+      return true
+    elsif value == false || value.blank? || value =~ (/^(false|f|no|n|0)$/i)
+      return false
+    else
+      return value
+    end
+  end
+
   private
   def record_not_found
     render nothing: true, status: 404

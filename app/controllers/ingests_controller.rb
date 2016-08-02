@@ -17,7 +17,7 @@ class IngestsController < ApplicationController
       .created_before(params[:before])
       .with_bag_id(params[:bag_id])
       .with_ingested(params[:ingested])
-      .latest_only(params[:latest])
+      .latest_only(convert_bool(params[:latest]))
       .page(@page)
       .per(@page_size)
     render "shared/index", status: 200
