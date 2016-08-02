@@ -93,5 +93,23 @@ describe Ingest do
       expect(record.reload.nodes.size).to eql(replicating_nodes.size)
     end
   end
+
+  describe "scope latest_only" do
+    before(:each) do
+      @bag1 = Fabricate(:bag)
+      @bag2 = Fabricate(:bag)
+      @latest1 = Fabricate(:ingest, bag: @bag1, created_at: 2.hours.from_now)
+      Fabricate(:ingest, bag: @bag1, created_at: 1.hour.ago)
+      @latest2 = Fabricate(:ingest, bag: @bag2, created_at: 2.hours.ago)
+      Fabricate(:ingest, bag: @bag2, created_at: 1.day.ago)
+    end
+    it "returns only the latest record for each bag" do
+      expect(Ingest.latest_only(true)).to contain_exactly @latest1, @latest2
+    end
+
+    it "returns only the latest ingest for the specified bag" do
+      expect(Ingest.where(bag: @bag1).latest_only(true)).to contain_exactly @latest1
+    end
+  end
   
 end
