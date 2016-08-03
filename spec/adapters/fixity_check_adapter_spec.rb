@@ -9,13 +9,14 @@ describe FixityCheckAdapter do
   fixity_check_id = SecureRandom.uuid
   uuid = SecureRandom.uuid
   node_namespace = "fake_namespace"
+  success = [true,false].sample
 
   before(:each) do
     @model = Fabricate(:fixity_check,
       fixity_check_id: fixity_check_id,
       bag: Fabricate(:data_bag, uuid: uuid),
       node: Fabricate(:node, namespace: node_namespace),
-      success: true,
+      success: success,
       fixity_at: time_from_string("2015-02-25T15:27:40Z"),
       created_at: time_from_string("2015-02-25T15:27:40Z")
     )
@@ -26,7 +27,7 @@ describe FixityCheckAdapter do
       fixity_check_id: fixity_check_id,
       bag: uuid,
       node: node_namespace,
-      success: true,
+      success: success,
       fixity_at: "2015-02-25T15:27:40Z",
       created_at: "2015-02-25T15:27:40Z"
     }
@@ -35,7 +36,7 @@ describe FixityCheckAdapter do
       fixity_check_id: fixity_check_id,
       bag_id: @model.bag_id,
       node_id: @model.node_id,
-      success: true,
+      success: success,
       fixity_at: time_from_string("2015-02-25T15:27:40Z"),
       created_at: time_from_string("2015-02-25T15:27:40Z")
     }
