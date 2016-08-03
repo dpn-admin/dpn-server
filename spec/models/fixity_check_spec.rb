@@ -46,5 +46,45 @@ describe FixityCheck do
     expect(Fabricate.build(:fixity_check, fixity_at: now, created_at: now)).to be_valid
     expect(Fabricate.build(:fixity_check, fixity_at: 1.minute.ago, created_at: 2.minute.ago)).to_not be_valid
   end
+
+  describe "scope latest_only", :broken_in_ci do
+    before(:each) do
+      @bag1, @bag2 = Fabricate.times(2, :bag)
+      @node1, @node2 = Fabricate.times(2, :node)
+      @latest_b1_n1 = Fabricate(:fixity_check, bag: @bag1, node: @node1,
+        created_at: 1.hour.ago, fixity_at: 2.hours.ago)
+      Fabricate(:fixity_check, bag: @bag1, node: @node1,
+        created_at: 2.days.ago, fixity_at: 3.days.ago)
+      @latest_b2_n1 = Fabricate(:fixity_check, bag: @bag2, node: @node1,
+        created_at: 1.hour.ago, fixity_at: 2.hours.ago)
+      Fabricate(:fixity_check, bag: @bag2, node: @node1,
+        created_at: 2.days.ago, fixity_at: 3.days.ago)
+      @latest_b1_n2 = Fabricate(:fixity_check, bag: @bag1, node: @node2,
+        created_at: 1.hour.ago, fixity_at: 2.hours.ago)
+      Fabricate(:fixity_check, bag: @bag1, node: @node2,
+        created_at: 2.days.ago, fixity_at: 3.days.ago)
+    end
+
+    it "returns latest for each bag+node pair" do
+      expect(FixityCheck.latest_only(true))
+        .to contain_exactly @latest_b1_n1, @latest_b1_n2, @latest_b2_n1
+    end
+
+    it "returns latest for each node for specified bag" do
+      expect(FixityCheck.where(bag_id: @bag1.id).latest_only(true))
+        .to contain_exactly @latest_b1_n1, @latest_b1_n2
+    end
+
+    it "returns latest for each bag for specified node" do
+      expect(FixityCheck.where(node_id: @node1.id).latest_only(true))
+        .to contain_exactly @latest_b1_n1, @latest_b2_n1
+    end
+
+    it "returns latest for specified bag, node pair" do
+      expect(FixityCheck.where(node_id: @node1.id).where(bag_id: @bag1.id).latest_only(true))
+        .to contain_exactly @latest_b1_n1
+    end
+
+  end
   
 end

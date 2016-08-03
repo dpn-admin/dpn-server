@@ -24,6 +24,9 @@
 /.env.local
 /.env
 
+# Ignore rspec config
+/.rspec
+
 # Ignore rbenv
 /.ruby-version
 
