@@ -3,6 +3,7 @@
 # Licensed according to the terms of the Revised BSD License
 # See LICENSE.md for details.
 
+
 class ReplicationTransfersController < ApplicationController
   include Authenticate
   include Adaptation
@@ -14,12 +15,14 @@ class ReplicationTransfersController < ApplicationController
 
   def index
     @replication_transfers = ReplicationTransfer.updated_after(params[:after])
+      .updated_before(params[:before])
       .with_bag_id(params[:bag_id])
-      .with_status(params[:status])
-      .with_fixity_accept(params[:fixity_accept])
-      .with_bag_valid(params[:bag_valid])
       .with_to_node_id(params[:to_node_id])
       .with_from_node_id(params[:from_node_id])
+      .with_store_requested(params[:store_requested])
+      .with_stored(params[:stored])
+      .with_cancelled(params[:cancelled])
+      .with_cancel_reason(params[:cancel_reason])
       .order(parse_ordering(params[:order_by]))
       .page(@page)
       .per(@page_size)
@@ -56,8 +59,7 @@ class ReplicationTransfersController < ApplicationController
       render nothing: true, status: 403 and return
     end
 
-    @replication_transfer = update_transfer(@replication_transfer, update_params(params))
-    if @replication_transfer.save
+    if @replication_transfer.update(update_params(params))
       render "shared/update", status: 200
     else
       render "shared/errors", status: 400
@@ -76,19 +78,12 @@ class ReplicationTransfersController < ApplicationController
 
   private
   def create_params(params)
-    params.permit(ReplicationTransfer.attribute_names + [:requester])
+    params.permit(ReplicationTransfer.attribute_names)
   end
 
 
   def update_params(params)
     create_params(params)
-  end
-
-
-  def update_transfer(transfer, params)
-    transfer.attributes = params
-    transfer.requester = @requester
-    return transfer
   end
 
 

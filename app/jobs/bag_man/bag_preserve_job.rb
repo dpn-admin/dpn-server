@@ -6,20 +6,17 @@
 require 'pairtree'
 
 module BagMan
-  ##
   # BagPreserveJob transfers a retrieved BagIt bag into the storage location
-  class BagPreserveJob < ActiveJob::Base
+  class BagPreserveJob < BagManJob
     queue_as :repl
 
     def perform(request, bag_location, storage_dir)
       return if request.cancelled
       bag = DPN::Bagit::Bag.new(bag_location)
-      pairtree = ::Pairtree.at(storage_dir, create: true)
+      pairtree = Pairtree.at(storage_dir, create: true)
       ppath = pairtree.mk(bag.uuid)
       perform_rsync(File.join(bag_location, "*"), ppath.path)
-      request.status = :preserved
-      request.preservation_location = ppath.path
-      request.save!
+      request.set_stored!(ppath.path)
     end
 
     protected

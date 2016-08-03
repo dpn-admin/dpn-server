@@ -4,20 +4,16 @@
 # See LICENSE.md for details.
 
 module BagMan
-  ##
   # BagUnpackJob unpacks a DPN::BagIt::SerializedBag (.tar file);
   # on success, it updates the request status to :unpacked and
   # initiates bag validation and fixity calculation.
-  class BagUnpackJob < ActiveJob::Base
+  class BagUnpackJob < BagManJob
     queue_as :repl
 
     def perform(request, bag_location)
       return if request.cancelled
       bag_location = unpack_bag(bag_location)
-      request.status = :unpacked
-      request.save!
-      BagMan::BagValidateJob.perform_later(request, bag_location)
-      BagMan::BagFixityJob.perform_later(request, bag_location)
+      request.set_unpacked!(bag_location)
     end
 
     protected

@@ -4,9 +4,8 @@
 # See LICENSE.md for details.
 
 module BagMan
-  ##
   # BagRetrievalJob uses rsync to retrieve a DPN bag from a remote node
-  class BagRetrievalJob < ActiveJob::Base
+  class BagRetrievalJob < BagManJob
     queue_as :repl
 
     def perform(request, staging_dir)
@@ -14,10 +13,7 @@ module BagMan
       destination = File.join staging_dir, request.id.to_s
       FileUtils.mkdir_p(destination) unless File.exist? destination
       perform_rsync(request.source_location, destination)
-      request.status = :downloaded
-      request.save!
-      saved_location = File.join destination, File.basename(request.source_location)
-      BagUnpackJob.perform_later(request, saved_location)
+      request.set_retrieved!
     end
 
     protected

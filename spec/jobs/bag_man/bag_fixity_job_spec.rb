@@ -8,7 +8,8 @@ require 'rails_helper'
 
 describe BagMan::BagFixityJob, type: :job do
   before(:each) do
-    @request = Fabricate(:bag_man_request, status: :downloaded)
+    @request = Fabricate(:bag_man_request, last_step_completed: :validated)
+    allow(@request).to receive(:set_fixityd!)
     @bag_location = "/tmp/some/fake/location"
     @fixity = "fafasdfsdfasdgdsasdfasdfasdf"
     bag = double(:serialized_bag)
@@ -31,15 +32,11 @@ describe BagMan::BagFixityJob, type: :job do
   it "does not enqueue a job" do
     expect {subject}.to_not enqueue_a(anything)
   end
-  
-  it "sets the fixity" do
-    subject
-    expect(@request.reload.fixity).to eql(@fixity)
-  end
 
-  it "does not change the status" do
-    subject
-    expect(@request.reload.status).to eql("downloaded")
+
+  it "calls set_fixityd! with the fixity" do
+    subject()
+    expect(@request).to have_received(:set_fixityd!).with(@fixity)
   end
 
 end

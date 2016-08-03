@@ -7,7 +7,8 @@ require 'rails_helper'
 
 describe BagMan::BagUnpackJob, type: :job do
   before(:each) do
-    @request = Fabricate(:bag_man_request, status: :downloaded, fixity: "dafdsafsfa")
+    @request = Fabricate(:bag_man_request, last_step_completed: :retrieved)
+    allow(@request).to receive(:set_unpacked!)
     @bag_location = "/tmp/some/fake/location"
 
     @unpacked_location = "/tmp/some/fake/location/unpacked"
@@ -31,33 +32,34 @@ describe BagMan::BagUnpackJob, type: :job do
     context "extension=#{file_type}" do
       before(:each) { allow(File).to receive(:extname).and_return(file_type) }
 
-      [true, false].each do |is_a_directory|
-        context "File.directory? == #{is_a_directory}" do
-          before(:each) { allow(File).to receive(:directory?).and_return(is_a_directory) }
+      context "File.directory? == true" do
+        before(:each) { allow(File).to receive(:directory?).and_return(true) }
 
-          %w(BagValidateJob BagFixityJob).each do |spawned_job|
-            let(:spawned_job_class) { "BagMan::#{spawned_job}".constantize }
-            it "enqueues a #{spawned_job}" do
-              expect { subject }.to enqueue_a(spawned_job_class)
-            end
+        it "does not enqueue a job" do
+          expect {subject}.to_not enqueue_a(anything)
+        end
 
-            it "passes the request to the #{spawned_job}" do
-              expect(spawned_job_class).to receive(:perform_later).with(@request, anything)
-              subject
-            end
+        it "calls request.set_unpacked! with the bag location" do
+          subject()
+          expect(@request).to have_received(:set_unpacked!).with(@bag_location)
 
-            it "passes the bag_location to the #{spawned_job}" do
-              expect(spawned_job_class).to receive(:perform_later).with(anything, is_a_directory ? @bag_location : @unpacked_location)
-              subject
-            end
-          end
-
-          it "sets request.status to unpacked" do
-            subject
-            expect(@request.reload.status).to eql("unpacked")
-          end
         end
       end
+
+      context "File.directory? == false" do
+        before(:each) { allow(File).to receive(:directory?).and_return(false) }
+
+        it "does not enqueue a job" do
+          expect {subject}.to_not enqueue_a(anything)
+        end
+
+        it "calls request.set_unpacked! with the unpacked location" do
+          subject()
+          expect(@request).to have_received(:set_unpacked!).with(@unpacked_location)
+        end
+      end
+
+
     end
   end
 end
