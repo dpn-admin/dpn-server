@@ -5,6 +5,11 @@
 
 
 class VersionFamily < ActiveRecord::Base
+
+  def self.find_fields
+    Set.new [:uuid]
+  end
+  
   has_many :bags, :inverse_of => :version_family
 
   include Lowercased

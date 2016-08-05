@@ -15,6 +15,10 @@ class ReplicationTransfer < ActiveRecord::Base
     replication_id
   end
 
+  def self.find_fields
+    Set.new [:replication_id]
+  end
+
   enum status: {
     requested: 0,
     rejected: 1,

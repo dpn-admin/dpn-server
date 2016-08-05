@@ -16,6 +16,12 @@ describe RestoreTransfer do
     record = Fabricate(:restore_transfer, updated_at: 1.year.ago)
     expect(record.updated_at.change(usec: 0)).to eql time.change(usec: 0)
   end
+
+  describe "::find_fields" do
+    it "returns its find fields" do
+      expect(RestoreTransfer.find_fields).to eql(Set.new([:restore_id]))
+    end
+  end
   
   it "updates updated_at" do
     instance = Fabricate(:restore_transfer)

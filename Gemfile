@@ -22,7 +22,10 @@ gem 'json'
 gem 'bcrypt', '~> 3.1.7'
 gem 'therubyracer', platforms: :ruby
 gem 'kaminari'
-gem 'delayed_job_active_record'
+gem 'resque'
+gem 'resque-scheduler'
+gem 'resque-pool'
+gem 'active_scheduler'
 gem 'rsync'
 gem 'dpn-bagit', '~>0.3.0'
 gem 'rpairtree'
@@ -31,6 +34,8 @@ gem 'daemons'
 gem 'rails_admin'
 gem 'devise', '~> 3.5'
 gem 'cancan'
+gem 'dpn-client', :git => 'https://github.com/dpn-admin/dpn-client.git'
+
 
 gem 'sdoc', '~> 0.4.0', group: :doc
 

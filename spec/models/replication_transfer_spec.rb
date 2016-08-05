@@ -70,6 +70,12 @@ describe ReplicationTransfer do
     record = Fabricate(:replication_transfer, updated_at: 1.year.ago)
     expect(record.updated_at.change(usec: 0)).to eql time.change(usec: 0)
   end
+
+  describe "::find_fields" do
+    it "returns its find fields" do
+      expect(ReplicationTransfer.find_fields).to eql(Set.new([:replication_id]))
+    end
+  end
   
   it "allows you to replicate to yourself" do
     node = Fabricate(:node)

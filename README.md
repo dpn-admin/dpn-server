@@ -10,7 +10,8 @@ maintainer is [Bryan Hockey](https://github.com/malakai97).
 
 # Development and Test
 
-The project is built and tested with ruby 2.2.1.  Bundler is required.
+The project is built and tested with mri. For specific ruby version support,
+consult `.travis.yml` or the Travis CI build page.  Bundler is required.
 All other dependencies are described in the gemfile.
 
 ```
@@ -43,7 +44,8 @@ for debugging and development.  More information can be found in
 
 ## Dependencies
 
-The project is built and tested with ruby 2.2.1.  Bundler is required.
+The project is built and tested with mri. For specific ruby version support,
+consult `.travis.yml` or the Travis CI build page.  Bundler is required.
 All other dependencies are described in the gemfile.
 
 ## Getting the Files

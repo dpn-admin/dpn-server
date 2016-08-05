@@ -5,6 +5,11 @@
 
 
 class FixityCheck < ActiveRecord::Base
+
+  def self.find_fields
+    Set.new [:fixity_check_id]
+  end
+  
   belongs_to :node, inverse_of: :fixity_checks
   belongs_to :bag, inverse_of: :fixity_checks
 

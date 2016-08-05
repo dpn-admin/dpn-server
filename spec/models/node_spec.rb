@@ -7,6 +7,11 @@
 require 'rails_helper'
 
 describe Node do
+
+  it "has a valid factory" do
+    expect(Fabricate(:node)).to be_valid
+  end
+  
   context "local_node" do
     it "has a valid factory" do
       expect(Fabricate(:local_node)).to be_valid
@@ -18,8 +23,10 @@ describe Node do
     end
   end
 
-  it "has a valid factory" do
-    expect(Fabricate(:node)).to be_valid
+  describe "::find_fields" do
+    it "returns its find fields" do
+      expect(Node.find_fields).to eql(Set.new([:namespace]))
+    end
   end
 
   it "has a factory that honors updated_at" do

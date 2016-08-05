@@ -1,0 +1,9 @@
+development:
+  sync: 1
+  repl: 1
+test:
+  sync: 1
+  repl: 1
+production:
+  sync: 4
+  repl: 2

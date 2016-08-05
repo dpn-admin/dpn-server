@@ -9,7 +9,7 @@ module BagMan
   # on success, it updates the request status to :unpacked and
   # initiates bag validation and fixity calculation.
   class BagUnpackJob < ActiveJob::Base
-    queue_as :internal
+    queue_as :repl
 
     def perform(request, bag_location)
       return if request.cancelled

@@ -3,6 +3,7 @@
 # Licensed according to the terms of the Revised BSD License
 # See LICENSE.md for details.
 
+require 'resque/server'
 
 Rails.application.routes.draw do
   root to: "rails_admin/main#index"
@@ -14,6 +15,11 @@ Rails.application.routes.draw do
 
   # RailsAdmin routes
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+
+  # Resque routes
+  authenticate :user do
+    mount Resque::Server, at: '/jobs'
+  end
 
   scope "/api-v#{VERSION}" do
     resources :nodes, only: [:index, :show, :create, :update, :destroy], path: :node, param: :namespace

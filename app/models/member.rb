@@ -10,6 +10,10 @@ class Member < ActiveRecord::Base
     uuid
   end
 
+  def self.find_fields
+    Set.new [:uuid]
+  end
+
   has_many :bags, class_name: "Bag", foreign_key: "member_id", autosave: true, inverse_of: :member
 
   ### ActiveModel::Dirty Validations

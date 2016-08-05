@@ -11,6 +11,12 @@ describe Protocol do
     expect(Fabricate(:protocol)).to be_valid
   end
 
+  describe "::find_fields" do
+    it "returns its find fields" do
+      expect(Protocol.find_fields).to eql(Set.new([:name]))
+    end
+  end
+
   it "is invalid without a name" do
     expect {
       Fabricate(:protocol, name: nil)

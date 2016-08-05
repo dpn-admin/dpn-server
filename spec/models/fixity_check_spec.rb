@@ -11,6 +11,12 @@ describe FixityCheck do
     expect(Fabricate(:fixity_check)).to be_valid
   end
 
+  describe "::find_fields" do
+    it "returns its find fields" do
+      expect(FixityCheck.find_fields).to eql(Set.new([:fixity_check_id]))
+    end
+  end
+
   [:fixity_check_id, :bag, :node, :success, :fixity_at, :created_at].each do |field|
     it "is invalid without a #{field}" do
       expect(Fabricate.build(:fixity_check, field => nil)).to_not be_valid
