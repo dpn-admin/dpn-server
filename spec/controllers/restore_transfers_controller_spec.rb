@@ -30,7 +30,7 @@ describe RestoreTransfersController do
 
 
   describe "PUT #update" do
-    legal_update = proc {|record| record[:status] = "cancelled"; record }
+    legal_update = proc {|record| record[:accepted] = true; record }
     illegal_update = proc {|record| record[:bag] = SecureRandom.uuid; record }
 
     context "without authentication" do

@@ -8,13 +8,16 @@ require 'rails_helper'
 
 describe BagMan::BagRetrievalJob, type: :job do
   before(:each) do
-    @request = Fabricate(:bag_man_request, status: :requested, cancelled: false)
+    @request = Fabricate(:bag_man_request, last_step_completed: :created)
+    allow(@request).to receive(:"set_retrieved!")
     @staging_dir = "/tmp/some/staging/area"
     @expected_dest_dir = File.join @staging_dir, @request.id.to_s
     @expected_dest_file = File.join @expected_dest_dir, File.basename(@request.source_location)
   end
 
-  subject { BagMan::BagRetrievalJob.perform_now(@request, @staging_dir) }
+  subject {
+    BagMan::BagRetrievalJob.perform_now(@request, @staging_dir)
+  }
 
   after(:each) do
     ActiveJob::Base.queue_adapter.enqueued_jobs = []
@@ -31,27 +34,13 @@ describe BagMan::BagRetrievalJob, type: :job do
       expect(Rsync).to have_received(:run).once.with(@request.source_location, @expected_dest_dir, anything)
     end
 
-    it "does not enqueue a BagFixityJob" do
-      expect {subject}.to_not enqueue_a(BagMan::BagFixityJob)
+    it "does not enqueue a job" do
+      expect {subject}.to_not enqueue_a(anything)
     end
 
-    it "enqueues a BagUnpackJob" do
-      expect {subject}.to enqueue_a(BagMan::BagUnpackJob)
-    end
-
-    it "passes the request to a BagUnpackJob" do
-      expect(BagMan::BagUnpackJob).to receive(:perform_later).with(@request, anything)
+    it "calls request.set_retrieved!" do
       subject()
-    end
-
-    it "passes the destination to a BagUnpackJob" do
-      expect(BagMan::BagUnpackJob).to receive(:perform_later).with(anything(), @expected_dest_file)
-      subject
-    end
-
-    it "sets request.status to :downloaded" do
-      subject()
-      expect(@request.reload.status).to eql(:downloaded.to_s)
+      expect(@request).to have_received(:set_retrieved!).with(no_args)
     end
   end
 

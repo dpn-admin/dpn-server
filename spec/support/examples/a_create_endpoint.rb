@@ -95,6 +95,9 @@ shared_examples "a create endpoint" do |unused_param, extra_params| #backwards c
       it "renders the create template" do
         expect(response).to render_template(:create)
       end
+      it "has no errors" do
+        expect(assigns(factory).errors).to be_empty
+      end
     end
 
     context "with invalid post body" do

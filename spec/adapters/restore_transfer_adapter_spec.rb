@@ -7,41 +7,63 @@
 require 'rails_helper'
 
 describe RestoreTransferAdapter do
+  restore_id = SecureRandom.uuid
+  from_node_namespace = "fake_from_node"
+  to_node_namespace = "fake_to_node"
+  uuid = SecureRandom.uuid
+  protocol_name = "fake_protocol"
+  updated_at = "2015-02-25T15:27:40Z"
+  created_at = "2015-02-25T15:27:40Z"
+  link = "user@herp.derp.org:/blah"
+  accepted = [true,false].sample
+  finished = [true,false].sample
+  cancelled = true
+  cancel_reason = 'other'
+
   before(:each) do
     @model = Fabricate(:restore_transfer,
-      restore_id: "f107347c-81ea-4c6f-a508-a90d4b797497",
-      from_node: Fabricate(:node, namespace: "fake_from_node"),
-      to_node: Fabricate(:node, namespace: "fake_to_node"),
-      bag: Fabricate(:data_bag, uuid: "9c0d880f-058c-4240-a71f-7048be13f448"),
-      protocol: Fabricate(:protocol, name: "fake_transfer_protocol"),
-      link: "user@herp.derp.org:/blah",
-      status: :prepared,
-      created_at: "2015-02-25T15:27:40Z",
-      updated_at: "2015-02-25T15:27:40Z"
+      restore_id: restore_id,
+      from_node: Fabricate(:node, namespace: from_node_namespace),
+      to_node: Fabricate(:node, namespace: to_node_namespace),
+      bag: Fabricate(:data_bag, uuid: uuid),
+      protocol: Fabricate(:protocol, name: protocol_name),
+      link: link,
+      accepted: accepted,
+      finished: finished,
+      cancelled: cancelled,
+      cancel_reason: cancel_reason,
+      created_at: created_at,
+      updated_at: updated_at
     )
 
     @public_hash = {
-      restore_id: "f107347c-81ea-4c6f-a508-a90d4b797497",
-      from_node: "fake_from_node",
-      to_node: "fake_to_node",
-      bag: "9c0d880f-058c-4240-a71f-7048be13f448",
-      protocol: "fake_transfer_protocol",
-      link: "user@herp.derp.org:/blah",
-      status: "prepared",
-      created_at: "2015-02-25T15:27:40Z",
-      updated_at: "2015-02-25T15:27:40Z"
+      restore_id: restore_id,
+      from_node: from_node_namespace,
+      to_node: to_node_namespace,
+      bag: uuid,
+      protocol: protocol_name,
+      link: link,
+      accepted: accepted,
+      finished: finished,
+      cancelled: cancelled,
+      cancel_reason: cancel_reason,
+      created_at: created_at,
+      updated_at: updated_at
     }
 
     @model_hash = {
-      restore_id: "f107347c-81ea-4c6f-a508-a90d4b797497",
+      restore_id: restore_id,
       from_node_id: @model.from_node_id,
       to_node_id: @model.to_node_id,
       bag_id: @model.bag_id,
       protocol_id: @model.protocol_id,
-      link: "user@herp.derp.org:/blah",
-      status: "prepared",
-      created_at: time_from_string("2015-02-25T15:27:40Z"),
-      updated_at: time_from_string("2015-02-25T15:27:40Z")
+      link: link,
+      accepted: accepted,
+      finished: finished,
+      cancelled: cancelled,
+      cancel_reason: cancel_reason,
+      created_at: time_from_string(created_at),
+      updated_at: time_from_string(updated_at)
     }
   end
 
