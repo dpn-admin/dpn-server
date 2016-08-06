@@ -15,10 +15,14 @@ class RestoreTransfersController < ApplicationController
 
   def index
     @restore_transfers = RestoreTransfer.updated_after(params[:after])
+      .updated_before(params[:before])
       .with_bag_id(params[:bag_id])
-      .with_status(params[:status])
       .with_to_node_id(params[:to_node_id])
       .with_from_node_id(params[:from_node_id])
+      .with_accepted(params[:accepted])
+      .with_finished(params[:finished])
+      .with_cancelled(params[:cancelled])
+      .with_cancel_reason(params[:cancel_reason])
       .order(parse_ordering(params[:order_by]))
       .page(@page)
       .per(@page_size)
@@ -54,8 +58,7 @@ class RestoreTransfersController < ApplicationController
       render nothing: true, status: 403 and return
     end
 
-    @restore_transfer = update_transfer(@restore_transfer, update_params(params))
-    if @restore_transfer.save
+    if @restore_transfer.update(update_params(params))
       render "shared/update", status: 200
     else
       render "shared/errors", status: 400
@@ -80,11 +83,5 @@ class RestoreTransfersController < ApplicationController
     create_params(params)
   end
 
-
-  def update_transfer(transfer, params)
-    transfer.attributes = params
-    transfer.requester = @requester
-    return transfer
-  end
 
 end

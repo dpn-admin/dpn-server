@@ -11,18 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160803214414) do
+ActiveRecord::Schema.define(version: 20160805224340) do
 
   create_table "bag_man_requests", force: :cascade do |t|
     t.string   "source_location",                         null: false
     t.string   "preservation_location"
-    t.integer  "status",                  default: 0
+    t.integer  "last_step_completed",     default: 0
     t.string   "fixity"
-    t.boolean  "validity"
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
     t.boolean  "cancelled",               default: false
     t.integer  "replication_transfer_id"
+    t.text     "cancel_reason"
+    t.string   "unpacked_location"
+    t.text     "last_error"
   end
 
   create_table "bags", force: :cascade do |t|
@@ -150,20 +152,21 @@ ActiveRecord::Schema.define(version: 20160803214414) do
   end
 
   create_table "replication_transfers", force: :cascade do |t|
-    t.integer  "bag_id",                     null: false
-    t.integer  "from_node_id",               null: false
-    t.integer  "to_node_id",                 null: false
-    t.integer  "protocol_id",                null: false
-    t.string   "link",                       null: false
-    t.boolean  "bag_valid"
-    t.integer  "fixity_alg_id",              null: false
+    t.integer  "bag_id",                          null: false
+    t.integer  "from_node_id",                    null: false
+    t.integer  "to_node_id",                      null: false
+    t.integer  "protocol_id",                     null: false
+    t.string   "link",                            null: false
+    t.integer  "fixity_alg_id",                   null: false
     t.text     "fixity_nonce"
     t.string   "fixity_value"
-    t.boolean  "fixity_accept"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.string   "replication_id"
-    t.integer  "status",         default: 0, null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.string   "replication_id",                  null: false
+    t.boolean  "store_requested", default: false, null: false
+    t.boolean  "stored",          default: false, null: false
+    t.boolean  "cancelled",       default: false, null: false
+    t.text     "cancel_reason"
   end
 
   add_index "replication_transfers", ["replication_id"], name: "index_replication_transfers_on_replication_id", unique: true
@@ -176,22 +179,25 @@ ActiveRecord::Schema.define(version: 20160803214414) do
   end
 
   create_table "restore_transfers", force: :cascade do |t|
-    t.integer  "bag_id",                   null: false
-    t.integer  "from_node_id",             null: false
-    t.integer  "to_node_id",               null: false
-    t.integer  "protocol_id",              null: false
-    t.string   "link",                     null: false
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.string   "restore_id"
-    t.integer  "status",       default: 0, null: false
+    t.integer  "bag_id",                        null: false
+    t.integer  "from_node_id",                  null: false
+    t.integer  "to_node_id",                    null: false
+    t.integer  "protocol_id",                   null: false
+    t.string   "link"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.string   "restore_id",                    null: false
+    t.boolean  "accepted",      default: false, null: false
+    t.boolean  "finished",      default: false, null: false
+    t.boolean  "cancelled",     default: false, null: false
+    t.string   "cancel_reason"
   end
 
   add_index "restore_transfers", ["restore_id"], name: "index_restore_transfers_on_restore_id", unique: true
 
   create_table "run_times", force: :cascade do |t|
-    t.string   "name",                                         null: false
-    t.datetime "last_success", default: '1970-01-01 00:00:00', null: false
+    t.string   "name",                                          null: false
+    t.datetime "last_success", default: '1970-01-01 00:00:00Z', null: false
   end
 
   add_index "run_times", ["name"], name: "index_run_times_on_name", unique: true

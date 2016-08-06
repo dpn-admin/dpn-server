@@ -11,6 +11,10 @@ Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].e
 
 RSpec.configure do |config|
   config.include(RSpec::ActiveJob)
+  config.after(:each) do
+    ActiveJob::Base.queue_adapter.enqueued_jobs = []
+    ActiveJob::Base.queue_adapter.performed_jobs = []
+  end
   config.include ControllerHelpers, :type => :controller #within examples
   config.extend ControllerHelpers, :type => :controller #within example groups
   config.include Matchers
