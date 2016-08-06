@@ -31,10 +31,16 @@ describe BagManRequest, type: :model do
 
 
   describe "#staging_location" do
-    it "returns the source location" do
-      request = Fabricate.build(:bag_man_request)
-      staging_dir = "/herpderp"
-      expected = File.join staging_dir, request.id.to_s, File.basename(request.source_location)
+    let(:staging_dir) { "/herpderp" }
+    let(:source_location) { "hathi@chron.edu:/path/to/nameofthebag" }
+    it "returns the staging location (w/o extension)" do
+      request = Fabricate(:bag_man_request, source_location: source_location)
+      expected = File.join staging_dir, request.id.to_s, "nameofthebag"
+      expect(request.staging_location(staging_dir)).to eql(expected)
+    end
+    it "returns the staging location (w/ extension)" do
+      request = Fabricate(:bag_man_request, source_location: source_location + ".tar" )
+      expected = File.join staging_dir, request.id.to_s, "nameofthebag"
       expect(request.staging_location(staging_dir)).to eql(expected)
     end
   end

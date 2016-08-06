@@ -45,7 +45,7 @@ class BagManRequest < ActiveRecord::Base
   end
 
 
-  # The staging location of the downloaded bag.
+  # The staging location of the downloaded bag, unpacked bag.
   def staging_location(staging_dir = Rails.configuration.staging_dir)
     destination = File.join staging_dir, self.id.to_s
     extension = File.extname source_location
