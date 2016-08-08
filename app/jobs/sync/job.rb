@@ -16,14 +16,14 @@ module Sync
     # @param [CreatorUpdater]
     def perform(last_success_manager, remote_client, query_builder, adapter_class, updater)
       last_success_manager.manage do |last_success, _|
-        
-        remote_client.execute(query_builder.queries(last_success)) do |response|
-          raise RuntimeError, response.body unless response.success?
-          updater.update!(adapter_class.from_public(response.body).to_model_hash)
+        query_builder.queries(last_success).each do |query|
+          remote_client.execute(query) do |response|
+            raise RuntimeError, response.body unless response.success?
+            updater.update!(adapter_class.from_public(response.body).to_model_hash)
+          end
         end
-        
       end
+
     end
-    
   end
 end

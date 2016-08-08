@@ -47,7 +47,8 @@ describe Sync::Job do
     subject
   end
   it "executes queries on remote client" do
-    expect(@remote_client).to receive(:execute).with([:query1, :query2])
+    expect(@remote_client).to receive(:execute).with(:query1)
+    expect(@remote_client).to receive(:execute).with(:query2)
     subject
   end
   it "passes the public hash to the adapter class" do
