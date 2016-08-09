@@ -1,0 +1,6 @@
+digest01:
+  bag: aptrust01
+  fixity_alg: sha256
+  node: aptrust
+  value: e39a201a88bc3d7803a5e375d9752439d328c2e85b4f1ba70a6d984b6c5378bd
+  created_at: 2015-09-15T19:38:31.562Z

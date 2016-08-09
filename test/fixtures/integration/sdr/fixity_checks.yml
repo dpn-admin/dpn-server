@@ -1,4 +1,31 @@
 fixity01:
-    bag: sdr01
-    fixity_alg: sha256
-    value: ed863090fbb161c8856628ef5445fe1e307532b4456d1bb6d4cfb5b411419247
+  fixity_check_id: c2f2b1d7-6165-4c2a-a0f2-9acca5ebe162
+  bag: sdr01
+  node: aptrust
+  success: false
+  fixity_at: 2015-09-15T17:56:03.309Z
+  created_at: 2015-09-15T17:56:03.309Z
+
+fixity02:
+  fixity_check_id: f437d877-4185-4623-ab8a-ac2887d94d03
+  bag: sdr01
+  node: chron
+  success: true
+  fixity_at: 2015-09-15T17:56:03.309Z
+  created_at: 2015-09-15T17:56:03.309Z
+
+fixity03:
+  fixity_check_id: 737d02a0-2f72-4320-a0d2-59db30d37035
+  bag: sdr01
+  node: hathi
+  success: true
+  fixity_at: 2015-09-15T17:56:03.309Z
+  created_at: 2015-09-15T17:56:03.309Z
+
+fixity04:
+  fixity_check_id: 4758443c-3f42-43f4-9232-ef6458055d41
+  bag: sdr01
+  node: tdr
+  success: false
+  fixity_at: 2015-09-15T17:56:03.309Z
+  created_at: 2015-09-15T17:56:03.309Z
