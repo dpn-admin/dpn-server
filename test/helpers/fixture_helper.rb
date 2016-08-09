@@ -29,6 +29,10 @@ class FixtureHelper
   # as Node, Member, FixityAlg or Protocol records.
   def delete_fixtures
     raise "No deleting data in production!" unless safe_environment?
+    puts "deleting message digests"
+    MessageDigest.delete_all
+    puts "done"
+    Ingest.delete_all
     RestoreTransfer.delete_all
     ReplicationTransfer.delete_all
     FixityCheck.delete_all
@@ -43,6 +47,8 @@ class FixtureHelper
   # test/fixtures/integration/<namespace>/fixity_checks.yml
   # test/fixtures/integration/<namespace>/replication_transfers.yml
   # test/fixtures/integration/<namespace>/restore_transfers.yml
+  # test/fixtures/integration/<namespace>/digests.yml
+  # test/fixtures/integration/<namespace>/ingests.yml
   #
   # This will raise an exception if you try to run it in production.
   def load_fixtures
@@ -60,11 +66,15 @@ class FixtureHelper
     @fixities = load_yaml_file(File.join(@fixture_dir, 'fixity_checks.yml'))
     @replications = load_yaml_file(File.join(@fixture_dir, 'replication_transfers.yml'))
     @restores = load_yaml_file(File.join(@fixture_dir, 'restore_transfers.yml'))
+    @digests = load_yaml_file(File.join(@fixture_dir, 'digests.yml'))
+    @ingests = load_yaml_file(File.join(@fixture_dir, 'ingests.yml'))
 
     # Now push the data in the database
     load_version_families
     load_bags
+    load_message_digests
     load_fixity_checks
+    load_ingests
     load_replication_transfers
     load_restore_transfers
   end
@@ -177,7 +187,14 @@ class FixtureHelper
     @fixities.values.each do |fixity|
       bag_uuid = @bags[fixity.bag].uuid
       bag = Bag.where(uuid: bag_uuid).first
-      FixityCheck.create!(bag: bag, fixity_alg: self.sha256, value: fixity.value)
+      node = Node.where(namespace: fixity.node).first
+      FixityCheck.create!(fixity_check_id: fixity.fixity_check_id,
+                          bag: bag, 
+                          node: node,
+                          success: fixity.success,
+                          fixity_at: APRIL_01_2016,
+                          created_at: APRIL_01_2016)
+                          
     end
   end
 
@@ -191,17 +208,17 @@ class FixtureHelper
       bag_uuid = @bags[xfer.bag].uuid
       bag = Bag.where(uuid: bag_uuid).first
       ReplicationTransfer.create(link: xfer.link,
-                                 bag_valid: true,
-                                 fixity_accept: false,
                                  created_at: APRIL_01_2016,
                                  updated_at: APRIL_01_2016,
                                  replication_id: xfer.replication_id,
                                  bag: bag,
                                  from_node: @this_node,
                                  to_node: to_node,
-                                 status: 0,
                                  protocol: self.rsync,
-                                 fixity_alg: self.sha256)
+                                 fixity_alg: self.sha256,
+                                 store_requested: false,
+                                 stored: false,
+                                 cancelled: false)
     end
   end
 
@@ -221,9 +238,40 @@ class FixtureHelper
                              bag: bag,
                              from_node: from_node,
                              to_node: @this_node,
-                             status: 0,
-                             protocol: self.rsync)
+                             protocol: self.rsync,
+                             cancelled: false)
     end
   end
+
+  # Loads Digest records from
+  # test/fixtures/integration/<namespace>/digests.yml
+  # into the database. Requires bags be loaded first.
+  def load_message_digests
+    @digests.values.each do |digest|
+      bag_uuid = @bags[digest.bag].uuid
+      bag = Bag.where(uuid: bag_uuid).first
+      node = Node.where(namespace: digest.node).first
+      MessageDigest.create(bag: bag,
+                           algorithm: slef.sha256,
+                           node: node,
+                           value: digest.value,
+                           created_at: APRIL_01_2016)
+    end 
+  end 
+
+  # Loads Ingest records from
+  # test/fixtures/integration/<namespace>/ingests.yml
+  # into the database. Requires bags be loaded first.
+  def load_ingests
+    @ingests.values.each do |ingest|
+      bag_uuid = @bags[ingest.bag].uuid
+      bag = Bag.where(uuid: bag_uuid).first
+      Ingest.create(bag: bag,
+                    ingest_id: ingest.ingest_id,
+                    ingested: ingest.ingested,
+                    created_at: APRIL_01_2016)
+    end
+  end 
+
 
 end
