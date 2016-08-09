@@ -4,7 +4,7 @@ require Rails.root.join("config/environments/development")
 
 Rails.application.configure do
 
-  config.active_job.queue_adapter = :async
+  config.active_job.queue_adapter = :inline
 
   node = ENV['IMPERSONATE']
   raise ArgumentError, "Define IMPERSONATE=node, see config/impersonate.yml" unless node
