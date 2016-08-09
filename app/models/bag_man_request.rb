@@ -40,6 +40,7 @@ class BagManRequest < ActiveRecord::Base
       transaction do
         update!(cancelled: true, cancel_reason: reason)
         replication_transfer.cancel!(reason)
+        send_cancel(replication_transfer)
       end
     end
   end
@@ -56,21 +57,21 @@ class BagManRequest < ActiveRecord::Base
   # Begin the series of transactions described by this
   # bag management request.
   def begin!
-    ::BagMan::BagRetrievalJob.perform_later(self, Rails.configuration.staging_dir.to_s)
+    ::Client::Repl::BagRetrievalJob.perform_later(self, Rails.configuration.staging_dir.to_s)
   end
 
 
   # Notify this request that the bag has been retrieved.
   def set_retrieved!
     update!(last_step_completed: :retrieved)
-    ::BagMan::BagUnpackJob.perform_later(self, staging_location)
+    ::Client::Repl::BagUnpackJob.perform_later(self, staging_location)
   end
 
 
   # Notify this request that the bag has been unpacked.
   def set_unpacked!(unpacked_location)
     update!(unpacked_location: unpacked_location, last_step_completed: :unpacked)
-    ::BagMan::BagValidateJob.perform_later(self, unpacked_location)
+    ::Client::Repl::BagValidateJob.perform_later(self, unpacked_location)
   end
 
 
@@ -78,7 +79,7 @@ class BagManRequest < ActiveRecord::Base
   def set_validated!(validity)
     update!(last_step_completed: :validated)
     if validity
-      ::BagMan::BagFixityJob.perform_later(self, unpacked_location)
+      ::Client::Repl::BagFixityJob.perform_later(self, unpacked_location)
     else
       cancel!('bag_invalid')
     end
@@ -90,6 +91,7 @@ class BagManRequest < ActiveRecord::Base
     transaction do
       update!(fixity: fixity_value, last_step_completed: :fixityd)
       replication_transfer.update!(fixity_value: fixity)
+      send_update(replication_transfer)
     end
   end
 
@@ -99,13 +101,37 @@ class BagManRequest < ActiveRecord::Base
     transaction do
       update!(preservation_location: preservation_location, last_step_completed: :stored)
       replication_transfer.update!(stored: true)
+      send_update(replication_transfer)
     end
   end
 
 
   # Notify this request that it should store the bag permanently.
   def okay_to_preserve!
-    ::BagMan::BagPreserveJob.perform_later(self, unpacked_location, Rails.configuration.repo_dir)
+    ::Client::Repl::BagPreserveJob.perform_later(self, unpacked_location, Rails.configuration.repo_dir)
+  end
+
+
+  private
+
+  def send_update(transfer)
+    Client::Repl::PostJob.perform_later(
+      transfer,
+      transfer.from_node.namespace,
+      "update_replication",
+      ReplicationTransferAdapter.to_s
+    )
+  end
+
+
+  def send_cancel(transfer)
+    Client::Repl::CancelJob.perform_later(
+      transfer,
+      transfer.from_node.namespace,
+      "replicate",
+      "update_replication",
+      ReplicationTransferAdapter.to_s
+    )
   end
 
 

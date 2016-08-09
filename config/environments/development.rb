@@ -58,19 +58,6 @@ Rails.application.configure do
   config.cipher_key = "foMXggnM3xLHatbSP0ZXW6ThZXOXqp8ImyaJQ/0Jlqo=\n"
   config.cipher_iv = "L213BeYaK4QDG8krUaCYnA==\n"
 
-  # Configure the local node's namespace
-  config.local_namespace = "hathi"
-
-  # Set the local node's api_root
-  config.local_api_root = "http://127.0.0.1"
-
-  # Set the staging directory root.
-  config.staging_dir = Rails.root.join("dpnrepo", "staging").to_s
-
-  # Set the preservation root
-  # The directory "pairtree_root" will be created in this folder
-  config.repo_dir = Rails.root.join("dpnrepo", "preservation").to_s
-
   # The location of the private key used to pull files from other nodes
   config.transfer_private_key = "/l/home/dpnadm/.ssh/hathi.key"
 end
