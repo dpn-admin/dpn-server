@@ -36,6 +36,7 @@
 # Configuration files
 Gemfile.local
 config/database.yml
+config/dpn.yml
 config/impersonate.yml.local
 config/resque.yml
 config/resque-pool.yml

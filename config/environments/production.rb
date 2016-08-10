@@ -10,6 +10,8 @@ Rails.application.configure do
   # Code is not reloaded between requests.
   config.cache_classes = true
 
+  config.active_job.queue_adapter = :resque
+
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
   # and those relying on copy on write to perform better.
@@ -94,19 +96,6 @@ Rails.application.configure do
   # identify us by.
   config.cipher_key = Rails.application.secrets.cipher_key
   config.cipher_iv = Rails.application.secrets.cipher_iv
-
-  # Configure the local node's namespace
-  config.local_namespace = Rails.application.secrets.local_namespace
-
-  # Set the local node's api_root
-  config.local_api_root = Rails.application.secrets.local_api_root
-
-  # Set the staging directory root.
-  config.staging_dir = Rails.application.secrets.staging_dir
-
-  # Set the preservation root
-  # The directory "pairtree_root" will be created in this folder
-  config.repo_dir = Rails.application.secrets.repo_dir
 
   # The location of the private key used to pull files from other nodes
   config.transfer_private_key = Rails.application.secrets.transfer_private_key

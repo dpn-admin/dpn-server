@@ -13,6 +13,8 @@ Rails.application.configure do
   # and recreated between test runs. Don't rely on the data there!
   config.cache_classes = true
 
+  config.active_job.queue_adapter = :test
+
   # Do not eager load code on boot. This avoids loading your whole application
   # just for the purpose of running a single test. If you are using a tool that
   # preloads Rails for running tests, you may have to set it to true.
@@ -50,14 +52,8 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  config.active_job.queue_adapter = :test
-
   config.salt = "development_salt"
   config.cipher_key = "foMXggnM3xLHatbSP0ZXW6ThZXOXqp8ImyaJQ/0Jlqo=\n"
   config.cipher_iv = "L213BeYaK4QDG8krUaCYnA==\n"
-  config.local_namespace = "hathi"
-  config.local_api_root = "http://127.0.0.1"
-  config.staging_dir = File.join("/tmp","dpnrepo", "staging")
-  config.repo_dir = File.join("/tmp","dpnrepo", "preservation")
   config.transfer_private_key = "/tmp/dpnxfr_private_key_test"
 end
