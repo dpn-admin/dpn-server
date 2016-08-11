@@ -27,7 +27,7 @@ Rails.application.routes.draw do
     resources :bags, only: [:index, :show, :create, :update, :destroy], path: :bag, param: :uuid
     resources :replication_transfers, only: [:index, :show, :create, :update, :destroy], path: :replicate, param: :replication_id
     resources :restore_transfers, only: [:index, :show, :create, :update, :destroy], path: :restore, param: :restore_id
-    resources :members, only: [:index, :show, :create, :update, :destroy], path: :member, param: :uuid
+    resources :members, only: [:index, :show, :create, :update, :destroy], path: :member, param: :member_id
     get "/member/:member/bags", controller: :bags, action: :index
     
     get   "/digest",                      controller: :message_digests, action: :index

@@ -4,7 +4,7 @@
 # See LICENSE.md for details.
 
 Fabricator(:member) do
-  uuid { SecureRandom.uuid }
+  member_id { SecureRandom.uuid }
   name { Faker::Company.name }
   email { Faker::Internet.email }
   created_at 1.month.ago

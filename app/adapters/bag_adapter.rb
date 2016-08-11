@@ -17,7 +17,7 @@ class BagAdapter < ::AbstractAdapter
 
   map_belongs_to :ingest_node, :ingest_node, model_class: Node, sub_method: :namespace
   map_belongs_to :admin_node, :admin_node, model_class: Node, sub_method: :namespace
-  map_belongs_to :member, :member, sub_method: :uuid
+  map_belongs_to :member, :member, sub_method: :member_id
 
   map_has_many :interpretive_bags, :interpretive, sub_method: :uuid
   map_has_many :rights_bags, :rights, sub_method: :uuid
