@@ -7,6 +7,7 @@
 module Client
   module Sync
     class Job < ActiveJob::Base
+      include Common
       queue_as :sync
 
       # @param [String] name Name for this job
