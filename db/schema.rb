@@ -197,7 +197,7 @@ ActiveRecord::Schema.define(version: 20160805224340) do
 
   create_table "run_times", force: :cascade do |t|
     t.string   "name",                                          null: false
-    t.datetime "last_success", default: '1970-01-01 00:00:00Z', null: false
+    t.datetime "last_success", default: '1970-01-01 00:00:00', null: false
   end
 
   add_index "run_times", ["name"], name: "index_run_times_on_name", unique: true
