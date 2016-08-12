@@ -17,4 +17,6 @@ class Protocol < ActiveRecord::Base
   
   has_many :replication_transfers
   has_many :restore_transfers
+
+  validates :name, presence: true
 end

@@ -18,9 +18,7 @@ describe StorageRegion do
   end
 
   it "is invalid without a name" do
-    expect {
-      Fabricate(:storage_region, name: nil)
-    }.to raise_error
+    expect(Fabricate.build(:storage_region, name: nil)).to_not be_valid
   end
 
   it "can find records" do

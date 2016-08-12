@@ -14,27 +14,26 @@ if File.exists? "Gemfile.local"
   eval_gemfile "Gemfile.local"
 end
 
-gem 'rails', '~> 4.2.5'
-gem 'sass-rails', '~> 5.0'
-gem 'uglifier', '~> 2.7'
-gem 'jbuilder', '~> 2.0'
-gem 'json'
-gem 'bcrypt', '~> 3.1.7'
-gem 'therubyracer', platforms: :ruby
-gem 'kaminari'
-gem 'resque'
-gem 'resque-scheduler'
-gem 'resque-pool'
-gem 'active_scheduler'
-gem 'rsync'
-gem 'dpn-bagit', '~>0.3.0'
-gem 'rpairtree'
-gem 'easy_cipher', '~>0.9.1'
-gem 'daemons'
-gem 'rails_admin'
-gem 'devise', '~> 3.5'
+ruby '~> 2.3.0'
+
+gem 'rails', '~> 4.2.7'
+gem 'active_scheduler', '~>0.3.0'
+gem 'bcrypt'
 gem 'cancan'
-gem 'dpn-client', :git => 'https://github.com/dpn-admin/dpn-client.git'
+gem 'devise'
+gem 'dpn-bagit', '~>0.3.0'
+gem 'dpn-client', '~>2.0.0', git: 'https://github.com/dpn-admin/dpn-client.git'
+gem 'easy_cipher', '~>0.9.1'
+gem 'json'
+gem 'kaminari'
+gem 'rails_admin'
+gem 'resque', '~>1.26.0'
+gem 'resque-pool', '~>0.6.0'
+gem 'resque-scheduler', '~>4.3.0'
+gem 'rpairtree'
+gem 'rsync', '~>1.0.9'
+gem 'therubyracer', platforms: :ruby
+
 
 
 gem 'sdoc', '~> 0.4.0', group: :doc

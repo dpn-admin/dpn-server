@@ -8,13 +8,11 @@ require 'rails_helper'
 
 describe FixityAlg do
   it "has a valid factory" do
-    expect(Fabricate(:fixity_alg)).to be_valid
+    expect(Fabricate.build(:fixity_alg)).to be_valid
   end
 
   it "is invalid without a name" do
-    expect {
-      Fabricate(:fixity_alg, name: nil)
-    }.to raise_error
+    expect(Fabricate.build(:fixity_alg, name: nil)).to_not be_valid
   end
 
   describe "::find_fields" do

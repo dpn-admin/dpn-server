@@ -18,9 +18,7 @@ describe VersionFamily do
   end
 
   it "is invalid without a uuid" do
-    expect {
-      Fabricate(:version_family, uuid: nil)
-    }.to raise_error
+    expect(Fabricate.build(:version_family, uuid: nil)).to_not be_valid
   end
 
   it "can be found when" do

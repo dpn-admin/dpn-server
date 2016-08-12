@@ -5,6 +5,8 @@
 
 
 class StorageType < ActiveRecord::Base
+  include Lowercased
+  make_lowercased :name
 
   def self.find_fields
     Set.new [:name]
@@ -12,6 +14,5 @@ class StorageType < ActiveRecord::Base
   
   has_many :nodes
 
-  include Lowercased
-  make_lowercased :name
+  validates :name, presence: true
 end

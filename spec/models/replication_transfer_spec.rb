@@ -153,7 +153,7 @@ describe ReplicationTransfer, type: :model do
     it "cannot cancel a stored record" do
       expect {
         Fabricate(:replication_transfer, stored: true).cancel!('other')
-      }.to raise_error
+      }.to raise_error ActiveRecord::RecordInvalid
     end
   end
 

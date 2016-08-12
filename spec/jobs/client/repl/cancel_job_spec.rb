@@ -94,7 +94,7 @@ describe Client::Repl::CancelJob do
       end
       it "does not execute the cancel query" do
         expect(@remote_client).to_not receive(:execute).with(@cancel_query)
-        expect {subject}.to raise_error
+        expect {subject}.to raise_error RuntimeError
       end
     end
     context "when get succeeds, already cancelled" do
