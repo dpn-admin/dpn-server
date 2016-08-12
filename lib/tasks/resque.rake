@@ -24,7 +24,7 @@ task 'resque:prep_scheduler' => 'resque:setup' do
   require 'active_scheduler'
 end
 
-task 'resque:schedule' => 'resque:prep_scheduler' do
+task 'resque:schedule' => ['resque:prep_scheduler', :environment] do
   Resque.schedule = ActiveScheduler::ResqueWrapper.wrap define_schedule[Rails.env]
 end
 task 'resque:scheduler' => 'resque:schedule'
@@ -38,65 +38,97 @@ def define_schedule
       schedule["sync_bags_from_#{namespace}"] = {
         description: "Sync bags from #{namespace}",
         every: ["10m", {first_in: "0m"} ],
-        class: "Sync::BagJob",
+        class: Client::Sync::Job.to_s,
         queue: "sync",
-        args: namespace
+        args: [
+          "sync_bags_#{namespace}", namespace,
+          Client::Sync::QueryBuilder::Bag.to_s,
+          BagAdapter.to_s, Bag.to_s
+        ]
       }
 
       schedule["sync_fixity_checks_from_#{namespace}"] = {
         description: "Sync fixity_checks from #{namespace}",
         every: ["10m", {first_in: "2m"} ],
-        class: "Sync::FixityCheckJob",
+        class: Client::Sync::Job.to_s,
         queue: "sync",
-        args: namespace
+        args: [
+          "sync_fixity_checks_#{namespace}", namespace,
+          Client::Sync::QueryBuilder::FixityCheck.to_s,
+          FixityCheckAdapter.to_s, FixityCheck.to_s
+        ]
       }
 
       schedule["sync_ingests_from_#{namespace}"] = {
         description: "Sync ingests from #{namespace}",
         every: ["10m", {first_in: "4m"} ],
-        class: "Sync::IngestJob",
+        class: Client::Sync::Job.to_s,
         queue: "sync",
-        args: namespace
+        args: [
+          "sync_ingests_#{namespace}", namespace,
+          Client::Sync::QueryBuilder::Ingest.to_s,
+          IngestAdapter.to_s, Ingest.to_s
+        ]
       }
 
       schedule["sync_members_from_#{namespace}"] = {
         description: "Sync members from #{namespace}",
         every: ["10m", {first_in: "6m"} ],
-        class: "Sync::MemberJob",
+        class: Client::Sync::Job.to_s,
         queue: "sync",
-        args: namespace
+        args: [
+          "sync_members_#{namespace}", namespace,
+          Client::Sync::QueryBuilder::Member.to_s,
+          MemberAdapter.to_s, Member.to_s
+        ]
       }
 
       schedule["sync_message_digests_from_#{namespace}"] = {
         description: "Sync message digests from #{namespace}",
         every: ["10m", {first_in: "8m"} ],
-        class: "Sync::MessageDigestJob",
+        class: Client::Sync::Job.to_s,
         queue: "sync",
-        args: namespace
+        args: [
+          "sync_message_digests_#{namespace}", namespace,
+          Client::Sync::QueryBuilder::MessageDigest.to_s,
+          MessageDigestAdapter.to_s, MessageDigest.to_s
+        ]
       }
 
       schedule["sync_replication_transfers_from_#{namespace}"] = {
         description: "Sync replication transfers from #{namespace}",
         every: ["5m", {first_in: "0m"} ],
-        class: "Sync::ReplicationTransferJob",
+        class: Client::Sync::Job.to_s,
         queue: "sync",
-        args: namespace
+        args: [
+          "sync_replications_#{namespace}", namespace,
+          Client::Sync::QueryBuilder::ReplicationTransfer.to_s,
+          ReplicationTransferAdapter.to_s, ReplicationTransfer.to_s
+        ]
       }
 
       schedule["sync_restore_transfers_from_#{namespace}"] = {
         description: "Sync restore transfers from #{namespace}",
         every: ["5m", {first_in: "150s"} ],
-        class: "Sync::RestoreTransferJob",
+        class: Client::Sync::Job.to_s,
         queue: "sync",
-        args: namespace
+        args: [
+          "sync_restores_#{namespace}", namespace,
+          Client::Sync::QueryBuilder::RestoreTransfer.to_s,
+          RestoreTransferAdapter.to_s, RestoreTransfer.to_s
+        ]
       }
 
-      schedule["sync_nodes_from_#{namespace}"] = {
+      schedule["sync_node_from_#{namespace}"] = {
         description: "Sync nodes from #{namespace}",
         every: ["1h", {first_in: "0m"} ],
-        class: "Sync::NodeJob",
+        class: Client::Sync::Job.to_s,
         queue: "sync",
-        args: namespace
+        args: [
+          "sync_node_#{namespace}", namespace,
+          Client::Sync::QueryBuilder::Node.to_s,
+          NodeAdapter.to_s, Node.to_s
+        ]
       }
     end
   end
@@ -106,10 +138,14 @@ def define_schedule
     "development" => {
       "test_recurring_job" => {
         description: "A fake job to see if something will appear",
-        every: ["5m", {first_in: "1m"} ],
-        class: "Sync::NodeJob",
+        every: ["5m", {first_in: "10h"} ],
+        class: Client::Sync::Job.to_s,
         queue: "sync",
-        args: Rails.configuration.local_namespace
+        args: [
+          "test_recurring_sync_job", Rails.configuration.local_namespace,
+          Client::Sync::QueryBuilder::Node.to_s,
+          NodeAdapter.to_s, Node.to_s
+        ]
       }
     },
     "production" => schedule
