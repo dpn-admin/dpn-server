@@ -26,13 +26,14 @@ gem 'dpn-client', '~>2.0.0', git: 'https://github.com/dpn-admin/dpn-client.git'
 gem 'easy_cipher', '~>0.9.1'
 gem 'json'
 gem 'kaminari'
+gem 'lograge'
+gem 'logstash-event'
 gem 'resque', '~>1.26.0'
 gem 'resque-pool', '~>0.6.0'
 gem 'resque-scheduler', '~>4.3.0'
 gem 'rpairtree'
 gem 'rsync', '~>1.0.9'
 gem 'therubyracer', platforms: :ruby
-
 
 
 gem 'sdoc', '~> 0.4.0', group: :doc
