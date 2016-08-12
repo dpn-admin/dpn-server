@@ -26,7 +26,7 @@ describe BagAdapter do
       version_family: Fabricate(:version_family, uuid: uuid),
       ingest_node: Fabricate(:node, namespace: ingest_node_namespace),
       admin_node: Fabricate(:node, namespace: admin_node_namespace),
-      member: Fabricate(:member, uuid: member_uuid),
+      member: Fabricate(:member, member_id: member_uuid),
       created_at: time_from_string(created_at)
     )
     @model.rights_bags = [Fabricate(:rights_bag, uuid: rights_uuid)]
