@@ -6,15 +6,10 @@
 require 'resque/server'
 
 Rails.application.routes.draw do
-  root to: "rails_admin/main#index"
-
   # Devise routes
   # We don't skip anything because registration and recovery
   # are disabled in devise (see the migration and the user model)
   devise_for :users
-
-  # RailsAdmin routes
-  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
   # Resque routes
   authenticate :user do
