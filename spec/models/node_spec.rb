@@ -36,23 +36,15 @@ describe Node do
   end
 
   it "has a storage region" do
-    node = Fabricate.build(:node)
-    storage_region = node.storage_region
-
-    expect(storage_region).to_not be_nil
+    expect(Fabricate.build(:node).storage_region).to_not be_nil
   end
 
   it "has a storage type" do
-    node = Fabricate.build(:node)
-    storage_type = node.storage_type
-
-    expect(storage_type).to_not be_nil
+    expect(Fabricate.build(:node).storage_type).to_not be_nil
   end
 
   it "is invalid without a namespace" do
-    expect {
-      Fabricate(:node, namespace: nil)
-    }.to raise_error
+    expect(Fabricate.build(:node, namespace: nil)).to_not be_valid
   end
 
   it "stores namespace as lowercase" do
@@ -89,9 +81,7 @@ describe Node do
   end
 
   it "is invalid without a name" do
-    expect {
-      Fabricate(:node, name: nil)
-    }.to raise_error
+    expect(Fabricate.build(:node, name: nil)).to_not be_valid
   end
 
   it "can be saved" do

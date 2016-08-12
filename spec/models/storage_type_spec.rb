@@ -18,9 +18,7 @@ describe StorageType do
   end
 
   it "is invalid without a name" do
-    expect {
-      Fabricate(:storage_type, name: nil)
-    }.to raise_error
+    expect(Fabricate.build(:storage_type, name: nil)).to_not be_valid
   end
 
   it "can find records" do

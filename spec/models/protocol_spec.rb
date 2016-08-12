@@ -18,9 +18,7 @@ describe Protocol do
   end
 
   it "is invalid without a name" do
-    expect {
-      Fabricate(:protocol, name: nil)
-    }.to raise_error(ActiveRecord::ActiveRecordError)
+    expect(Fabricate.build(:protocol, name: nil)).to_not be_valid
   end
 
   it "can find records" do

@@ -19,21 +19,21 @@ describe Member do
 
   describe "::find_fields" do
     it "returns its find fields" do
-      expect(Member.find_fields).to eql(Set.new([:uuid]))
+      expect(Member.find_fields).to eql(Set.new([:member_id]))
     end
   end
 
-  describe "uuid" do
+  describe "member_id" do
     it "is required" do
-      expect(Fabricate.build(:member, uuid: nil)).to_not be_valid
+      expect(Fabricate.build(:member, member_id: nil)).to_not be_valid
     end
     it "disallows changing" do
       member = Fabricate(:member)
-      member.uuid = SecureRandom.uuid
+      member.member_id = SecureRandom.uuid
       expect(member.save).to be false
     end
     it "only accepts valid uuids" do
-      expect(Fabricate.build(:member, uuid: "someuuid")).to_not be_valid
+      expect(Fabricate.build(:member, member_id: "someuuid")).to_not be_valid
     end
   end
 

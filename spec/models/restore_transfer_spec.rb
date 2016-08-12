@@ -111,7 +111,7 @@ describe RestoreTransfer do
     it "cannot cancel a finished record" do
       expect {
         Fabricate(:restore_transfer, finished: true).cancel!('other')
-      }.to raise_error
+      }.to raise_error ActiveRecord::RecordInvalid
     end
   end
 

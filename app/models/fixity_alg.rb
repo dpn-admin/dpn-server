@@ -17,4 +17,6 @@ class FixityAlg < ActiveRecord::Base
 
   has_many :message_digests
   has_many :replication_transfers
+
+  validates :name, presence: true
 end

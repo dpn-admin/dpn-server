@@ -13,21 +13,21 @@ describe MemberAdapter do
   updated_at = "2015-02-25T15:27:40Z"
   before(:each) do
     @model = Fabricate(:member,
-      uuid: uuid,
+      member_id: uuid,
       name: name,
       email: email,
       created_at: time_from_string(created_at),
       updated_at: time_from_string(updated_at)
     )
     @public_hash = {
-      uuid: uuid,
+      member_id: uuid,
       name: name,
       email: email,
       created_at: created_at,
       updated_at: updated_at
     }
     @model_hash = {
-      uuid: uuid,
+      member_id: uuid,
       name: name,
       email: email,
       created_at: time_from_string(created_at),

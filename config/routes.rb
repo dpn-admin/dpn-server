@@ -6,15 +6,10 @@
 require 'resque/server'
 
 Rails.application.routes.draw do
-  root to: "rails_admin/main#index"
-
   # Devise routes
   # We don't skip anything because registration and recovery
   # are disabled in devise (see the migration and the user model)
   devise_for :users
-
-  # RailsAdmin routes
-  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
   # Resque routes
   authenticate :user do
@@ -27,7 +22,7 @@ Rails.application.routes.draw do
     resources :bags, only: [:index, :show, :create, :update, :destroy], path: :bag, param: :uuid
     resources :replication_transfers, only: [:index, :show, :create, :update, :destroy], path: :replicate, param: :replication_id
     resources :restore_transfers, only: [:index, :show, :create, :update, :destroy], path: :restore, param: :restore_id
-    resources :members, only: [:index, :show, :create, :update, :destroy], path: :member, param: :uuid
+    resources :members, only: [:index, :show, :create, :update, :destroy], path: :member, param: :member_id
     get "/member/:member/bags", controller: :bags, action: :index
     
     get   "/digest",                      controller: :message_digests, action: :index

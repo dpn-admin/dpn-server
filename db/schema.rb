@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160805224340) do
+ActiveRecord::Schema.define(version: 20160811162500) do
 
   create_table "bag_man_requests", force: :cascade do |t|
     t.string   "source_location",                         null: false
@@ -57,6 +57,22 @@ ActiveRecord::Schema.define(version: 20160805224340) do
 
   add_index "data_rights", ["data_bag_id", "rights_bag_id"], name: "index_data_rights_on_data_bag_id_and_rights_bag_id", unique: true
 
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer  "priority",   default: 0, null: false
+    t.integer  "attempts",   default: 0, null: false
+    t.text     "handler",                null: false
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
+
   create_table "fixity_algs", force: :cascade do |t|
     t.string   "name",       null: false
     t.datetime "created_at", null: false
@@ -86,14 +102,14 @@ ActiveRecord::Schema.define(version: 20160805224340) do
   add_index "ingests", ["ingest_id"], name: "index_ingests_on_ingest_id", unique: true
 
   create_table "members", force: :cascade do |t|
-    t.string   "uuid",       null: false
+    t.string   "member_id",  null: false
     t.string   "name",       null: false
     t.string   "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  add_index "members", ["uuid"], name: "index_members_on_uuid", unique: true
+  add_index "members", ["member_id"], name: "index_members_on_member_id", unique: true
 
   create_table "message_digests", force: :cascade do |t|
     t.integer  "bag_id",        null: false
@@ -196,8 +212,8 @@ ActiveRecord::Schema.define(version: 20160805224340) do
   add_index "restore_transfers", ["restore_id"], name: "index_restore_transfers_on_restore_id", unique: true
 
   create_table "run_times", force: :cascade do |t|
-    t.string   "name",                                          null: false
-    t.datetime "last_success", default: '1970-01-01 00:00:00Z', null: false
+    t.string   "name",                                         null: false
+    t.datetime "last_success", default: '1970-01-01 00:00:00', null: false
   end
 
   add_index "run_times", ["name"], name: "index_run_times_on_name", unique: true
