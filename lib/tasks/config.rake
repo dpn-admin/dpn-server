@@ -17,8 +17,8 @@ namespace :config do
   desc "Generate cipher iv, key"
   task :cipher do
     cipher = EasyCipher::Cipher.new
-    puts "key: #{cipher.key64}"
-    puts "iv: #{cipher.iv64}"
+    puts "key: #{cipher.key64.inspect}"
+    puts "iv: #{cipher.iv64.inspect}"
   end
 
 end
