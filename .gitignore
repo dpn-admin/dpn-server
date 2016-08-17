@@ -19,6 +19,9 @@
 # Rubymine
 /.idea
 
+# rbenv local file
+.ruby-version
+
 # Ignore application configuration
 /.env.production
 /.env.local
@@ -38,6 +41,8 @@ Gemfile.local
 config/database.yml
 config/impersonate.yml.local
 config/secrets.yml
+config/dpn.yml
+config/resque.yml
 
 # Ignore capistrano
 /Capfile
