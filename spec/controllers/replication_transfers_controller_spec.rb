@@ -33,8 +33,12 @@ describe ReplicationTransfersController do
 
 
   describe "PUT #update" do
-    legal_update = proc {|record| record[:status] = "cancelled"; record }
-    illegal_update = proc {|record| record[:bag] = SecureRandom.uuid; record }
+    legal_update = proc {|body|
+      body[:cancelled] = true
+      body[:cancel_reason] = 'other'
+      body
+    }
+    illegal_update = proc {|body| body[:bag] = SecureRandom.uuid; body }
 
     context "without authentication" do
       before(:each) {

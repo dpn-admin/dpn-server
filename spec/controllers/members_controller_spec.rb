@@ -17,12 +17,12 @@ describe MembersController do
 
 
   describe "GET #show" do
-    it_behaves_like "a show endpoint", :uuid
+    it_behaves_like "a show endpoint", :member_id
   end
 
 
   describe "POST #create" do
-    it_behaves_like "a create endpoint", :uuid
+    it_behaves_like "a create endpoint", :member_id
   end
 
 
@@ -40,18 +40,18 @@ describe MembersController do
 
     context "with authentication as non-local node" do
       include_context "with authentication"
-      it_behaves_like "an unauthorized update", :uuid, nil, legal_update, illegal_update
+      it_behaves_like "an unauthorized update", :member_id, nil, legal_update, illegal_update
     end
 
     context "with authentication as local node" do
       include_context "with local authentication"
-      it_behaves_like "an authorized update", :uuid, nil, legal_update, illegal_update
+      it_behaves_like "an authorized update", :member_id, nil, legal_update, illegal_update
     end
   end
 
 
   describe "DELETE #destroy" do
-    it_behaves_like "a destroy endpoint", :uuid
+    it_behaves_like "a destroy endpoint", :member_id
   end
 
 end

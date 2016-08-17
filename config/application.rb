@@ -26,13 +26,13 @@ module DPN
       # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
       # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
       # config.i18n.default_locale = :de
+
+      config.autoload_paths << "#{Rails.root}/lib"
   
       # Do not swallow errors in after_commit/after_rollback callbacks.
       config.active_record.raise_in_transactional_callbacks = true
   
-      # ActiveJob should use delayed_job
-      config.active_job.queue_adapter = :delayed_job
-  
+
       config.generators do |g|
         g.test_framework :rspec,
           :fixtures => true,

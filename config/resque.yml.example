@@ -1,0 +1,13 @@
+development:
+  host: localhost
+  port: 6379
+
+test:
+  host: localhost
+  port: 6379
+
+# This is only required if you wish to use the replication
+# and synchronization features of dpn-server.
+production:
+  host: redis.mydomain.edu
+  port: 6379

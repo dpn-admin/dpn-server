@@ -1,0 +1,12 @@
+development:
+  sync: 1
+  repl: 1
+test:
+  sync: 1
+  repl: 1
+
+# This is only required if you wish to use the replication
+# and synchronization features of dpn-server.
+production:
+  sync: 4
+  repl: 2

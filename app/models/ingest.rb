@@ -5,6 +5,11 @@
 
 
 class Ingest < ActiveRecord::Base
+
+  def self.find_fields
+    Set.new [:ingest_id]
+  end
+  
   belongs_to :bag, inverse_of: :ingests
   
   has_many :node_ingests, inverse_of: :ingest, dependent: :destroy,

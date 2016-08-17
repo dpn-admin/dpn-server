@@ -7,9 +7,10 @@
 Fabricator(:bag_man_request, class_name: "BagManRequest") do
   source_location { Faker::Internet.url }
   preservation_location nil
-  status :requested
+  last_step_completed :created
+  last_error nil
   fixity nil
-  validity nil
   cancelled false
+  cancel_reason nil
   replication_transfer { Fabricate(:replication_transfer) }
 end

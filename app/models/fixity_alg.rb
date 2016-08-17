@@ -8,9 +8,15 @@ class FixityAlg < ActiveRecord::Base
   include Lowercased
   make_lowercased :name
 
+  def self.find_fields
+    Set.new [:name]
+  end
+
   has_many :supported_fixity_algs, inverse_of: :fixity_alg
   has_many :nodes, through: :supported_fixity_algs
 
   has_many :message_digests
   has_many :replication_transfers
+
+  validates :name, presence: true
 end

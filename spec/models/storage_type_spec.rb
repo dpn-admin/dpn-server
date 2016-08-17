@@ -11,10 +11,14 @@ describe StorageType do
     expect(Fabricate(:storage_type)).to be_valid
   end
 
+  describe "::find_fields" do
+    it "returns its find fields" do
+      expect(StorageType.find_fields).to eql(Set.new([:name]))
+    end
+  end
+
   it "is invalid without a name" do
-    expect {
-      Fabricate(:storage_type, name: nil)
-    }.to raise_error
+    expect(Fabricate.build(:storage_type, name: nil)).to_not be_valid
   end
 
   it "can find records" do

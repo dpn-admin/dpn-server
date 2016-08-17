@@ -1,3 +1,7 @@
+**The information on this page is and the functionality
+it pertains to is based on the v1 release, and has 
+not been updated.**
+
 ## Running a Local DPN Cluster
 
 You can run a local DPN REST cluster using the run_cluster script in the script

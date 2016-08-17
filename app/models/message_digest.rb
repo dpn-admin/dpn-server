@@ -5,6 +5,11 @@
 
 
 class MessageDigest < ActiveRecord::Base
+
+  def self.find_fields
+    Set.new [:bag_id, :fixity_alg_id]
+  end
+  
   belongs_to :node
   belongs_to :bag
   belongs_to :fixity_alg
