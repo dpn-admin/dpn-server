@@ -1,13 +1,28 @@
-**The information on this page is and the functionality
-it pertains to is based on the v1 release, and has 
-not been updated.**
-
 ## Running a Local DPN Cluster
 
-You can run a local DPN REST cluster using the run_cluster script in the script
-directory. If you have never run the cluster before, you'll need to set up the
-SQLite databases for the cluster by running this command from the top-level directory
-of the project:
+Starting in version 2.0, you must have an "impersonate" configuration
+in your config/dpn.yml file so the local cluster can load the right
+configuration settings. Your config/dpn.yml file, based on
+config/dpn.yml.example, should include a section like this:
+
+```
+impersonate:
+  local_namespace: <your namespace>
+  local_api_root: http://127.0.0.1
+  staging_dir: <%= File.join "/tmp", "dpnrepo", "staging" %>
+  repo_dir: <%= File.join "/tmp", "dpnrepo", "preservation" %>
+  queue_adapter: :test
+```
+
+Your config/database.yml file must also include entries to impersonate
+each of the DPN nodes. See the file config/database.yml.example for an
+example.
+
+Once these settings are present, you can run a local DPN REST cluster
+using the run_cluster script in the script directory. If you have
+never run the cluster before, you'll need to set up the SQLite
+databases for the cluster by running this command from the top-level
+directory of the project:
 
 ```
 ./script/setup_cluster.rb
