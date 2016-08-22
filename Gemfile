@@ -14,7 +14,7 @@ if File.exists? "Gemfile.local"
   eval_gemfile "Gemfile.local"
 end
 
-ruby '~> 2.3.0'
+ruby '~> 2.3'
 
 gem 'rails', '~> 4.2.7'
 gem 'active_scheduler', '~>0.3.0'
