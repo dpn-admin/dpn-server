@@ -6,7 +6,6 @@ restore01_from_aptrust:
     bag: tdr01
     from_node: aptrust
     to_node: tdr
-    status: 0
     protocol: rsync
 
 restore01_from_hathi:
@@ -17,7 +16,6 @@ restore01_from_hathi:
     bag: tdr01
     from_node: hathi
     to_node: tdr
-    status: 0
     protocol: rsync
 
 restore01_from_chron:
@@ -28,7 +26,6 @@ restore01_from_chron:
     bag: tdr01
     from_node: chron
     to_node: tdr
-    status: 0
     protocol: rsync
 
 restore01_from_sdr:
@@ -39,5 +36,4 @@ restore01_from_sdr:
     bag: tdr01
     from_node: sdr
     to_node: tdr
-    status: 0
     protocol: rsync
