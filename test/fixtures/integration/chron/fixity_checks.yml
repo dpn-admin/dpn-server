@@ -1,4 +1,6 @@
 fixity01:
     bag: chron01
-    fixity_alg: sha256
-    value: cd9c918c4ca76842febfc70ed27873c70a7e98f436bd2061e4b714092ffcae5b
+    created_at: 2015-09-15T17:56:03.309Z
+    fixity_at: 2015-09-16T17:56:03.309Z
+    node: chron
+    success: true
