@@ -5,6 +5,8 @@
 
 source 'https://rubygems.org'
 
+ruby '~> 2.3.0'
+
 # ----------------------------------------------
 # Include gems for your local environment here.
 # e.g. gem "mysql2", group: :production
@@ -13,8 +15,6 @@ source 'https://rubygems.org'
 if File.exists? "Gemfile.local"
   eval_gemfile "Gemfile.local"
 end
-
-ruby '~> 2.3.0'
 
 gem 'rails', '~> 4.2.7'
 gem 'active_scheduler', '~>0.3.0'
