@@ -13,6 +13,16 @@ unless File.exists? "config.ru"
   exit
 end
 
+require 'yaml'
+config_file = File.join "config", "dpn.yml"
+cfg = YAML.load(IO.read(config_file))
+if cfg.include? 'impersonate'
+  puts "Found an 'impersonate' configuration in config/dpn.yml"
+else
+  puts "Add an 'impersonate' configuration to config/dpn.yml"
+  exit
+end
+
 %w(aptrust chron hathi sdr tdr).each do |node|
   puts "Setting up db that impersonates local #{node} node."
   `RAILS_ENV=impersonate IMPERSONATE=#{node} DATABASE_URL=sqlite3:db/impersonate_#{node}.sqlite3 bundle exec rake db:setup`

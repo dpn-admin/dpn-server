@@ -40,4 +40,4 @@ production:
   # You can also set this to :disabled, which will disable
   # the synchronization and replication clients.
   # queue_adapter: :disabled
-  queue_adapter: :resque  
+  queue_adapter: :resque

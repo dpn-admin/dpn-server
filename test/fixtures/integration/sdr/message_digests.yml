@@ -1,0 +1,6 @@
+digest01:
+  bag: sdr01
+  fixity_alg: sha256
+  node: sdr
+  value: ed863090fbb161c8856628ef5445fe1e307532b4456d1bb6d4cfb5b411419247
+  created_at: 2015-09-15T19:38:31.562Z
