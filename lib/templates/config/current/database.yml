@@ -21,3 +21,29 @@ development:
 test:
   <<: *default
   database: db/test.sqlite3
+
+# Each of the following "impersonate" configurations are used
+# when running a local cluster with the script/run_cluster.sh
+# script. That runs 5 DPN REST servers, each impersonating one
+# of the actual DPN nodes. Use this for local end-to-end testing
+# of replication and other features that require inter-node
+# communication.
+impersonate_aptrust:
+  <<: *default
+  database: db/impersonate_aptrust.sqlite3
+
+impersonate_chron:
+  <<: *default
+  database: db/impersonate_chron.sqlite3
+
+impersonate_hathi:
+  <<: *default
+  database: db/impersonate_hathi.sqlite3
+
+impersonate_sdr:
+  <<: *default
+  database: db/impersonate_sdr.sqlite3
+
+impersonate_tdr:
+  <<: *default
+  database: db/impersonate_tdr.sqlite3
