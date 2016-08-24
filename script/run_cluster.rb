@@ -47,7 +47,7 @@ end.parse!
 nodes = %w(aptrust chron hathi sdr tdr)
 
 def common_assignments(node)
-  "RAILS_ENV=impersonate IMPERSONATE=#{node} DATABASE_URL=sqlite3:db/impersonate_#{node}.sqlite3"
+  "RAILS_ENV=impersonate_#{node} IMPERSONATE=#{node} DATABASE_URL=sqlite3:db/impersonate_#{node}.sqlite3"
 end
 
 nodes.each do |node|

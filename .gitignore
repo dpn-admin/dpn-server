@@ -46,6 +46,7 @@ config/resque-pool.yml
 config/secrets.yml
 config/dpn.yml
 config/resque.yml
+config/environments/impersonate*.rb
 
 # Ignore capistrano
 /Capfile
