@@ -18,7 +18,7 @@
 FROM ruby:2.3.0
 RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs
 ## Set your Build Tag
-RUN git clone -b impersonate-config-fix https://afdfe5118c58d8b787885fb786012fa4fa174d87:x-oauth-basic@github.com/dpn-admin/dpn-server.git /dpn-server
+RUN git clone -b impersonate-config-fix https://<your token>:x-oauth-basic@github.com/dpn-admin/dpn-server.git /dpn-server
 WORKDIR /dpn-server
 ## Gemfile.local should be in your CWD
 ADD Gemfile.local /dpn-server/Gemfile.local
