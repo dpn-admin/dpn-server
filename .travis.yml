@@ -24,7 +24,7 @@ before_install:
 install:
   - bundle install --jobs=3 --retry=3
   - sqlite3 --version
-  - mysql --version
+  - mysqld --version
   - psql --version
 
 before_script:
@@ -34,8 +34,6 @@ before_script:
   - if [[ $DB = 'mysql' ]]; then mysql -e 'CREATE DATABASE dpn;'; fi
   - if [[ $DB = 'postgres' ]]; then psql -c 'CREATE DATABASE dpn;' -U postgres; fi
   - bundle exec rake db:migrate
-
-script: bundle exec rspec --tag ~broken_in_ci
 
 script:
   - if [[ $DB = 'sqlite' ]]; then bundle exec rspec --tag ~broken_in_sqlite; fi
@@ -50,3 +48,4 @@ notifications:
   slack:
     secure: >
       NPN5UAfze0ArE08cpxZlgZ0dN1s2FSeoKaJnf/zElBM+GrL4WDsGwUfgMc9yqIgc3aiDc1HHjzkNtqJynz2+bkMSBqtxzXteZ/Dz1hklXv6u2SCjuVCEyb+rzq488fN78gB5ohV9ovzAFuPm+T1b/vnXmSYBtJbnm8TRxgHHkM5x1gNE1FY+oZERByIiL+KSrG/k3pqFF1AtY3tt0hGDSMp1xhRblDdPUkq8FydApxUxI/dr5Aq8yN7QX4FWQvjm4Oka9+W16mIz7FiYo16r1BgSOWhsFEfub/PhTdD7AJyx3919xjvmrXZf5TVCYrxDmqPq4Ijgi9tgI2zxYyKyydB4U3yV+yGbM3zWFDHDKdX+iWdxkUl7iCZ3VXjvjpZj8WoFixQcOXwBq3HH5j9OEFZsgWhGa9cbvMvqfXKi23NCW1ybRVzbTO6GfjPi7GOByTKgBBf54wQPf4zD/GBehHrmGQV5ylWhPHlWYE5YmoKFrFczwbv9iUXIM+4ytMHYF+PcvLjVEPVOSLxw7F7d4ZE6hLpDKl9sXlZfoLpNYQNrlPBbFJEN/RBvUwX98Z2Ks+FEP2j28FSB3tnw4RsHCGrWmGeLL+K7UReASOXJY679sn9GlAtvNWO28MzFxAYOWxfSHNJO8jWtpBo7xxZrxw0RLr+vJlwsQFMwxXXLl7s=
+
