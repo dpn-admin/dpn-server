@@ -16,7 +16,7 @@ class ChangeFixityChecksToDigests < ActiveRecord::Migration
     add_column :fixity_checks, :node_id, :integer
     add_foreign_key :fixity_checks, :nodes,
       column: :node_id,
-      on_delete: :nullify,
+      on_delete: :cascade,
       on_update: :cascade
     add_column :fixity_checks, :created_at, :datetime
 
