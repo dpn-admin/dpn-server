@@ -18,11 +18,15 @@ module Matchers
 
 
     def match_primitives(actual, expected)
-      if actual.respond_to? :strftime
-        actual = actual.round(0)
-        expected = expected.round(0)
-      end
       unless actual == expected
+        "expected #{expected}, got #{actual}"
+      end
+    end
+
+
+    def match_times(actual, expected)
+      diff = actual - expected
+      unless diff.between?(-1, 1)
         "expected #{expected}, got #{actual}"
       end
     end
@@ -76,10 +80,10 @@ module Matchers
     end
 
 
-    def match(actual,expected)
+    def match(actual, expected)
       actual_responds_to = responders(actual)
       expected_responds_to = responders(expected)
-      unless actual_responds_to== expected_responds_to
+      unless actual_responds_to == expected_responds_to
         return "Type mismatch: expected [#{expected_responds_to}], got [#{actual_responds_to}]"
       end
       if actual_responds_to.include? :push
@@ -88,12 +92,11 @@ module Matchers
         return match_hashes(actual, expected)
       elsif actual.is_a? ActiveRecord::Base
         return match_active_records(actual, expected)
+      elsif actual.respond_to? :strftime
+        return match_times(actual, expected)
       else
         return match_primitives(actual, expected)
       end
-
-
-
     end
 
 
@@ -118,5 +121,3 @@ end
 def fuzzy_nested_match(actual)
   Matchers::FuzzyNestedMatcher.new(actual)
 end
-
-
