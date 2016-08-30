@@ -11,7 +11,7 @@ class CreateIngests < ActiveRecord::Migration
 
     add_foreign_key :ingests, :bags,
       column: :bag_id,
-      on_delete: :nullify,
+      on_delete: :cascade,
       on_update: :cascade
 
     create_table :nodes_ingests do |t|

@@ -14,10 +14,6 @@ class ChangeFixityChecksToDigests < ActiveRecord::Migration
 
   def up
     add_column :fixity_checks, :node_id, :integer
-    add_foreign_key :fixity_checks, :nodes,
-      column: :node_id,
-      on_delete: :cascade,
-      on_update: :cascade
     add_column :fixity_checks, :created_at, :datetime
 
     FixityCheck.all.each do |fc|
@@ -27,7 +23,21 @@ class ChangeFixityChecksToDigests < ActiveRecord::Migration
     change_column :fixity_checks, :node_id, :integer, null: false
     change_column :fixity_checks, :created_at, :datetime, null: false
 
+    # Foreign keys are not renamed when you rename the table.
+    # We recreate this fk after renaming the table.
+    remove_foreign_key :fixity_checks, :bags
+
     rename_table :fixity_checks, :message_digests
+
+    add_foreign_key :message_digests, :bags,
+      column: :bag_id,
+      on_delete: :cascade,
+      on_update: :cascade
+
+    add_foreign_key :message_digests, :nodes,
+      column: :node_id,
+      on_delete: :restrict,
+      on_update: :cascade
   end
 
   def down

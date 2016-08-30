@@ -23,7 +23,7 @@ class CreateTableFixityChecks < ActiveRecord::Migration
     
     add_foreign_key :fixity_checks, :nodes,
       column: :node_id,
-      on_delete: :nullify,
+      on_delete: :restrict,
       on_update: :cascade
   end
 end
