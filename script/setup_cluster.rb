@@ -28,7 +28,7 @@ cfg = YAML.load(IO.read(config_file))
   puts "Setting up config/environments/impersonate_#{node}.rb"
   `cp config/environments/development.rb config/environments/impersonate_#{node}.rb`
   puts "Setting up db that impersonates local #{node} node."
-  `RAILS_ENV=impersonate_#{node} DATABASE_URL=sqlite3:db/impersonate_#{node}.sqlite3 bundle exec rake db:setup`
+  `RAILS_ENV=impersonate_#{node} bundle exec rake db:setup`
 end
 
 puts "Now run script/run_cluster.rb to run the cluster"
