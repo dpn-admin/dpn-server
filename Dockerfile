@@ -1,9 +1,12 @@
 # Minimal configuration for building a DPN-Server test instance.
-# This version pulls Release v2.0.0_rc2
+# This version pulls Release v2.0.0_rc3
 #
 # There are a few customizations for running it in your environment
+# - Tag the instance
+# - docker images
+# -  docker tag <imageID> dpn-server:v2.0RC3
 # - Run parameters
-# -  docker run -it --net=host --name test <tag name> /bin/bash
+# -  docker run -it --net=host --name RC3 <tag name> /bin/bash
 # -  --net=host makes the instance visible on your local network
 # -  any service locked down to localhost will need to be modified to allow the host IP
 # -  you'll get a bash prompt to make changes in your local environment
@@ -11,7 +14,7 @@
 #
 # -  if you want to preserve changes do a commit
 # -  docker ps -l
-# -  docker commit <CONTAINER ID> dpcolar/dpn-server:v2
+# -  docker commit <CONTAINER ID> dpn-server:v2.0RC3
 #
 FROM ruby:2.3.1
 RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs nano
