@@ -37,7 +37,7 @@ module Client
       private
 
       def run_time
-        @last_success_object ||= RunTime.find_by_name!(@name)
+        @last_success_object ||= RunTime.find_by_name(@name) || RunTime.create!(name: @name)
       end
 
 
