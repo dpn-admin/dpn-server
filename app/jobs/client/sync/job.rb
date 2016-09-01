@@ -77,9 +77,9 @@ module Client
         sync(
           last_success_manager(name, namespace),
           remote_client(namespace),
-          query_builder(query_builder_class.classify, namespace),
-          adapter_class.classify,
-          model_class.classify
+          query_builder(query_builder_class.constantize, namespace),
+          adapter_class.constantize,
+          model_class.constantize
         )
       end
 
