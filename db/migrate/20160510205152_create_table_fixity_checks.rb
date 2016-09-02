@@ -13,17 +13,7 @@ class CreateTableFixityChecks < ActiveRecord::Migration
       t.datetime :fixity_at, null: false
       t.datetime :created_at, null: false
     end
-    
-    add_index :fixity_checks, :fixity_check_id, unique: true
 
-    add_foreign_key :fixity_checks, :bags,
-      column: :bag_id,
-      on_delete: :cascade,
-      on_update: :cascade
-    
-    add_foreign_key :fixity_checks, :nodes,
-      column: :node_id,
-      on_delete: :restrict,
-      on_update: :cascade
+    add_index :fixity_checks, :fixity_check_id, unique: true
   end
 end
