@@ -1,0 +1,1183 @@
+swagger: '2.0'
+info: {title: DPN API, description: Digital Preservation Network, version: 2.0.0}
+consumes: [application/json]
+produces: [application/json]
+basePath: /api-v2
+securityDefinitions:
+  dpn_token: {in: header, type: apiKey, name: dpn_token, description: DPN Authorization
+      Token}
+security:
+- dpn_token: []
+definitions:
+  Error:
+    type: object
+    properties:
+      errors: {description: 'String of the encountered errors, possibly json formatted.',
+        type: string, format: json}
+  Timestamps:
+    description: Timestamps for DPN objects
+    type: object
+    properties:
+      created_at: {description: DPN-formatted date-time when this record was first
+          created. _(read only)_, type: string, format: date-time}
+      updated_at: {description: DPN-formatted date-time when this record was last
+          updated., type: string, format: date-time}
+  ReadOnlyTimestamps:
+    description: Timestamps for read-only DPN objects
+    type: object
+    properties:
+      created_at: {description: DPN-formatted date-time when this record was first
+          created. _(read only)_, type: string, format: date-time}
+  ResultList:
+    description: Generic list of results
+    type: object
+    required: [count, next, previous]
+    properties:
+      count: {description: Count of total results, type: integer, format: int32, minimum: 0}
+      next: {description: 'URL of next page, or null. Note that null (correct) is
+          not "null" (incorrect).', type: string}
+      previous: {description: 'URL of previous page, or null. Note that null (correct)
+          is not "null" (incorrect).', type: string}
+  BagReference:
+    required: [bag]
+    properties:
+      bag: {description: UUIDv4 of the associated bag. _(read only)_, type: string,
+        format: uuid}
+  BagResultList:
+    description: Container for a list of bags
+    type: object
+    allOf:
+    - {$ref: '#/definitions/ResultList'}
+    - type: object
+      required: [results, total_size]
+      properties:
+        results:
+          description: List of bags
+          type: array
+          items: {$ref: '#/definitions/Bag'}
+        total_size: {description: Total size of bags from query, type: integer, format: int32,
+          minimum: 0}
+    example:
+      count: 2
+      next: http://localhost:8000/api-v2/bag/?page=3&page_size=2
+      previous: http://localhost:8000/api-v2/bag/?page=1&page_size=2
+      total_size: 2526492640
+      results:
+      - uuid: 9998e960-fc6d-44f4-9d73-9a60a8eae609
+        ingest_node: aptrust
+        interpretive: []
+        rights: []
+        replicating_nodes: [aptrust, chron, hathi]
+        admin_node: aptrust
+        member: a58231cd-6573-4451-b767-f380ee08922c
+        local_id: my_bag
+        size: 2526492640
+        first_version_uuid: 9998e960-fc6d-44f4-9d73-9a60a8eae609
+        version: 1
+        bag_type: D
+        created_at: 2015-02-25T16:24:02.000Z
+        updated_at: 2015-02-25T16:24:02.000Z
+  DigestResultList:
+    description: Container for a list of digests
+    type: object
+    allOf:
+    - {$ref: '#/definitions/ResultList'}
+    - type: object
+      required: [results]
+      properties:
+        results:
+          description: List of digests
+          type: array
+          items: {$ref: '#/definitions/Digest'}
+    example:
+      count: 2
+      next: http://localhost:8000/api-v2/digest/?page=3&page_size=2
+      previous: http://localhost:8000/api-v2/digest/?page=1&page_size=2
+      results:
+      - {bag: 7778e960-fc6d-44f4-9d73-9a60a8eae609, algorithm: sha256, node: hathi,
+        value: eeeeeeeee00d829c4cf61dac35ee2c6aed986caa0223ec832f6dd98c6e70f5, created_at: !!timestamp '2015-02-25T16:24:02.000Z'}
+      - {bag: 9998e960-fc6d-44f4-9d73-9a60a8eae609, algorithm: sha256, node: chron,
+        value: d904c39f9f900d829c4cf61dac35ee2c6aed986caa0223ec832f6dd98c6e70f5, created_at: !!timestamp '2015-02-25T16:24:02.000Z'}
+  FixityCheckResultList:
+    description: Container for a list of fixity checks
+    type: object
+    allOf:
+    - {$ref: '#/definitions/ResultList'}
+    - type: object
+      required: [results]
+      properties:
+        results:
+          description: List of fixity checks
+          type: array
+          items: {$ref: '#/definitions/FixityCheck'}
+    example:
+      count: 2
+      next: http://localhost:8000/api-v2/fixity_check/?page=3&page_size=2
+      previous: http://localhost:8000/api-v2/fixity_check/?page=1&page_size=2
+      results:
+      - {fixity_check_id: 7998e960-fc6d-44f4-9d73-9a60a8eae609, bag: 9998e960-fc6d-44f4-9d73-9a60a8eae609,
+        node: hathi, success: true, fixity_at: !!timestamp '2015-02-25T16:23:58.000Z',
+        created_at: !!timestamp '2015-02-25T16:24:02.000Z'}
+      - {fixity_check_id: 4444e960-fc6d-44f4-9d73-4a60a8eae333, bag: 2938e441-fc6d-44f4-9d73-9a60a8eae609,
+        node: aptrust, success: true, fixity_at: !!timestamp '2015-02-25T16:23:58.000Z',
+        created_at: !!timestamp '2016-02-25T16:24:02.000Z'}
+  IngestResultList:
+    description: Container for a list of ingests
+    type: object
+    allOf:
+    - {$ref: '#/definitions/ResultList'}
+    - type: object
+      required: [results]
+      properties:
+        results:
+          description: List of ingests
+          type: array
+          items: {$ref: '#/definitions/Ingest'}
+    example:
+      count: 2
+      next: http://localhost:8000/api-v2/ingest/?page=3&page_size=2
+      previous: http://localhost:8000/api-v2/ingest/?page=1&page_size=2
+      results:
+      - ingest_id: 1b49a2aa-6a2a-48db-a44b-28b2df1bc0e6
+        bag: 9998e960-fc6d-44f4-9d73-9a60a8eae609
+        ingested: true
+        replicating_nodes: [hathi, chron, aptrust]
+        created_at: 2015-02-25T16:24:02.000Z
+      - ingest_id: 7778e960-fc6d-44f4-9d73-9a60a8eae609
+        bag: 4444e960-fc6d-42e4-9d73-9a60a8eae332
+        ingested: true
+        replicating_nodes: [sdr, chron, aptrust]
+        created_at: 2015-02-25T16:24:02.000Z
+  MemberResultList:
+    description: Container for a list of members
+    type: object
+    allOf:
+    - {$ref: '#/definitions/ResultList'}
+    - type: object
+      required: [results]
+      properties:
+        results:
+          description: List of members
+          type: array
+          items: {$ref: '#/definitions/Member'}
+    example:
+      count: 2
+      next: http://localhost:8000/api-v2/member/?page=3&page_size=2
+      previous: http://localhost:8000/api-v2/member/?page=1&page_size=2
+      results:
+      - {member_id: 5e4bc824-9be2-44ea-a22c-d1e74afb30c3, name: test-user, email: test@test.calm}
+      - {member_id: a58231cd-6573-4451-b767-f380ee08922c, name: HathiTrust, email: bhock@umich.edu}
+  NodeResultList:
+    description: Container for a list of nodes
+    type: object
+    allOf:
+    - {$ref: '#/definitions/ResultList'}
+    - type: object
+      required: [results]
+      properties:
+        results:
+          description: List of nodes
+          type: array
+          items: {$ref: '#/definitions/Node'}
+    example:
+      count: 1
+      next: http://localhost:8000/api-v2/node/?page=3&page_size=2
+      previous: http://localhost:8000/api-v2/node/?page=1&page_size=2
+      results:
+      - name: Chronopolis
+        namespace: chron
+        api_root: https://chronopolis01.umiacs.umd.edu/
+        ssh_pubkey: some-ssh-key
+        protocols: [rsync]
+        storage: {region: central, type: proprietary-chron}
+        replicate_from: [sdr, tdr, hathi, aptrust]
+        replicate_to: [sdr, tdr, hathi, aptrust]
+        restore_from: [sdr, tdr, hathi, aptrust]
+        restore_to: [sdr, tdr, hathi, aptrust]
+        fixity_algorithms: [sha256]
+        created_at: 2015-02-25T15:27:39.000Z
+        updated_at: 2015-03-06T14:21:50.000Z
+  ReplicationRequestResultList:
+    description: Container for a list of replication requests
+    type: object
+    allOf:
+    - {$ref: '#/definitions/ResultList'}
+    - type: object
+      required: [results]
+      properties:
+        results:
+          description: List of replication requests
+          type: array
+          items: {$ref: '#/definitions/ReplicationRequest'}
+    example:
+      count: 8
+      next: http://localhost:8000/api-v2/replicate/?page=3&page_size=2
+      previous: http://localhost:8000/api-v2/replicate/?page=1&page_size=2
+      results:
+      - {from_node: aptrust, to_node: chron, bag: cfd167a0-baad-4235-b896-041e710e6c62,
+        replication_id: 722947bb-d370-46d6-b64e-8428d3bc3181, fixity_algorithm: sha256,
+        fixity_nonce: YQR5BL1V, fixity_value: some-fixity-val, protocol: rsync, link: 'dpn.chron@dpn.nodename.org:outgoing/cfd167a0-baad-4235-b896-041e710e6c62.tar',
+        stored: false, store_requested: false, cancelled: false, cancel_reason: not-really-a-reason,
+        created_at: !!timestamp '2015-02-25T15:27:40.000Z', updated_at: !!timestamp '2015-02-25T15:27:40.000Z'}
+      - {from_node: aptrust, to_node: hathi, bag: bfd167a0-baad-4235-b896-041e710e6c55,
+        replication_id: 442947bb-d370-46d6-b64e-8428d3bc3142, fixity_algorithm: sha256,
+        fixity_nonce: actually-a-null-nonce, fixity_value: some-other-fixity, protocol: rsync,
+        link: 'dpn.chron@dpn.nodename.org:outgoing/cfd167a0-baad-4235-b896-041e710e6c62.tar',
+        stored: false, store_requested: false, cancelled: true, cancel_reason: reject,
+        created_at: !!timestamp '2015-03-19T15:27:40.000Z', updated_at: !!timestamp '2015-03-22T15:27:40.000Z'}
+  RestoreRequestResultList:
+    description: Container for a list of restore requests
+    type: object
+    allOf:
+    - {$ref: '#/definitions/ResultList'}
+    - type: object
+      required: [results]
+      properties:
+        results:
+          description: List of restore requests
+          type: array
+          items: {$ref: '#/definitions/RestoreRequest'}
+  Bag:
+    description: A DPN bag of any type
+    type: object
+    allOf:
+    - type: object
+      required: [uuid, local_id, size, first_version_uuid, ingest_node, admin_node,
+        member, version, bag_type, interpretive]
+      properties:
+        uuid: {description: Unique UUIDv4 identifier for this bag. _(read only)_,
+          type: string, format: uuid}
+        local_id: {description: Primary local identifier., type: string}
+        size: {description: Size of the bag in bytes. _(read only)_, type: integer,
+          format: int64}
+        first_version_uuid: {description: UUID of the first version of this bag. _(read
+            only)_, type: string, format: uuid}
+        ingest_node: {description: Namespace of the node that originally ingest this
+            bag. _(read only)_, type: string}
+        admin_node: {description: Namespace of the node that administers this bag.,
+          type: string}
+        member: {description: UUIDv4 of the member who "owns" this bag., type: string,
+          format: uuid}
+        version: {description: 'This bag''s version number, beginning with 1. _(read
+            only)_', type: integer, format: int32, minimum: 1}
+        bag_type:
+          description: Single character specifying the type of this bag. 'D'->Data,
+            'I'->Interpretive, 'R'->Rights.
+          type: string
+          enum: [D, I, R]
+        interpretive:
+          description: Empty array or array of uuids of this bag's interpretive bags.
+          type: array
+          items: {type: string, format: uuid, uniqueItems: true}
+        rights:
+          description: Empty array or array of uuids of this bag's rights bags.
+          type: array
+          items: {type: string, format: uuid, uniqueItems: true}
+        replicating_nodes:
+          description: Empty array or array of namespaces of this bag's replicating
+            nodes.
+          type: array
+          items: {type: string, uniqueItems: true}
+    - {$ref: '#/definitions/Timestamps'}
+    example:
+      uuid: 9998e960-fc6d-44f4-9d73-9a60a8eae609
+      ingest_node: aptrust
+      interpretive: []
+      rights: []
+      replicating_nodes: [aptrust, chron, hathi]
+      admin_node: aptrust
+      member: a58231cd-6573-4451-b767-f380ee08922c
+      local_id: my_bag
+      size: 2526492640
+      first_version_uuid: 9998e960-fc6d-44f4-9d73-9a60a8eae609
+      version: 1
+      bag_type: D
+      created_at: 2015-02-25T16:24:02.000Z
+      updated_at: 2015-02-25T16:24:02.000Z
+  Digest:
+    description: 'A Digest is a specific fixity algorithm:value pair that is known
+      to be correct. Digests are associated with specific bags. Digests are uniquely
+      identifiable by their bag and algorithm.  The entire resource is read-only.
+
+      '
+    type: object
+    allOf:
+    - {$ref: '#/definitions/BagReference'}
+    - type: object
+      required: [node, algorithm, value]
+      properties:
+        node: {description: namespace of the node that generated this digest. _(read
+            only)_, type: string}
+        algorithm: {description: Algorithm used to calculate the value. _(read only)_,
+          type: string}
+        value: {description: Value calculated for the bag. _(read only)_, type: string}
+    - {$ref: '#/definitions/ReadOnlyTimestamps'}
+    example: {bag: 9998e960-fc6d-44f4-9d73-9a60a8eae609, node: hathi, algorithm: sha256,
+      value: d904c39f9f900d829c4cf61dac35ee2c6aed986caa0223ec832f6dd98c6e70f5, created_at: !!timestamp '2015-02-25T16:24:02.000Z'}
+  FixityCheck:
+    description: 'A Fixity Check is a record of a node performing the necessary operations
+      on a bag to ensure that it remains unchanged at the time of the check.  These
+      records are only uniquely identifiable by fixity_check_id.  The entire record
+      is read-only.
+
+      '
+    type: object
+    allOf:
+    - {$ref: '#/definitions/BagReference'}
+    - type: object
+      required: [fixity_check_id, node, success, fixity_at]
+      properties:
+        fixity_check_id: {description: UUIDv4 that uniquely identifies this fixity
+            check. _(read only)_, type: string, format: uuid}
+        node: {description: namespace of the node that performed the check. _(read
+            only)_, type: string}
+        success: {description: 'A check is successful if the bag remains unchanged,
+            and is unsuccessful otherwise. _(read only)_', type: boolean}
+        fixity_at: {description: 'The time the actual check was completed, as opposed
+            to when this record was created.  Must be less than or equal to created_at.  _(read
+            only)_
+
+            ', type: string, format: date-time}
+    - {$ref: '#/definitions/ReadOnlyTimestamps'}
+    example: {fixity_check_id: 7998e960-fc6d-44f4-9d73-9a60a8eae609, bag: 9998e960-fc6d-44f4-9d73-9a60a8eae609,
+      node: hathi, success: true, fixity_at: !!timestamp '2015-02-25T16:23:58.000Z',
+      created_at: !!timestamp '2015-02-25T16:24:02.000Z'}
+  Ingest:
+    description: 'An Ingest record is a record of when a bag achieved the ingested
+      state within DPN. At the time of writing, this is achieved when there are three(3)
+      or more copies. Ingest records are also created when this status is lost.  The
+      entire resource is read-only.
+
+      '
+    type: object
+    allOf:
+    - {$ref: '#/definitions/BagReference'}
+    - type: object
+      required: [ingest_id, ingested, replicating_nodes]
+      properties:
+        ingest_id: {description: UUIDv4 that uniquely identifies this record. _(read
+            only)_, type: string, format: uuid}
+        ingested: {description: Whether the ingested criteria was met or lost _(read
+            only)_, type: boolean}
+        replicating_nodes:
+          description: 'The node namespaces of nodes that were storing the bag at
+            the time this record was generated. Note that this list should include
+            the state of the replicating nodes **after** the change. _(read only)_
+
+            '
+          type: array
+          items: {type: string, uniqueItems: true}
+    - {$ref: '#/definitions/ReadOnlyTimestamps'}
+    example:
+      ingest_id: 1b49a2aa-6a2a-48db-a44b-28b2df1bc0e6
+      bag: 9998e960-fc6d-44f4-9d73-9a60a8eae609
+      ingested: true
+      replicating_nodes: [hathi, chron, aptrust]
+      created_at: 2015-02-25T16:24:02.000Z
+  Member:
+    description: A Member represents an institution who deposits data into DPN.
+    type: object
+    required: [member_id, name, email]
+    properties:
+      member_id: {description: UUIDv4 that identifies this member. _(read only)_,
+        type: string, format: uuid}
+      name: {description: The name the member goes by., type: string}
+      email: {description: The contact email for the member., type: string}
+    example: {member_id: 5e4bc824-9be2-44ea-a22c-d1e74afb30c3, name: test-lib, email: test-lib@library.edu}
+  Node:
+    description: A DPN node
+    type: object
+    allOf:
+    - type: object
+      required: [namespace]
+      properties:
+        name: {description: Human readable name of this node, type: string}
+        namespace: {description: Lowercase identifier to unambiguously reference this
+            node., type: string}
+        api_root: {description: 'null or the root location of this node''s server.
+            This field MUST NOT be changed during normal operations; it should only
+            change out of band.
+
+            ', type: string, format: url}
+        ssh_pubkey: {description: null or the ssh public key of this node., type: string}
+        replicate_from:
+          description: Array of namespaces of the nodes that this node will replicate
+            from.
+          type: array
+          items: {type: string}
+        replciate_to:
+          description: Array of namespaces of the nodes that this node will replicate
+            to.
+          type: array
+          items: {type: string}
+        restore_from:
+          description: Array of namespaces of the nodes that this node will restore
+            from.
+          type: array
+          items: {type: string}
+        restore_to:
+          description: Array of namespaces of the nodes that this node will restore
+            to.
+          type: array
+          items: {type: string}
+        protocols:
+          description: Array of currently supported transfer protocols.
+          type: array
+          items: {type: string}
+        fixity_algorithms:
+          description: Array of currently supported fixity algorithms.
+          type: array
+          items: {type: string}
+        storage:
+          description: Storage profile for this node.
+          type: object
+          properties:
+            region:
+              description: Region where bags are stored.
+              type: string
+              enum: [default]
+            type:
+              description: Type of storage used.
+              type: string
+              enum: [default]
+    - {$ref: '#/definitions/Timestamps'}
+    example:
+      protocols: [rsync]
+      storage: {region: central, type: proprietary-chron}
+      replicate_from: [sdr, tdr, hathi, aptrust]
+      replicate_to: [sdr, tdr, hathi, aptrust]
+      restore_from: [sdr, tdr, hathi, aptrust]
+      restore_to: [sdr, tdr, hathi, aptrust]
+      fixity_algorithms: [sha256]
+      name: Chronopolis
+      namespace: chron
+      api_root: https://chronopolis01.umiacs.umd.edu/
+      ssh_pubkey: some-ssh-key
+      created_at: 2015-02-25T15:27:39.000Z
+      updated_at: 2015-03-06T14:21:50.000Z
+  ReplicationRequest:
+    description: 'A Replication Request is the control construct that represents and
+      manages the exchange of a bag from an administrative or ingest node to another
+      node, which then becomes a replicating node for the bag.
+
+      '
+    type: object
+    allOf:
+    - {$ref: '#/definitions/BagReference'}
+    - type: object
+      required: [replication_id, from_node, to_node, fixity_algorithm, protocol, link,
+        store_requested, stored, cancelled]
+      properties:
+        replication_id: {description: UUIDv4 that uniquely identifies this replication
+            transfer  request. _(read only)_, type: string, format: uuid}
+        from_node: {description: Namespace of the node sending the bag. This is the
+            node that generated this request. _(read only)_, type: string}
+        to_node: {description: Namespace of the node receiving the bag. Must not be
+            a replicating_node for the bag being transferred., type: string, format: uuid}
+        fixity_algorithm: {description: Name of the fixity algorithm expected for
+            the receipt. _(read only)_, type: string}
+        fixity_nonce: {description: null or the nonce to be used for verification.
+            _(read only)_, type: string}
+        fixity_value: {description: 'null or the string of the fixity value calculated
+            by the to_node after transferring the bag to its staging area.  _(Once
+            set to a value, this field is read only.)_
+
+            ', type: string}
+        protocol: {description: Name of the transfer protocol. _(read only)_, type: string}
+        link: {description: URL of the bag to be transferred. _(read only)_, type: string,
+          format: url}
+        store_requested: {description: 'Set by the from_node after it receives a correct
+            fixity_value to instruct the to_node to complete the replication.  _(Once
+            set to true, this field is read only.)_
+
+            ', type: boolean, default: false}
+        stored: {description: 'Set by the to_node to indicate the bag has been transferred
+            into its storage repository from the staging area.  The to_node promises
+            to fulfill replicating node duties by setting this field.  Must not be
+            set before store_requested. _(Once set to true, this field is read only.)_
+
+            ', type: boolean, default: false}
+        cancelled: {description: 'Set by either node to immediately end the transaction.
+            _(Once set to true, the entire record is read-only)_
+
+            ', type: boolean, default: false}
+        cancel_reason:
+          description: 'null or the reason for cancelling.  The cancel_reason must
+            not be treated as an actionable field; it is only for debugging and analytics.
+            Can only be set at the same time as cancelled.
+
+            '
+          type: string
+          enum: [reject, bag_invalid, fixity_reject, other]
+    - {$ref: '#/definitions/Timestamps'}
+    example: {from_node: aptrust, to_node: chron, bag: cfd167a0-baad-4235-b896-041e710e6c62,
+      replication_id: 722947bb-d370-46d6-b64e-8428d3bc3181, fixity_algorithm: sha256,
+      fixity_nonce: YQR5BL1V, fixity_value: fixity-value-goes-here, protocol: rsync,
+      link: 'dpn.chron@dpn.nodename.org:outgoing/cfd167a0-baad-4235-b896-041e710e6c62.tar',
+      stored: false, store_requested: false, cancelled: false, cancel_reason: this
+        isn't actually cancelled, created_at: !!timestamp '2015-02-25T15:27:40.000Z',
+      updated_at: !!timestamp '2015-02-25T15:27:40.000Z'}
+  RestoreRequest:
+    description: 'A Restore Request is the control construct that represents and manages
+      the exchange of a bag from a replicating node to to the admin_node or another
+      replicating_node.
+
+      '
+    type: object
+    allOf:
+    - {$ref: '#/definitions/BagReference'}
+    - type: object
+      required: [restore_id, from_node, to_node, protocol, accepted, finished, cancelled]
+      properties:
+        restore_id: {description: UUIDv4 that uniquely identifies this restore transfer
+            request. _(read only)_, type: string, format: uuid}
+        from_node: {description: Namespace of the node sending the bag. _(read only)_,
+          type: string}
+        to_node: {description: Namespace of the node receiving the bag. This is the
+            node that generated this request. _(read only)_, type: string}
+        protocol: {description: Name of the transfer protocol. _(read only)_, type: string}
+        link: {description: 'null or URL of the bag to be transferred. Set by the
+            from_node. _(Once set, this field is read only.)_', type: string, format: url}
+        accepted: {description: 'Set by the from_node to indicate that it has accepted
+            the request. _(Once set to true, this field is read only.)_', type: boolean,
+          default: false}
+        finished: {description: 'Set by the to_node to indicate the transfer completed
+            successfully.  _(Once set to true, the entire record is read-only.)_',
+          type: boolean, default: false}
+        cancelled: {description: 'Set by either node to immediately end the transaction.
+            _(Once set to true, the entire record is read-only.)_', type: boolean,
+          default: false}
+        cancel_reason:
+          description: 'null or the reason for cancelling.  The cancel_reason must
+            not be treated as an actionable field; it is only for debugging and analytics.
+            Can only be set at the same time as cancelled.
+
+            '
+          type: string
+          enum: [reject, other]
+    - {$ref: '#/definitions/Timestamps'}
+responses:
+  '400':
+    description: Bad Resource or Illegal Change
+    schema: {$ref: '#/definitions/Error'}
+  '401': {description: Authentication Failed}
+  '403': {description: 'Authenticated, Not Authorized'}
+  '404': {description: Not Found}
+  '409': {description: Duplicate}
+parameters:
+  before: {name: before, in: query, description: 'Only include records with updated_at
+      earlier than this, inclusive.', required: false, type: string, format: date-time}
+  before_created: {name: before, in: query, description: 'Only include records with
+      created_at earlier than this, inclusive.', required: false, type: string, format: date-time}
+  after: {name: after, in: query, description: 'Only include records with updated_at
+      later than this, inclusive.', required: false, type: string, format: date-time}
+  after_created: {name: after, in: query, description: 'Only include records with
+      created_at later than this, inclusive.', required: false, type: string, format: date-time}
+  page: {name: page, in: query, description: 'Page number to return, starting at 1.  For
+      use  with page_size.', required: false, type: integer, format: int32}
+  page_size: {name: page_size, in: query, description: Max results per page., required: false,
+    type: integer, format: int32}
+  bag_uuid_path: {name: uuid, description: UUIDv4 of the target bag, in: path, required: true,
+    type: string, format: uuid}
+  order_by_created_at:
+    name: order_by
+    in: query
+    description: Comma separated list of string fields by which to order the response.
+    required: false
+    type: array
+    items:
+      type: string
+      collectionFormat: csv
+      enum: [created_at]
+  order_by_timestamps:
+    name: order_by
+    in: query
+    description: Comma separated list of string fields by which to order the response.
+    required: false
+    type: array
+    items:
+      type: string
+      collectionFormat: csv
+      enum: [updated_at, created_at]
+  bag: {name: bag, in: query, description: Filter by the associated bag's uuid, required: false,
+    type: string, format: uuid}
+  bag_type: {name: bag_type, in: query, description: Filter by bag type. Consult the
+      Bag definitions for the supported values., required: false, type: string}
+  cancelled: {name: cancelled, description: Filter by cancelled, in: query, required: false,
+    type: boolean}
+  cancel_reason: {name: cancel_reason, description: Filter by cancel_reason. Refer
+      to the object definition for supported values., in: query, required: false,
+    type: string}
+  to_node: {name: to_node, description: Filter by to_node namespace., in: query, required: false,
+    type: string}
+  from_node: {name: from_node, description: Filter by from_node namespace., in: query,
+    required: false, type: string}
+  admin_node: {name: admin_node, in: query, description: Filter by admin_node namespace,
+    required: false, type: string}
+  ingest_node: {name: ingest_node, in: query, description: Filter by ingest_node namespace,
+    required: false, type: string}
+  member_uuid: {name: member, in: query, description: Filter by member_id, required: false,
+    type: string, format: uuid}
+  member_uuid_path: {name: member_id, in: path, description: member_id of the member,
+    required: true, type: string, format: uuid}
+  namespace: {name: namespace, in: path, description: namespace of the target node,
+    required: true, type: string}
+  replicating_node: {name: replicated_by, in: query, description: 'The namespace of
+      the replicating node on which  to filter.  Multiple filters can be used, separated
+      by comma.  The result will include the union (OR)  of the filtered results.
+
+      ', required: false, type: string}
+  ingested: {name: ingested, in: query, description: Filter results by the value of
+      their ingested field., required: false, type: boolean}
+  latest: {name: latest, in: query, description: 'For each set of results that differ
+      only by timestamp, include only the most recent result. This filter is applied
+      after other filters.
+
+      ', required: false, type: boolean}
+  replication_id_path: {name: replication_id, in: path, description: replication_id
+      of the target record, required: true, type: string, format: uuid}
+  restore_id_path: {name: restore_id, in: path, description: restore_id of the target
+      record, required: true, type: string, format: uuid}
+paths:
+  /bag:
+    get:
+      summary: List of bags
+      description: Returns a list of Bag records.
+      tags: [Bag]
+      parameters:
+      - {$ref: '#/parameters/before'}
+      - {$ref: '#/parameters/after'}
+      - {$ref: '#/parameters/bag_type'}
+      - {$ref: '#/parameters/admin_node'}
+      - {$ref: '#/parameters/ingest_node'}
+      - {$ref: '#/parameters/member_uuid'}
+      - {$ref: '#/parameters/replicating_node'}
+      - {name: first_version_uuid, in: query, description: Filter by first_version_uuid.,
+        required: false, type: string, format: uuid}
+      - {$ref: '#/parameters/page'}
+      - {$ref: '#/parameters/page_size'}
+      - {$ref: '#/parameters/order_by_timestamps'}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/BagResultList'}
+        '401': {$ref: '#/responses/401'}
+    post:
+      summary: Create a bag
+      description: 'This endpoint allows the creation of a single bag through a post
+        body. The post body is the same as the data structure for the bag.  If successful,
+        the response will be identical to that of a GET request.
+
+        '
+      tags: [Bag]
+      parameters:
+      - name: body
+        in: body
+        required: true
+        schema: {$ref: '#/definitions/Bag'}
+      responses:
+        '201':
+          description: Success
+          schema: {$ref: '#/definitions/Bag'}
+        '400': {$ref: '#/responses/400'}
+        '401': {$ref: '#/responses/401'}
+        '403': {$ref: '#/responses/403'}
+        '409': {$ref: '#/responses/409'}
+  /bag/{uuid}:
+    get:
+      summary: Returns the data for a single bag record matching the uuid.
+      description: Returns the data for a single bag record matching the uuid.
+      tags: [Bag]
+      parameters:
+      - {$ref: '#/parameters/bag_uuid_path'}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/Bag'}
+        '401': {$ref: '#/responses/401'}
+        '404': {$ref: '#/responses/404'}
+    put:
+      summary: Update the bag
+      description: 'Updates a single bag matching the uuid.  The body of the put is
+        the same as the data structure for the bag.  If successful, the response will
+        be identical to that of a GET request.
+
+        '
+      tags: [Bag]
+      parameters:
+      - {$ref: '#/parameters/bag_uuid_path'}
+      - name: body
+        in: body
+        required: true
+        schema: {$ref: '#/definitions/Bag'}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/Bag'}
+        '400': {$ref: '#/responses/400'}
+        '401': {$ref: '#/responses/401'}
+        '403': {$ref: '#/responses/403'}
+        '404': {$ref: '#/responses/404'}
+  /bag/{uuid}/digest:
+    get:
+      summary: List of digests for the specified bag
+      description: Return a list of message digests for the specified bag.
+      tags: [Digest]
+      parameters:
+      - {$ref: '#/parameters/bag_uuid_path'}
+      - {$ref: '#/parameters/before_created'}
+      - {$ref: '#/parameters/after_created'}
+      - {$ref: '#/parameters/page'}
+      - {$ref: '#/parameters/page_size'}
+      - {$ref: '#/parameters/order_by_created_at'}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/DigestResultList'}
+        '401': {$ref: '#/responses/401'}
+    post:
+      summary: Create a digest for the specified bag
+      description: 'This endpoint allows the creation of a single digest through a
+        post body.  The body is the same as the data structure for the Digest. If
+        successful, the response will be identical to that of a GET request.
+
+        '
+      tags: [Digest]
+      parameters:
+      - {$ref: '#/parameters/bag_uuid_path'}
+      - name: body
+        in: body
+        required: true
+        schema: {$ref: '#/definitions/Digest'}
+      responses:
+        '201':
+          description: Success
+          schema: {$ref: '#/definitions/Digest'}
+        '400': {$ref: '#/responses/400'}
+        '401': {$ref: '#/responses/401'}
+        '403': {$ref: '#/responses/403'}
+        '404': {$ref: '#/responses/404'}
+        '409': {$ref: '#/responses/409'}
+  /bag/{uuid}/digest/{algorithm}:
+    get:
+      summary: Show a specific digest record.
+      description: 'Returns the data for the specific digest record matching the bag''s
+        uuid and the digest algorithm.  These two values always uniquely identify
+        a digest.
+
+        '
+      tags: [Digest]
+      parameters:
+      - {$ref: '#/parameters/bag_uuid_path'}
+      - {name: algorithm, in: path, description: Name of the algorithm used, required: true,
+        type: string}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/Digest'}
+        '401': {$ref: '#/responses/401'}
+        '404': {$ref: '#/responses/404'}
+  /digest:
+    get:
+      summary: List of digests
+      description: This endpoint is meant to facilitate synchronizing of data. It
+        returns a list of digests.
+      tags: [Digest]
+      parameters:
+      - {$ref: '#/parameters/before_created'}
+      - {$ref: '#/parameters/after_created'}
+      - {$ref: '#/parameters/page'}
+      - {$ref: '#/parameters/page_size'}
+      - {$ref: '#/parameters/order_by_created_at'}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/DigestResultList'}
+        '401': {$ref: '#/responses/401'}
+  /fixity_check:
+    get:
+      summary: List of fixity checks
+      description: Returns a list of fixity checks
+      tags: [Fixity Check]
+      parameters:
+      - {$ref: '#/parameters/before_created'}
+      - {$ref: '#/parameters/after_created'}
+      - {$ref: '#/parameters/bag'}
+      - {$ref: '#/parameters/latest'}
+      - {name: node, description: Filter by the namespace of the node that performed
+          the check., in: query, required: false, type: string}
+      - {$ref: '#/parameters/page'}
+      - {$ref: '#/parameters/page_size'}
+      - {$ref: '#/parameters/order_by_created_at'}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/FixityCheckResultList'}
+        '401': {description: Authentication Failed}
+    post:
+      summary: Create a fixity check
+      description: 'This endpoint allows the creation of a single fixity check record
+        through a post body.  The body is the same as the data structure for the fixity
+        check.  If successful, the response will contain the created record.
+
+        '
+      tags: [Fixity Check]
+      parameters:
+      - name: body
+        in: body
+        required: true
+        schema: {$ref: '#/definitions/FixityCheck'}
+      responses:
+        '201':
+          description: Success
+          schema: {$ref: '#/definitions/FixityCheck'}
+        '400': {$ref: '#/responses/400'}
+        '401': {$ref: '#/responses/401'}
+        '403': {$ref: '#/responses/403'}
+        '409': {$ref: '#/responses/409'}
+  /member:
+    get:
+      summary: List of members
+      description: Returns a list of members.
+      tags: [Member]
+      parameters:
+      - {$ref: '#/parameters/before'}
+      - {$ref: '#/parameters/after'}
+      - {$ref: '#/parameters/page'}
+      - {$ref: '#/parameters/page_size'}
+      - {$ref: '#/parameters/order_by_timestamps'}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/MemberResultList'}
+        '401': {$ref: '#/responses/401'}
+    post:
+      summary: Create a member
+      description: 'This endpoint allows the creation of a single member through a
+        post body.  The body is the same as the data structure for the Member. If
+        successful, the response will be identical to that of a GET request.
+
+        '
+      tags: [Member]
+      parameters:
+      - name: body
+        in: body
+        required: true
+        schema: {$ref: '#/definitions/Member'}
+      responses:
+        '201':
+          description: Success
+          schema: {$ref: '#/definitions/Member'}
+        '400': {$ref: '#/responses/400'}
+        '401': {$ref: '#/responses/401'}
+        '403': {$ref: '#/responses/403'}
+        '409': {$ref: '#/responses/409'}
+  /member/{member_id}:
+    get:
+      summary: Returns the data for a single member record matching the member_id.
+      description: Returns the data for a single member record matching the member_id.
+      tags: [Member]
+      parameters:
+      - {$ref: '#/parameters/member_uuid_path'}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/Member'}
+        '401': {$ref: '#/responses/401'}
+        '404': {$ref: '#/responses/404'}
+    put:
+      summary: Update the member
+      description: 'Updates a single member matching the member_id.  The body of the
+        put is the same as the data structure for the member.  If successful, the
+        response will be identical to that of a GET request.
+
+        '
+      tags: [Member]
+      parameters:
+      - {$ref: '#/parameters/member_uuid_path'}
+      - name: body
+        in: body
+        required: true
+        schema: {$ref: '#/definitions/Member'}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/Member'}
+        '400': {$ref: '#/responses/400'}
+        '401': {$ref: '#/responses/401'}
+        '403': {$ref: '#/responses/403'}
+        '404': {$ref: '#/responses/404'}
+  /member/{member_id}/bags:
+    get:
+      summary: Returns the member's bags
+      description: Returns the member's bags. Behavior should match that of ```/bags/?member=<member:member_id>```,
+        including querystring options except for ```member```.
+      tags: [Member, Bag]
+      parameters:
+      - {$ref: '#/parameters/member_uuid_path'}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/BagResultList'}
+        '401': {$ref: '#/responses/401'}
+        '404': {$ref: '#/responses/404'}
+  /ingest:
+    get:
+      summary: List of ingest records
+      description: Returns a list of ingest records
+      tags: [Ingest]
+      parameters:
+      - {$ref: '#/parameters/before_created'}
+      - {$ref: '#/parameters/after_created'}
+      - {$ref: '#/parameters/bag'}
+      - {$ref: '#/parameters/ingested'}
+      - {$ref: '#/parameters/latest'}
+      - {$ref: '#/parameters/page'}
+      - {$ref: '#/parameters/page_size'}
+      - {$ref: '#/parameters/order_by_created_at'}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/IngestResultList'}
+        '401': {$ref: '#/responses/401'}
+    post:
+      summary: Create an ingest
+      description: 'This endpoint allows the creation of a single ingest record through
+        a post body.  The body is the same as the data structure for the ingest record.  If
+        successful, the response will contain the created record.
+
+        '
+      tags: [Ingest]
+      parameters:
+      - name: body
+        in: body
+        required: true
+        schema: {$ref: '#/definitions/Ingest'}
+      responses:
+        '201':
+          description: Success
+          schema: {$ref: '#/definitions/Ingest'}
+        '400': {$ref: '#/responses/400'}
+        '401': {$ref: '#/responses/401'}
+        '403': {$ref: '#/responses/403'}
+        '409': {$ref: '#/responses/409'}
+  /node:
+    get:
+      summary: List of nodes
+      deprecated: true
+      description: Return a list of node records.
+      tags: [Node]
+      parameters:
+      - {$ref: '#/parameters/before'}
+      - {$ref: '#/parameters/after'}
+      - {$ref: '#/parameters/page'}
+      - {$ref: '#/parameters/page_size'}
+      - {$ref: '#/parameters/order_by_timestamps'}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/NodeResultList'}
+        '401': {$ref: '#/responses/401'}
+  /node/{namespace}:
+    get:
+      summary: Show a specific node
+      description: Returns the data for a single node matching the namespace.
+      tags: [Node]
+      parameters:
+      - {$ref: '#/parameters/namespace'}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/Node'}
+        '401': {$ref: '#/responses/401'}
+        '404': {$ref: '#/responses/404'}
+    put:
+      summary: Update the node
+      description: 'Updates a single Node matching the namespace. The body of the
+        put is the same as the data structure listed for a single record above. If
+        successful, the response will be identical to that of a GET request.
+
+        '
+      tags: [Node]
+      parameters:
+      - {$ref: '#/parameters/namespace'}
+      - name: body
+        description: Body of the node
+        in: body
+        required: true
+        schema: {$ref: '#/definitions/Node'}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/Node'}
+        '400': {$ref: '#/responses/400'}
+        '401': {$ref: '#/responses/401'}
+        '403': {$ref: '#/responses/403'}
+        '404': {$ref: '#/responses/404'}
+  /replicate:
+    get:
+      summary: List of replication requests
+      description: Returns a list of replication transfer requests.
+      tags: [Replicate]
+      parameters:
+      - {$ref: '#/parameters/before'}
+      - {$ref: '#/parameters/after'}
+      - {$ref: '#/parameters/bag'}
+      - {$ref: '#/parameters/to_node'}
+      - {$ref: '#/parameters/from_node'}
+      - {name: store_requested, in: query, description: Filter by store_requested,
+        required: false, type: boolean}
+      - {name: stored, in: query, description: Filter by stored, required: false,
+        type: boolean}
+      - {$ref: '#/parameters/cancelled'}
+      - {$ref: '#/parameters/cancel_reason'}
+      - {$ref: '#/parameters/page'}
+      - {$ref: '#/parameters/page_size'}
+      - {$ref: '#/parameters/order_by_timestamps'}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/ReplicationRequestResultList'}
+        '401': {$ref: '#/responses/401'}
+    post:
+      summary: Create a replication request
+      description: 'This endpoint allows the creation of a single replication request
+        through a post body.  The post body is the same as the data structure for
+        the replication request.  If successful, the response will be identical to
+        that of a GET request.
+
+        '
+      tags: [Replicate]
+      parameters:
+      - name: body
+        in: body
+        required: true
+        schema: {$ref: '#/definitions/ReplicationRequest'}
+      responses:
+        '201':
+          description: Success
+          schema: {$ref: '#/definitions/ReplicationRequest'}
+        '400': {$ref: '#/responses/400'}
+        '401': {$ref: '#/responses/401'}
+        '403': {$ref: '#/responses/403'}
+        '409': {$ref: '#/responses/409'}
+  /replicate/{replication_id}:
+    get:
+      summary: Returns the data for a single replication request.
+      description: Returns the data for a single replication transfer request record
+        matching the replication_id.
+      tags: [Replicate]
+      parameters:
+      - {$ref: '#/parameters/replication_id_path'}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/ReplicationRequest'}
+        '401': {$ref: '#/responses/401'}
+        '404': {$ref: '#/responses/404'}
+    put:
+      summary: Update the replication request
+      description: 'Updates a single replication transfer request matching the replication_id.  The
+        body of the put is the same as the data structure for the replication request.  If
+        successful, the response will be identical to that of a GET request.
+
+        '
+      tags: [Replicate]
+      parameters:
+      - {$ref: '#/parameters/replication_id_path'}
+      - name: body
+        in: body
+        required: true
+        schema: {$ref: '#/definitions/ReplicationRequest'}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/ReplicationRequest'}
+        '400': {$ref: '#/responses/400'}
+        '401': {$ref: '#/responses/401'}
+        '403': {$ref: '#/responses/403'}
+        '404': {$ref: '#/responses/404'}
+  /restore:
+    get:
+      summary: List of restore requests
+      description: Returns a list of restore transfer requests.
+      tags: [Restore]
+      parameters:
+      - {$ref: '#/parameters/before'}
+      - {$ref: '#/parameters/after'}
+      - {$ref: '#/parameters/bag'}
+      - {$ref: '#/parameters/to_node'}
+      - {$ref: '#/parameters/from_node'}
+      - {name: accepted, in: query, description: Filter by accepted, required: false,
+        type: boolean}
+      - {name: finished, in: query, description: Filter by finished, required: false,
+        type: boolean}
+      - {$ref: '#/parameters/cancelled'}
+      - {$ref: '#/parameters/cancel_reason'}
+      - {$ref: '#/parameters/page'}
+      - {$ref: '#/parameters/page_size'}
+      - {$ref: '#/parameters/order_by_timestamps'}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/RestoreRequestResultList'}
+        '401': {description: Authentication Failed}
+    post:
+      summary: Create a restore request
+      description: 'This endpoint allows the creation of a single restore request
+        through a post body.  The post body is the same as the data structure for
+        the restore request.  If successful, the response will be identical to that
+        of a GET request.
+
+        '
+      tags: [Restore]
+      parameters:
+      - name: body
+        in: body
+        required: true
+        schema: {$ref: '#/definitions/RestoreRequest'}
+      responses:
+        '201':
+          description: Success
+          schema: {$ref: '#/definitions/RestoreRequest'}
+        '400': {$ref: '#/responses/400'}
+        '401': {$ref: '#/responses/401'}
+        '403': {$ref: '#/responses/403'}
+        '409': {$ref: '#/responses/409'}
+  /restore/{restore_id}:
+    get:
+      summary: Returns the data for a single restore request.
+      description: Returns the data for a single restore transfer request record matching
+        the restore_id.
+      tags: [Restore]
+      parameters:
+      - {$ref: '#/parameters/restore_id_path'}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/RestoreRequest'}
+        '401': {$ref: '#/responses/401'}
+        '404': {$ref: '#/responses/404'}
+    put:
+      summary: Update the restore request
+      description: 'Updates a single restore transfer request matching the restore_id.  The
+        body of the put is the same as the data structure for the restore request.  If
+        successful, the response will be identical to that of a GET request.
+
+        '
+      tags: [Restore]
+      parameters:
+      - {$ref: '#/parameters/restore_id_path'}
+      - name: body
+        in: body
+        required: true
+        schema: {$ref: '#/definitions/RestoreRequest'}
+      responses:
+        '200':
+          description: Success
+          schema: {$ref: '#/definitions/RestoreRequest'}
+        '400': {$ref: '#/responses/400'}
+        '401': {$ref: '#/responses/401'}
+        '403': {$ref: '#/responses/403'}
+        '404': {$ref: '#/responses/404'}
+

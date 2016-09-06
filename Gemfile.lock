@@ -84,6 +84,7 @@ GEM
     dpn-bagit (0.3.0)
       bagit (~> 0.3.2)
       configliere
+    dpn_swagger_engine (2.2.3.5)
     easy_cipher (0.9.1)
     erubis (2.7.0)
     execjs (2.7.0)
@@ -280,6 +281,7 @@ DEPENDENCIES
   devise
   dpn-bagit (~> 0.3.0)
   dpn-client (~> 2.0.0)!
+  dpn_swagger_engine
   easy_cipher (~> 0.9.1)
   fabrication
   faker
