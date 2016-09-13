@@ -1,0 +1,4 @@
+[submodule "dpn-rest-spec"]
+	path = dpn-rest-spec
+	url = https://github.com/dpn-admin/dpn-rest-spec.git
+	branch = master
