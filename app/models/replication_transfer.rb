@@ -25,7 +25,7 @@ class ReplicationTransfer < ActiveRecord::Base
     unless cancelled
       transaction do
         update!(cancelled: true, cancel_reason: reason)
-        bag_man_request.cancel!(reason)
+        bag_man_request&.cancel!(reason)
       end
     end
   end
@@ -46,6 +46,7 @@ class ReplicationTransfer < ActiveRecord::Base
   after_create :add_request_if_needed
   after_update :preserve_bag_if_needed
   after_update :add_replicating_node_if_needed
+  after_update :request_storage_if_needed
 
 
   ### Static Validations
@@ -99,6 +100,25 @@ class ReplicationTransfer < ActiveRecord::Base
 
   private
 
+  # True if we created this request
+  def we_requested?
+    from_node && from_node.namespace == Rails.configuration.local_namespace
+  end
+
+
+  # If we are the from_node, check fixity
+  # after it is supplied.
+  def request_storage_if_needed
+    if we_requested? && fixity_value && !cancelled? && !store_requested
+      if fixity_value == bag.message_digests.where(fixity_alg_id: fixity_alg_id).first.value
+        update!(store_requested: true)
+      else
+        self.cancel!("fixity_reject")
+      end
+    end
+  end
+
+
   # Cancelled records are read-only.
   def no_changes_once_cancelled
     if changed? && cancelled_was == true
@@ -138,7 +158,7 @@ class ReplicationTransfer < ActiveRecord::Base
   # Adds the replicating node to the bag when it is marked
   # as stored.  Only needed if we are the from_node.
   def add_replicating_node_if_needed
-    if stored_changed?(from: false, to: true) && from_node&.namespace == Rails.configuration.local_namespace
+    if we_requested? && stored_changed?(from: false, to: true)
       bag.replicating_nodes << to_node
     end
   end
