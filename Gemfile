@@ -28,6 +28,7 @@ gem 'devise'
 
 gem 'dpn-bagit', '~>0.3.0'
 gem 'dpn-client', '~>2.0.0', git: 'https://github.com/dpn-admin/dpn-client.git'
+gem 'dpn_swagger_engine'
 
 gem 'bcrypt'
 gem 'easy_cipher', '~>0.9.1'

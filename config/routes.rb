@@ -11,9 +11,10 @@ Rails.application.routes.draw do
   # are disabled in devise (see the migration and the user model)
   devise_for :users
 
-  # Resque routes
+  # Authenticated routes
   authenticate :user do
     mount Resque::Server, at: '/jobs'
+    mount DpnSwaggerEngine::Engine, at: '/api-docs'
   end
 
   scope "/api-v#{VERSION}" do
@@ -24,7 +25,7 @@ Rails.application.routes.draw do
     resources :restore_transfers, only: [:index, :show, :create, :update, :destroy], path: :restore, param: :restore_id
     resources :members, only: [:index, :show, :create, :update, :destroy], path: :member, param: :member_id
     get "/member/:member/bags", controller: :bags, action: :index
-    
+
     get   "/digest",                      controller: :message_digests, action: :index
     get   "/bag/:bag/digest",             controller: :message_digests, action: :index
     post  "/bag/:bag/digest",             controller: :message_digests, action: :create
@@ -36,5 +37,4 @@ Rails.application.routes.draw do
     get   "/ingest",                      controller: :ingests, action: :index
     post  "/ingest",                      controller: :ingests, action: :create
   end
-
 end

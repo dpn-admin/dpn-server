@@ -17,6 +17,8 @@ All other dependencies are described in the gemfile.
 
 ```
 git clone git@github.com:dpn-admin/dpn-server.git
+cd dpn-server
+git submodule update --init --recursive
 bundle install --path .bundle
 bundle exec rake config
 bundle exec rake db:setup
@@ -74,7 +76,7 @@ Node.create!(
 
 ### Installation
 
-Once the files are in place and configured appropriately 
+Once the files are in place and configured appropriately
 on your application server:
 
 ```
@@ -86,13 +88,13 @@ bundle exec rake assets:precompile
 ## Replication and Synchronization
 
 dpn-server now provides built-in clients to handle replication and
-synchronization from other nodes.  If you wish to use this feature, 
+synchronization from other nodes.  If you wish to use this feature,
 you must additionally perform the following configuration steps.
 
 To disable this feature, simply specify `:disbled` in `config/dpn.yml`.
 Consult `config/dpn.yml.example` for more information.
 
-### Firewall 
+### Firewall
 Each other node will need ssh (for rsync) access to your instance.
 
 ### RSync
