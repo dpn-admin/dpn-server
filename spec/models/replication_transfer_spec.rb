@@ -29,43 +29,6 @@ describe ReplicationTransfer, type: :model do
     expect(Fabricate(:replication_transfer, bag: bag, from_node: node, to_node: node)).to be_valid
   end
 
-  context "we are the from_node" do
-    it "add to_node to bag.replicating_nodes when stored" do
-      r = Fabricate(:replication_transfer, stored: false, from_node: Fabricate(:local_node))
-      expect(r.update(stored: true)).to be true
-      expect(r.bag.replicating_nodes).to include r.to_node
-    end
-
-    context "when fixity_value set" do
-      let(:correct_fixity) { "98734723942304820348203840238402983409283408234" }
-      let(:fixity_alg) { Fabricate(:fixity_alg) }
-      let(:bag) {
-        bag = Fabricate(:bag_without_digests)
-        bag.message_digests << Fabricate.build(:message_digest, fixity_alg: fixity_alg, value: correct_fixity)
-        bag.save!
-        bag
-      }
-      let(:transfer) { Fabricate(:replication_transfer,
-        fixity_alg: fixity_alg,
-        bag: bag,
-        from_node: Fabricate(:local_node))
-      }
-      it "sets store_requested->true when correct" do
-        transfer.update!(fixity_value: correct_fixity)
-        expect(transfer.reload.store_requested).to be true
-      end
-      it "cancels with fixity_reject when incorrect" do
-        transfer.update!(fixity_value: "123908102831028301820398120398102830129830")
-        expect(transfer.reload.cancelled).to be true
-        expect(transfer.reload.cancel_reason).to eql("fixity_reject")
-      end
-      it "does not set store_requested when incorrect" do
-        transfer.update!(fixity_value: "102380183019283012830128309128301983")
-        expect(transfer.reload.store_requested).to be false
-      end
-    end
-
-  end
 
   context "we are the to_node" do
     before(:each) do
@@ -77,12 +40,7 @@ describe ReplicationTransfer, type: :model do
       expect(r.bag_man_request).to be_valid
       expect(r.bag_man_request).to have_received(:begin!)
     end
-    it "calls bag_man_request.okay_to_preserve when store_requested" do
-      r = Fabricate(:replication_transfer, store_requested: false, to_node: Fabricate(:local_node))
-      allow(r.bag_man_request).to receive(:okay_to_preserve!)
-      r.update(store_requested: true)
-      expect(r.bag_man_request).to have_received(:okay_to_preserve!)
-    end
+
     it "cancels bag_man_request when cancelled" do
       r = Fabricate(:replication_transfer, to_node: Fabricate(:local_node))
       allow(r.bag_man_request).to receive(:cancel!)
