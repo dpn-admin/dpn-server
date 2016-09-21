@@ -17,12 +17,10 @@
 #
 FROM ruby:2.3.1
 RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs nano
-ENV Release_dir dpn-server-2.0.0-swaggerui
+ENV Release_dir dpn-server-2.0.0-develop
 ## Set your Build Tag
-RUN git clone -b swagger-ui https://github.com/dpn-admin/dpn-server.git /$Release_dir
+RUN git clone -b develop https://github.com/dpn-admin/dpn-server.git /$Release_dir
 RUN cd /$Release_dir; git submodule update --init --recursive
-#RUN curl https://codeload.github.com/dpn-admin/dpn-server/tar.gz/v2.0.0-rc4 \
-#    | tar -zvxf -
 WORKDIR  $Release_dir
 ## Gemfile.local should be in your CWD
 COPY Gemfile.local /$Release_dir/Gemfile.local 
@@ -31,7 +29,6 @@ RUN bundle install --path .bundle
 RUN bundle exec rake config
 RUN bundle exec rake assets:precompile
 RUN bundle exec rake db:setup
-# RUN bundle exec rspec
 ADD . /$Release_dir
 EXPOSE 80
 EXPOSE 443
