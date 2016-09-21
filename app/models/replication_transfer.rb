@@ -21,10 +21,10 @@ class ReplicationTransfer < ActiveRecord::Base
 
 
 
-  def cancel!(reason)
+  def cancel!(reason, detail)
     unless cancelled
       transaction do
-        update!(cancelled: true, cancel_reason: reason)
+        update!(cancelled: true, cancel_reason: reason, cancel_reason_detail: detail)
         bag_man_request&.cancel!(reason)
       end
     end
@@ -80,6 +80,7 @@ class ReplicationTransfer < ActiveRecord::Base
   validates :stored,          read_only: true, on: :update, unless: proc {|r| r.stored_changed?(from: false, to: true)}
   validates :cancelled,       read_only: true, on: :update, unless: proc {|r| r.cancelled_changed?(from: false, to: true)}
   validates :cancel_reason,   read_only: true, on: :update, unless: proc {|r| r.cancelled_changed?(from: false, to: true)}
+  validates :cancel_reason_detail, read_only: true, on: :update, unless: proc {|r| r.cancelled_changed?(from: false, to: true)}
 
 
 

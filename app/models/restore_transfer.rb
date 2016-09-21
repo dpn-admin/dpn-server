@@ -19,9 +19,9 @@ class RestoreTransfer < ActiveRecord::Base
     Set.new [:restore_id]
   end
 
-  def cancel!(reason)
+  def cancel!(reason, detail)
     unless cancelled
-      update!(cancelled: true, cancel_reason: reason)
+      update!(cancelled: true, cancel_reason: reason, cancel_reason_detail: detail)
     end
   end
 
@@ -63,6 +63,7 @@ class RestoreTransfer < ActiveRecord::Base
   validates :finished,        read_only: true, on: :update, unless: proc {|r| r.finished_changed?(from: false, to: true)}
   validates :cancelled,       read_only: true, on: :update, unless: proc {|r| r.cancelled_changed?(from: false, to: true)}
   validates :cancel_reason,   read_only: true, on: :update, unless: proc {|r| r.cancelled_changed?(from: false, to: true)}
+  validates :cancel_reason_detail, read_only: true, on: :update, unless: proc {|r| r.cancelled_changed?(from: false, to: true)}
 
 
   ### Scopes

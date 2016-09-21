@@ -14,6 +14,7 @@ class ReplicationTransferAdapter < ::AbstractAdapter
   map_bool   :stored, :stored
   map_bool   :cancelled, :cancelled
   map_simple :cancel_reason, :cancel_reason
+  map_simple :cancel_reason_detail, :cancel_reason_detail
   map_simple :link, :link
 
   map_belongs_to :bag, :bag, sub_method: :uuid

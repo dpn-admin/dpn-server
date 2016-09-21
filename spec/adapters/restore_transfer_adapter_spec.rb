@@ -19,6 +19,7 @@ describe RestoreTransferAdapter do
   finished = [true,false].sample
   cancelled = true
   cancel_reason = 'other'
+  cancel_reason_detail = "testing is fun # comment // woo"
 
   before(:each) do
     @model = Fabricate(:restore_transfer,
@@ -32,6 +33,7 @@ describe RestoreTransferAdapter do
       finished: finished,
       cancelled: cancelled,
       cancel_reason: cancel_reason,
+      cancel_reason_detail: cancel_reason_detail,
       created_at: created_at,
       updated_at: updated_at
     )
@@ -47,6 +49,7 @@ describe RestoreTransferAdapter do
       finished: finished,
       cancelled: cancelled,
       cancel_reason: cancel_reason,
+      cancel_reason_detail: cancel_reason_detail,
       created_at: created_at,
       updated_at: updated_at
     }
@@ -62,6 +65,7 @@ describe RestoreTransferAdapter do
       finished: finished,
       cancelled: cancelled,
       cancel_reason: cancel_reason,
+      cancel_reason_detail: cancel_reason_detail,
       created_at: time_from_string(created_at),
       updated_at: time_from_string(updated_at)
     }
