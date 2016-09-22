@@ -6,7 +6,7 @@
 
 require 'rails_helper'
 
-describe Client::Sync::QueryBuilder::RestoreRequest do
+describe Client::Sync::QueryBuilder::RestoreTransfer do
   before(:each) do
     @last_success = Time.now
     @query = Client::Query.new :restore, {
@@ -15,7 +15,7 @@ describe Client::Sync::QueryBuilder::RestoreRequest do
     }
   end
 
-  let(:query_builder) { Client::Sync::QueryBuilder::RestoreRequest.new("us", "them") }
+  let(:query_builder) { Client::Sync::QueryBuilder::RestoreTransfer.new("us", "them") }
 
   it "builds the correct queries" do
     queries = query_builder.queries(@last_success)

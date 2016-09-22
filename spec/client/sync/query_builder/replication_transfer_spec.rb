@@ -6,7 +6,7 @@
 
 require 'rails_helper'
 
-describe Client::Sync::QueryBuilder::ReplicationRequest do
+describe Client::Sync::QueryBuilder::ReplicationTransfer do
   before(:each) do
     @last_success = Time.now
     @query = Client::Query.new :replicate, {
@@ -15,7 +15,7 @@ describe Client::Sync::QueryBuilder::ReplicationRequest do
     }
   end
 
-  let(:query_builder) { SClient::ync::QueryBuilder::ReplicationRequest.new("us", "them") }
+  let(:query_builder) { Client::Sync::QueryBuilder::ReplicationTransfer.new("us", "them") }
 
   it "builds the correct queries" do
     queries = query_builder.queries(@last_success)
