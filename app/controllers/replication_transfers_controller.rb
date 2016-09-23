@@ -59,7 +59,7 @@ class ReplicationTransfersController < ApplicationController
       render nothing: true, status: 403 and return
     end
 
-    if @replication_transfer.update(update_params(params))
+    if ReplicationTransferUpdater.update(@replication_transfer, update_params(params))
       render "shared/update", status: 200
     else
       render "shared/errors", status: 400

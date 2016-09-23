@@ -25,9 +25,10 @@ class ReplicationTransfer < ActiveRecord::Base
     unless cancelled
       transaction do
         update!(cancelled: true, cancel_reason: reason)
-        bag_man_request.cancel!(reason)
+        bag_man_request&.cancel!(reason)
       end
     end
+    return true
   end
 
 
@@ -44,8 +45,6 @@ class ReplicationTransfer < ActiveRecord::Base
 
   ### Callbacks
   after_create :add_request_if_needed
-  after_update :preserve_bag_if_needed
-  after_update :add_replicating_node_if_needed
 
 
   ### Static Validations
@@ -121,25 +120,6 @@ class ReplicationTransfer < ActiveRecord::Base
     if to_node&.namespace == Rails.configuration.local_namespace
       self.bag_man_request = BagManRequest.create!( source_location: link, cancelled: false)
       self.bag_man_request.begin!
-    end
-  end
-
-
-  # Instructs the bag manager request to preserve the bag
-  # when storage is requested, typically by the from_node.
-  # Does nothing if there is no bag man request, typically
-  # if we are not the to_node.
-  def preserve_bag_if_needed
-    if store_requested_changed?(from: false, to: true)
-      bag_man_request&.okay_to_preserve!
-    end
-  end
-
-  # Adds the replicating node to the bag when it is marked
-  # as stored.  Only needed if we are the from_node.
-  def add_replicating_node_if_needed
-    if stored_changed?(from: false, to: true) && from_node&.namespace == Rails.configuration.local_namespace
-      bag.replicating_nodes << to_node
     end
   end
 
