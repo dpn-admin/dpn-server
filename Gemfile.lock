@@ -303,6 +303,7 @@ DEPENDENCIES
   rubocop-rspec
   sass-rails
   sdoc (~> 0.4.0)
+  simplecov
   sqlite3
   therubyracer
   uglifier

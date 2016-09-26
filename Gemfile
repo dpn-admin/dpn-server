@@ -57,6 +57,7 @@ gem 'rspec-activejob', group: [:development, :test]
 gem 'rspec-rails', group: [:development, :test]
 gem 'rubocop', group: [:development, :test]
 gem 'rubocop-rspec', group: [:development, :test]
+gem 'simplecov', group: [:test]
 gem 'web-console', '~> 2.1.3', group: [:development, :test]
 gem 'yard', group: [:development, :test]
 
@@ -69,4 +70,3 @@ gem 'uglifier', group: [:assets]
 gem 'coffee-rails', group: [:assets]
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby, group: [:assets]
-

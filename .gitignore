@@ -30,6 +30,9 @@
 # Ignore rspec config
 /.rspec
 
+# Ignore test coverage
+/coverage
+
 # Emacs backup files
 *~
 
