@@ -39,6 +39,8 @@ gem 'kaminari'
 gem 'lograge'
 gem 'logstash-event'
 
+gem 'okcomputer' # app monitoring
+
 gem 'rpairtree'
 gem 'rsync', '~>1.0.9'
 
