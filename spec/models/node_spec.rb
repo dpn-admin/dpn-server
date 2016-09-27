@@ -120,6 +120,15 @@ describe Node do
       expect(Node.local_node!.namespace).to eql(Rails.configuration.local_namespace)
     end
   end
+
+  describe "#local_node?" do
+    it "is true if the node's namespace matches local_namespace" do
+      expect(Fabricate(:node, namespace: Rails.configuration.local_namespace).local_node?).to be true
+    end
+    it "is false if namespace isn't local_namespace" do
+      expect(Fabricate(:node).local_node?).to be false
+    end
+  end
   
   {
     protocols: :protocol, 

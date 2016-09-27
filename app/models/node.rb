@@ -21,6 +21,10 @@ class Node < ActiveRecord::Base
     self.find_by_namespace!(Rails.configuration.local_namespace)
   end
 
+  def local_node?
+    namespace == Rails.configuration.local_namespace
+  end
+
   # Auth Token
   def private_auth_token=(value)
     write_attribute(:private_auth_token, Node.generate_hash(value))
