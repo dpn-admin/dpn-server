@@ -18,6 +18,8 @@ end
 
 gem 'rails', '~> 4.2'
 
+gem 'app_version_tasks' # application semantic version
+
 gem 'active_scheduler', '~>0.3.0'
 gem 'resque', '~>1.26.0'
 gem 'resque-pool', '~>0.6.0'
