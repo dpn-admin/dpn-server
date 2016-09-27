@@ -121,6 +121,7 @@ GEM
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
+    okcomputer (1.11.1)
     orm_adapter (0.5.0)
     parser (2.3.1.2)
       ast (~> 2.2)
@@ -289,6 +290,7 @@ DEPENDENCIES
   kaminari
   lograge
   logstash-event
+  okcomputer
   pry
   pry-doc
   rails (~> 4.2)
