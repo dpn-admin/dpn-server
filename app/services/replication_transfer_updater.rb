@@ -41,10 +41,10 @@ class ReplicationTransferUpdater
       record.update(params)
     end
     def we_requested?
-      record.from_node&.namespace == Rails.configuration.local_namespace
+      record.from_node&.local_node?
     end
     def we_replicating?
-      record.to_node&.namespace == Rails.configuration.local_namespace
+      record.to_node&.local_node?
     end
 
     private

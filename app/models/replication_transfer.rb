@@ -118,7 +118,7 @@ class ReplicationTransfer < ActiveRecord::Base
   # If we are the to_node, create a bag_man_request and
   # associate it with this record.
   def add_request_if_needed
-    if to_node&.namespace == Rails.configuration.local_namespace
+    if to_node&.local_node?
       self.bag_man_request = BagManRequest.create!( source_location: link, cancelled: false)
       self.bag_man_request.begin!
     end
