@@ -59,31 +59,42 @@ describe BagManRequest, type: :model do
     end
 
     context "when not cancelled" do
+      let(:from_node_namespace) { "fake_namespace" }
+      let(:replication) { Fabricate(:replication_transfer, from_node: Fabricate(:node, namespace: from_node_namespace)) }
+      let(:request) {
+        request = Fabricate(:bag_man_request)
+        allow(request).to receive(:replication_transfer).and_return(replication)
+        request
+      }
       before(:each) do
-        @repl_mock = double(:replication_transfer)
-        allow(@repl_mock).to receive(:cancel!)
-        allow(@repl_mock).to receive(:from_node).and_return FromNode.new("fake_namespace")
-        @request = Fabricate(:bag_man_request)
-        allow(@request).to receive(:replication_transfer).and_return(@repl_mock)
         allow(Client::Repl::CancelJob).to receive(:perform_later)
       end
       it "sets the cancel_reason" do
-        @request.cancel!('testing')
-        expect(@request.reload.cancel_reason).to eql('testing')
+        expect(request.cancel_reason).not_to eql('testing')
+        expect {
+          request.cancel!('testing')
+        }.to change {
+          request.reload.cancel_reason
+        }.to eql('testing')
       end
       it "calls replication_transfer.cancel!" do
-        expect(@repl_mock).to receive(:cancel!)
-        @request.cancel!('testing')
+        expect(replication).to receive(:cancel!)
+        request.cancel!('testing')
       end
       it "passes the reason to replication_transfer.cancel!" do
-        expect(@repl_mock).to receive(:cancel!).with('testing')
-        @request.cancel!('testing')
+        expect(replication).to receive(:cancel!).with('testing', anything)
+        request.cancel!('testing')
+      end
+      it "passes last_error as the detail to replication_transfer.cancel!" do
+        request.update!(last_error: "some_error")
+        expect(replication).to receive(:cancel!).with(anything, request.last_error)
+        request.cancel!('testing')
       end
       it "enqueues a Client::Repl::CancelJob" do
         expect(Client::Repl::CancelJob).to receive(:perform_later)
-          .with(@repl_mock, "fake_namespace", "replicate",
+          .with(replication, from_node_namespace, "replicate",
             "update_replication", "ReplicationTransferAdapter")
-        @request.cancel!('testing')
+        request.cancel!('testing')
       end
     end
   end

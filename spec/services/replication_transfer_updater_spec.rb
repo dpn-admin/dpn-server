@@ -51,7 +51,7 @@ describe ReplicationTransferUpdater do
   describe ReplicationTransferUpdater::CancelUpdate do
     describe "::matching_update?" do
       let(:record) { Fabricate(:replication_transfer, cancelled: false, cancel_reason: nil) }
-      let(:changes) { {cancelled: true, cancel_reason: "test"} }
+      let(:changes) { {cancelled: true, cancel_reason: "test", cancel_reason_detail: "test_detail"} }
       it "matches old.cancelled == false, new.cancelled == true" do
         expect(described_class.matching_update?(record, params(record, changes))).to be true
       end
@@ -68,6 +68,10 @@ describe ReplicationTransferUpdater do
         update_poro.update
         expect(record.cancel_reason).to eql("test")
       end
+      it "sets the cancel_reason_detail" do
+        update_poro.update
+        expect(record.cancel_reason_detail).to eql("test_detail")
+      end
       it "returns true on success" do
         allow(record).to receive(:cancel!).and_return true
         expect(update_poro.update).to be true
@@ -79,7 +83,7 @@ describe ReplicationTransferUpdater do
     end
 
     describe "#update" do
-      let(:changes) { {cancelled: true, cancel_reason: "test"} }
+      let(:changes) { {cancelled: true, cancel_reason: "test", cancel_reason_detail: "test_detail"} }
       context "local->other" do
         let(:record) {
           Fabricate(:replication_transfer,
@@ -178,10 +182,15 @@ describe ReplicationTransferUpdater do
       end
       shared_examples "FixityValueUpdate#update as admin failure" do
         include_examples "FixityValueUpdate#update basics"
-        it "cancels with fixity_reject" do
+        it "cancels with cancel_reason: fixity_reject" do
           update_poro.update
           expect(record.cancelled).to be true
           expect(record.cancel_reason).to eql("fixity_reject")
+        end
+        it "cancels with a correct cancel_reason_detail" do
+          update_poro.update
+          expect(record.cancel_reason_detail)
+            .to eql("expected: '#{fixity_value}', got: '#{changes[:fixity_value]}'")
         end
         it "does not set store_requested" do
           update_poro.update

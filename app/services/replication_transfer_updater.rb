@@ -58,7 +58,7 @@ class ReplicationTransferUpdater
       record.cancelled == false && params[:cancelled] == true
     end
     def update
-      record.cancel!(params[:cancel_reason])
+      record.cancel!(params[:cancel_reason], params[:cancel_reason_detail])
     end
   end
 
@@ -83,12 +83,13 @@ class ReplicationTransferUpdater
       if params[:fixity_value] == correct_fixity
         record.update(store_requested: true)
       else
-        record.cancel!("fixity_reject")
+        detail = "expected: '#{correct_fixity}', got: '#{params[:fixity_value]}'"
+        record.cancel!("fixity_reject", detail)
       end
     end
 
     def correct_fixity
-      record.bag.message_digests.where(fixity_alg_id: record.fixity_alg_id).first.value
+      @correct_fixity ||= record.bag.message_digests.where(fixity_alg_id: record.fixity_alg_id).first.value
     end
   end
 
