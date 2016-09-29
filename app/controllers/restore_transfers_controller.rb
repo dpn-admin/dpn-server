@@ -54,7 +54,7 @@ class RestoreTransfersController < ApplicationController
   def update
     @restore_transfer = RestoreTransfer.find_by_restore_id!(params[:restore_id])
 
-    if @requester != @restore_transfer.from_node && @requester.namespace != Rails.configuration.local_namespace
+    if @requester != @restore_transfer.from_node && !@requester.local_node?
       render nothing: true, status: 403 and return
     end
 

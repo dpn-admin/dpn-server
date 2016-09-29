@@ -55,7 +55,7 @@ class ReplicationTransfersController < ApplicationController
   def update
     @replication_transfer = ReplicationTransfer.find_by_replication_id!(params[:replication_id])
 
-    if @requester != @replication_transfer.to_node && @requester.namespace != Rails.configuration.local_namespace
+    if @requester != @replication_transfer.to_node && !@requester.local_node?
       render nothing: true, status: 403 and return
     end
 
