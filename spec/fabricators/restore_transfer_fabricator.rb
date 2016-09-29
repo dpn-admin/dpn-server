@@ -9,6 +9,7 @@ Fabricator(:restore_transfer) do
   finished false
   cancelled false
   cancel_reason nil
+  cancel_reason_detail nil
 
   created_at 1.month.ago
   updated_at 1.month.ago

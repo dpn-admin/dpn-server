@@ -36,5 +36,7 @@ Rails.application.routes.draw do
 
     get   "/ingest",                      controller: :ingests, action: :index
     post  "/ingest",                      controller: :ingests, action: :create
+
+    get   "/version", controller: :version, action: :show
   end
 end

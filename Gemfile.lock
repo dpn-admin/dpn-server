@@ -46,6 +46,8 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    app_version_tasks (0.1.0)
+      git (~> 1.3)
     arel (6.0.3)
     ast (2.3.0)
     bagit (0.3.2)
@@ -91,6 +93,7 @@ GEM
     fabrication (2.15.2)
     faker (1.6.6)
       i18n (~> 0.5)
+    git (1.3.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     highline (1.5.2)
@@ -118,9 +121,11 @@ GEM
     minitest (5.9.0)
     mono_logger (1.1.0)
     multi_json (1.10.1)
+    mysql2 (0.4.4)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
+    okcomputer (1.11.1)
     orm_adapter (0.5.0)
     parser (2.3.1.2)
       ast (~> 2.2)
@@ -244,7 +249,6 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    sqlite3 (1.3.11)
     therubyracer (0.12.2)
       libv8 (~> 3.16.14.0)
       ref
@@ -273,6 +277,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_scheduler (~> 0.3.0)
+  app_version_tasks
   bcrypt
   byebug
   cancan
@@ -289,6 +294,8 @@ DEPENDENCIES
   kaminari
   lograge
   logstash-event
+  mysql2
+  okcomputer
   pry
   pry-doc
   rails (~> 4.2)
@@ -303,7 +310,7 @@ DEPENDENCIES
   rubocop-rspec
   sass-rails
   sdoc (~> 0.4.0)
-  sqlite3
+  simplecov
   therubyracer
   uglifier
   web-console (~> 2.1.3)

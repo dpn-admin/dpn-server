@@ -6,6 +6,20 @@
 require "codeclimate-test-reporter"
 CodeClimate::TestReporter.start
 
+require 'simplecov'
+SimpleCov.profiles.define 'dpn-server' do
+  add_filter '.binstubs'
+  add_filter '.bundle'
+  add_filter '.git'
+  add_filter 'spec'
+  add_filter 'test'
+  # Simplecov can detect changes using data from the
+  # last rspec run.  Travis will never have a previous
+  # dataset for comparison, so it can't fail a travis build.
+  maximum_coverage_drop 0.1
+end
+SimpleCov.start 'dpn-server'
+
 require "rspec/active_job"
 Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}
 

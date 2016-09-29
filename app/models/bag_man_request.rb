@@ -39,7 +39,7 @@ class BagManRequest < ActiveRecord::Base
     unless cancelled
       transaction do
         update!(cancelled: true, cancel_reason: reason)
-        replication_transfer.cancel!(reason)
+        replication_transfer.cancel!(reason, last_error)
         send_cancel(replication_transfer)
       end
     end

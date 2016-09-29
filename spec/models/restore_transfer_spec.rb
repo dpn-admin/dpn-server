@@ -61,7 +61,8 @@ describe RestoreTransfer do
 
   [
     :link,
-    :cancel_reason
+    :cancel_reason,
+    :cancel_reason_detail
   ].each do |field|
     it "#{field} is optional" do
       expect(Fabricate.build(:restore_transfer, field => nil)).to be_valid
@@ -110,7 +111,7 @@ describe RestoreTransfer do
     end
     it "cannot cancel a finished record" do
       expect {
-        Fabricate(:restore_transfer, finished: true).cancel!('other')
+        Fabricate(:restore_transfer, finished: true).cancel!('other', 'detail')
       }.to raise_error ActiveRecord::RecordInvalid
     end
   end
@@ -126,6 +127,25 @@ describe RestoreTransfer do
     end
   end
 
+  describe "#cancel!" do
+    let(:transfer) { Fabricate(:restore_transfer) }
+    before(:each) { transfer.cancel!('other', 'test') }
+    it "is idempotent" do
+      expect {
+        transfer.cancel!('other', 'test')
+      }.to_not raise_error
+    end
+    it "sets cancelled" do
+      expect(transfer.reload.cancelled).to be true
+    end
+    it "sets cancel_reason" do
+      expect(transfer.cancel_reason).to eql('other')
+    end
+    it "sets cancel_reason_detail" do
+      expect(transfer.cancel_reason_detail).to eql('test')
+    end
+  end
+
   describe "cancelled" do
     it "cannot true->false" do
       expect(Fabricate(:restore_transfer, cancelled: true)
@@ -135,17 +155,19 @@ describe RestoreTransfer do
       expect(Fabricate(:restore_transfer, cancelled: false)
         .update(cancelled: true)).to be true
     end
-    it "cancel! is idempotent" do
-      expect {
-        Fabricate(:restore_transfer, cancelled: true).cancel!('other')
-      }.to_not raise_error
-    end
   end
 
   describe "cancel_reason" do
     it "is read-only" do
-      expect(Fabricate(:restore_transfer, cancel_reason: 'other')
+      expect(Fabricate(:restore_transfer, cancelled: true, cancel_reason: 'other')
         .update(cancel_reason: 'changed')).to be false
+    end
+  end
+
+  describe "cancel_reason_detail" do
+    it "is read-only" do
+      expect(Fabricate(:restore_transfer, cancelled: true, cancel_reason: 'other', cancel_reason_detail: 'fun' )
+        .update(cancel_reason_detail: 'more_fun')).to be false
     end
   end
 

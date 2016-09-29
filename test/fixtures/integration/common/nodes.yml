@@ -7,7 +7,7 @@ aptrust:
     updated_at: 2015-09-15T17:39:46.329Z
     api_root: http://127.0.0.1:3001
     private_auth_token: aptrust_token
-    auth_credential: "l4xNuPxI3qt66fI/RKH+HA==\n"
+    auth_credential: <%= Rails.configuration.cipher.encrypt('aptrust_token') %>
     storage_region: va
     storage_type: magnetic_disk
     fixity_algs:
@@ -24,7 +24,7 @@ chron:
     updated_at: 2015-09-15T17:39:46.320Z
     api_root: http://127.0.0.1:3002
     private_auth_token: chron_token
-    auth_credential: "ncKrlkxr0g0dFAuzWHMEfA==\n"
+    auth_credential: <%= Rails.configuration.cipher.encrypt('chron_token') %>
     storage_region: ca
     storage_type: magnetic_disk
     fixity_algs:
@@ -41,7 +41,7 @@ hathi:
     updated_at: 2015-09-15T17:39:46.286Z
     api_root: http://127.0.0.1:3003
     private_auth_token: hathi_token
-    auth_credential: "lewwPcS4gXmPzmBFFv0/tQ==\n"
+    auth_credential: <%= Rails.configuration.cipher.encrypt('hathi_token') %>
     storage_region: mi
     storage_type: magnetic_disk
     fixity_algs:
@@ -58,7 +58,7 @@ sdr:
     updated_at: 2015-09-15T17:39:46.296Z
     api_root: http://127.0.0.1:3004
     private_auth_token: sdr_token
-    auth_credential: "aR2ChPRO3cm3WOpzBQCXfA==\n"
+    auth_credential: <%= Rails.configuration.cipher.encrypt('sdr_token') %>
     storage_region: ca
     storage_type: magnetic_disk
     fixity_algs:
@@ -75,7 +75,7 @@ tdr:
     updated_at: 2015-09-15T17:39:46.309Z
     api_root: http://127.0.0.1:3005
     private_auth_token: tdr_token
-    auth_credential: "e4cJftkeoRm7YWW0y55DTg==\n"
+    auth_credential: <%= Rails.configuration.cipher.encrypt('tdr_token') %>
     storage_region: tx
     storage_type: magnetic_disk
     fixity_algs:

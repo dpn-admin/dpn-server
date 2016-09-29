@@ -18,6 +18,8 @@ end
 
 gem 'rails', '~> 4.2'
 
+gem 'app_version_tasks' # application semantic version
+
 gem 'active_scheduler', '~>0.3.0'
 gem 'resque', '~>1.26.0'
 gem 'resque-pool', '~>0.6.0'
@@ -39,6 +41,10 @@ gem 'kaminari'
 gem 'lograge'
 gem 'logstash-event'
 
+gem 'mysql2'
+
+gem 'okcomputer' # app monitoring
+
 gem 'rpairtree'
 gem 'rsync', '~>1.0.9'
 
@@ -46,7 +52,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Note: These are not in a group block because doing
 #       so breaks group block usage in Gemfile.local
-gem 'sqlite3', group: [:development, :test]
 gem 'byebug', group: [:development, :test]
 gem 'codeclimate-test-reporter', group: [:development, :test]
 gem 'fabrication', group: [:development, :test]
@@ -57,6 +62,7 @@ gem 'rspec-activejob', group: [:development, :test]
 gem 'rspec-rails', group: [:development, :test]
 gem 'rubocop', group: [:development, :test]
 gem 'rubocop-rspec', group: [:development, :test]
+gem 'simplecov', group: [:test]
 gem 'web-console', '~> 2.1.3', group: [:development, :test]
 gem 'yard', group: [:development, :test]
 
@@ -69,4 +75,3 @@ gem 'uglifier', group: [:assets]
 gem 'coffee-rails', group: [:assets]
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby, group: [:assets]
-

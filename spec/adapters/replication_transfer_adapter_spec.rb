@@ -17,6 +17,7 @@ describe ReplicationTransferAdapter do
   updated_at = "2015-02-25T15:27:40Z"
   created_at = "2015-02-25T15:27:40Z"
   link = "user@herp.derp.org:/blah"
+  cancel_reason_detail = "testing is fun # comment // woo"
 
 
   before(:each) do
@@ -34,6 +35,7 @@ describe ReplicationTransferAdapter do
       store_requested: true,
       stored: false,
       cancelled: true,
+      cancel_reason_detail: cancel_reason_detail,
       cancel_reason: 'other',
       created_at: time_from_string(created_at),
       updated_at: time_from_string(updated_at)
@@ -51,6 +53,7 @@ describe ReplicationTransferAdapter do
       stored: false,
       cancelled: true,
       cancel_reason: 'other',
+      cancel_reason_detail: cancel_reason_detail,
       protocol: protocol_name,
       link: link,
       created_at: created_at,
@@ -71,6 +74,7 @@ describe ReplicationTransferAdapter do
       stored: false,
       cancelled: true,
       cancel_reason: 'other',
+      cancel_reason_detail: cancel_reason_detail,
       created_at: time_from_string(created_at),
       updated_at: time_from_string(updated_at)
     }
