@@ -22,7 +22,7 @@ describe ReplicationTransfer, type: :model do
       expect(ReplicationTransfer.find_fields).to eql(Set.new([:replication_id]))
     end
   end
-  
+
   it "allows you to replicate to yourself" do
     node = Fabricate(:node)
     bag = Fabricate(:data_bag, admin_node: node)
@@ -31,21 +31,25 @@ describe ReplicationTransfer, type: :model do
 
 
   context "we are the to_node" do
-    before(:each) do
-      allow_any_instance_of(BagManRequest).to receive(:begin!)
-    end
-
     it "creates a bag_man_request and calls begin!" do
+      bmr = Fabricate(:bag_man_request)
+      expect(bmr).to receive(:begin!)
+      expect(BagManRequest).to receive(:create!).and_return(bmr)
       r = Fabricate(:replication_transfer, to_node: Fabricate(:local_node))
       expect(r.bag_man_request).to be_valid
-      expect(r.bag_man_request).to have_received(:begin!)
     end
 
     it "cancels bag_man_request when cancelled" do
+      # ReplicationTransfer#cancel! calls BagManRequest#cancel! and then
+      # BagManRequest#cancel! calls back to ReplicationTransfer#cancel! so
+      # there should be 2 calls to ReplicationTransfer#cancel!
+      # There is no infinite loop because ReplicationTransfer#cancelled
+      # is the break point and it is set before calling BagManRequest#cancel!
       r = Fabricate(:replication_transfer, to_node: Fabricate(:local_node))
-      allow(r.bag_man_request).to receive(:cancel!)
+      expect(r.bag_man_request.cancelled).to be false
+      expect(r.bag_man_request).to receive(:cancel!).and_call_original
+      expect(r).to receive(:cancel!).twice.and_call_original
       r.cancel!('other', 'detail')
-      expect(r.bag_man_request).to have_received(:cancel!)
     end
   end
 
@@ -148,21 +152,36 @@ describe ReplicationTransfer, type: :model do
 
 
   describe "#cancel!" do
-    let(:transfer) { Fabricate(:replication_transfer) }
-    before(:each) { transfer.cancel!('other', 'test') }
-    it "is idempotent" do
-      expect {
-        transfer.cancel!('other', 'test')
-      }.to_not raise_error
+    let(:cancel_reason) { 'other' }
+    let(:cancel_reason_detail) { 'test' }
+    let(:transfer) { Fabricate(:replication_transfer, cancelled: false) }
+
+    before do
+      expect(transfer.cancelled).to be false
+      transfer.cancel!(cancel_reason, cancel_reason_detail)
+      transfer.reload
+    end
+
+    context "when already cancelled" do
+      it "another call to #cancel! does nothing" do
+        expect(transfer.cancelled).to be true
+        expect(transfer).to receive(:cancelled).and_call_original
+        previous_time = transfer.updated_at
+        expect { transfer.cancel!('reason', 'detail') }.to_not raise_error
+        transfer.reload
+        expect(transfer.updated_at).to eq previous_time
+        expect(transfer.cancel_reason).to eq cancel_reason
+        expect(transfer.cancel_reason_detail).to eq cancel_reason_detail
+      end
     end
     it "sets cancelled" do
-      expect(transfer.reload.cancelled).to be true
+      expect(transfer.cancelled).to be true
     end
     it "sets cancel_reason" do
-      expect(transfer.cancel_reason).to eql('other')
+      expect(transfer.cancel_reason).to eq cancel_reason
     end
     it "sets cancel_reason_detail" do
-      expect(transfer.cancel_reason_detail).to eql('test')
+      expect(transfer.cancel_reason_detail).to eq cancel_reason_detail
     end
   end
 
