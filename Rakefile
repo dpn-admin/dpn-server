@@ -6,8 +6,11 @@ require File.expand_path('../config/application', __FILE__)
 
 Rails.application.load_tasks
 
-# From https://github.com/sul-dlss/app_version_tasks
-# A default configuration works for this application.
-spec = Gem::Specification.find_by_name 'app_version_tasks'
-load "#{spec.gem_dir}/lib/tasks/app_version_tasks.rake"
-require 'app_version_tasks'
+begin
+  # From https://github.com/sul-dlss/app_version_tasks
+  # A default configuration works for this application.
+  spec = Gem::Specification.find_by_name 'app_version_tasks'
+  load "#{spec.gem_dir}/lib/tasks/app_version_tasks.rake"
+  require 'app_version_tasks'
+rescue Gem::LoadError
+end
