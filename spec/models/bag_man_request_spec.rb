@@ -61,40 +61,49 @@ describe BagManRequest, type: :model do
     context "when not cancelled" do
       let(:from_node_namespace) { "fake_namespace" }
       let(:replication) { Fabricate(:replication_transfer, from_node: Fabricate(:node, namespace: from_node_namespace)) }
-      let(:request) {
-        request = Fabricate(:bag_man_request)
-        allow(request).to receive(:replication_transfer).and_return(replication)
-        request
-      }
+      let(:request) { Fabricate(:bag_man_request) }
+      let(:reason) { 'testing' }
+
       before(:each) do
+        allow(request).to receive(:replication_transfer).and_return(replication)
+        allow(replication).to receive(:bag_man_request).and_return(request)
         allow(Client::Repl::CancelJob).to receive(:perform_later)
       end
+
       it "sets the cancel_reason" do
-        expect(request.cancel_reason).not_to eql('testing')
+        expect(request.cancel_reason).not_to eq reason
         expect {
-          request.cancel!('testing')
+          request.cancel!(reason)
         }.to change {
           request.reload.cancel_reason
-        }.to eql('testing')
+        }.to eq reason
       end
       it "calls replication_transfer.cancel!" do
-        expect(replication).to receive(:cancel!)
-        request.cancel!('testing')
+        # BagManRequest#cancel! calls ReplicationTransfer#cancel! and then
+        # ReplicationTransfer#cancel! calls back to BagManRequest#cancel! so
+        # there should be 2 calls to BagManRequest#cancel!
+        # There is no infinite loop because BagManRequest#cancelled
+        # is the break point and it is set before
+        # calling ReplicationTransfer#cancel!
+        expect(replication.cancelled).to be false
+        expect(replication).to receive(:cancel!).and_call_original
+        expect(request).to receive(:cancel!).twice.and_call_original
+        request.cancel!(reason)
       end
       it "passes the reason to replication_transfer.cancel!" do
-        expect(replication).to receive(:cancel!).with('testing', anything)
-        request.cancel!('testing')
+        expect(replication).to receive(:cancel!).with(reason, anything)
+        request.cancel!(reason)
       end
       it "passes last_error as the detail to replication_transfer.cancel!" do
         request.update!(last_error: "some_error")
-        expect(replication).to receive(:cancel!).with(anything, request.last_error)
-        request.cancel!('testing')
+        expect(replication).to receive(:cancel!).with(reason, request.last_error)
+        request.cancel!(reason)
       end
       it "enqueues a Client::Repl::CancelJob" do
         expect(Client::Repl::CancelJob).to receive(:perform_later)
           .with(replication, from_node_namespace, "replicate",
             "update_replication", "ReplicationTransferAdapter")
-        request.cancel!('testing')
+        request.cancel!(reason)
       end
     end
   end
