@@ -18,8 +18,6 @@ end
 
 gem 'rails', '~> 4.2'
 
-gem 'app_version_tasks' # application semantic version
-
 gem 'active_scheduler', '~>0.3.0'
 gem 'resque', '~>1.26.0'
 gem 'resque-pool', '~>0.6.0'
@@ -51,6 +49,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Note: These are not in a group block because doing
 #       so breaks group block usage in Gemfile.local
 gem 'sqlite3', group: [:development, :test]
+gem 'app_version_tasks', group: [:development, :test]
 gem 'byebug', group: [:development, :test]
 gem 'codeclimate-test-reporter', group: [:development, :test]
 gem 'fabrication', group: [:development, :test]
