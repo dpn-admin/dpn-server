@@ -53,6 +53,8 @@ describe FixityCheck do
     expect(Fabricate.build(:fixity_check, fixity_at: 1.minute.ago, created_at: 2.minute.ago)).to_not be_valid
   end
 
+  it_behaves_like "it has temporal scopes for", :created_at
+
   describe "scope latest_only", :broken_in_ci do
     before(:each) do
       @bag1, @bag2 = Fabricate.times(2, :bag)
