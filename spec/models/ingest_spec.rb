@@ -117,5 +117,8 @@ describe Ingest do
       expect(Ingest.where(bag: @bag1).latest_only(true)).to contain_exactly @latest1
     end
   end
+
+  it_behaves_like "it has temporal scopes for", :created_at
+
   
 end
