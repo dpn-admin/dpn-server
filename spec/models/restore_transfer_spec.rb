@@ -173,5 +173,23 @@ describe RestoreTransfer do
 
   it_behaves_like "it has temporal scopes for", :updated_at
 
+  describe "scope with_accepted" do
+    it_behaves_like "a boolean filter" do
+      let(:scope_name) { :with_accepted }
+      let(:field_name) { :accepted }
+    end
+  end
+  describe "scope with_finished" do
+    it_behaves_like "a boolean filter" do
+      let(:scope_name) { :with_finished }
+      let(:field_name) { :finished }
+    end
+  end
+  describe "scope with_cancelled" do
+    it_behaves_like "a boolean filter" do
+      let(:scope_name) { :with_cancelled }
+      let(:field_name) { :cancelled }
+    end
+  end
 
 end

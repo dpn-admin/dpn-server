@@ -215,4 +215,23 @@ describe ReplicationTransfer, type: :model do
 
   it_behaves_like "it has temporal scopes for", :updated_at
 
+  describe "scope with_store_requested" do
+    it_behaves_like "a boolean filter" do
+      let(:scope_name) { :with_store_requested }
+      let(:field_name) { :store_requested }
+    end
+  end
+  describe "scope with_stored" do
+    it_behaves_like "a boolean filter" do
+      let(:scope_name) { :with_stored }
+      let(:field_name) { :stored }
+    end
+  end
+  describe "scope with_cancelled" do
+    it_behaves_like "a boolean filter" do
+      let(:scope_name) { :with_cancelled }
+      let(:field_name) { :cancelled }
+    end
+  end
+
 end

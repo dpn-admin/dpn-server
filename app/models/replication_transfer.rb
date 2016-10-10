@@ -90,9 +90,9 @@ class ReplicationTransfer < ActiveRecord::Base
   scope :with_bag_id, ->(id) { where(bag_id: id) unless id.blank? }
   scope :with_from_node_id, ->(id) { where(from_node_id: id) unless id.blank? }
   scope :with_to_node_id, ->(id) { where(to_node_id: id) unless id.blank? }
-  scope :with_store_requested, ->(v){ where(store_requested: v) unless v.blank? }
-  scope :with_stored, ->(v){ where(stored: v) unless v.blank? }
-  scope :with_cancelled, ->(v){ where(cancelled: v) unless v.blank? }
+  scope :with_store_requested, ->(v){ where(store_requested: v) if [true,false].include?(v) }
+  scope :with_stored, ->(v){ where(stored: v) if [true,false].include?(v) }
+  scope :with_cancelled, ->(v){ where(cancelled: v) if [true,false].include?(v) }
   scope :with_cancel_reason, ->(reason){ where(cancel_reason: reason) unless reason.blank? }
 
 

@@ -34,7 +34,7 @@ class Ingest < ActiveRecord::Base
   scope :created_after, ->(time) { where("created_at > ?", time) unless time.blank? }
   scope :created_before, ->(time) { where("created_at < ?", time) unless time.blank? }
   scope :with_bag_id, ->(id) { where(bag_id: id) unless id.blank? }
-  scope :with_ingested, ->(ingested) { where(ingested: ingested) unless ingested.blank? }
+  scope :with_ingested, ->(ingested) { where(ingested: ingested) if [true,false].include?(ingested) }
   scope :latest_only, ->(flag) { group(:bag_id).having("created_at = max(created_at)") unless flag.blank? }
   
   private

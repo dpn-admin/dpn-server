@@ -120,5 +120,12 @@ describe Ingest do
 
   it_behaves_like "it has temporal scopes for", :created_at
 
+  describe "scope with_ingested" do
+    it_behaves_like "a boolean filter" do
+      let(:scope_name) { :with_ingested }
+      let(:field_name) { :ingested }
+    end
+  end
+
   
 end
