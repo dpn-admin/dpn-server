@@ -9,6 +9,8 @@ Fabricator(:fixity_check) do
   bag
   node
   success true
-  fixity_at 3.seconds.ago
   created_at 1.second.ago
+
+  # fixity_at must be at the same time or before created_at
+  fixity_at {|attrs| (attrs[:created_at] || 1.second.ago) - 3.seconds}
 end

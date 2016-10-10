@@ -127,7 +127,9 @@ class Node < ActiveRecord::Base
   validates :private_auth_token, presence: true, uniqueness: true
   validates :api_root, presence: true, uniqueness: true
 
-
+  ### Scopes
+  scope :updated_before, ->(time) { where("updated_at < ?", time) unless time.blank? }
+  scope :updated_after, ->(time) { where("updated_at > ?", time) unless time.blank? }
 
 
   protected

@@ -26,6 +26,9 @@ class Member < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true
   validates :email, presence: true
 
+  scope :updated_before, ->(time) { where("updated_at < ?", time) unless time.blank? }
+  scope :updated_after, ->(time) { where("updated_at > ?", time) unless time.blank? }
+
   scope :with_name, -> (name) {
     unless name.blank?
       where(name: name)

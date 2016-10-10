@@ -161,4 +161,7 @@ describe Node do
       end
     end
   end
+
+  it_behaves_like "it has temporal scopes for", :updated_at
+
 end

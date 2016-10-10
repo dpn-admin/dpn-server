@@ -59,6 +59,8 @@ describe Member do
     end
   end
 
+  it_behaves_like "it has temporal scopes for", :updated_at
+
   describe "scope" do
     # Define two distinct entities
     let(:member_a) { Fabricate(:member) }
