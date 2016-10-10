@@ -43,4 +43,7 @@ describe MessageDigest do
     expect(Fabricate.build(:message_digest, fixity_alg: r.fixity_alg, bag: r.bag )).to_not be_valid
   end
 
+  it_behaves_like "it has temporal scopes for", :created_at
+
+
 end

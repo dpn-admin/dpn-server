@@ -30,8 +30,8 @@ class MessageDigest < ActiveRecord::Base
   validates_uniqueness_of :bag, scope: :fixity_alg
 
   ### Scopes
-  scope :created_after, ->(time) { where("created_at < ?", time) unless time.blank? }
-  scope :created_before, ->(time) { where("created_at > ?", time) unless time.blank? }
+  scope :created_after, ->(time) { where("created_at > ?", time) unless time.blank? }
+  scope :created_before, ->(time) { where("created_at < ?", time) unless time.blank? }
   scope :with_bag_id, ->(id) { where(bag_id: id) unless id.blank? }
 
 
