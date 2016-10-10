@@ -143,25 +143,7 @@ describe Bag do
     end
   end
 
-  describe "scope updated_before" do
-    let!(:bag) { Fabricate(:bag, updated_at: 1.hour.ago)}
-    it "includes older" do
-      expect(Bag.updated_before(5.minutes.ago)).to include(bag)
-    end
-    it "excludes newer" do
-      expect(Bag.updated_before(2.hours.ago)).to_not include(bag)
-    end
-  end
-
-  describe "scope updated_after" do
-    let!(:bag) { Fabricate(:bag, updated_at: 1.hour.ago)}
-    it "excludes older" do
-      expect(Bag.updated_after(5.minutes.ago)).to_not include(bag)
-    end
-    it "includes newer" do
-      expect(Bag.updated_after(2.hours.ago)).to include(bag)
-    end
-  end
+  it_behaves_like "it has temporal scopes for", :updated_at
 
   describe "scope with_admin_node_id" do
     let!(:bag) { Fabricate(:bag) }
