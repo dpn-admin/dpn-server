@@ -40,6 +40,9 @@ GEM
       activemodel (= 4.2.7.1)
       activesupport (= 4.2.7.1)
       arel (~> 6.0)
+    activerecord-mysql-reconnect (0.4.0)
+      activerecord
+      mysql2
     activesupport (4.2.7.1)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
@@ -277,6 +280,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_scheduler (~> 0.3.0)
+  activerecord-mysql-reconnect
   app_version_tasks
   bcrypt
   byebug

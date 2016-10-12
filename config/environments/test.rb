@@ -49,6 +49,19 @@ Rails.application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
+  # From https://github.com/winebarrel/activerecord-mysql-reconnect
+  config.active_record.enable_retry = true
+  #config.active_record.retry_databases = :employees
+  # e.g. [:employees]
+  #      ['employees', 'localhost:test', '192.168.1.1:users']
+  #      ['192.168.%:emp\_all']
+  #      ['emp%']
+  # retry_databases -> nil: retry all databases (default)
+  config.active_record.execution_tries = 3 # times
+  # execution_tries -> 0: retry indefinitely
+  config.active_record.execution_retry_wait = 1.0 # sec
+  config.active_record.retry_mode = :rw # options: `:r`, `:rw`, `:force`
+
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 

@@ -40,6 +40,7 @@ gem 'lograge'
 gem 'logstash-event'
 
 gem 'mysql2'
+gem 'activerecord-mysql-reconnect'
 
 gem 'okcomputer' # app monitoring
 
