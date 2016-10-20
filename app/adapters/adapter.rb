@@ -33,7 +33,11 @@ module Adapter
   # @param [Symbol] public_field
   def map_bool(model_field, public_field)
     map_from_public public_field do |value|
-      {model_field => to_bool(value) }
+      if value.nil?
+        {model_field => nil}
+      else
+        {model_field => to_bool(value) }
+      end
     end
 
     map_to_public model_field do |value|
@@ -192,7 +196,7 @@ module Adapter
 
   def to_bool(value)
     return true if value == true || value =~ (/^(true|t|yes|y|1)$/i)
-    return false if value == false || value.blank? || value =~ (/^(false|f|no|n|0)$/i)
+    return false if value == false || value =~ (/^(false|f|no|n|0)$/i)
     raise ArgumentError.new("invalid value for boolean: \"#{value}\"")
   end
 
