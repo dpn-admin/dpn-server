@@ -20,8 +20,18 @@ module Client
 
       protected
 
+      SSH_OPTIONS = [
+        "-o BatchMode=yes",
+        "-o ConnectTimeout=3",
+        "-o ChallengeResponseAuthentication=no",
+        "-o PasswordAuthentication=no",
+        "-o UserKnownHostsFile=/dev/null",
+        "-o StrictHostKeyChecking=no",
+        "-i #{Rails.configuration.transfer_private_key}"
+      ]
+
       def perform_rsync(source_location, dest_location)
-        options = ["-a --partial -q -k --copy-unsafe-links -e 'ssh -o PasswordAuthentication=no -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i #{Rails.configuration.transfer_private_key}' "]
+        options = ["-a --partial -q -k --copy-unsafe-links -e 'ssh #{SSH_OPTIONS.join(" ")}' "]
         Rsync.run(source_location, dest_location, options) do |result|
           raise "Failed to transfer" unless result.success?
         end
