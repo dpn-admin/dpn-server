@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/dpn-admin/dpn-server.png?label=ready&title=Ready)](https://waffle.io/dpn-admin/dpn-server)
 # DPN::Server
 
 [![Build Status](https://travis-ci.org/dpn-admin/dpn-server.svg?branch=master)](https://travis-ci.org/dpn-admin/dpn-server)
