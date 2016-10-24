@@ -59,7 +59,7 @@ class RefactorReplicationTransfer < ActiveRecord::Migration
       add_column :replication_transfers, :status, :integer, null: false, default: 0
 
       ReplicationTransfer.where(cancelled: true)
-        .update_all(status: :cancelled)
+        .update_all(status: ReplicationTransfer.statuses[:cancelled])
 
       ReplicationTransfer.where(cancel_reason: 'fixity_reject')
         .update_all(fixity_accept: false)
@@ -68,16 +68,16 @@ class RefactorReplicationTransfer < ActiveRecord::Migration
         .update_all(bag_valid: false)
 
       ReplicationTransfer.where(cancel_reason: 'reject')
-        .update_all(status: :rejected)
+        .update_all(status: ReplicationTransfer.statuses[:rejected])
 
       ReplicationTransfer.where(store_requested: true, cancelled: false, stored: false)
-        .update_all(status: :confirmed, fixity_accept: true, bag_valid: true)
+        .update_all(status: ReplicationTransfer.statuses[:confirmed], fixity_accept: true, bag_valid: true)
 
       ReplicationTransfer.where(stored: true, cancelled: false)
-        .update_all(status: :stored, fixity_accept: true, bag_valid: true)
+        .update_all(status: ReplicationTransfer.statuses[:stored], fixity_accept: true, bag_valid: true)
 
       ReplicationTransfer.where(fixity_value: nil, cancelled: false)
-        .update_all(status: :requested)
+        .update_all(status: ReplicationTransfer.statuses[:requested])
 
       remove_column :replication_transfers, :store_requested
       remove_column :replication_transfers, :stored
