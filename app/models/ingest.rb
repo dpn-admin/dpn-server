@@ -35,8 +35,20 @@ class Ingest < ActiveRecord::Base
   scope :created_before, ->(time) { where("created_at < ?", time) unless time.blank? }
   scope :with_bag_id, ->(id) { where(bag_id: id) unless id.blank? }
   scope :with_ingested, ->(ingested) { where(ingested: ingested) if [true,false].include?(ingested) }
-  scope :latest_only, ->(flag) { group(:bag_id).having("created_at = max(created_at)") unless flag.blank? }
-  
+  scope :latest_only, ->(flag) do
+    unless flag.blank?
+      joins("INNER JOIN (
+        SELECT bag_id, MAX(created_at) AS max_created_at
+        FROM #{Ingest.table_name}
+        GROUP BY bag_id
+        ) AS x
+        ON
+        #{Ingest.table_name}.bag_id = x.bag_id
+        AND
+        #{Ingest.table_name}.created_at = x.max_created_at")
+    end
+  end
+
   private
   
   def fail_unless_new(node)
@@ -47,3 +59,5 @@ class Ingest < ActiveRecord::Base
   end
 
 end
+
+
