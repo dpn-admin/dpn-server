@@ -100,7 +100,7 @@ describe Ingest do
     end
   end
 
-  describe "scope latest_only", :broken_in_ci do
+  describe "scope latest_only", :broken_in_sqlite do
     before(:each) do
       @bag1 = Fabricate(:bag)
       @bag2 = Fabricate(:bag)
