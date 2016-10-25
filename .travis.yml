@@ -37,6 +37,11 @@ before_script:
 
 script: bundle exec rspec --tag ~broken_in_ci
 
+script:
+  - if [[ $DB = 'sqlite' ]]; then bundle exec rspec --tag ~broken_in_sqlite; fi
+  - if [[ $DB = 'mysql' ]]; then bundle exec rspec; fi
+  - if [[ $DB = 'postgres' ]]; then bundle exec rspec; fi
+
 addons:
   code_climate:
     repo_token: ce328d44d99a09d03c1dac2198c731dc8bfd22374fefc1917ce528b25a06ec4e
