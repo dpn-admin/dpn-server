@@ -13,7 +13,7 @@ class AddTimestampsToMessageDigests < ActiveRecord::Migration
   end
 
   def up
-    add_column :message_digests, :created_at, :datetime
+    add_column :message_digests, :created_at, :datetime, default: Time.at(1).utc
     MessageDigest.all.each do |md|
       md.update!(created_at: md.bag.created_at)
     end

@@ -96,11 +96,11 @@ ActiveRecord::Schema.define(version: 20160927230136) do
   add_index "members", ["member_id"], name: "index_members_on_member_id", unique: true
 
   create_table "message_digests", force: :cascade do |t|
-    t.integer  "bag_id",        null: false
-    t.integer  "fixity_alg_id", null: false
-    t.text     "value",         null: false
-    t.integer  "node_id",       null: false
-    t.datetime "created_at",    null: false
+    t.integer  "bag_id",                                        null: false
+    t.integer  "fixity_alg_id",                                 null: false
+    t.text     "value",                                         null: false
+    t.integer  "node_id",                                       null: false
+    t.datetime "created_at",    default: '1970-01-01 00:00:01', null: false
   end
 
   add_index "message_digests", ["bag_id", "fixity_alg_id"], name: "index_message_digests_on_bag_id_and_fixity_alg_id", unique: true
