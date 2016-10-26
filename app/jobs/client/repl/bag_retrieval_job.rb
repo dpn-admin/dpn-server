@@ -30,9 +30,12 @@ module Client
         "-i #{Rails.configuration.transfer_private_key}"
       ]
 
+      def rsync_options
+        @rsync_options ||= ["-a --partial -q -k --copy-unsafe-links -e 'ssh #{SSH_OPTIONS.join(" ")}' "]
+      end
+
       def perform_rsync(source_location, dest_location)
-        options = ["-a --partial -q -k --copy-unsafe-links -e 'ssh #{SSH_OPTIONS.join(" ")}' "]
-        Rsync.run(source_location, dest_location, options) do |result|
+        Rsync.run(source_location, dest_location, rsync_options) do |result|
           raise "Failed to transfer" unless result.success?
         end
       end
