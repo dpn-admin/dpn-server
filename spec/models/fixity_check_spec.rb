@@ -55,7 +55,7 @@ describe FixityCheck do
 
   it_behaves_like "it has temporal scopes for", :created_at
 
-  describe "scope latest_only", :broken_in_sqlite do
+  describe "scope latest_only" do
     before(:each) do
       @bag1, @bag2 = Fabricate.times(2, :bag)
       @node1, @node2 = Fabricate.times(2, :node)

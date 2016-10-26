@@ -38,7 +38,21 @@ class FixityCheck < ActiveRecord::Base
   scope :with_success, ->(success) { where(success: success) unless success.blank? }
   scope :with_bag_id, ->(id) { where(bag_id: id) unless id.blank? }
   scope :with_node_id, ->(id) { where(node_id: id) unless id.blank? }
-  scope :latest_only, ->(flag) { group(:node_id, :bag_id).having("created_at = max(created_at)") unless flag.blank? }
+  scope :latest_only, ->(flag) do
+    unless flag.blank?
+      joins("INNER JOIN (
+        SELECT node_id, bag_id, MAX(created_at) AS max_created_at
+        FROM #{FixityCheck.table_name}
+        GROUP BY node_id, bag_id
+        ) AS x
+        ON
+        #{FixityCheck.table_name}.bag_id = x.bag_id
+        AND
+        #{FixityCheck.table_name}.node_id = x.node_id
+        AND
+        #{FixityCheck.table_name}.created_at = x.max_created_at")
+    end
+  end
 
   private
   def fixity_at_less_than_or_equal_to_created_at
