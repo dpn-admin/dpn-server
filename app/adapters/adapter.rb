@@ -20,6 +20,7 @@ module Adapter
   # @param [Symbol] public_field
   # @param [String] date_format The Date format to use.
   def map_date(model_field, public_field, date_format)
+    raise ArgumentError, "date_format cannot be nil" if date_format.nil?
     map_from_public public_field do |value|
       {model_field => time_from_public(value)}
     end
