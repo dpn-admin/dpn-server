@@ -87,7 +87,7 @@ shared_examples "a create endpoint" do |unused_param, extra_params| #backwards c
       end
       it "assigns the correct object to @#{factory.to_s}" do
         expect(assigns(factory)).to be_a model_class
-        expect(assigns(factory).created_at.to_formatted_s(:dpn)).to eql(valid_post_body[:created_at])
+        expect(assigns(factory).created_at.iso8601).to eql(valid_post_body[:created_at])
       end
       it "renders json" do
         expect(response.content_type).to eql("application/json")
