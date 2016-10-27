@@ -5,7 +5,7 @@
 
 
 class MessageDigestAdapter < ::AbstractAdapter
-  map_date :created_at, :created_at, Time::DATE_FORMATS[:dpn]
+  map_date :created_at, :created_at
   map_simple :value, :value
   map_belongs_to :bag,        :bag,       sub_method: :uuid
   map_belongs_to :node,       :node,      sub_method: :namespace

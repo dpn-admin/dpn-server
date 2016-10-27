@@ -44,8 +44,7 @@ class ApplicationController < ActionController::Base
     [:updated_at, :created_at].each do |key|
       if params.has_key?(key)
         begin
-          timestamp = params[key].gsub(/\.[0-9]*Z\Z/, "Z")
-          params[key] = time_from_string(timestamp)
+          params[key] = Time.zone.parse(params[key])
         rescue ArgumentError
           params[key] = nil
         end

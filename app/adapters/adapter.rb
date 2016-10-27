@@ -18,9 +18,14 @@ module Adapter
   # Register a one-to-one mapping of a date field.
   # @param [Symbol] model_field
   # @param [Symbol] public_field
+<<<<<<< 1c3039d014f5f06568067208f3d245ccb7c0f6c7
   # @param [String] date_format The Date format to use.
   def map_date(model_field, public_field, date_format)
     raise ArgumentError, "date_format cannot be nil" if date_format.nil?
+=======
+  # @param [String] date_format The Date format to use ("%Y-%m-%dT%H:%M:%SZ").
+  def map_date(model_field, public_field, date_format = "%Y-%m-%dT%H:%M:%SZ")
+>>>>>>> Remove config/initializers/time_formats.rb
     map_from_public public_field do |value|
       {model_field => time_from_public(value)}
     end
@@ -166,9 +171,9 @@ module Adapter
 
   def time_from_public(time)
     if time.is_a? String
-      return time_from_string(time)
+      Time.zone.parse(time)
     else
-      return time
+      time
     end
   end
 

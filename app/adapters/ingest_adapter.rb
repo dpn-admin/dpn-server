@@ -5,7 +5,7 @@
 
 
 class IngestAdapter < ::AbstractAdapter
-  map_date :created_at, :created_at, Time::DATE_FORMATS[:dpn]
+  map_date :created_at, :created_at
 
   map_simple      :ingest_id, :ingest_id
   map_belongs_to  :bag,       :bag,       sub_method: :uuid

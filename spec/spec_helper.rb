@@ -101,3 +101,7 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 end
+
+def time_from_string(string_time)
+  Time.zone.parse(string_time)
+end
