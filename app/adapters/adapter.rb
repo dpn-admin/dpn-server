@@ -165,7 +165,11 @@ module Adapter
 
   def time_from_public(time)
     if time.is_a? String
-      Time.zone.parse(time)
+      # return Time object, trucated to seconds, e.g.
+      # time = "2015-02-25T15:27:40.6Z"
+      # Time.iso8601(time).change(:usec => 0)
+      # => "2015-02-25T15:27:40.000Z"
+      Time.iso8601(time).change(:usec => 0)
     else
       time
     end

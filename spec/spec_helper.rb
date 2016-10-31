@@ -102,6 +102,6 @@ RSpec.configure do |config|
 =end
 end
 
-def time_from_string(string_time)
-  Time.zone.parse(string_time)
+def time_from_string(time)
+  Time.iso8601(time).change(:usec => 0)
 end
