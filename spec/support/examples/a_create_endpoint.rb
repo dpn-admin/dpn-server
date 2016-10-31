@@ -24,12 +24,12 @@ shared_examples "a create endpoint" do |unused_param, extra_params| #backwards c
   before(:each) do
     @request.headers["Content-Type"] = "application/json"
   end
-  
+
   let!(:instance) { Fabricate(factory, created_at: 5.seconds.from_now) }
   let!(:valid_post_body) { body_from_instance(instance, extra_params) }
   let!(:invalid_post_body) { {} }
-  
-  
+
+
   context "without authentication" do
     before(:each) do
       model_class.delete(instance.id)
@@ -86,8 +86,10 @@ shared_examples "a create endpoint" do |unused_param, extra_params| #backwards c
         expect(model_class.public_send(:last)).to be_valid
       end
       it "assigns the correct object to @#{factory.to_s}" do
-        expect(assigns(factory)).to be_a model_class
-        expect(assigns(factory).created_at.iso8601).to eql(valid_post_body[:created_at])
+        klass = assigns(factory)
+        expect(klass).to be_a model_class
+        # check the creation time using an iso8601 format, in UTC
+        expect(klass.created_at.utc.iso8601).to eql(valid_post_body[:created_at])
       end
       it "renders json" do
         expect(response.content_type).to eql("application/json")

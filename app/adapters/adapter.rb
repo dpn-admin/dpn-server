@@ -23,7 +23,8 @@ module Adapter
       {model_field => time_from_public(value)}
     end
     map_to_public model_field do |value|
-      {public_field => value.iso8601}
+      # return a datetime in UTC, using an iso8601 format
+      {public_field => value.utc.iso8601}
     end
   end
 
