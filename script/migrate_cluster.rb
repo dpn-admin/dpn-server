@@ -14,7 +14,7 @@ end
 
 %w(aptrust chron hathi sdr tdr).each do |node|
   puts "Migrating db that impersonates local #{node} node."
-  `RAILS_ENV=impersonate IMPERSONATE=#{node} DATABASE_URL=sqlite3:db/impersonate_#{node}.sqlite3 bundle exec rake db:migrate`
+  `RAILS_ENV=impersonate_#{node} DATABASE_URL=sqlite3:db/impersonate_#{node}.sqlite3 bundle exec rake db:migrate`
 end
 
 puts "Now run script/run_cluster.sh to run the cluster"
