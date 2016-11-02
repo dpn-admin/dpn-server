@@ -3,7 +3,7 @@
 # Licensed according to the terms of the Revised BSD License
 # See LICENSE.md for details.
 
-class ReplicationTransferAdapter < ::AbstractAdapter
+RailsViewAdapters::Adapter.define(:replication_transfer_adapter) do
   map_date :created_at, :created_at, Time::DATE_FORMATS[:dpn]
   map_date :updated_at, :updated_at, Time::DATE_FORMATS[:dpn]
 

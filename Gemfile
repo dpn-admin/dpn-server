@@ -23,6 +23,8 @@ gem 'resque', '~>1.26.0'
 gem 'resque-pool', '~>0.6.0'
 gem 'resque-scheduler', '~>4.3.0'
 
+gem 'rails_view_adapters'
+
 gem 'cancan'
 gem 'devise'
 

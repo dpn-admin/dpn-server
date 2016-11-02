@@ -5,7 +5,7 @@
 
 
 
-class BagAdapter < ::AbstractAdapter
+RailsViewAdapters::Adapter.define(:bag_adapter) do
 
   map_date :created_at, :created_at, Time::DATE_FORMATS[:dpn]
   map_date :updated_at, :updated_at, Time::DATE_FORMATS[:dpn]
@@ -37,9 +37,8 @@ class BagAdapter < ::AbstractAdapter
     {version_family: VersionFamily.find_or_initialize_by(uuid: uuid)}
   end
 
-      private
 
-  @@bag_types = {
+  @bag_types = {
     d: "DataBag",
     r: "RightsBag",
     i: "InterpretiveBag"
@@ -47,7 +46,7 @@ class BagAdapter < ::AbstractAdapter
 
   def self.model_bag_type(public_type)
     if public_type.is_a? String
-      return @@bag_types[public_type.downcase.to_sym]
+      return @bag_types[public_type.downcase.to_sym]
     else
       return nil
     end

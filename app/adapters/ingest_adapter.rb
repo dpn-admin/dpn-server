@@ -4,7 +4,7 @@
 # See LICENSE.md for details.
 
 
-class IngestAdapter < ::AbstractAdapter
+RailsViewAdapters::Adapter.define(:ingest_adapter) do
   map_date :created_at, :created_at, Time::DATE_FORMATS[:dpn]
 
   map_simple      :ingest_id, :ingest_id

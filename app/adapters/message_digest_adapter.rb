@@ -4,7 +4,7 @@
 # See LICENSE.md for details.
 
 
-class MessageDigestAdapter < ::AbstractAdapter
+RailsViewAdapters::Adapter.define(:message_digest_adapter) do
   map_date :created_at, :created_at, Time::DATE_FORMATS[:dpn]
   map_simple :value, :value
   map_belongs_to :bag,        :bag,       sub_method: :uuid

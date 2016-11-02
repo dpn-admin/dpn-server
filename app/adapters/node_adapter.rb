@@ -5,7 +5,7 @@
 
 
 
-class NodeAdapter < ::AbstractAdapter
+RailsViewAdapters::Adapter.define(:node_adapter) do
   map_date :created_at, :created_at, Time::DATE_FORMATS[:dpn]
   map_date :updated_at, :updated_at, Time::DATE_FORMATS[:dpn]
 
