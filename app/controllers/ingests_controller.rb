@@ -15,7 +15,7 @@ class IngestsController < ApplicationController
   def index
     @ingests = Ingest.created_after(params[:after])
       .created_before(params[:before])
-      .with_bag_id(params[:bag_id])
+      .with_bag(params[:bag])
       .with_ingested(params[:ingested])
       .latest_only(convert_bool(params[:latest]))
       .page(@page)
@@ -39,8 +39,13 @@ class IngestsController < ApplicationController
   
   
   private
+  SCALAR_PARAMS = [:ingest_id, :ingested, :created_at]
+  ASSOCIATED_PARAMS = [:bag, :nodes]
+
   def create_params(params)
-    params.permit(Ingest.attribute_names)
+    params
+      .permit(SCALAR_PARAMS)
+      .merge(params.slice(*ASSOCIATED_PARAMS))
   end
 
 end
