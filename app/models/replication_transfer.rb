@@ -87,9 +87,9 @@ class ReplicationTransfer < ActiveRecord::Base
   ### Scopes
   scope :updated_after, ->(time) { where("updated_at > ?", time) unless time.blank? }
   scope :updated_before, ->(time) { where("updated_at < ?", time) unless time.blank? }
-  scope :with_bag_id, ->(id) { where(bag_id: id) unless id.blank? }
-  scope :with_from_node_id, ->(id) { where(from_node_id: id) unless id.blank? }
-  scope :with_to_node_id, ->(id) { where(to_node_id: id) unless id.blank? }
+  scope :with_bag, ->(bag) { where(bag: bag) unless bag.new_record? }
+  scope :with_from_node, ->(node) { where(from_node: node) unless node.new_record? }
+  scope :with_to_node, ->(node) { where(to_node: node) unless node.new_record? }
   scope :with_store_requested, ->(v){ where(store_requested: v) if [true,false].include?(v) }
   scope :with_stored, ->(v){ where(stored: v) if [true,false].include?(v) }
   scope :with_cancelled, ->(v){ where(cancelled: v) if [true,false].include?(v) }

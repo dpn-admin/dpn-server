@@ -215,6 +215,39 @@ describe ReplicationTransfer, type: :model do
 
   it_behaves_like "it has temporal scopes for", :updated_at
 
+  describe "scope with_bag" do
+    let!(:transfer) { Fabricate(:replication_transfer) }
+    let!(:other_transfer) { Fabricate(:replication_transfer) }
+    it "includes matching only" do
+      expect(ReplicationTransfer.with_bag(transfer.bag)).to match_array [transfer]
+    end
+    it "does not filter given a new record" do
+      expect(ReplicationTransfer.with_bag(Fabricate.build(:bag)))
+        .to contain_exactly(transfer, other_transfer)
+    end
+  end
+  describe "scope with_from_node" do
+    let!(:transfer) { Fabricate(:replication_transfer) }
+    let!(:other_transfer) { Fabricate(:replication_transfer) }
+    it "includes matching only" do
+      expect(ReplicationTransfer.with_from_node(transfer.from_node)).to match_array [transfer]
+    end
+    it "does not filter given a new record" do
+      expect(ReplicationTransfer.with_from_node(Fabricate.build(:node)))
+        .to contain_exactly(transfer, other_transfer)
+    end
+  end
+  describe "scope with_to_node" do
+    let!(:transfer) { Fabricate(:replication_transfer) }
+    let!(:other_transfer) { Fabricate(:replication_transfer) }
+    it "includes matching only" do
+      expect(ReplicationTransfer.with_to_node(transfer.to_node)).to match_array [transfer]
+    end
+    it "does not filter given a new record" do
+      expect(ReplicationTransfer.with_to_node(Fabricate.build(:node)))
+        .to contain_exactly(transfer, other_transfer)
+    end
+  end
   describe "scope with_store_requested" do
     it_behaves_like "a boolean filter" do
       let(:scope_name) { :with_store_requested }
