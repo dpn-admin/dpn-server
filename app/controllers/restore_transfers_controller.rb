@@ -16,9 +16,9 @@ class RestoreTransfersController < ApplicationController
   def index
     @restore_transfers = RestoreTransfer.updated_after(params[:after])
       .updated_before(params[:before])
-      .with_bag_id(params[:bag_id])
-      .with_to_node_id(params[:to_node_id])
-      .with_from_node_id(params[:from_node_id])
+      .with_bag(params[:bag])
+      .with_to_node(params[:to_node])
+      .with_from_node(params[:from_node])
       .with_accepted(params[:accepted])
       .with_finished(params[:finished])
       .with_cancelled(params[:cancelled])
@@ -74,8 +74,20 @@ class RestoreTransfersController < ApplicationController
   end
 
   private
+
+  SCALAR_PARAMS = [
+    :link, :created_at, :updated_at,
+    :restore_id, :accepted, :finished,
+    :cancelled, :cancel_reason, :cancel_reason_detail
+  ]
+  ASSOCIATED_PARAMS = [
+    :bag, :from_node, :to_node, :protocol
+  ]
+
   def create_params(params)
-    params.permit(RestoreTransfer.attribute_names + [:requester])
+    params
+      .permit(SCALAR_PARAMS)
+      .merge(params.slice(*ASSOCIATED_PARAMS))
   end
 
 
