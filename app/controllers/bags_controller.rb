@@ -15,9 +15,9 @@ class BagsController < ApplicationController
   def index
     @bags = Bag.updated_after(params[:after])
       .updated_before(params[:before])
-      .with_admin_node_id(params[:admin_node_id])
-      .with_ingest_node_id(params[:ingest_node_id])
-      .with_member_id(params[:member_id])
+      .with_admin_node(params[:admin_node])
+      .with_ingest_node(params[:ingest_node])
+      .with_member(params[:member])
       .with_bag_type(params[:type])
       .replicated_by(params[:replicating_nodes])
       .order(parse_ordering(params[:order_by]))
@@ -48,7 +48,7 @@ class BagsController < ApplicationController
       else
         Bag.new
       end
-      if @bag.update_with_associations(create_params(params))
+      if @bag.update_with_associations(params)
         render "shared/create", status: 201
       else
         render "shared/errors", status: 400
@@ -60,7 +60,7 @@ class BagsController < ApplicationController
   def update
     @bag = Bag.find_by_uuid!(params[:uuid])
 
-    if @bag.update_with_associations(update_params(params))
+    if @bag.update_with_associations(params)
       render "shared/update", status: 200
     else
       render "shared/errors", status: 400
@@ -73,22 +73,5 @@ class BagsController < ApplicationController
     bag.destroy!
     render nothing: true, status: 204
   end
-
-
-  private
-
-
-  def create_params(params)
-    new_params = params.permit(Bag.attribute_names)
-    new_params.merge! params.slice(
-      :replicating_nodes, :version_family,
-      :rights_bags, :interpretive_bags)
-    return new_params
-  end
-
-  def update_params(params)
-    create_params(params)
-  end
-
 
 end
