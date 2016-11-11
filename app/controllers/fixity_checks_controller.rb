@@ -16,8 +16,8 @@ class FixityChecksController < ApplicationController
     @fixity_checks = FixityCheck.created_after(params[:after])
       .created_before(params[:before])
       .with_success(params[:success])
-      .with_node_id(params[:node_id])
-      .with_bag_id(params[:bag_id])
+      .with_node(params[:node])
+      .with_bag(params[:bag])
       .latest_only(convert_bool(params[:latest]))
       .page(@page)
       .per(@page_size)
@@ -41,7 +41,9 @@ class FixityChecksController < ApplicationController
 
   private
   def create_params(params)
-    params.permit(FixityCheck.attribute_names)
+    params
+      .permit(:fixity_check_id, :fixity_at, :success, :created_at)
+      .merge(params.slice(:bag, :node))
   end
 
 end
