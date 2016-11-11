@@ -56,10 +56,10 @@ describe RestoreTransferAdapter do
 
     @model_hash = {
       restore_id: restore_id,
-      from_node_id: @model.from_node_id,
-      to_node_id: @model.to_node_id,
-      bag_id: @model.bag_id,
-      protocol_id: @model.protocol_id,
+      from_node: @model.from_node,
+      to_node: @model.to_node,
+      bag: @model.bag,
+      protocol: @model.protocol,
       link: link,
       accepted: accepted,
       finished: finished,

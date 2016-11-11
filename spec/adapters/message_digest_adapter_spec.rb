@@ -31,9 +31,9 @@ describe MessageDigestAdapter do
     }
 
     @model_hash = {
-      bag_id: @model.bag_id,
-      node_id: @model.node_id,
-      fixity_alg_id: @model.fixity_alg_id,
+      bag: @model.bag,
+      node: @model.node,
+      fixity_alg: @model.fixity_alg,
       value: value,
       created_at: time_from_string("2015-02-25T15:27:40Z")
     }

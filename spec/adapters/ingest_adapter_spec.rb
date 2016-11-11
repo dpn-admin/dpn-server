@@ -33,7 +33,7 @@ describe IngestAdapter do
 
     @model_hash = {
       ingest_id: ingest_id,
-      bag_id: @model.bag_id,
+      bag: @model.bag,
       ingested: ingested,
       nodes: @model.nodes,
       created_at: time_from_string(created_at)
