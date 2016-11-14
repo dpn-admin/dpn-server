@@ -12,6 +12,8 @@ class FixityCheck < ActiveRecord::Base
   
   belongs_to :node, inverse_of: :fixity_checks
   belongs_to :bag, inverse_of: :fixity_checks
+  validates_associated :node
+  validates_associated :bag
 
   ### ActiveModel::Dirty Validations
   validates :fixity_check_id, read_only: true, on: :update
