@@ -11,10 +11,12 @@ class Ingest < ActiveRecord::Base
   end
   
   belongs_to :bag, inverse_of: :ingests
+  validates_associated :bag
 
   has_many :node_ingests, inverse_of: :ingest, dependent: :destroy,
     before_add: :fail_unless_new,
     before_remove: :fail_unless_new
+
   has_many :nodes, through: :node_ingests, source: :node
 
   ### ActiveModel::Dirty Validations
