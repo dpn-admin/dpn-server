@@ -33,6 +33,10 @@ class RestoreTransfer < ActiveRecord::Base
     inverse_of: :restore_transfers_to
   belongs_to :bag
   belongs_to :protocol
+  validates_associated :from_node
+  validates_associated :to_node
+  validates_associated :bag
+  validates_associated :protocol
 
 
   ### Static Validations
