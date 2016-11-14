@@ -34,23 +34,24 @@ class Bag < ActiveRecord::Base
   ### Associations
   belongs_to :ingest_node, :foreign_key => "ingest_node_id", :class_name => "Node",
              autosave: true, inverse_of: :ingest_bags
+  validates_associated :ingest_node
+
   belongs_to :admin_node, :foreign_key => "admin_node_id", :class_name => "Node",
              autosave: true, inverse_of: :admin_bags
+  validates_associated :admin_node
+
   belongs_to :member, :foreign_key => "member_id", :class_name => "Member",
              autosave: true, inverse_of: :bags
-
-  has_many :message_digests, autosave: true, dependent: :destroy, inverse_of: :bag
-  validates_associated :message_digests
-  
-  has_many :fixity_checks, inverse_of: :bag
-  has_many :ingests, inverse_of: :bag
+  validates_associated :member
 
   belongs_to :version_family, :inverse_of => :bags, autosave: true
   validates_associated :version_family
 
+  has_many :message_digests, autosave: true, dependent: :destroy, inverse_of: :bag
+  has_many :fixity_checks, inverse_of: :bag
+  has_many :ingests, inverse_of: :bag
   has_many :replication_transfers, autosave: true, inverse_of: :bag
   has_many :restore_transfers, autosave: true, inverse_of: :bag
-
   has_many :bag_nodes, inverse_of: :bag
   has_many :replicating_nodes, through: :bag_nodes, source: :node
   
@@ -110,9 +111,18 @@ class Bag < ActiveRecord::Base
   
   def set_attributes_with_associations(new_attributes, &block)
     new_attributes = new_attributes.with_indifferent_access
-    self.attributes = new_attributes.slice(*attribute_names)
-    self.replicating_nodes = new_attributes[:replicating_nodes]
+    self.uuid           = new_attributes[:uuid]
+    self.local_id       = new_attributes[:local_id]
+    self.size           = new_attributes[:size]
+    self.version        = new_attributes[:version]
+    self.type           = new_attributes[:type]
+    self.created_at     = new_attributes[:created_at]
+    self.updated_at     = new_attributes[:updated_at]
+    self.member         = new_attributes[:member]
+    self.ingest_node    = new_attributes[:ingest_node]
+    self.admin_node     = new_attributes[:admin_node]
     self.version_family = new_attributes[:version_family]
+    self.replicating_nodes = new_attributes[:replicating_nodes]
     if self.is_a?(DataBag)
       self.rights_bags = new_attributes[:rights_bags]
       self.interpretive_bags = new_attributes[:interpretive_bags]
