@@ -42,6 +42,11 @@ class ReplicationTransfer < ActiveRecord::Base
   belongs_to :protocol
   has_one :bag_man_request, inverse_of: :replication_transfer
 
+  validates_associated :from_node
+  validates_associated :to_node
+  validates_associated :bag
+  validates_associated :fixity_alg
+  validates_associated :protocol
 
   ### Callbacks
   after_create :add_request_if_needed
