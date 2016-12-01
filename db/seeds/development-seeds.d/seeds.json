@@ -1,0 +1,93 @@
+{
+  "fixity_algs":[
+    { "name": "sha256" },
+    { "name": "md5" }
+  ],
+  "protocols":[
+    { "name": "rsync" }
+  ],
+  "storage_regions": [
+    { "name": "default" }
+  ],
+  "storage_types": [
+    { "name": "default" }
+  ],
+  "members": [],
+  "nodes": [
+    {
+      "namespace": "hathi",
+      "name": "HathiTrust",
+      "storage_region": "default",
+      "storage_type": "default",
+      "fixity_algs": ["md5","sha256"],
+      "protocols": ["rsync"],
+      "api_root": "http://127.0.0.1",
+      "private_auth_token": "hathi_token",
+      "auth_credential": "hathi_token",
+      "replicate_to_nodes": ["hathi", "sdr", "tdr", "chron", "aptrust"],
+      "replicate_from_nodes": ["hathi", "sdr", "tdr", "chron", "aptrust"],
+      "restore_to_nodes": ["hathi", "sdr", "tdr", "chron", "aptrust"],
+      "restore_from_nodes": ["hathi", "sdr", "tdr", "chron", "aptrust"]
+    },
+    {
+      "namespace": "sdr",
+      "name": "Stanford University",
+      "storage_region": "default",
+      "storage_type": "default",
+      "fixity_algs": ["md5","sha256"],
+      "protocols": ["rsync"],
+      "api_root": "http://192.168.33.11",
+      "private_auth_token": "sdr_token",
+      "auth_credential": "sdr_token",
+      "replicate_to_nodes": ["hathi", "sdr", "tdr", "chron", "aptrust"],
+      "replicate_from_nodes": ["hathi", "sdr", "tdr", "chron", "aptrust"],
+      "restore_to_nodes": ["hathi", "sdr", "tdr", "chron", "aptrust"],
+      "restore_from_nodes": ["hathi", "sdr", "tdr", "chron", "aptrust"]
+    },
+    {
+      "namespace": "tdr",
+      "name": "Texas Digital Repository",
+      "storage_region": "default",
+      "storage_type": "default",
+      "fixity_algs": ["md5","sha256"],
+      "protocols": ["rsync"],
+      "api_root": "http://192.168.33.12",
+      "private_auth_token": "tdr_token",
+      "auth_credential": "tdr_token",
+      "replicate_to_nodes": ["hathi", "sdr", "tdr", "chron", "aptrust"],
+      "replicate_from_nodes": ["hathi", "sdr", "tdr", "chron", "aptrust"],
+      "restore_to_nodes": ["hathi", "sdr", "tdr", "chron", "aptrust"],
+      "restore_from_nodes": ["hathi", "sdr", "tdr", "chron", "aptrust"]
+    },
+    {
+      "namespace": "chron",
+      "name": "Chronopolis",
+      "storage_region": "default",
+      "storage_type": "default",
+      "fixity_algs": ["md5","sha256"],
+      "protocols": ["rsync"],
+      "api_root": "http://192.168.33.13",
+      "private_auth_token": "chron_token",
+      "auth_credential": "chron_token",
+      "replicate_to_nodes": ["hathi", "sdr", "tdr", "chron", "aptrust"],
+      "replicate_from_nodes": ["hathi", "sdr", "tdr", "chron", "aptrust"],
+      "restore_to_nodes": ["hathi", "sdr", "tdr", "chron", "aptrust"],
+      "restore_from_nodes": ["hathi", "sdr", "tdr", "chron", "aptrust"]
+    },
+    {
+      "namespace": "aptrust",
+      "name": "APTrust",
+      "storage_region": "default",
+      "storage_type": "default",
+      "fixity_algs": ["md5","sha256"],
+      "protocols": ["rsync"],
+      "api_root": "http://192.168.33.14",
+      "private_auth_token": "aptrust_token",
+      "auth_credential": "aptrust_token",
+      "replicate_to_nodes": ["hathi", "sdr", "tdr", "chron", "aptrust"],
+      "replicate_from_nodes": ["hathi", "sdr", "tdr", "chron", "aptrust"],
+      "restore_to_nodes": ["hathi", "sdr", "tdr", "chron", "aptrust"],
+      "restore_from_nodes": ["hathi", "sdr", "tdr", "chron", "aptrust"]
+    }
+  ]
+}
