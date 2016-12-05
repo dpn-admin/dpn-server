@@ -19,7 +19,7 @@ describe RunTime do
     Fabricate(:run_time, name: "some_name")
     expect { 
       Fabricate(:run_time, name: "some_name")
-    }.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: Name has already been taken")
+    }.to raise_error ActiveRecord::RecordNotUnique
   end
   
   it "populates last_success with epoch" do

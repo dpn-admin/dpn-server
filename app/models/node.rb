@@ -122,7 +122,7 @@ class Node < ActiveRecord::Base
 
 
   ### Static Validations
-  validates :namespace, presence: true, uniqueness: true
+  validates :namespace, presence: true
   validates :name, presence: true, length: { minimum: 1 }
   validates :private_auth_token, presence: true, uniqueness: true
   validates :api_root, presence: true, uniqueness: true

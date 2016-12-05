@@ -36,7 +36,7 @@ class RestoreTransfer < ActiveRecord::Base
 
 
   ### Static Validations
-  validates :restore_id, uniqueness: true, presence: true
+  validates :restore_id, presence: true
   validates :from_node, presence: true
   validates :to_node, presence: true
   validates :bag, presence: true

@@ -27,7 +27,6 @@ class MessageDigest < ActiveRecord::Base
   validates :value,       presence: true
   validates :node,        presence: true
   validates :created_at,  presence: true
-  validates_uniqueness_of :bag, scope: :fixity_alg
 
   ### Scopes
   scope :created_after, ->(time) { where("created_at > ?", time) unless time.blank? }

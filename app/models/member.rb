@@ -20,7 +20,7 @@ class Member < ActiveRecord::Base
   validates :member_id, read_only: true, on: :update
 
   ### Static Validations
-  validates :member_id, presence: true, uniqueness: true,
+  validates :member_id, presence: true,
             format: { with: /\A[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}\z/i,
             message: "must be a valid v4 uuid." }
   validates :name, presence: true, uniqueness: true

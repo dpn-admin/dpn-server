@@ -48,7 +48,7 @@ class ReplicationTransfer < ActiveRecord::Base
 
 
   ### Static Validations
-  validates :replication_id, uniqueness: true, presence: true
+  validates :replication_id, presence: true
   validates :from_node, presence: true
   validates :to_node, presence: true
   validates :bag, presence: true

@@ -38,7 +38,9 @@ describe FixityCheck do
   describe "fixity_check_id" do
     it "is unique" do
       r = Fabricate(:fixity_check)
-      expect(Fabricate.build(:fixity_check, fixity_check_id: r.fixity_check_id)).to_not be_valid
+      expect {
+        Fabricate(:fixity_check, fixity_check_id: r.fixity_check_id)
+      }.to raise_error ActiveRecord::RecordNotUnique
     end
     it "is a uuidv4" do
       expect(Fabricate.build(:fixity_check, fixity_check_id: SecureRandom.uuid)).to be_valid

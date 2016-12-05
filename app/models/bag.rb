@@ -62,7 +62,7 @@ class Bag < ActiveRecord::Base
   validates :version_family_id, read_only: true, on: :update
 
   ### Static Validations
-  validates :uuid, presence: true, uniqueness: true,
+  validates :uuid, presence: true,
             format: { with: /\A[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}\z/i,
             message: "must be a valid v4 uuid." }
 

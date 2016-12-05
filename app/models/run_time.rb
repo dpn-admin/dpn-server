@@ -7,7 +7,7 @@
 class RunTime < ActiveRecord::Base
   after_initialize :defaults!
 
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true
   validates :last_success, presence: true
 
   def defaults!
