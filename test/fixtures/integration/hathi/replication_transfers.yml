@@ -8,7 +8,7 @@ xfer01_to_aptrust:
     to_node: aptrust
     protocol: rsync
     fixity_alg: sha256
-    store_requested: false
+    store_requested: true
     stored: false
     cancelled: false
 
@@ -22,7 +22,7 @@ xfer01_to_chron:
     to_node: chron
     protocol: rsync
     fixity_alg: sha256
-    store_requested: false
+    store_requested: true
     stored: false
     cancelled: false
 
@@ -36,7 +36,7 @@ xfer01_to_sdr:
     to_node: sdr
     protocol: rsync
     fixity_alg: sha256
-    store_requested: false
+    store_requested: true
     stored: false
     cancelled: false
 
@@ -50,6 +50,6 @@ xfer01_to_tdr:
     to_node: tdr
     protocol: rsync
     fixity_alg: sha256
-    store_requested: false
+    store_requested: true
     stored: false
     cancelled: false
