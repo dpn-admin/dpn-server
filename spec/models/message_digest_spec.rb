@@ -40,7 +40,9 @@ describe MessageDigest do
 
   it "is unique by fixity_alg-bag pairs" do
     r = Fabricate(:message_digest)
-    expect(Fabricate.build(:message_digest, fixity_alg: r.fixity_alg, bag: r.bag )).to_not be_valid
+    expect {
+      Fabricate(:message_digest, fixity_alg: r.fixity_alg, bag: r.bag )
+    }.to raise_error ActiveRecord::RecordNotUnique
   end
 
   it_behaves_like "it has temporal scopes for", :created_at

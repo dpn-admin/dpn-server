@@ -24,7 +24,7 @@ class Ingest < ActiveRecord::Base
   validates :created_at,  read_only: true, on: :update
 
   ### Static Validations
-  validates :ingest_id, presence: true, uniqueness: true,
+  validates :ingest_id, presence: true,
     format: { with: /\A[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}\z/i,
       message: "must be a valid v4 uuid." }
   validates :bag,             presence: true
