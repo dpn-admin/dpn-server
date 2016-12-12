@@ -44,8 +44,11 @@ describe NodeAdapter do
     @model.restore_to_nodes = [Fabricate(:node, namespace: restore_to_namespace)]
     @model.protocols = [Fabricate(:protocol, name: protocol_a), Fabricate(:protocol, name: protocol_b)]
     @model.fixity_algs = [Fabricate(:fixity_alg, name: fixity_alg_name)]
-    @model.updated_at = time_from_string(updated_at) # the above assignments touch this value
     @model.save!
+
+    # Various functionality prevents manual control of the timestamp, 
+    # so we skip validations and callbacks here.
+    @model.update_columns(updated_at: time_from_string(updated_at))
 
     @public_hash = {
       name: name,

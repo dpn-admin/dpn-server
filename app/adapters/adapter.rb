@@ -15,6 +15,37 @@ module Adapter
   end
 
 
+  # Register a one-to-one mapping of a date field.
+  # @param [Symbol] model_field
+  # @param [Symbol] public_field
+  # @param [String] date_format The Date format to use.
+  def map_date(model_field, public_field, date_format)
+    raise ArgumentError, "date_format cannot be nil" if date_format.nil?
+    map_from_public public_field do |value|
+      {model_field => time_from_public(value)}
+    end
+    map_to_public model_field do |value|
+      {public_field => value.strftime(date_format)}
+    end
+  end
+
+  # Register a one-to-one mapping of a boolean field
+  # @param [Symbol] model_field
+  # @param [Symbol] public_field
+  def map_bool(model_field, public_field)
+    map_from_public public_field do |value|
+      if value.nil?
+        {model_field => nil}
+      else
+        {model_field => to_bool(value) }
+      end
+    end
+
+    map_to_public model_field do |value|
+      {public_field => value}
+    end
+  end
+
   # Register a hidden field.
   # @param [Symbol] model_field
   def hidden_field(model_field)
@@ -35,18 +66,17 @@ module Adapter
   def map_belongs_to(model_field, public_field, options = {})
     model_class = options[:model_class] || model_field.to_s.classify.constantize
     sub_method = options[:sub_method] || public_field
-    model_field_id = :"#{model_field}_id"
 
     unless options[:only] == :to
       map_from_public public_field do |value|
         record = model_class.send(:"find_by_#{sub_method}", value)
-        {model_field_id => record ? record.id : nil}
+        {model_field => record ? record : model_class.new(sub_method => value)}
       end
     end
 
     unless options[:only] == :from
-      map_to_public model_field_id do |id|
-        {public_field => model_class.find_by(id: id).send(sub_method)}
+      map_to_public model_field do |record|
+        {public_field => record.send(sub_method)}
       end
     end
   end
@@ -120,10 +150,6 @@ module Adapter
       internals[model_field] = public[public_field]
     end
 
-    date_fields.each do |date_field|
-      internals[date_field] = time_from_public(public[date_field])
-    end
-
     extras = {}
     (public.keys.map{|k|k.to_sym} - public_fields).each do |extra_key|
       extras[extra_key] = public[extra_key]
@@ -157,16 +183,21 @@ module Adapter
     @from_maps ||= []
   end
 
-  def date_fields
-    [:created_at, :updated_at]
-  end
 
   def model_fields
-    @model_fields ||= date_fields
+    @model_fields ||= []
   end
 
   def public_fields
-    @public_fields ||= date_fields
+    @public_fields ||= []
+  end
+
+  private
+
+  def to_bool(value)
+    return true if value == true || value =~ (/^(true|t|yes|y|1)$/i)
+    return false if value == false || value =~ (/^(false|f|no|n|0)$/i)
+    raise ArgumentError.new("invalid value for boolean: \"#{value}\"")
   end
 
 

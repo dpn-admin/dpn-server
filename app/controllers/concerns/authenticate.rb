@@ -26,7 +26,7 @@ module Authenticate
   end
 
   def require_is_self
-    if @requester.nil? || @requester.namespace != Rails.configuration.local_namespace
+    unless @requester&.local_node?
       render json: "Only allowed by local node.", status: 403 and return
     end
   end

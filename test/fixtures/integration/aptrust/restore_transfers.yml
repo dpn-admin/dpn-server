@@ -6,8 +6,8 @@ restore01_from_hathi:
     bag: aptrust01
     from_node: hathi
     to_node: aptrust
-    status: 0
     protocol: rsync
+    cancelled: false
 
 restore01_from_chron:
     link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000001.tar
@@ -17,8 +17,8 @@ restore01_from_chron:
     bag: aptrust01
     from_node: chron
     to_node: aptrust
-    status: 0
     protocol: rsync
+    cancelled: false
 
 restore01_from_sdr:
     link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000001.tar
@@ -28,8 +28,8 @@ restore01_from_sdr:
     bag: aptrust01
     from_node: sdr
     to_node: aptrust
-    status: 0
     protocol: rsync
+    cancelled: false
 
 restore01_from_tdr:
     link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000001.tar
@@ -39,5 +39,5 @@ restore01_from_tdr:
     bag: aptrust01
     from_node: tdr
     to_node: aptrust
-    status: 0
     protocol: rsync
+    cancelled: false

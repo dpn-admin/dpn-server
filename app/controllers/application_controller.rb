@@ -14,17 +14,25 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   def parse_ordering(orders)
-    ordering = {updated_at: :desc}
+    ordering = {}
     if orders
-      new_ordering = {}
       orders.split(',').each do |order_column|
         if [:created_at, :updated_at].include?(order_column.to_sym)
-          new_ordering[order_column.to_sym] = :desc
+          ordering[order_column.to_sym] = :desc
         end
       end
-      ordering = new_ordering unless new_ordering.empty?
     end
     return ordering
+  end
+
+  def convert_bool(value)
+    if value == true || value =~ (/^(true|t|yes|y|1)$/i)
+      return true
+    elsif value == false || value.blank? || value =~ (/^(false|f|no|n|0)$/i)
+      return false
+    else
+      return value
+    end
   end
 
   private

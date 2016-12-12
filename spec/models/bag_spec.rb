@@ -10,6 +10,18 @@ describe Bag do
   it "has a valid factory" do
     expect(Fabricate.build(:bag)).to be_valid
   end
+  
+  it "has a factory that honors updated_at" do
+    time = 1.year.ago
+    bag = Fabricate(:bag, updated_at: 1.year.ago)
+    expect(bag.updated_at.change(usec: 0)).to eql time.change(usec: 0)
+  end
+  
+  describe "::find_fields" do
+    it "returns its find fields" do
+      expect(Bag.find_fields).to eql(Set.new([:uuid]))
+    end
+  end
 
   describe "uuid" do
     it "is required" do
@@ -122,24 +134,6 @@ describe Bag do
     end
   end
 
-  describe "fixity_checks" do
-    it "can be empty" do
-      expect(Fabricate.build(:bag, fixity_checks: [])).to be_valid
-    end
-    it "allows adding them" do
-      bag = Fabricate(:bag)
-      bag.fixity_checks << FixityCheck.new(value: Faker::Bitcoin.address, fixity_alg: Fabricate(:fixity_alg) )
-      bag.fixity_checks << FixityCheck.new(value: Faker::Bitcoin.address, fixity_alg: Fabricate(:fixity_alg) )
-      expect(bag.save).to be true
-    end
-    it "updates updated_at when added" do
-      bag = Fabricate(:bag, updated_at: 2.hours.ago)
-      bag.fixity_checks << Fabricate(:fixity_check)
-      bag.save
-      expect(bag.updated_at).to be > 2.hours.ago
-    end
-  end
-  
   describe "replicating_nodes" do
     it "updates updated_at when added" do
       bag = Fabricate(:bag, updated_at: 2.hours.ago)
@@ -148,5 +142,90 @@ describe Bag do
       expect(bag.updated_at).to be > 2.hours.ago
     end
   end
+
+  it_behaves_like "it has temporal scopes for", :updated_at
+
+  describe "scope with_admin_node" do
+    it_behaves_like "a 'with' filter" do
+      let(:field_name) { :admin_node }
+      let(:field_factory) { :node }
+    end
+  end
+  describe "scope with_ingest_node" do
+    it_behaves_like "a 'with' filter" do
+      let(:field_name) { :admin_node }
+      let(:field_factory) { :node }
+    end
+  end
+  describe "scope with_member" do
+    it_behaves_like "a 'with' filter" do
+      let(:field_name) { :member }
+      let(:field_factory) { :member }
+    end
+  end
+
+  describe "scope with_bag_type" do
+    let!(:data_bag) { Fabricate(:data_bag) }
+    let!(:rights_bag) { Fabricate(:rights_bag) }
+    let!(:interpretive_bag) { Fabricate(:interpretive_bag) }
+    it "includes matching only" do
+      expect(Bag.with_bag_type(rights_bag.type)).to include(rights_bag)
+      expect(Bag.with_bag_type(rights_bag.type)).to_not include(data_bag, interpretive_bag)
+    end
+  end
+
+  describe "scope replicated_by" do
+    before(:each) do
+      Bag.destroy_all
+      @nodes = Fabricate.times(3, :node)
+      @bags = Fabricate.times(3, :bag)
+
+      (0..2).to_a.each do |i|
+        @bags[i].replicating_nodes = [@nodes[i]]
+      end
+
+      @bag12 = Fabricate(:bag)
+      @bag12.replicating_nodes = [@nodes[1], @nodes[2]]
+
+    end
+
+    context "replicated_by nodes[0]" do
+      it "includes bags[0]" do
+        expect(Bag.replicated_by([@nodes[0]])).to include @bags[0]
+      end
+      it "excludes bags[1], bags[2], bag12" do
+        expect(Bag.replicated_by([@nodes[0]])).to_not include @bags[1]
+        expect(Bag.replicated_by([@nodes[0]])).to_not include @bags[2]
+        expect(Bag.replicated_by([@nodes[0]])).to_not include @bag12
+      end
+    end
+
+    context "replicated_by nodes[1]" do
+      it "includes bags[1], bag12" do
+        expect(Bag.replicated_by([@nodes[1]])).to include @bags[1]
+        expect(Bag.replicated_by([@nodes[1]])).to include @bag12
+      end
+      it "excludes bags[0], bags[2]" do
+        expect(Bag.replicated_by([@nodes[1]])).to_not include @bags[0]
+        expect(Bag.replicated_by([@nodes[1]])).to_not include @bags[2]
+      end
+    end
+
+    context "replicated_by nodes[0], nodes[2]" do
+      it "includes bags[0], bags[2], bag12" do
+        expect(Bag.replicated_by([@nodes[0], @nodes[2]])).to include @bags[0]
+        expect(Bag.replicated_by([@nodes[0], @nodes[2]])).to include @bags[2]
+        expect(Bag.replicated_by([@nodes[0], @nodes[2]])).to include @bag12
+      end
+      it "excludes bags[1]" do
+        expect(Bag.replicated_by([@nodes[0], @nodes[2]])).to_not include @bags[1]
+      end
+    end
+
+  end
+
+
+
+
   
 end

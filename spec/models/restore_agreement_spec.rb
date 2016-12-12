@@ -22,15 +22,11 @@ describe RestoreAgreement do
   end
 
   it "is invalid without a from_node" do
-    expect {
-      Fabricate(:restore_agreement, from_node: nil)
-    }.to raise_error(ActiveRecord::ActiveRecordError)
+    expect(Fabricate.build(:restore_agreement, from_node: nil)).to_not be_valid
   end
 
   it "is invalid without a to_node" do
-    expect {
-      Fabricate(:restore_agreement, to_node: nil)
-    }.to raise_error(ActiveRecord::ActiveRecordError)
+    expect(Fabricate.build(:restore_agreement, to_node: nil)).to_not be_valid
   end
 
 end

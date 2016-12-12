@@ -1,55 +1,57 @@
 xfer01_to_hathi:
     link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000001.tar
-    bag_valid: true
-    fixity_accept: true
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
     replication_id: 10000000-0000-4111-a000-000000000001
     bag: aptrust01
     from_node: aptrust
     to_node: hathi
-    status: 4
     protocol: rsync
     fixity_alg: sha256
+    fixity_value: e39a201a88bc3d7803a5e375d9752439d328c2e85b4f1ba70a6d984b6c5378bd
+    store_requested: true
+    stored: true
+    cancelled: false
 
 xfer01_to_chron:
     link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000001.tar
-    bag_valid: true
-    fixity_accept: true
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
     replication_id: 10000000-0000-4111-a000-000000000007
     bag: aptrust01
     from_node: aptrust
     to_node: chron
-    status: 4
     protocol: rsync
     fixity_alg: sha256
+    fixity_value: e39a201a88bc3d7803a5e375d9752439d328c2e85b4f1ba70a6d984b6c5378bd
+    store_requested: true
+    stored: true
+    cancelled: false
 
 xfer01_to_sdr:
     link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000001.tar
-    bag_valid: true
-    fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
     replication_id: 10000000-0000-4111-a000-000000000013
     bag: aptrust01
     from_node: aptrust
     to_node: sdr
-    status: 0
     protocol: rsync
     fixity_alg: sha256
+    store_requested: false
+    stored: false
+    cancelled: false
 
 xfer01_to_tdr:
     link: <%= Rails.root %>/test/fixtures/integration/testbags/00000000-0000-4000-a000-000000000001.tar
-    bag_valid: true
-    fixity_accept: false
     created_at: 2015-09-15T19:38:31.562Z
     updated_at: 2015-09-15T19:38:31.562Z
     replication_id: 10000000-0000-4111-a000-000000000019
     bag: aptrust01
     from_node: aptrust
     to_node: tdr
-    status: 0
     protocol: rsync
     fixity_alg: sha256
+    store_requested: false
+    stored: false
+    cancelled: false

@@ -3,7 +3,6 @@
 # Licensed according to the terms of the Revised BSD License
 # See LICENSE.md for details.
 
-
 class BagsController < ApplicationController
   include Authenticate
   include Pagination
@@ -16,14 +15,16 @@ class BagsController < ApplicationController
   def index
     @bags = Bag.updated_after(params[:after])
       .updated_before(params[:before])
-      .with_admin_node_id(params[:admin_node_id])
-      .with_member_id(params[:member_id])
+      .with_admin_node(params[:admin_node])
+      .with_ingest_node(params[:ingest_node])
+      .with_member(params[:member])
       .with_bag_type(params[:type])
+      .replicated_by(params[:replicating_nodes])
       .order(parse_ordering(params[:order_by]))
       .page(@page)
       .per(@page_size)
 
-    render "shared/index", status: 200
+    render "bags/index", status: 200
   end
 
 
@@ -37,15 +38,17 @@ class BagsController < ApplicationController
     if Bag.find_by_uuid(params[:uuid]).present?
       render nothing: true, status: 409 and return
     else
-      @bag = Bag.new(create_params)
-      @bag.replicating_nodes = params[:replicating_nodes]
-      @bag.version_family = params[:version_family]
-      @bag.fixity_checks = params[:fixity_checks]
-      if @bag.type == DataBag.to_s
-        @bag.rights_bags = params[:rights_bags]
-        @bag.interpretive_bags = params[:interpretive_bags]
+      @bag = case params[:type]
+      when DataBag.to_s
+        DataBag.new
+      when RightsBag.to_s
+        RightsBag.new
+      when InterpretiveBag.to_s
+        InterpretiveBag.new
+      else
+        Bag.new
       end
-      if @bag.save
+      if @bag.update_with_associations(params)
         render "shared/create", status: 201
       else
         render "shared/errors", status: 400
@@ -57,12 +60,11 @@ class BagsController < ApplicationController
   def update
     @bag = Bag.find_by_uuid!(params[:uuid])
 
-    update_bag(@bag)
-    unless @bag.save
-      render "shared/errors", status: 400 and return
+    if @bag.update_with_associations(params)
+      render "shared/update", status: 200
+    else
+      render "shared/errors", status: 400
     end
-
-    render "shared/update", status: 200
   end
 
 
@@ -70,33 +72,6 @@ class BagsController < ApplicationController
     bag = Bag.find_by_uuid!(params[:uuid])
     bag.destroy!
     render nothing: true, status: 204
-  end
-
-
-  private
-  def create_params
-    params.permit(Bag.attribute_names)
-  end
-
-  def update_params
-    params.permit(
-      :uuid, :local_id, :size, 
-      :version, :version_family_id,
-      :ingest_node_id, :admin_node_id,
-      :type, :member_id
-    )
-  end
-
-  def update_bag(bag)
-    bag.attributes = update_params
-    bag.replicating_nodes = params[:replicating_nodes]
-    bag.version_family = params[:version_family]
-    bag.fixity_checks = params[:fixity_checks]
-    if bag.type == DataBag.to_s
-      bag.rights_bags = params[:rights_bags]
-      bag.interpretive_bags = params[:interpretive_bags]
-    end
-    return bag
   end
 
 end

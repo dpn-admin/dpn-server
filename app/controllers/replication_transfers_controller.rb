@@ -15,12 +15,14 @@ class ReplicationTransfersController < ApplicationController
 
   def index
     @replication_transfers = ReplicationTransfer.updated_after(params[:after])
-      .with_bag_id(params[:bag_id])
-      .with_status(params[:status])
-      .with_fixity_accept(params[:fixity_accept])
-      .with_bag_valid(params[:bag_valid])
-      .with_to_node_id(params[:to_node_id])
-      .with_from_node_id(params[:from_node_id])
+      .updated_before(params[:before])
+      .with_bag(params[:bag])
+      .with_to_node(params[:to_node])
+      .with_from_node(params[:from_node])
+      .with_store_requested(params[:store_requested])
+      .with_stored(params[:stored])
+      .with_cancelled(params[:cancelled])
+      .with_cancel_reason(params[:cancel_reason])
       .order(parse_ordering(params[:order_by]))
       .page(@page)
       .per(@page_size)
@@ -40,7 +42,7 @@ class ReplicationTransfersController < ApplicationController
     if ReplicationTransfer.where(replication_id: params[:replication_id]).exists?
       render nothing: true, status: 409 and return
     else
-      @replication_transfer = ReplicationTransfer.new(create_params)
+      @replication_transfer = ReplicationTransfer.new(create_params(params))
       if @replication_transfer.save
         render "shared/create", status: 201
       else
@@ -53,17 +55,16 @@ class ReplicationTransfersController < ApplicationController
   def update
     @replication_transfer = ReplicationTransfer.find_by_replication_id!(params[:replication_id])
 
-    if @requester != @replication_transfer.to_node && @requester.namespace != Rails.configuration.local_namespace
+    if @requester != @replication_transfer.to_node && !@requester.local_node?
       render nothing: true, status: 403 and return
     end
 
-    @replication_transfer.attributes = update_params
-    @replication_transfer.requester = @requester
-    unless @replication_transfer.save
-      render "shared/errors", status: 400 and return
+    if ReplicationTransferUpdater.update(@replication_transfer, update_params(params))
+      render "shared/update", status: 200
+    else
+      render "shared/errors", status: 400
     end
 
-    render "shared/update", status: 200
   end
 
 
@@ -76,18 +77,27 @@ class ReplicationTransfersController < ApplicationController
 
 
   private
-  def create_params
-    params.permit(ReplicationTransfer.attribute_names)
+
+  SCALAR_PARAMS = [
+    :link, :fixity_nonce, :fixity_value,
+    :created_at, :updated_at,
+    :replication_id, :store_requested, :stored,
+    :cancelled, :cancel_reason, :cancel_reason_detail
+  ]
+  ASSOCIATED_PARAMS = [
+    :bag, :from_node, :to_node, :protocol, :fixity_alg
+  ]
+
+
+  def create_params(params)
+    params
+      .permit(SCALAR_PARAMS)
+      .merge(params.slice(*ASSOCIATED_PARAMS))
   end
 
-  def update_params
-    params.permit(
-      :bag_id, :from_node_id, :to_node_id,
-      :protocol_id, :link, :bag_valid,
-      :fixity_alg_id, :fixity_nonce,
-      :fixity_value, :fixity_accept, 
-      :replication_id, :status, :requester  # note :requester is virtual
-    )
+
+  def update_params(params)
+    create_params(params)
   end
 
 

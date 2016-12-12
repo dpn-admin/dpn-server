@@ -1,25 +1,47 @@
 ## Running a Local DPN Cluster
 
-You can run a local DPN REST cluster using the run_cluster script in the script
-directory. If you have never run the cluster before, you'll need to set up the
-SQLite databases for the cluster by running this command from the top-level directory
-of the project:
+Starting in version 2.0, you must have an "impersonate" configuration
+in your config/dpn.yml file so the local cluster can load the right
+configuration settings. The `rake config` task will create this when
+it copies files from `lib/templates/config/current`.  So, your `config/dpn.yml`
+file, based on `lib/templates/config/current/dpn.yml`, should include a
+section like this:
 
 ```
-./script/setup_cluster.rb
+impersonate:
+  local_namespace: <your namespace>
+  local_api_root: http://127.0.0.1
+  staging_dir: <%= File.join "/tmp", "dpnrepo", "staging" %>
+  repo_dir: <%= File.join "/tmp", "dpnrepo", "preservation" %>
+  queue_adapter: :test
+```
+
+Similarly, your `config/database.yml` file must also include entries to
+impersonate each of the DPN nodes. See the file
+`lib/templates/config/current/database.yml` for an
+example (which is used by `rake config`).
+
+Once these settings are present, you can run a local DPN REST cluster
+using the `script/run_cluster` script. If you have
+never run the cluster before, you'll need to set up the SQLite
+databases for the cluster by running this command from the top-level
+directory of the project:
+
+```
+bundle exec ./script/setup_cluster.rb
 ```
 
 If you have run the cluster before, and you have new database migrations to run, run
 this from the top-level directory of the prject:
 
 ```
-./script/migrate_cluster.rb
+bundle exec ./script/migrate_cluster.rb
 ```
 
 When the databases are ready, run the cluster with this command:
 
 ```
-./script/run_cluster.rb -f
+bundle exec ./script/run_cluster.rb -f
 ```
 
 The -f option loads all of the fixtures under test/fixtures/integration.
@@ -27,7 +49,7 @@ As long as your migrations are up to date, you can set up and run the cluster
 with a single command, like this:
 
 ```
-./script/setup_cluster.rb && ./script/run_cluster.rb -f
+bundle exec ./script/setup_cluster.rb && bundle exec ./script/run_cluster.rb -f
 ```
 
 This will run five local DPN nodes on five different ports, each

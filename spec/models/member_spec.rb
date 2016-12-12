@@ -11,17 +11,29 @@ describe Member do
     expect(Fabricate.build(:member)).to be_valid
   end
 
-  describe "uuid" do
+  it "has a factory that honors updated_at" do
+    time = 1.year.ago
+    record = Fabricate(:member, updated_at: 1.year.ago)
+    expect(record.updated_at.change(usec: 0)).to eql time.change(usec: 0)
+  end
+
+  describe "::find_fields" do
+    it "returns its find fields" do
+      expect(Member.find_fields).to eql(Set.new([:member_id]))
+    end
+  end
+
+  describe "member_id" do
     it "is required" do
-      expect(Fabricate.build(:member, uuid: nil)).to_not be_valid
+      expect(Fabricate.build(:member, member_id: nil)).to_not be_valid
     end
     it "disallows changing" do
       member = Fabricate(:member)
-      member.uuid = SecureRandom.uuid
+      member.member_id = SecureRandom.uuid
       expect(member.save).to be false
     end
     it "only accepts valid uuids" do
-      expect(Fabricate.build(:member, uuid: "someuuid")).to_not be_valid
+      expect(Fabricate.build(:member, member_id: "someuuid")).to_not be_valid
     end
   end
 
@@ -46,6 +58,8 @@ describe Member do
       expect(member.save).to be true
     end
   end
+
+  it_behaves_like "it has temporal scopes for", :updated_at
 
   describe "scope" do
     # Define two distinct entities

@@ -41,6 +41,43 @@ namespace :integration do
     end
   end
 
+  desc 'Load cluster fixture data'
+  task load_cluster_fixtures: :environment do
+    # Use the same rake task to load fixtures as the one used in
+    # script/run_cluster.rb
+    node = Rails.application.config.local_namespace
+    ENV['FIXTURES_DIR'] = "integration/#{node}"
+    ENV['IMPERSONATE'] = node
+    ENV['DATABASE_URL'] = "sqlite3:db/impersonate_#{node}.sqlite3"
+    Rake::Task['db:fixtures:load'].invoke
+  end
+
+  desc 'Validate fixture data'
+  task validate_cluster_fixtures: :environment do
+    Rake::Task['integration:load_cluster_fixtures'].invoke
+    models = Dir.glob('app/models/*.rb').map do |file|
+      next if `grep 'ActiveRecord::Base' #{file}`.empty?
+      file_name = File.basename(file).remove '.rb'
+      file_name.split('_').map(&:capitalize).join
+    end.compact.sort
+    models.each do |model|
+      begin
+        klass = model.constantize
+        klass.connection
+        printf "Validating %3d records for #{model}\n", klass.count
+        klass.all.each do |record|
+          next if record.valid?
+          puts "#{model}: id ##{record.id} is invalid:"
+          record.errors.full_messages.each do |msg|
+            puts "   - #{msg}"
+          end
+        end
+      rescue => e
+        puts "#{model}: skipping: #{e.message}"
+      end
+    end
+  end # validate
+
   # The replication transfer links in the fixture files work
   # for local testing, but not for the demo server, where
   # each remote node's ssh account gives it access only to

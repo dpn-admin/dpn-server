@@ -1,3 +1,7 @@
+**The information on this page is and the functionality
+it pertains to is based on the v1 release, and has 
+not been updated.**
+
 ## Internode Testing
 
 Each DPN node runs a demo or staging server, and from time to time, as

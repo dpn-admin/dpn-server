@@ -7,10 +7,16 @@
 class Protocol < ActiveRecord::Base
   include Lowercased
   make_lowercased :name
+
+  def self.find_fields
+    Set.new [:name]
+  end
   
   has_many :supported_protocols, inverse_of: :protocol
   has_many :nodes, through: :supported_protocols
   
   has_many :replication_transfers
   has_many :restore_transfers
+
+  validates :name, presence: true
 end

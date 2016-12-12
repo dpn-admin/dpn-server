@@ -1,24 +1,24 @@
 sunnydale:
   name: UC Sunnydale
   email: buffy@ucsunnydale.edu
-  uuid: 9a000000-0000-4000-a000-000000000001
+  member_id: 9a000000-0000-4000-a000-000000000001
 
 faber:
   name: Faber College
   email: bluto@faber.edu
-  uuid: 9a000000-0000-4000-a000-000000000002
+  member_id: 9a000000-0000-4000-a000-000000000002
 
 grand_lakes:
   name: Grand Lakes University
   email: dangerfield@grandlakes.edu
-  uuid: 9a000000-0000-4000-a000-000000000003
+  member_id: 9a000000-0000-4000-a000-000000000003
 
 greendale:
   name: Greendale Community College
   email: lybrerien@greendalecc.edu
-  uuid: 9a000000-0000-4000-a000-000000000004
+  member_id: 9a000000-0000-4000-a000-000000000004
 
 test:
   name: Hathi Test
   email: dpn_test@hathi.org
-  uuid: fe908327-3635-43c2-9ca6-849485febcf3
+  member_id: fe908327-3635-43c2-9ca6-849485febcf3

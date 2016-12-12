@@ -4,7 +4,6 @@
 # See LICENSE.md for details.
 
 
-
 class RestoreTransfersController < ApplicationController
   include Authenticate
   include Adaptation
@@ -16,10 +15,14 @@ class RestoreTransfersController < ApplicationController
 
   def index
     @restore_transfers = RestoreTransfer.updated_after(params[:after])
-      .with_bag_id(params[:bag_id])
-      .with_status(params[:status])
-      .with_to_node_id(params[:to_node_id])
-      .with_from_node_id(params[:from_node_id])
+      .updated_before(params[:before])
+      .with_bag(params[:bag])
+      .with_to_node(params[:to_node])
+      .with_from_node(params[:from_node])
+      .with_accepted(params[:accepted])
+      .with_finished(params[:finished])
+      .with_cancelled(params[:cancelled])
+      .with_cancel_reason(params[:cancel_reason])
       .order(parse_ordering(params[:order_by]))
       .page(@page)
       .per(@page_size)
@@ -38,7 +41,7 @@ class RestoreTransfersController < ApplicationController
     if RestoreTransfer.where(restore_id: params[:restore_id]).exists?
       render nothing: true, status: 409 and return
     else
-      @restore_transfer = RestoreTransfer.new(create_params)
+      @restore_transfer = RestoreTransfer.new(create_params(params))
       if @restore_transfer.save
         render "shared/create", status: 201
       else
@@ -51,17 +54,16 @@ class RestoreTransfersController < ApplicationController
   def update
     @restore_transfer = RestoreTransfer.find_by_restore_id!(params[:restore_id])
 
-    if @requester != @restore_transfer.from_node && @requester.namespace != Rails.configuration.local_namespace
+    if @requester != @restore_transfer.from_node && !@requester.local_node?
       render nothing: true, status: 403 and return
     end
 
-    @restore_transfer.attributes = update_params
-    @restore_transfer.requester = @requester
-    unless @restore_transfer.save
-      render "shared/errors", status: 400 and return
+    if @restore_transfer.update(update_params(params))
+      render "shared/update", status: 200
+    else
+      render "shared/errors", status: 400
     end
 
-    render "shared/update", status: 200
   end
 
 
@@ -72,17 +74,26 @@ class RestoreTransfersController < ApplicationController
   end
 
   private
-  def create_params
-    params.permit(RestoreTransfer.attribute_names)
+
+  SCALAR_PARAMS = [
+    :link, :created_at, :updated_at,
+    :restore_id, :accepted, :finished,
+    :cancelled, :cancel_reason, :cancel_reason_detail
+  ]
+  ASSOCIATED_PARAMS = [
+    :bag, :from_node, :to_node, :protocol
+  ]
+
+  def create_params(params)
+    params
+      .permit(SCALAR_PARAMS)
+      .merge(params.slice(*ASSOCIATED_PARAMS))
   end
 
-  def update_params
-    params.permit(
-      :bag_id, :from_node_id,
-      :to_node_id, :protocol_id,
-      :link, :restore_id, :status, 
-      :requester # note requester is virtual
-    )
+
+  def update_params(params)
+    create_params(params)
   end
+
 
 end

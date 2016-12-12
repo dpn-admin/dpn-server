@@ -17,6 +17,7 @@ describe ReplicationTransferAdapter do
   updated_at = "2015-02-25T15:27:40Z"
   created_at = "2015-02-25T15:27:40Z"
   link = "user@herp.derp.org:/blah"
+  cancel_reason_detail = "testing is fun # comment // woo"
 
 
   before(:each) do
@@ -26,14 +27,16 @@ describe ReplicationTransferAdapter do
       from_node: Fabricate(:node, namespace: from_node_namespace),
       to_node: Fabricate(:node, namespace: to_node_namespace),
       bag: Fabricate(:data_bag, uuid: uuid),
-      status: :cancelled,
       protocol: Fabricate(:protocol, name: protocol_name),
       link: link,
-      bag_valid: true,
       fixity_alg: Fabricate(:fixity_alg, name: fixity_algorithm_name),
       fixity_nonce: nil,
       fixity_value: fixity_value,
-      fixity_accept: true,
+      store_requested: true,
+      stored: false,
+      cancelled: true,
+      cancel_reason_detail: cancel_reason_detail,
+      cancel_reason: 'other',
       created_at: time_from_string(created_at),
       updated_at: time_from_string(updated_at)
     )
@@ -42,13 +45,15 @@ describe ReplicationTransferAdapter do
       replication_id: replication_id,
       from_node: from_node_namespace,
       to_node: to_node_namespace,
-      uuid: uuid,
+      bag: uuid,
       fixity_algorithm: fixity_algorithm_name,
       fixity_nonce: nil,
       fixity_value: fixity_value,
-      fixity_accept: true,
-      bag_valid: true,
-      status: "cancelled",
+      store_requested: true,
+      stored: false,
+      cancelled: true,
+      cancel_reason: 'other',
+      cancel_reason_detail: cancel_reason_detail,
       protocol: protocol_name,
       link: link,
       created_at: created_at,
@@ -57,17 +62,19 @@ describe ReplicationTransferAdapter do
 
     @model_hash = {
       replication_id: replication_id,
-      from_node_id: @model.from_node_id,
-      to_node_id: @model.to_node_id,
-      bag_id: @model.bag_id,
-      status: "cancelled",
-      protocol_id: @model.protocol_id,
+      from_node: @model.from_node,
+      to_node: @model.to_node,
+      bag: @model.bag,
+      protocol: @model.protocol,
       link: link,
-      bag_valid: true,
-      fixity_alg_id: @model.fixity_alg_id,
+      fixity_alg: @model.fixity_alg,
       fixity_nonce: nil,
       fixity_value: fixity_value,
-      fixity_accept: true,
+      store_requested: true,
+      stored: false,
+      cancelled: true,
+      cancel_reason: 'other',
+      cancel_reason_detail: cancel_reason_detail,
       created_at: time_from_string(created_at),
       updated_at: time_from_string(updated_at)
     }

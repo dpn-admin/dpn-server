@@ -19,13 +19,19 @@
 # Rubymine
 /.idea
 
+# rbenv local file
+.ruby-version
+
 # Ignore application configuration
 /.env.production
 /.env.local
 /.env
 
-# Ignore rbenv
-/.ruby-version
+# Ignore rspec config
+/.rspec
+
+# Ignore test coverage
+/coverage
 
 # Emacs backup files
 *~
@@ -36,8 +42,14 @@
 # Configuration files
 Gemfile.local
 config/database.yml
+config/dpn.yml
 config/impersonate.yml.local
+config/resque.yml
+config/resque-pool.yml
 config/secrets.yml
+config/dpn.yml
+config/resque.yml
+config/environments/impersonate*.rb
 
 # Ignore capistrano
 /Capfile

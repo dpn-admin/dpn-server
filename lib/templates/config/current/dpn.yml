@@ -1,0 +1,53 @@
+# Copyright (c) 2015 The Regents of the University of Michigan.
+# All Rights Reserved.
+# Licensed according to the terms of the Revised BSD License
+# See LICENSE.md for details.
+
+test:
+  local_namespace: hathi
+  local_api_root: http://127.0.0.1
+  staging_dir: <%= File.join "/tmp", "dpnrepo", "staging" %>
+  repo_dir: <%= File.join "/tmp", "dpnrepo", "preservation" %>
+  queue_adapter: :test
+
+development:
+  local_namespace: hathi
+  local_api_root: http://127.0.0.1
+  staging_dir: <%= Rails.root.join("dpnrepo", "staging").to_s %>
+  repo_dir: <%= Rails.root.join("dpnrepo", "preservation").to_s %>
+  queue_adapter: :resque
+
+impersonate_aptrust:
+  local_namespace: aptrust
+  local_api_root: http://127.0.0.1:3001
+  staging_dir: <%= File.join "/tmp", "aptrust", "dpnrepo", "staging" %>
+  repo_dir: <%= File.join "/tmp", "aptrust", "dpnrepo", "preservation" %>
+  queue_adapter: :test
+
+impersonate_chron:
+  local_namespace: chron
+  local_api_root: http://127.0.0.1:3002
+  staging_dir: <%= File.join "/tmp", "chron", "dpnrepo", "staging" %>
+  repo_dir: <%= File.join "/tmp", "chron", "dpnrepo", "preservation" %>
+  queue_adapter: :test
+
+impersonate_hathi:
+  local_namespace: hathi
+  local_api_root: http://127.0.0.1:3003
+  staging_dir: <%= File.join "/tmp", "hathi", "dpnrepo", "staging" %>
+  repo_dir: <%= File.join "/tmp", "hathi", "dpnrepo", "preservation" %>
+  queue_adapter: :test
+
+impersonate_sdr:
+  local_namespace: sdr
+  local_api_root: http://127.0.0.1:3004
+  staging_dir: <%= File.join "/tmp", "sdr", "dpnrepo", "staging" %>
+  repo_dir: <%= File.join "/tmp", "sdr", "dpnrepo", "preservation" %>
+  queue_adapter: :test
+
+impersonate_tdr:
+  local_namespace: tdr
+  local_api_root: http://127.0.0.1:3005
+  staging_dir: <%= File.join "/tmp", "tdr", "dpnrepo", "staging" %>
+  repo_dir: <%= File.join "/tmp", "tdr", "dpnrepo", "preservation" %>
+  queue_adapter: :test

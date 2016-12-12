@@ -19,16 +19,16 @@ class MembersController < ApplicationController
 
 
   def show
-    @member = Member.find_by_uuid!(params[:uuid])
+    @member = Member.find_by_member_id!(params[:member_id])
     render "shared/show", status: 200
   end
 
 
   def create
-    if params[:uuid] && Member.find_by_uuid(params[:uuid]).present?
+    if params[:member_id] && Member.find_by_member_id(params[:member_id]).present?
       render nothing: true, status: 409 and return
     else
-      @member = Member.new(create_params)
+      @member = Member.new(create_params(params))
       if @member.save
         render "shared/create", status: 201
       else
@@ -39,31 +39,31 @@ class MembersController < ApplicationController
 
 
   def update
-    @member = Member.find_by_uuid!(params[:uuid])
+    @member = Member.find_by_member_id!(params[:member_id])
 
-    @member.attributes = update_params
-    unless @member.save
-      render "shared/errors", status: 400 and return
+    @member.attributes = update_params(params)
+    if @member.save
+      render "shared/update", status: 200
+    else
+      render "shared/errors", status: 400
     end
-
-    render "shared/update", status: 200
   end
 
 
   def destroy
-    member = Member.find_by_uuid!(params[:uuid])
+    member = Member.find_by_member_id!(params[:member_id])
     member.destroy!
     render nothing: true, status: 204
   end
 
 
   private
-  def create_params
+  def create_params(params)
     params.permit(Member.attribute_names)
   end
 
-  def update_params
-    params.permit(:uuid, :name, :email)
+  def update_params(params)
+    create_params(params)
   end
 
 end

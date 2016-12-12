@@ -1,19 +1,19 @@
 magnetic_disk:
-    name: Magnetic Disk
+    name: magnetic disk
     created_at: 2015-09-15T17:39:46.329Z
     updated_at: 2015-09-15T17:39:46.329Z
 
 ssd:
-    name: Solid State Disk
+    name: solid state disk
     created_at: 2015-09-15T17:39:46.329Z
     updated_at: 2015-09-15T17:39:46.329Z
 
 tape:
-    name: Tape
+    name: tape
     created_at: 2015-09-15T17:39:46.329Z
     updated_at: 2015-09-15T17:39:46.329Z
 
 optical:
-    name: Optical
+    name: optical
     created_at: 2015-09-15T17:39:46.329Z
     updated_at: 2015-09-15T17:39:46.329Z

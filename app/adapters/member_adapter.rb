@@ -5,7 +5,10 @@
 
 
 class MemberAdapter < ::AbstractAdapter
-  map_simple :uuid, :uuid
+  map_date :created_at, :created_at, Time::DATE_FORMATS[:dpn]
+  map_date :updated_at, :updated_at, Time::DATE_FORMATS[:dpn]
+
+  map_simple :member_id, :member_id
   map_simple :name, :name
   map_simple :email, :email
 end

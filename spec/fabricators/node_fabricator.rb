@@ -6,8 +6,8 @@
 
 require 'securerandom'
 
-Fabricator(:node) do
-  namespace { Faker::Internet.password(10, 20) }
+Fabricator(:node) do |f|
+  f.namespace { Faker::Internet.password(10, 20) }
   name { Faker::Company.name }
   ssh_pubkey { Faker::Internet.password(20) }
   storage_region
@@ -19,14 +19,14 @@ Fabricator(:node) do
   transient :updated_at
   after_save do |record, transients|
     if transients[:updated_at]
-      record.updated_at = transients[:updated_at]
+      record.update_columns(updated_at: transients[:updated_at])
       record.save!
     end
   end
 end
 
-Fabricator(:local_node, class_name: :node) do
-  namespace { Rails.configuration.local_namespace }
+Fabricator(:local_node, class_name: :node) do |f|
+  f.namespace { Rails.configuration.local_namespace }
   name { Faker::Company.name }
   ssh_pubkey { Faker::Internet.password(20) }
   storage_region

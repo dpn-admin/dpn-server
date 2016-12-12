@@ -3,5 +3,5 @@
 # Licensed according to the terms of the Revised BSD License
 # See LICENSE.md for details.
 
-
-VERSION = "1"
+# API Version
+VERSION = "2"

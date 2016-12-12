@@ -5,7 +5,12 @@
 
 
 Fabricator(:fixity_check) do
+  fixity_check_id { SecureRandom.uuid }
   bag
-  fixity_alg
-  value { SecureRandom.uuid }
+  node
+  success true
+  created_at 1.second.ago
+
+  # fixity_at must be at the same time or before created_at
+  fixity_at {|attrs| (attrs[:created_at] || 1.second.ago) - 3.seconds}
 end

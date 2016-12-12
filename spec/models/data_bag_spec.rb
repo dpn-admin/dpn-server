@@ -11,6 +11,18 @@ describe DataBag do
     expect(Fabricate(:data_bag)).to be_valid
   end
 
+  it "has a factory that honors updated_at" do
+    time = 1.year.ago
+    record = Fabricate(:data_bag, updated_at: 1.year.ago)
+    expect(record.updated_at.change(usec: 0)).to eql time.change(usec: 0)
+  end
+
+  describe "::find_fields" do
+    it "returns its find fields" do
+      expect(Bag.find_fields).to eql(Set.new([:uuid]))
+    end
+  end
+
   describe "interpretive_bags" do
     it "updates updated_at when added" do
       bag = Fabricate(:data_bag, updated_at: 2.hours.ago)
