@@ -146,35 +146,21 @@ describe Bag do
   it_behaves_like "it has temporal scopes for", :updated_at
 
   describe "scope with_admin_node" do
-    let!(:bag) { Fabricate(:bag) }
-    let!(:other_bag) { Fabricate(:bag) }
-    it "includes matching only" do
-      expect(Bag.with_admin_node(bag.admin_node)).to match_array [bag]
-    end
-    it "does not filter given a new record" do
-      expect(Bag.with_admin_node(Fabricate.build(:node))).to contain_exactly(bag, other_bag)
+    it_behaves_like "a 'with' filter" do
+      let(:field_name) { :admin_node }
+      let(:field_factory) { :node }
     end
   end
-
   describe "scope with_ingest_node" do
-    let!(:bag) { Fabricate(:bag) }
-    let!(:other_bag) { Fabricate(:bag) }
-    it "includes matching only" do
-      expect(Bag.with_ingest_node(bag.ingest_node)).to match_array [bag]
-    end
-    it "does not filter given a new record" do
-      expect(Bag.with_ingest_node(Fabricate.build(:node))).to contain_exactly(bag, other_bag)
+    it_behaves_like "a 'with' filter" do
+      let(:field_name) { :admin_node }
+      let(:field_factory) { :node }
     end
   end
-
   describe "scope with_member" do
-    let!(:bag) { Fabricate(:bag) }
-    let!(:other_bag) { Fabricate(:bag) }
-    it "includes matching only" do
-      expect(Bag.with_member(bag.member)).to match_array [bag]
-    end
-    it "does not filter given a new record" do
-      expect(Bag.with_member(Fabricate.build(:member))).to contain_exactly(bag, other_bag)
+    it_behaves_like "a 'with' filter" do
+      let(:field_name) { :member }
+      let(:field_factory) { :member }
     end
   end
 
