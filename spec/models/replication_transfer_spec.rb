@@ -215,6 +215,24 @@ describe ReplicationTransfer, type: :model do
 
   it_behaves_like "it has temporal scopes for", :updated_at
 
+  describe "scope with_bag" do
+    it_behaves_like "a 'with' filter" do
+      let(:field_name) { :bag }
+      let(:field_factory) { :bag }
+    end
+  end
+  describe "scope with_from_node" do
+    it_behaves_like "a 'with' filter" do
+      let(:field_name) { :from_node }
+      let(:field_factory) { :node }
+    end
+  end
+  describe "scope with_to_node" do
+    it_behaves_like "a 'with' filter" do
+      let(:field_name) { :to_node }
+      let(:field_factory) { :node }
+    end
+  end
   describe "scope with_store_requested" do
     it_behaves_like "a boolean filter" do
       let(:scope_name) { :with_store_requested }

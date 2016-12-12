@@ -34,8 +34,8 @@ describe FixityCheckAdapter do
 
     @model_hash = {
       fixity_check_id: fixity_check_id,
-      bag_id: @model.bag_id,
-      node_id: @model.node_id,
+      bag: @model.bag,
+      node: @model.node,
       success: success,
       fixity_at: time_from_string("2015-02-25T15:27:40Z"),
       created_at: time_from_string("2015-02-25T15:27:40Z")

@@ -11,10 +11,12 @@ class Ingest < ActiveRecord::Base
   end
   
   belongs_to :bag, inverse_of: :ingests
-  
+  validates_associated :bag
+
   has_many :node_ingests, inverse_of: :ingest, dependent: :destroy,
     before_add: :fail_unless_new,
     before_remove: :fail_unless_new
+
   has_many :nodes, through: :node_ingests, source: :node
 
   ### ActiveModel::Dirty Validations
@@ -33,7 +35,7 @@ class Ingest < ActiveRecord::Base
   ### Scopes
   scope :created_after, ->(time) { where("created_at > ?", time) unless time.blank? }
   scope :created_before, ->(time) { where("created_at < ?", time) unless time.blank? }
-  scope :with_bag_id, ->(id) { where(bag_id: id) unless id.blank? }
+  scope :with_bag, ->(bag) { where(bag: bag) unless bag.new_record? }
   scope :with_ingested, ->(ingested) { where(ingested: ingested) if [true,false].include?(ingested) }
   scope :latest_only, ->(flag) do
     unless flag.blank?

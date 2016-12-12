@@ -33,6 +33,10 @@ class RestoreTransfer < ActiveRecord::Base
     inverse_of: :restore_transfers_to
   belongs_to :bag
   belongs_to :protocol
+  validates_associated :from_node
+  validates_associated :to_node
+  validates_associated :bag
+  validates_associated :protocol
 
 
   ### Static Validations
@@ -69,9 +73,9 @@ class RestoreTransfer < ActiveRecord::Base
   ### Scopes
   scope :updated_after, ->(time) { where("updated_at > ?", time) unless time.blank? }
   scope :updated_before, ->(time) { where("updated_at < ?", time) unless time.blank? }
-  scope :with_bag_id, ->(id) { where(bag_id: id) unless id.blank? }
-  scope :with_from_node_id, ->(id) { where(from_node_id: id) unless id.blank? }
-  scope :with_to_node_id, ->(id) { where(to_node_id: id) unless id.blank? }
+  scope :with_bag, ->(bag) { where(bag: bag) unless bag.new_record? }
+  scope :with_from_node, ->(node) { where(from_node: node) unless node.new_record? }
+  scope :with_to_node, ->(node) { where(to_node: node) unless node.new_record? }
   scope :with_accepted, ->(v){ where(accepted: v) if [true,false].include?(v) }
   scope :with_finished, ->(v){ where(finished: v) if [true,false].include?(v) }
   scope :with_cancelled, ->(v){ where(cancelled: v) if [true,false].include?(v) }

@@ -16,9 +16,9 @@ class ReplicationTransfersController < ApplicationController
   def index
     @replication_transfers = ReplicationTransfer.updated_after(params[:after])
       .updated_before(params[:before])
-      .with_bag_id(params[:bag_id])
-      .with_to_node_id(params[:to_node_id])
-      .with_from_node_id(params[:from_node_id])
+      .with_bag(params[:bag])
+      .with_to_node(params[:to_node])
+      .with_from_node(params[:from_node])
       .with_store_requested(params[:store_requested])
       .with_stored(params[:stored])
       .with_cancelled(params[:cancelled])
@@ -77,8 +77,22 @@ class ReplicationTransfersController < ApplicationController
 
 
   private
+
+  SCALAR_PARAMS = [
+    :link, :fixity_nonce, :fixity_value,
+    :created_at, :updated_at,
+    :replication_id, :store_requested, :stored,
+    :cancelled, :cancel_reason, :cancel_reason_detail
+  ]
+  ASSOCIATED_PARAMS = [
+    :bag, :from_node, :to_node, :protocol, :fixity_alg
+  ]
+
+
   def create_params(params)
-    params.permit(ReplicationTransfer.attribute_names)
+    params
+      .permit(SCALAR_PARAMS)
+      .merge(params.slice(*ASSOCIATED_PARAMS))
   end
 
 

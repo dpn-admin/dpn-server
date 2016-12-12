@@ -173,6 +173,43 @@ describe RestoreTransfer do
 
   it_behaves_like "it has temporal scopes for", :updated_at
 
+
+  # let(:field_name) Symbol of the field under test, without "with_"
+  # let(:existing_record) Record of the described class already saved to the db
+  # let(:unsaved_field_obj) Unsaved record appropriate for the scope under test
+  shared_examples "a with scope" do
+    scope_name = :"with_#{field_name}"
+    it "includes matching only" do
+      field_obj_on_existing = existing_record.public_send(field_name)
+      expect(described_class.public_send(scope_name, field_obj_on_existing))
+        .to match_array [existing_record]
+    end
+    it "does not filter given a new record" do
+      expect(described_class.public_send(scope_name, new_field_obj))
+        .to contain_exactly()
+    end
+  end
+
+
+
+  describe "scope with_bag" do
+    it_behaves_like "a 'with' filter" do
+      let(:field_name) { :bag }
+      let(:field_factory) { :bag }
+    end
+  end
+  describe "scope with_from_node" do
+    it_behaves_like "a 'with' filter" do
+      let(:field_name) { :from_node }
+      let(:field_factory) { :node }
+    end
+  end
+  describe "scope with_to_node" do
+    it_behaves_like "a 'with' filter" do
+      let(:field_name) { :to_node }
+      let(:field_factory) { :node }
+    end
+  end
   describe "scope with_accepted" do
     it_behaves_like "a boolean filter" do
       let(:scope_name) { :with_accepted }

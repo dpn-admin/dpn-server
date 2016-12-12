@@ -12,6 +12,8 @@ class FixityCheck < ActiveRecord::Base
   
   belongs_to :node, inverse_of: :fixity_checks
   belongs_to :bag, inverse_of: :fixity_checks
+  validates_associated :node
+  validates_associated :bag
 
   ### ActiveModel::Dirty Validations
   validates :fixity_check_id, read_only: true, on: :update
@@ -36,8 +38,8 @@ class FixityCheck < ActiveRecord::Base
   scope :created_after, ->(time) { where("created_at > ?", time) unless time.blank? }
   scope :created_before, ->(time) { where("created_at < ?", time) unless time.blank? }
   scope :with_success, ->(success) { where(success: success) unless success.blank? }
-  scope :with_bag_id, ->(id) { where(bag_id: id) unless id.blank? }
-  scope :with_node_id, ->(id) { where(node_id: id) unless id.blank? }
+  scope :with_bag, ->(bag) { where(bag: bag) unless bag.new_record? }
+  scope :with_node, ->(node) { where(node: node) unless node.new_record? }
   scope :latest_only, ->(flag) do
     unless flag.blank?
       joins("INNER JOIN (

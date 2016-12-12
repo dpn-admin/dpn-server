@@ -15,7 +15,7 @@ class MessageDigestsController < ApplicationController
   def index
     @message_digests = MessageDigest.created_after(params[:after])
       .created_before(params[:before])
-      .with_bag_id(params[:bag_id])
+      .with_bag(params[:bag])
       .order(parse_ordering(params[:order_by]))
       .page(@page)
       .per(@page_size)
@@ -26,15 +26,15 @@ class MessageDigestsController < ApplicationController
   
   def show
     @message_digest = MessageDigest.find_by!(
-      bag_id: params[:bag_id],
-      fixity_alg_id: params[:fixity_alg_id])
+      bag_id: params[:bag]&.id,
+      fixity_alg_id: params[:fixity_alg]&.id)
     render "shared/show", status: 200
   end
   
   def create
     existing = MessageDigest.find_by(
-      bag_id: params[:bag_id],
-      fixity_alg_id: params[:fixity_alg_id]
+      bag_id: params[:bag]&.id,
+      fixity_alg_id: params[:fixity_alg]&.id
     )
     if existing
       render nothing: true, status: 409 and return
@@ -50,9 +50,13 @@ class MessageDigestsController < ApplicationController
   
   private
 
+  SCALAR_PARAMS = [:value, :created_at]
+  ASSOCIATED_PARAMS = [:bag, :node, :fixity_alg]
 
   def create_params(params)
-    params.permit(MessageDigest.attribute_names)
+    params
+      .permit(SCALAR_PARAMS)
+      .merge(params.slice(*ASSOCIATED_PARAMS))
   end
   
 end

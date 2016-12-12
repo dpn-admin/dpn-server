@@ -145,27 +145,22 @@ describe Bag do
 
   it_behaves_like "it has temporal scopes for", :updated_at
 
-  describe "scope with_admin_node_id" do
-    let!(:bag) { Fabricate(:bag) }
-    it "includes matching only" do
-      Fabricate(:bag)
-      expect(Bag.with_admin_node_id(bag.admin_node_id)).to match_array [bag]
+  describe "scope with_admin_node" do
+    it_behaves_like "a 'with' filter" do
+      let(:field_name) { :admin_node }
+      let(:field_factory) { :node }
     end
   end
-
-  describe "scope with_ingest_node_id" do
-    let!(:bag) { Fabricate(:bag) }
-    it "includes matching only" do
-      Fabricate(:bag)
-      expect(Bag.with_ingest_node_id(bag.ingest_node_id)).to match_array [bag]
+  describe "scope with_ingest_node" do
+    it_behaves_like "a 'with' filter" do
+      let(:field_name) { :admin_node }
+      let(:field_factory) { :node }
     end
   end
-
-  describe "scope with_member_id" do
-    let!(:bag) { Fabricate(:bag) }
-    it "includes matching only" do
-      Fabricate(:bag)
-      expect(Bag.with_member_id(bag.member_id)).to match_array [bag]
+  describe "scope with_member" do
+    it_behaves_like "a 'with' filter" do
+      let(:field_name) { :member }
+      let(:field_factory) { :member }
     end
   end
 

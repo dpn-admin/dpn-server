@@ -62,12 +62,12 @@ describe ReplicationTransferAdapter do
 
     @model_hash = {
       replication_id: replication_id,
-      from_node_id: @model.from_node_id,
-      to_node_id: @model.to_node_id,
-      bag_id: @model.bag_id,
-      protocol_id: @model.protocol_id,
+      from_node: @model.from_node,
+      to_node: @model.to_node,
+      bag: @model.bag,
+      protocol: @model.protocol,
       link: link,
-      fixity_alg_id: @model.fixity_alg_id,
+      fixity_alg: @model.fixity_alg,
       fixity_nonce: nil,
       fixity_value: fixity_value,
       store_requested: true,
