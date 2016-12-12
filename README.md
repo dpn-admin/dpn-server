@@ -45,7 +45,18 @@ more information.
 ### Firewall
 Each other node will need incoming https to your instance.
 
-### Node Configuration
+### Installation
+
+Once the files are in place and configured appropriately
+on your application server:
+
+```
+bundle install --path .bundle
+bundle exec rake db:migrate
+bundle exec rake assets:precompile
+```
+
+### Nodes and Other Data
 
 Authentication is handled via authentication tokens, which must be generated on a
 per-node basis.
@@ -62,28 +73,14 @@ from each other node.
 Note that for the local node, the auth_credential and private_auth_token should be the
 same (before encryption).
 
-Nodes must be configured once via either the rails console
-or the admin interface.  E.g.:
+The easiest way to get the data required to run your installation is to grab the
+production seed files from [the private repo](https://github.com/dpn-admin/private)
+and unpack them into `db/seeds/production-seeds.d`.  You will need to modify the 
+nodes seed to use the credentials specific to your node.
 
-```ruby
-Node.create!(
-  name: "Hathitrust", # Note this need *not* be the canonical name
-  namespace: "hathi",
-  api_root: "https://dpn.hathitrust.org/",
-  private_auth_token: "unencrypted_token",
-  auth_credential: "unencrypted_credential")
-```
-
-### Installation
-
-Once the files are in place and configured appropriately
-on your application server:
-
-```
-bundle install --path .bundle
-bundle exec rake db:migrate
-bundle exec rake assets:precompile
-```
+From there, you can simply run `bundle exec rake db:seed`.  Note that the 
+installation steps, above, should already be complete.  This operation is 
+idempotent.
 
 ## Replication and Synchronization
 
