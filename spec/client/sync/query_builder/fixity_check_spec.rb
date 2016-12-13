@@ -9,7 +9,7 @@ require 'rails_helper'
 describe Client::Sync::QueryBuilder::FixityCheck do
   before(:each) do
     @last_success = Time.now
-    @query = Client::Query.new :fixity_check, {
+    @query = Client::Query.new :fixity_checks, {
       after: @last_success,
       node: "them"
     }

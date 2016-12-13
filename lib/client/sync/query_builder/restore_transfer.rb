@@ -19,7 +19,7 @@ module Client
         # @return [Array<Query>] The array of all queries that should be processed.
         def queries(last_success)
           [
-            Query.new(:restore, {
+            Query.new(:restores, {
               to_node: @remote_namespace,
               after: last_success
             })

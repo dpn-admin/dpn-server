@@ -9,7 +9,7 @@ require 'rails_helper'
 describe Client::Sync::QueryBuilder::Member do
   before(:each) do
     @last_success = Time.now
-    @query = Client::Query.new :member, {
+    @query = Client::Query.new :members, {
       after: @last_success
     }
   end

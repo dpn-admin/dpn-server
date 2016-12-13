@@ -10,7 +10,7 @@ describe Client::Sync::QueryBuilder::Bag do
   before(:each) do
     @last_success = Time.now
     @data_query, @rights_query, @interpretive_query = %w(D R I).map do |bag_type|
-      Client::Query.new :bag, {
+      Client::Query.new :bags, {
         after: @last_success,
         bag_type: bag_type,
         admin_node: "them"

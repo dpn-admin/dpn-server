@@ -20,7 +20,7 @@ module Client
         # @return [Array<Query>] The array of all queries that should be processed.
         def queries(last_success)
           [
-            Query.new(:fixity_check, {
+            Query.new(:fixity_checks, {
               node: @remote_namespace,
               after: last_success
             })

@@ -9,7 +9,7 @@ require 'rails_helper'
 describe Client::Sync::QueryBuilder::Ingest do
   before(:each) do
     @last_success = Time.now
-    @query = Client::Query.new :ingest, {
+    @query = Client::Query.new :ingests, {
       after: @last_success
     }
   end

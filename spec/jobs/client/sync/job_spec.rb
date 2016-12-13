@@ -40,8 +40,13 @@ describe Client::Sync::Job do
       expect(job).to receive(:sync).with(anything(), anything(), anything(), String, anything())
       subject
     end
-    it "creates a model class" do
-      expect(job).to receive(:sync).with(anything(), anything(), anything(), anything(), Time)
+    it "creates a CreatorUpdater" do
+      expect(job).to receive(:sync)
+        .with(anything(), anything(), anything(), anything(), Client::Sync::CreatorUpdater)
+      subject
+    end
+    it "passes the model class to the Client::Sync::CreatorUpdater" do
+      expect(Client::Sync::CreatorUpdater).to receive(:new).with(Time)
       subject
     end
   end

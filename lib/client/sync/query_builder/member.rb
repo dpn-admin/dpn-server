@@ -17,7 +17,7 @@ module Client
         # @param last_success [Time] The last time these items were synchronized.
         # @return [Array<Query>] The array of all queries that should be processed.
         def queries(last_success)
-          [Query.new(:member, after: last_success)]
+          [Query.new(:members, after: last_success)]
         end
       end
 
