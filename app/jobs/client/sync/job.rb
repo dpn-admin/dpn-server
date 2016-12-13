@@ -79,7 +79,7 @@ module Client
           remote_client(namespace),
           query_builder(query_builder_class.constantize, namespace),
           adapter_class.constantize,
-          model_class.constantize
+          CreatorUpdater.new(model_class.constantize)
         )
       end
 

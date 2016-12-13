@@ -22,7 +22,7 @@ module Client
         # @return [Array<Query>] The array of all queries that should be processed.
         def queries(last_success)
           %w(I R D).map do |bag_type|
-            Query.new :bag, {
+            Query.new :bags, {
               admin_node: @remote_namespace,
               after: last_success,
               bag_type: bag_type

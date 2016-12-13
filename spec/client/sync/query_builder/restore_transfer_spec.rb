@@ -9,7 +9,7 @@ require 'rails_helper'
 describe Client::Sync::QueryBuilder::RestoreTransfer do
   before(:each) do
     @last_success = Time.now
-    @query = Client::Query.new :restore, {
+    @query = Client::Query.new :restores, {
       after: @last_success,
       to_node: "them"
     }

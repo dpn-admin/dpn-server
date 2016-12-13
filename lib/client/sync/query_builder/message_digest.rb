@@ -18,7 +18,7 @@ module Client
         # @return [Array<Query>] The array of all queries that should be processed.
         def queries(last_success)
           [
-            Query.new(:digest, {
+            Query.new(:digests, {
               after: last_success
             })
           ]

@@ -9,7 +9,7 @@ require 'rails_helper'
 describe Client::Sync::QueryBuilder::ReplicationTransfer do
   before(:each) do
     @last_success = Time.now
-    @query = Client::Query.new :replicate, {
+    @query = Client::Query.new :replications, {
       after: @last_success,
       from_node: "them"
     }

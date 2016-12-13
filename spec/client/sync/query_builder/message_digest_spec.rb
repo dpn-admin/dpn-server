@@ -9,7 +9,7 @@ require 'rails_helper'
 describe Client::Sync::QueryBuilder::MessageDigest do
   before(:each) do
     @last_success = Time.now
-    @query = Client::Query.new :digest, {
+    @query = Client::Query.new :digests, {
       after: @last_success
     }
   end
