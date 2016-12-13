@@ -72,7 +72,8 @@ module ResqueInit
     schedule = {}
 
     if Node.table_exists?
-      Node.all.pluck(:namespace).each do |namespace|
+      other_nodes = Node.where.not(namespace: Rails.configuration.local_namespace)
+      other_nodes.pluck(:namespace).each do |namespace|
         schedule["sync_bags_from_#{namespace}"] = {
           description: "Sync bags from #{namespace}",
           every: ["10m", {first_in: "0m"} ],
