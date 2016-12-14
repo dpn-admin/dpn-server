@@ -10,12 +10,6 @@ module Client
       include Common
       queue_as :sync
 
-      # @param [String] name Name for this job
-      # @param [String] namespace
-      def last_success_manager(name, namespace)
-        LastSuccessManager.new "#{name}_#{namespace}"
-      end
-
 
       # @param [Class] klass The query builder's class
       def query_builder(klass, namespace)
@@ -75,7 +69,7 @@ module Client
       #   model class, e.g. Bag.to_s
       def perform(name, namespace, query_builder_class, adapter_class, model_class)
         sync(
-          last_success_manager(name, namespace),
+          LastSuccessManager.new(name),
           remote_client(namespace),
           query_builder(query_builder_class.constantize, namespace),
           adapter_class.constantize,

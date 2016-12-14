@@ -15,7 +15,6 @@ describe Client::Sync::Job do
   describe "#perform" do
     let(:job) do
       job = Client::Sync::Job.new
-      allow(job).to receive(:last_success_manager)
       allow(job).to receive(:remote_client)
       allow(job).to receive(:query_builder)
       allow(job).to receive(:sync)
@@ -24,10 +23,6 @@ describe Client::Sync::Job do
 
     subject { job.perform("some_name", "some_namespace", "Fixnum", "String", "Time") }
 
-    it "creates a last_success_manager" do
-      expect(job).to receive(:last_success_manager).with("some_name", "some_namespace")
-      subject
-    end
     it "creates a remote client" do
       expect(job).to receive(:remote_client).with("some_namespace")
       subject
