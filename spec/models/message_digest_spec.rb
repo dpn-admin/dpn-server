@@ -13,7 +13,7 @@ describe MessageDigest do
 
   describe "::find_fields" do
     it "returns its find fields" do
-      expect(MessageDigest.find_fields).to eql(Set.new([:bag_id, :fixity_alg_id]))
+      expect(MessageDigest.find_fields).to eql(Set.new([:bag, :fixity_alg]))
     end
   end
 
