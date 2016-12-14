@@ -151,7 +151,7 @@ class Node < ActiveRecord::Base
 
   def set_attributes_with_associations(new_attributes, &block)
     new_attributes = new_attributes.with_indifferent_access
-    self.attributes = new_attributes.slice *(attribute_names - [:private_auth_token, :auth_credential] )
+    self.attributes = new_attributes.slice *(attribute_names - ["private_auth_token", "auth_credential"] )
     self.replicate_from_nodes = new_attributes[:replicate_from_nodes]
     self.replicate_to_nodes = new_attributes[:replicate_to_nodes]
     self.restore_from_nodes = new_attributes[:restore_from_nodes]
