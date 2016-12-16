@@ -76,7 +76,7 @@ module ResqueInit
       other_nodes.pluck(:namespace).each do |namespace|
         schedule["sync_bags_from_#{namespace}"] = {
           description: "Sync bags from #{namespace}",
-          every: ["10m", {first_in: "0m"} ],
+          every: ["4h", {first_in: "m"} ],
           class: Client::Sync::Job.to_s,
           queue: "sync",
           args: [
@@ -88,7 +88,7 @@ module ResqueInit
 
         schedule["sync_fixity_checks_from_#{namespace}"] = {
           description: "Sync fixity_checks from #{namespace}",
-          every: ["10m", {first_in: "2m"} ],
+          every: ["4h", {first_in: "15m"} ],
           class: Client::Sync::Job.to_s,
           queue: "sync",
           args: [
@@ -100,7 +100,7 @@ module ResqueInit
 
         schedule["sync_ingests_from_#{namespace}"] = {
           description: "Sync ingests from #{namespace}",
-          every: ["10m", {first_in: "4m"} ],
+          every: ["4h", {first_in: "15m"} ],
           class: Client::Sync::Job.to_s,
           queue: "sync",
           args: [
@@ -112,7 +112,7 @@ module ResqueInit
 
         schedule["sync_members_from_#{namespace}"] = {
           description: "Sync members from #{namespace}",
-          every: ["10m", {first_in: "6m"} ],
+          every: ["4h", {first_in: "15m"} ],
           class: Client::Sync::Job.to_s,
           queue: "sync",
           args: [
@@ -124,7 +124,7 @@ module ResqueInit
 
         schedule["sync_message_digests_from_#{namespace}"] = {
           description: "Sync message digests from #{namespace}",
-          every: ["10m", {first_in: "8m"} ],
+          every: ["4h", {first_in: "15m"} ],
           class: Client::Sync::Job.to_s,
           queue: "sync",
           args: [
@@ -136,7 +136,7 @@ module ResqueInit
 
         schedule["sync_replication_transfers_from_#{namespace}"] = {
           description: "Sync replication transfers from #{namespace}",
-          every: ["5m", {first_in: "0m"} ],
+          every: ["4h", {first_in: "15m"} ],
           class: Client::Sync::Job.to_s,
           queue: "sync",
           args: [
@@ -148,7 +148,7 @@ module ResqueInit
 
         schedule["sync_restore_transfers_from_#{namespace}"] = {
           description: "Sync restore transfers from #{namespace}",
-          every: ["5m", {first_in: "150s"} ],
+          every: ["4h", {first_in: "15m"} ],
           class: Client::Sync::Job.to_s,
           queue: "sync",
           args: [
@@ -160,7 +160,7 @@ module ResqueInit
 
         schedule["sync_node_from_#{namespace}"] = {
           description: "Sync nodes from #{namespace}",
-          every: ["1h", {first_in: "0m"} ],
+          every: ["4h", {first_in: "15m"} ],
           class: Client::Sync::Job.to_s,
           queue: "sync",
           args: [
