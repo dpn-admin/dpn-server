@@ -23,6 +23,10 @@ describe Client::RemoteClient do
     @client = double(:client)
     allow(@client).to receive(:configure).and_yield(@config).and_return(@client)
     allow(@client).to receive(@query.type).and_yield(@response)
+
+    @connection = double(:connection)
+    allow(@client).to receive(:connection).and_return(@connection)
+    allow(@connection).to receive(:reset_all)
     
     allow(DPN::Client).to receive(:client).and_return(@client)
   end

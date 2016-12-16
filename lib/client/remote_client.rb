@@ -29,6 +29,7 @@ module Client
       client.public_send(query.type, query.params) do |response|
         yield response
       end
+      client.connection.reset_all
     end
     
     private
