@@ -76,7 +76,7 @@ module ResqueInit
       other_nodes.pluck(:namespace).each do |namespace|
         schedule["sync_bags_from_#{namespace}"] = {
           description: "Sync bags from #{namespace}",
-          every: ["4h", {first_in: "m"} ],
+          every: ["4h", {first_in: "15m"} ],
           class: Client::Sync::Job.to_s,
           queue: "sync",
           args: [
