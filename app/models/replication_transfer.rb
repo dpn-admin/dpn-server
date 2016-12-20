@@ -50,6 +50,7 @@ class ReplicationTransfer < ActiveRecord::Base
 
   ### Callbacks
   after_create :add_request_if_needed
+  after_update :preserve_if_needed
 
 
   ### Static Validations
@@ -126,6 +127,14 @@ class ReplicationTransfer < ActiveRecord::Base
     if to_node&.local_node?
       self.bag_man_request = BagManRequest.create!( source_location: link, cancelled: false)
       self.bag_man_request.begin!
+    end
+  end
+
+  # If we are the to_node and the update
+  # was to request storage, notify the bag_man_request
+  def preserve_if_needed
+    if to_node&.local_node? && self.store_requested_changed?(from: false, to: true)
+      bag_man_request&.okay_to_preserve!
     end
   end
 
