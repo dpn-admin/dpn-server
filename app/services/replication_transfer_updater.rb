@@ -101,19 +101,8 @@ class ReplicationTransferUpdater
     end
 
     def update
-      result = record.update(params)
-      if result && we_replicating?
-        preserve_bag
-      end
-      return result
+      record.update(params)
     end
-
-    private
-
-    def preserve_bag
-      record.bag_man_request&.okay_to_preserve!
-    end
-
   end
 
 
