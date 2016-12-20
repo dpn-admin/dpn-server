@@ -34,17 +34,23 @@ describe BagManRequest, type: :model do
 
 
   describe "#staging_location" do
+    let(:bag_name) { "nameofthebag" }
     let(:staging_dir) { "/herpderp" }
-    let(:source_location) { "hathi@chron.edu:/path/to/nameofthebag" }
-    it "returns the staging location (w/o extension)" do
-      request = Fabricate(:bag_man_request, source_location: source_location)
-      expected = File.join staging_dir, request.id.to_s, "nameofthebag"
-      expect(request.staging_location(staging_dir)).to eql(expected)
+    context "w/o extension" do
+      let(:source_location) { "hathi@chron.edu:/path/to/#{bag_name}" }
+      it "returns the staging location (w/o extension)" do
+        request = Fabricate(:bag_man_request, source_location: source_location)
+        expected = File.join staging_dir, request.id.to_s, bag_name
+        expect(request.staging_location(staging_dir)).to eql(expected)
+      end
     end
-    it "returns the staging location (w/ extension)" do
-      request = Fabricate(:bag_man_request, source_location: source_location + ".tar" )
-      expected = File.join staging_dir, request.id.to_s, "nameofthebag"
-      expect(request.staging_location(staging_dir)).to eql(expected)
+    context "w/ extension" do
+      let(:source_location) { "hathi@chron.edu:/path/to/#{bag_name}.tar" }
+      it "returns the staging location (w/ extension)" do
+        request = Fabricate(:bag_man_request, source_location: source_location )
+        expected = File.join staging_dir, request.id.to_s, "#{bag_name}.tar"
+        expect(request.staging_location(staging_dir)).to eql(expected)
+      end
     end
   end
 
