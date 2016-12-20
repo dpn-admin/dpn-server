@@ -10,7 +10,7 @@ module Client
     # a failure is encountered.
     class BagManJob < ActiveJob::Base
       rescue_from StandardError do |exception|
-        request = job.arguments.first
+        request = self.arguments.first
         request.last_error = "#{exception.message}\n#{exception.backtrace}"
         request.save
         raise
