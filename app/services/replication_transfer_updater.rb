@@ -134,7 +134,9 @@ class ReplicationTransferUpdater
     private
 
     def add_replicating_node
-      record.bag.replicating_nodes << record.to_node
+      unless record.bag.replicating_nodes.includes(record.to_node)
+        record.bag.replicating_nodes << record.to_node
+      end
     end
 
   end
