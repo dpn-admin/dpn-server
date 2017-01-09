@@ -13,8 +13,8 @@ describe DataBag do
 
   it "has a factory that honors updated_at" do
     time = 1.year.ago
-    record = Fabricate(:data_bag, updated_at: 1.year.ago)
-    expect(record.updated_at.change(usec: 0)).to eql time.change(usec: 0)
+    record = Fabricate(:data_bag, updated_at: time)
+    expect(record.updated_at).to be_within(5.second).of(time)
   end
 
   describe "::find_fields" do
