@@ -56,3 +56,12 @@ config/environments/impersonate*.rb
 /config/deploy.rb
 /config/deploy/
 /lib/capistrano
+
+# Generated docs
+/.yardoc/
+/doc/
+
+# vim
+tags
+*.swp
+*.swo
