@@ -101,3 +101,7 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 end
+
+def time_from_string(time)
+  Time.iso8601(time).change(:usec => 0)
+end

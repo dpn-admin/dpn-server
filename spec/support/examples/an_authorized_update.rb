@@ -8,7 +8,7 @@ shared_examples "an authorized update" do |key, options, legal_update, illegal_u
   unless options
     options = proc {{}}
   end
-  
+
   old_updated_at = 1.year.ago.utc
   params_updated_at = 1.day.ago.utc
 
@@ -18,9 +18,9 @@ shared_examples "an authorized update" do |key, options, legal_update, illegal_u
     model_options[:updated_at] = old_updated_at
     @existing_record = Fabricate(factory, model_options)
     @put_body = adapter.from_model(@existing_record).to_public_hash
-    @put_body[:updated_at] = params_updated_at.to_formatted_s(:dpn)
+    @put_body[:updated_at] = params_updated_at.utc.iso8601
   end
-  
+
   it "fabricates the record with the correct timestamp" do
     expect(@existing_record.reload.updated_at.to_s).to eql(old_updated_at.to_s)
   end
@@ -83,7 +83,7 @@ shared_examples "an authorized update" do |key, options, legal_update, illegal_u
 
   context "with no changes other than timestamps" do
     before(:each) do
-      @put_body[:updated_at] = 1.day.from_now.utc.to_formatted_s(:dpn)
+      @put_body[:updated_at] = 1.day.from_now.utc.iso8601
       put :update, @put_body
     end
     it "responds with 200" do
@@ -106,8 +106,8 @@ shared_examples "an authorized update" do |key, options, legal_update, illegal_u
 
   context "with old timestamps" do
     before(:each) do
-      @put_body[:created_at] = 3.years.ago.utc.to_formatted_s(:dpn)
-      @put_body[:updated_at] = 2.years.ago.utc.to_formatted_s(:dpn)
+      @put_body[:created_at] = 3.years.ago.utc.iso8601
+      @put_body[:updated_at] = 2.years.ago.utc.iso8601
       put :update, legal_update.call(@put_body)
     end
     it "responds with 200" do

@@ -18,14 +18,13 @@ module Adapter
   # Register a one-to-one mapping of a date field.
   # @param [Symbol] model_field
   # @param [Symbol] public_field
-  # @param [String] date_format The Date format to use.
-  def map_date(model_field, public_field, date_format)
-    raise ArgumentError, "date_format cannot be nil" if date_format.nil?
+  def map_date(model_field, public_field)
     map_from_public public_field do |value|
       {model_field => time_from_public(value)}
     end
     map_to_public model_field do |value|
-      {public_field => value.strftime(date_format)}
+      # return a datetime in UTC, using an iso8601 format
+      {public_field => value.utc.iso8601}
     end
   end
 
@@ -165,9 +164,13 @@ module Adapter
 
   def time_from_public(time)
     if time.is_a? String
-      return time_from_string(time)
+      # return Time object, trucated to seconds, e.g.
+      # time = "2015-02-25T15:27:40.6Z"
+      # Time.iso8601(time).change(:usec => 0)
+      # => "2015-02-25T15:27:40.000Z"
+      Time.iso8601(time).change(:usec => 0)
     else
-      return time
+      time
     end
   end
 

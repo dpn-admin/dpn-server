@@ -45,9 +45,6 @@ module DPN
           :controller_specs => true,
           :request_specs => true
       end
-
-      require_relative 'time_formats'
-
     end
   end
 end
