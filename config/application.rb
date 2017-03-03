@@ -4,13 +4,14 @@
 # See LICENSE.md for details.
 
 
-require File.expand_path('../boot', __FILE__)
+#require File.expand_path('../boot', __FILE__)
 
-require 'rails/all'
-
+require 'rubygems'
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
-Bundler.require(*Rails.groups)
+require 'bundler'
+Bundler.setup(*Rails.groups)
+require 'rails/all'
 
 module DPN
   module Server
