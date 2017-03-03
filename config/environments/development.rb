@@ -33,6 +33,19 @@ Rails.application.configure do
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
 
+  # From https://github.com/winebarrel/activerecord-mysql-reconnect
+  config.active_record.enable_retry = true
+  #config.active_record.retry_databases = :employees
+  # e.g. [:employees]
+  #      ['employees', 'localhost:test', '192.168.1.1:users']
+  #      ['192.168.%:emp\_all']
+  #      ['emp%']
+  # retry_databases -> nil: retry all databases (default)
+  config.active_record.execution_tries = 3 # times
+  # execution_tries -> 0: retry indefinitely
+  config.active_record.execution_retry_wait = 1.0 # sec
+  config.active_record.retry_mode = :rw # options: `:r`, `:rw`, `:force`
+
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
