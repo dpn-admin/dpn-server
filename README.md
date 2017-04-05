@@ -1,5 +1,6 @@
 [![Stories in Ready](https://badge.waffle.io/dpn-admin/dpn-server.png?label=ready&title=Ready)](https://waffle.io/dpn-admin/dpn-server)
 # DPN::Server
+![dpn_server](https://cloud.githubusercontent.com/assets/26936378/24721992/09079786-1a10-11e7-92a3-4265d7781059.jpg)
 
 [![Build Status](https://travis-ci.org/dpn-admin/dpn-server.svg?branch=master)](https://travis-ci.org/dpn-admin/dpn-server)
 [![Code Climate](https://codeclimate.com/github/dpn-admin/dpn-server/badges/gpa.svg)](https://codeclimate.com/github/dpn-admin/dpn-server)
