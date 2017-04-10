@@ -1,0 +1,8 @@
+This license applies to the following files:
+  dpn_server_128.png
+  dpn_server_500.jpg
+
+Copyright Larry Wentzel 2017.
+Free for not for profit use.
+High resolution images available upon request from Larry Wentzel (larry.wentzel@gmail.com)
+
