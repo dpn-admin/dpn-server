@@ -1,6 +1,6 @@
 [![Stories in Ready](https://badge.waffle.io/dpn-admin/dpn-server.png?label=ready&title=Ready)](https://waffle.io/dpn-admin/dpn-server)
 # DPN::Server
-![dpn_server](https://cloud.githubusercontent.com/assets/26936378/24721992/09079786-1a10-11e7-92a3-4265d7781059.jpg)
+![dpn_server](logo.jpg){:width="128px"}
 
 [![Build Status](https://travis-ci.org/dpn-admin/dpn-server.svg?branch=master)](https://travis-ci.org/dpn-admin/dpn-server)
 [![Code Climate](https://codeclimate.com/github/dpn-admin/dpn-server/badges/gpa.svg)](https://codeclimate.com/github/dpn-admin/dpn-server)
@@ -77,11 +77,11 @@ same (before encryption).
 
 The easiest way to get the data required to run your installation is to grab the
 production seed files from [the private repo](https://github.com/dpn-admin/private)
-and unpack them into `db/seeds/production-seeds.d`.  You will need to modify the 
+and unpack them into `db/seeds/production-seeds.d`.  You will need to modify the
 nodes seed to use the credentials specific to your node.
 
-From there, you can simply run `bundle exec rake db:seed`.  Note that the 
-installation steps, above, should already be complete.  This operation is 
+From there, you can simply run `bundle exec rake db:seed`.  Note that the
+installation steps, above, should already be complete.  This operation is
 idempotent.
 
 ## Replication and Synchronization
