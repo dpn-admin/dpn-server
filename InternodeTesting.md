@@ -10,7 +10,7 @@ that we can still sync our registries, replicate bags, etc.
 
 We already have a set of test data fixtures in the
 test/fixtures/integration directory. When you run a [local DPN
-cluster](Custer.md), the nodes in the cluster load data from those
+cluster](Cluster.md), the nodes in the cluster load data from those
 fixtures. The fixtures also include a set of six DPN bags in the form
 of tar files.
 
