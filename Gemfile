@@ -48,7 +48,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Note: These are not in a group block because doing
 #       so breaks group block usage in Gemfile.local
-gem 'sqlite3', group: [:development, :test]
+gem 'sqlite3', group: [:development, :test, :impersonate_aptrust, :impersonate_chron, :impersonate_hathi, :impersonate_sdr, :impersonate_tdr]
 gem 'app_version_tasks', group: [:development, :test]
 gem 'byebug', group: [:development, :test]
 gem 'codeclimate-test-reporter', group: [:development, :test]
